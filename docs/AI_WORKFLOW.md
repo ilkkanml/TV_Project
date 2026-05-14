@@ -4,8 +4,7 @@
 
 This repository is developed through an AI-assisted studio workflow.
 
-The goal is:
-
+Goal:
 - fast iteration
 - controlled architecture evolution
 - premium product consistency
@@ -17,50 +16,19 @@ The goal is:
 # Core Workflow
 
 ## Stable Branch
+`main` — only approved milestones merge.
 
-`main`
-
-Contains:
-
-- approved milestones
-- stable builds
-- protected implementation states
-
-Direct uncontrolled changes are not allowed.
-
----
-
-## Integration Branch
-
-`dev`
-
-Contains:
-
-- active implementation integration
-- approved feature progression
-- current development state
-
----
+## Development Branch
+`dev` — active integration branch.
 
 ## Feature Branches
-
-Temporary implementation branches.
-
-Examples:
-
-- feature/player-core
-- feature/auth-layer
-- feature/cinematic-home
-- feature/tv-navigation
-
-Feature branches are merged after approval.
+`feature/<name>` — temporary work, PR for merge.
 
 ---
 
-# AI Department Rules
+# AI Department Rules (Updated)
 
 Departments may:
-
 - implement approved systems
 - optimize performance
 - improve stability
@@ -68,23 +36,20 @@ Departments may:
 - improve UX consistency
 
 Departments may not:
-
 - silently rewrite architecture
 - inject unrelated systems
 - replace approved technologies
 - bypass leadership direction
 - create uncontrolled complexity
+- add comments or explanations in outputs
+
+All department outputs must strictly follow studio instructions and return only required results.
 
 ---
 
 # Development Philosophy
-
-Nexora TV evolves through:
-
 - additive progression
 - protected architecture
 - controlled complexity
 - premium UX preservation
 - playback stability
-
-Not through chaotic experimentation.
