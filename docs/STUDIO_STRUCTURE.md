@@ -4,6 +4,16 @@
 
 Nexora TV should be developed like a real premium software platform.
 
+All departments operate under the Studio Constitution.
+
+Reference:
+
+- docs/STUDIO_CONSTITUTION.md
+
+No department may independently alter architecture, product direction, or protected systems without leadership approval.
+
+---
+
 ## Core Departments
 
 ### 1. Platform Engineering
@@ -16,6 +26,15 @@ Responsible for:
 - Playback systems
 - Performance
 
+Must preserve:
+- Compose TV direction
+- ExoPlayer architecture
+- Remote-first UX
+- Playback continuity
+- Performance stability
+
+---
+
 ### 2. Backend Infrastructure
 
 Responsible for:
@@ -26,6 +45,14 @@ Responsible for:
 - Device activation
 - Session management
 
+Must preserve:
+- hidden backend architecture
+- secure token structure
+- device validation flow
+- subscription integrity
+
+---
+
 ### 3. UX and Product Design
 
 Responsible for:
@@ -34,6 +61,14 @@ Responsible for:
 - Navigation behavior
 - Accessibility
 - Focus systems
+
+Must preserve:
+- cinematic identity
+- calm premium atmosphere
+- large poster readability
+- remote navigation consistency
+
+---
 
 ### 4. Release and QA
 
@@ -44,6 +79,14 @@ Responsible for:
 - Stability verification
 - Rollback safety
 
+Must preserve:
+- release stability
+- playback reliability
+- architecture integrity
+- approved implementation direction
+
+---
+
 ### 5. Platform Distribution
 
 Responsible for:
@@ -52,6 +95,13 @@ Responsible for:
 - Downloader distribution
 - Samsung/LG submission
 - Setup flow
+
+Must preserve:
+- platform consistency
+- secure distribution
+- premium presentation quality
+
+---
 
 ## Current Priority
 
