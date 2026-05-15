@@ -83,29 +83,6 @@ Future platforms:
 - Focus effect: scale plus glow
 - Detail preview: muted autoplay preview
 
-## Subscription Direction
-
-Initial access model:
-
-- MAC/device identity plus password activation
-
-Initial user flow:
-
-1. App generates or reads device identity.
-2. User enters activation password.
-3. Backend validates device access.
-4. Subscription expiration is checked.
-5. Active device enters app.
-
-Future subscription infrastructure:
-
-- Device registry
-- Subscription expiration
-- Active/inactive device state
-- Session token
-- Admin panel
-- Stripe later
-
 ## Current Milestone Truth
 
 ### M1 Foundation
@@ -129,52 +106,24 @@ M2 locked the playback baseline:
 
 ### M3 Premium UI Expansion
 
-Status: ACTIVE / USER TEST PASSED / QA PASSED / DIRECTOR LOCK PENDING
+Status: LOCKED
 
-M3 is not LOCKED.
-
-M3-TASK-001 Safe Runtime Home Build record:
+M3 locked the safe runtime HomeScreen premium UI baseline:
 
 - Branch: `feature/m3-premium-ui-polish`
-- Branch note: ahead 9 / behind 1 versus main; final merge öncesi sync/re-compare önerilir
-- Changed file: `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
-- Patch scope: HomeScreen Premium UI polish + safe runtime stabilization
-- M3 Safe Runtime Home Build User Test: PASSED
-- QA Tester Result: PASSED
-- Blockers: none
-- Regression risk: Low
-- Regression: none detected in repo review
-- Legal risk: none detected
-
-Runtime notes:
-
-- HomeScreen safe runtime build Button tabanlı çalışıyor
-- Custom focusable/onFocusChanged geçici olarak kullanılmıyor
-- Login → Home crashsiz
-- Menü seçimleri çalışıyor: Home, Live TV, Movies, Series, Settings
-- Kategoriye göre poster içeriği değişiyor
-- Dynamic background `selectedPoster.accent` üzerinden çalışıyor
-- Horizontal poster row scroll çalışıyor
-- Player route bilinçli olarak devre dışı
-
-Protected systems untouched:
-
-- Playback Core
-- Auth / device login
-- Backend API
-- Protected architecture
-
-No illegal stream / DRM bypass / unauthorized IPTV logic was added.
-
-Primary focus:
-
-- Premium home UI refinement
-- TV-first visual hierarchy
-- Focus scale/glow polish
-- Cinematic poster rows
-- Dynamic blurred background direction
-- Navigation readability
-- App shell polish without touching Playback Core
+- HomeScreen safe runtime build
+- Premium TV layout polish
+- Category menu flow
+- Poster row interaction
+- Dynamic background direction
+- Runtime checklist validation
+- User Test: PASSED
+- QA Tester: PASSED
+- Final Android TV Runtime Test: PASSED
+- Sync/Re-compare: DONE
+- Main merge: DONE
+- Protected systems untouched
+- Legal/compliance risk: none detected
 
 ## Current Code Reality
 
@@ -198,11 +147,9 @@ Use only:
 3. QA_TESTER
 4. DOCUMENTATION_MEMORY
 
-No large department structure unless explicitly requested by user.
+No large department structure unless explicitly requested
 
 ## User Preference
-
-The user prefers:
 
 - Minimal explanations
 - Direct instructions
