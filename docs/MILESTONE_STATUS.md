@@ -2,24 +2,31 @@
 
 ## Current Active Milestone
 
-`M3 Premium UI Expansion`
+`None`
 
-Status: `ACTIVE / USER TEST PASSED / QA PASSED / DIRECTOR LOCK PENDING`
+Status: `AWAITING NEXT DIRECTOR INSTRUCTION`
+
+No new milestone is active yet.
 
 ## Last Locked Milestone
 
-`M2 Playback Expansion`
+`M3 Premium UI Expansion`
 
 Status: `LOCKED`
 
-M2 established the playback baseline:
+M3 locked the safe runtime premium Home UI baseline:
 
-- Media3 / ExoPlayer direction
-- Fullscreen playback shell
-- Fast live TV switching direction
-- Player overlay timeout rule: 5 seconds
-- Stream recovery direction
-- Premium playback continuity rules
+- HomeScreen safe runtime build
+- Premium TV layout polish
+- Category menu flow
+- Poster row interaction
+- Dynamic background direction
+- Runtime checklist validation
+- User Test: PASSED
+- QA Tester: PASSED
+- Final Android TV Runtime Test: PASSED
+- Sync/Re-compare: DONE
+- Main merge: DONE
 
 ## Completed / Locked
 
@@ -49,42 +56,47 @@ Locked:
 - Fast channel switching direction
 - Playback stability priority
 
-## Active Milestone Scope
-
 ### M3 Premium UI Expansion
 
-Goal:
+Status: `LOCKED`
 
-Improve the premium Android TV visual and navigation foundation without touching protected playback/auth/backend systems.
-
-Allowed focus:
+Locked:
 
 - Home UI refinement
 - Premium TV layout polish
-- Focus scale/glow behavior
+- Safe runtime HomeScreen build
 - Poster card visual hierarchy
-- Cinematic rows
-- Dynamic blurred background direction
+- Cinematic rows direction
+- Dynamic background direction
 - Navigation readability
-- Empty/loading/error UI polish
+- Runtime checklist record
 
-Not allowed unless explicitly approved:
+## Latest Merge Record
 
-- Playback Core rewrite
-- Auth System rewrite
-- Hidden Backend API changes
-- New milestone creation
-- Production backend expansion
-- Illegal IPTV source logic
-- DRM bypass
+M3 Safe Runtime Home Build merged into `main`.
 
-M3-TASK-001 Safe Runtime Home Build record:
-
+- PR: `#8`
+- Merge commit: `232e947a30ba77fd63226ef13a6d4cc1bf1cdadd`
 - Branch: `feature/m3-premium-ui-polish`
-- Branch note: ahead 9 / behind 1 versus main; final merge öncesi sync/re-compare önerilir
-- User Test: PASSED
-- QA Tester Result: PASSED
-- Blockers: none
-- Regression risk: Low
-- Protected systems untouched
-- Legal risk: none detected
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
+  - `docs/M3_MANUAL_RUNTIME_TEST_CHECKLIST.md`
+
+## Protection / Compliance Record
+
+Protected systems remain untouched:
+
+- Playback Core
+- Auth System
+- Backend API
+- Hidden Backend API
+
+Legal/compliance risk: none detected.
+
+No illegal IPTV source logic, DRM bypass, token/cookie theft, or unauthorized stream scraping was added.
+
+## Next Status
+
+Awaiting Director decision for the next task or next milestone.
+
+Do not create M4 unless the user explicitly says: `Yeni milestone aç`.
