@@ -2,7 +2,9 @@
 
 ## Purpose
 
-This document exists so a new ChatGPT conversation can continue the project without losing context.
+This document is the compact memory source for new ChatGPT windows.
+
+Chat history is disposable. Repository docs are the source of truth.
 
 ## Project Name
 
@@ -18,7 +20,17 @@ Premium subscription-based Android TV / Fire TV IPTV player application.
 
 ## Core Rule
 
-Nexora TV is a legal player platform. It must not bundle pirated channels, illegal streams, or unauthorized content packages.
+Nexora TV is a legal player platform.
+
+It must not bundle pirated channels, illegal streams, unauthorized playlists, DRM bypass logic, token/cookie theft, credential bypass, or unauthorized scraping.
+
+Allowed development sources:
+
+- Mock data
+- Test streams with permission
+- Public demo streams
+- User-owned licensed streams
+- Legal provider/API integrations
 
 ## Primary Platforms
 
@@ -43,6 +55,7 @@ Future platforms:
 ## UX Direction
 
 - Netflix-like familiarity
+- IPTV practicality
 - Large cinematic posters
 - Remote-first navigation
 - Dynamic blurred artwork background
@@ -53,12 +66,12 @@ Future platforms:
 ## Locked Product Decisions
 
 - Brand: Nexora TV
-- Package direction: com.nexora.tv
+- Package direction: `com.nexora.tv`
 - Platform priority: Android TV / Fire TV
 - Homepage hero: auto-sliding featured content
 - Hero timing: 8 seconds
 - First home row: Continue Watching
-- Poster style: Large cinematic posters
+- Poster style: large cinematic posters
 - Live TV layout: Netflix-like poster rows
 - Live TV playback: instant fullscreen
 - Movies and Series playback: detail page before playback
@@ -93,42 +106,86 @@ Future subscription infrastructure:
 - Admin panel
 - Stripe later
 
-## Milestone Status
+## Current Milestone Truth
 
 ### M1 Foundation
 
-Status: Freeze locked and archived in GitHub.
+Status: LOCKED
 
 M1 locked the product identity, visual direction, UX philosophy, subscription direction, and initial architecture baseline.
 
 ### M2 Playback Expansion
 
-Status: Current active milestone.
+Status: LOCKED
+
+M2 locked the playback baseline:
+
+- Media3 / ExoPlayer direction
+- Fullscreen playback shell
+- Fast live TV switching direction
+- Player overlay timeout rule
+- Stream recovery direction
+- Premium playback continuity rules
+
+### M3 Premium UI Expansion
+
+Status: ACTIVE / NEXT
 
 Primary focus:
 
-- Playback core stabilization
-- Fullscreen player refinement
-- Fast live TV channel switching
-- Stream recovery
-- Player overlay behavior
-- Premium playback continuity
+- Premium home UI refinement
+- TV-first visual hierarchy
+- Focus scale/glow polish
+- Cinematic poster rows
+- Dynamic blurred background direction
+- Navigation readability
+- App shell polish without touching Playback Core
 
-## Current Development Style
+## Current Code Reality
+
+Current repository contains:
+
+- Android app module
+- Kotlin / Jetpack Compose setup
+- Android TV launcher manifest
+- Splash → Login → Home → Player navigation
+- Basic Home screen row/cards
+- Basic Media3 ExoPlayer test player shell
+- Nexora color/theme foundation
+
+## Minimal Agent Workflow
+
+Use only:
+
+1. DIRECTOR
+2. DEVELOPER
+3. QA_TESTER
+4. DOCUMENTATION_MEMORY
+
+No large department structure unless explicitly requested by user.
+
+## User Preference
 
 The user prefers:
 
 - Minimal explanations
+- Direct instructions
 - Continuous progress
 - Ask only critical decision questions
-- Treat project like a real software studio
-- Backup to GitHub at milestones
-- Preserve handoff knowledge for new chats
+- Do not restart planning
+- Do not recreate milestones
+- Keep docs updated so new chats can continue
 
-## Important Instruction for Future ChatGPT Session
+## Important Instruction For Future ChatGPT Sessions
 
-Do not restart planning from zero.
+Do not restart from zero.
 
-Continue from M2 Playback Expansion unless the user explicitly asks to revisit earlier decisions.
+Continue from M3 Premium UI Expansion unless the user explicitly changes milestone.
 
-Prioritize repository updates and concrete implementation artifacts.
+Before work, read:
+
+- `docs/START_HERE.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/PROTECTED_SYSTEMS.md`
+- `docs/HANDOFF.md`
