@@ -4,7 +4,7 @@
 
 `M3 Premium UI Expansion`
 
-Status: `ACTIVE / QA REPO REVIEW PASSED / LOCAL ANDROID TV RUNTIME TEST PENDING`
+Status: `ACTIVE / USER TEST PASSED / QA PASSED / DIRECTOR LOCK PENDING`
 
 ## Last Locked Milestone
 
@@ -77,3 +77,14 @@ Not allowed unless explicitly approved:
 - Production backend expansion
 - Illegal IPTV source logic
 - DRM bypass
+
+M3-TASK-001 Safe Runtime Home Build record:
+
+- Branch: `feature/m3-premium-ui-polish`
+- Branch note: ahead 9 / behind 1 versus main; final merge öncesi sync/re-compare önerilir
+- User Test: PASSED
+- QA Tester Result: PASSED
+- Blockers: none
+- Regression risk: Low
+- Protected systems untouched
+- Legal risk: none detected
