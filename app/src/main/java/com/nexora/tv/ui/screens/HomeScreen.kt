@@ -2,7 +2,6 @@ package com.nexora.tv.ui.screens
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,7 +21,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -34,12 +35,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -66,64 +64,55 @@ fun HomeScreen(navController: NavController) {
     val rows = rememberHomeRows()
     var focusedPoster by remember { mutableStateOf(rows.first().items.first()) }
     val backgroundTone by animateColorAsState(
-        targetValue = focusedPoster.tone.copy(alpha = 0.42f),
+        targetValue = focusedPoster.tone.copy(alpha = 0.28f),
         label = "homeBackgroundTone"
     )
 
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(NexoraColors.Black)
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF08111F),
-                        NexoraColors.Black,
-                        Color(0xFF02040A)
+                        backgroundTone,
+                        Color(0xFF07101D),
+                        NexoraColors.Black
                     )
                 )
             )
-            .background(
-                Brush.radialGradient(
-                    colors = listOf(backgroundTone, Color.Transparent),
-                    radius = 1200f
-                )
-            )
-            .padding(horizontal = 42.dp, vertical = 30.dp)
+            .padding(horizontal = 36.dp, vertical = 28.dp),
+        horizontalArrangement = Arrangement.spacedBy(28.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(34.dp)
-        ) {
-            NavigationShell()
+        NavigationShell()
 
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
-            ) {
-                HeroHeader(
-                    poster = focusedPoster,
-                    onPlay = {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(22.dp)
+        ) {
+            HeroHeader(
+                poster = focusedPoster,
+                onPlay = {
+                    navController.navigate(AppDestinations.Player.route) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+
+            rows.forEach { row ->
+                CinematicRow(
+                    row = row,
+                    onPosterFocused = { focusedPoster = it },
+                    onPosterClick = {
                         navController.navigate(AppDestinations.Player.route) {
                             launchSingleTop = true
                         }
                     }
                 )
-
-                rows.forEach { row ->
-                    CinematicRow(
-                        row = row,
-                        onPosterFocused = { focusedPoster = it },
-                        onPosterClick = {
-                            navController.navigate(AppDestinations.Player.route) {
-                                launchSingleTop = true
-                            }
-                        }
-                    )
-                }
-
-                StateFeedbackRow()
             }
+
+            StateFeedbackRow()
         }
     }
 }
@@ -243,25 +232,25 @@ private fun HeroHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(188.dp)
-            .clip(RoundedCornerShape(34.dp))
+            .height(176.dp)
+            .clip(RoundedCornerShape(30.dp))
             .background(
                 Brush.horizontalGradient(
                     colors = listOf(
                         NexoraColors.SurfaceSoft.copy(alpha = 0.96f),
-                        poster.tone.copy(alpha = 0.24f),
-                        Color.Transparent
+                        poster.tone.copy(alpha = 0.22f),
+                        NexoraColors.Surface.copy(alpha = 0.25f)
                     )
                 )
             )
-            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(34.dp))
-            .padding(28.dp),
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(30.dp))
+            .padding(26.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(9.dp)
         ) {
             Text(
                 text = "Featured now",
@@ -272,7 +261,7 @@ private fun HeroHeader(
             Text(
                 text = poster.title,
                 color = NexoraColors.TextPrimary,
-                fontSize = 43.sp,
+                fontSize = 38.sp,
                 fontWeight = FontWeight.Black,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -288,19 +277,19 @@ private fun HeroHeader(
 
         Box(
             modifier = Modifier
-                .width(174.dp)
-                .height(60.dp)
+                .width(168.dp)
+                .height(56.dp)
                 .clip(RoundedCornerShape(999.dp))
                 .background(NexoraColors.Cyan.copy(alpha = 0.16f))
                 .border(1.dp, NexoraColors.Cyan.copy(alpha = 0.82f), RoundedCornerShape(999.dp))
                 .clickable { onPlay() }
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 22.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Open Player",
                 color = NexoraColors.TextPrimary,
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -317,13 +306,13 @@ private fun CinematicRow(
         Text(
             text = row.title,
             color = NexoraColors.TextPrimary,
-            fontSize = 22.sp,
+            fontSize = 21.sp,
             fontWeight = FontWeight.Bold
         )
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp)
+            horizontalArrangement = Arrangement.spacedBy(18.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
         ) {
             itemsIndexed(
                 items = row.items,
@@ -346,49 +335,35 @@ private fun PremiumPosterCard(
     onClick: () -> Unit
 ) {
     var focused by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(
-        targetValue = if (focused) 1.08f else 1f,
-        label = "posterScale"
+    val cardWidth by animateDpAsState(
+        targetValue = if (focused) 212.dp else 204.dp,
+        label = "posterWidth"
     )
-    val borderWidth by animateDpAsState(
-        targetValue = if (focused) 2.dp else 1.dp,
-        label = "posterBorderWidth"
+    val cardHeight by animateDpAsState(
+        targetValue = if (focused) 292.dp else 282.dp,
+        label = "posterHeight"
     )
     val borderColor by animateColorAsState(
         targetValue = if (focused) NexoraColors.Cyan else Color.White.copy(alpha = 0.08f),
         label = "posterBorderColor"
     )
-    val glowColor by animateColorAsState(
-        targetValue = if (focused) item.tone.copy(alpha = 0.34f) else Color.Transparent,
-        label = "posterGlow"
+    val cardBackground by animateColorAsState(
+        targetValue = if (focused) item.tone.copy(alpha = 0.32f) else NexoraColors.Surface,
+        label = "posterBackground"
     )
 
     Card(
         modifier = Modifier
-            .size(width = 204.dp, height = 286.dp)
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            }
-            .drawBehind {
-                drawCircle(
-                    color = glowColor,
-                    radius = size.maxDimension * 0.62f
-                )
-            }
-            .shadow(
-                elevation = if (focused) 22.dp else 4.dp,
-                shape = RoundedCornerShape(28.dp),
-                clip = false
-            )
+            .size(width = cardWidth, height = cardHeight)
             .clip(RoundedCornerShape(28.dp))
-            .border(borderWidth, borderColor, RoundedCornerShape(28.dp))
+            .border(2.dp, borderColor, RoundedCornerShape(28.dp))
             .onFocusChanged {
                 focused = it.isFocused
                 if (it.isFocused) onFocused()
             }
+            .focusable()
             .clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = NexoraColors.Surface)
+        colors = CardDefaults.cardColors(containerColor = cardBackground)
     ) {
         Box(
             modifier = Modifier
@@ -396,7 +371,7 @@ private fun PremiumPosterCard(
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            item.tone.copy(alpha = 0.58f),
+                            item.tone.copy(alpha = 0.54f),
                             NexoraColors.SurfaceSoft,
                             NexoraColors.Black
                         )
