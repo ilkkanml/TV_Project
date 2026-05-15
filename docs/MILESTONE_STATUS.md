@@ -4,7 +4,7 @@
 
 `M3 Premium UI Expansion`
 
-Status: `ACTIVE`
+Status: `ACTIVE / QA REPO REVIEW PASSED / LOCAL ANDROID TV RUNTIME TEST PENDING`
 
 ## Last Locked Milestone
 
@@ -77,9 +77,3 @@ Not allowed unless explicitly approved:
 - Production backend expansion
 - Illegal IPTV source logic
 - DRM bypass
-
-## Anti-Reset Rule
-
-New ChatGPT windows must not recreate M1, M2, or M3 planning.
-
-Continue from `docs/NEXT_TASK.md`.
