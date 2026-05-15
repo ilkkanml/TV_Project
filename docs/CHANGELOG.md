@@ -1,5 +1,20 @@
 # Nexora TV — CHANGELOG
 
+## Active Milestone
+
+### M4 Auth & Device Activation Foundation
+- Status: ACTIVE
+- Task: M4-TASK-001 Auth & Device Activation Shell
+- Scope:
+  - Device identity placeholder
+  - Activation password screen polish
+  - Mock auth validation
+  - Active/inactive device state placeholder
+  - Subscription expiration placeholder
+  - Safe loading/empty/error states
+- Protected systems must remain stable
+- No production backend/payment/provider integration in this milestone task
+
 ## Completed Milestones
 
 ### M1 Foundation
@@ -27,4 +42,4 @@
 
 ## Next Step
 
-Awaiting user instruction for next milestone.
+Developer executes M4-TASK-001 and returns result to Director.
