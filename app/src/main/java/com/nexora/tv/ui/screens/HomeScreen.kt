@@ -63,42 +63,7 @@ private data class HomeRow(
 
 @Composable
 fun HomeScreen(navController: NavController) {
-
-    val rows = remember {
-        listOf(
-            HomeRow(
-                title = "Continue Watching",
-                items = listOf(
-                    HomePoster("Midnight Grid", "Episode 4 • 42 min left", "Series", 0.62f, NexoraColors.Cyan),
-                    HomePoster("City Signal", "Live preview ready", "Live", 0.18f, NexoraColors.Blue),
-                    HomePoster("Neon Harbor", "Resume from 01:12:40", "Movie", 0.48f, Color(0xFF7C4DFF)),
-                    HomePoster("Signal Room", "Episode 2 • 21 min left", "Series", 0.36f, Color(0xFF00BFA5)),
-                    HomePoster("Afterglow", "Continue watching", "Movie", 0.74f, Color(0xFFFF6D00))
-                )
-            ),
-            HomeRow(
-                title = "Live TV Highlights",
-                items = listOf(
-                    HomePoster("Nexora News", "Live • Stable signal", "Live", 1f, NexoraColors.Cyan),
-                    HomePoster("Cinema One", "Now playing", "Live", 1f, Color(0xFF448AFF)),
-                    HomePoster("Documentary Hub", "Tonight lineup", "Live", 1f, Color(0xFF64DD17)),
-                    HomePoster("Sports Desk", "Upcoming event", "Live", 1f, Color(0xFFFFD600)),
-                    HomePoster("Kids Space", "Family row", "Live", 1f, Color(0xFFFF4081))
-                )
-            ),
-            HomeRow(
-                title = "Movies & Series",
-                items = listOf(
-                    HomePoster("Orbit Fall", "Featured movie", "VOD", 0f, Color(0xFF7C4DFF)),
-                    HomePoster("Deep Archive", "New season", "Series", 0f, NexoraColors.Blue),
-                    HomePoster("Glass Tower", "Premium pick", "VOD", 0f, Color(0xFF00B8D4)),
-                    HomePoster("Silent Coast", "Watch later", "VOD", 0f, Color(0xFF18FFFF)),
-                    HomePoster("Blue District", "Editor pick", "Series", 0f, Color(0xFF536DFE))
-                )
-            )
-        )
-    }
-
+    val rows = rememberHomeRows()
     var focusedPoster by remember { mutableStateOf(rows.first().items.first()) }
     val backgroundTone by animateColorAsState(
         targetValue = focusedPoster.tone.copy(alpha = 0.42f),
@@ -120,10 +85,7 @@ fun HomeScreen(navController: NavController) {
             )
             .background(
                 Brush.radialGradient(
-                    colors = listOf(
-                        backgroundTone,
-                        Color.Transparent
-                    ),
+                    colors = listOf(backgroundTone, Color.Transparent),
                     radius = 1200f
                 )
             )
@@ -164,6 +126,42 @@ fun HomeScreen(navController: NavController) {
             }
         }
     }
+}
+
+@Composable
+private fun rememberHomeRows(): List<HomeRow> = remember {
+    listOf(
+        HomeRow(
+            title = "Continue Watching",
+            items = listOf(
+                HomePoster("Midnight Grid", "Episode 4 • 42 min left", "Series", 0.62f, NexoraColors.Cyan),
+                HomePoster("City Signal", "Live preview ready", "Live", 0.18f, NexoraColors.Blue),
+                HomePoster("Neon Harbor", "Resume from 01:12:40", "Movie", 0.48f, Color(0xFF7C4DFF)),
+                HomePoster("Signal Room", "Episode 2 • 21 min left", "Series", 0.36f, Color(0xFF00BFA5)),
+                HomePoster("Afterglow", "Continue watching", "Movie", 0.74f, Color(0xFFFF6D00))
+            )
+        ),
+        HomeRow(
+            title = "Live TV Highlights",
+            items = listOf(
+                HomePoster("Nexora News", "Live • Stable signal", "Live", 1f, NexoraColors.Cyan),
+                HomePoster("Cinema One", "Now playing", "Live", 1f, Color(0xFF448AFF)),
+                HomePoster("Documentary Hub", "Tonight lineup", "Live", 1f, Color(0xFF64DD17)),
+                HomePoster("Sports Desk", "Upcoming event", "Live", 1f, Color(0xFFFFD600)),
+                HomePoster("Kids Space", "Family row", "Live", 1f, Color(0xFFFF4081))
+            )
+        ),
+        HomeRow(
+            title = "Movies & Series",
+            items = listOf(
+                HomePoster("Orbit Fall", "Featured movie", "VOD", 0f, Color(0xFF7C4DFF)),
+                HomePoster("Deep Archive", "New season", "Series", 0f, NexoraColors.Blue),
+                HomePoster("Glass Tower", "Premium pick", "VOD", 0f, Color(0xFF00B8D4)),
+                HomePoster("Silent Coast", "Watch later", "VOD", 0f, Color(0xFF18FFFF)),
+                HomePoster("Blue District", "Editor pick", "Series", 0f, Color(0xFF536DFE))
+            )
+        )
+    )
 }
 
 @Composable
@@ -466,14 +464,17 @@ private fun StateFeedbackRow() {
         modifier = Modifier.fillMaxWidth()
     ) {
         StatusTile(
+            modifier = Modifier.weight(1f),
             title = "Loading",
             body = "Skeleton-safe rows keep the TV layout steady."
         )
         StatusTile(
+            modifier = Modifier.weight(1f),
             title = "Empty",
             body = "Quiet placeholders preserve premium spacing."
         )
         StatusTile(
+            modifier = Modifier.weight(1f),
             title = "Error",
             body = "Readable feedback remains clear from couch distance."
         )
@@ -481,10 +482,13 @@ private fun StateFeedbackRow() {
 }
 
 @Composable
-private fun StatusTile(title: String, body: String) {
+private fun StatusTile(
+    modifier: Modifier = Modifier,
+    title: String,
+    body: String
+) {
     Column(
-        modifier = Modifier
-            .weight(1f)
+        modifier = modifier
             .height(74.dp)
             .clip(RoundedCornerShape(22.dp))
             .background(NexoraColors.Surface.copy(alpha = 0.72f))
