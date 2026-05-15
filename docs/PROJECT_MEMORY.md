@@ -129,27 +129,42 @@ M2 locked the playback baseline:
 
 ### M3 Premium UI Expansion
 
-Status: ACTIVE / QA REPO REVIEW PASSED / LOCAL ANDROID TV RUNTIME TEST PENDING
+Status: ACTIVE / USER TEST PASSED / QA PASSED / DIRECTOR LOCK PENDING
 
 M3 is not LOCKED.
 
-M3-TASK-001 record:
+M3-TASK-001 Safe Runtime Home Build record:
 
 - Branch: `feature/m3-premium-ui-polish`
+- Branch note: ahead 9 / behind 1 versus main; final merge öncesi sync/re-compare önerilir
 - Changed file: `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
-- Patch scope: HomeScreen Premium UI polish
-- QA repo/code review: PASSED
-- QA blockers: none
+- Patch scope: HomeScreen Premium UI polish + safe runtime stabilization
+- M3 Safe Runtime Home Build User Test: PASSED
+- QA Tester Result: PASSED
+- Blockers: none
+- Regression risk: Low
 - Regression: none detected in repo review
-- Local Android TV runtime test: PENDING
 - Legal risk: none detected
 
-Protected systems untouched in repo review:
+Runtime notes:
+
+- HomeScreen safe runtime build Button tabanlı çalışıyor
+- Custom focusable/onFocusChanged geçici olarak kullanılmıyor
+- Login → Home crashsiz
+- Menü seçimleri çalışıyor: Home, Live TV, Movies, Series, Settings
+- Kategoriye göre poster içeriği değişiyor
+- Dynamic background `selectedPoster.accent` üzerinden çalışıyor
+- Horizontal poster row scroll çalışıyor
+- Player route bilinçli olarak devre dışı
+
+Protected systems untouched:
 
 - Playback Core
 - Auth / device login
 - Backend API
 - Protected architecture
+
+No illegal stream / DRM bypass / unauthorized IPTV logic was added.
 
 Primary focus:
 
@@ -169,10 +184,10 @@ Current repository contains:
 - Kotlin / Jetpack Compose setup
 - Android TV launcher manifest
 - Splash → Login → Home → Player navigation
-- Basic Home screen row/cards
+- Safe runtime HomeScreen build
 - Basic Media3 ExoPlayer test player shell
 - Nexora color/theme foundation
-- M3-TASK-001 HomeScreen Premium UI polish reviewed at repo/code level
+- M3-TASK-001 HomeScreen Premium UI polish passed user runtime test and QA review
 
 ## Minimal Agent Workflow
 
