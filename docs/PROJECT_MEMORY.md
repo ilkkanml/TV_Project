@@ -129,7 +129,27 @@ M2 locked the playback baseline:
 
 ### M3 Premium UI Expansion
 
-Status: ACTIVE / NEXT
+Status: ACTIVE / QA REPO REVIEW PASSED / LOCAL ANDROID TV RUNTIME TEST PENDING
+
+M3 is not LOCKED.
+
+M3-TASK-001 record:
+
+- Branch: `feature/m3-premium-ui-polish`
+- Changed file: `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
+- Patch scope: HomeScreen Premium UI polish
+- QA repo/code review: PASSED
+- QA blockers: none
+- Regression: none detected in repo review
+- Local Android TV runtime test: PENDING
+- Legal risk: none detected
+
+Protected systems untouched in repo review:
+
+- Playback Core
+- Auth / device login
+- Backend API
+- Protected architecture
 
 Primary focus:
 
@@ -152,6 +172,7 @@ Current repository contains:
 - Basic Home screen row/cards
 - Basic Media3 ExoPlayer test player shell
 - Nexora color/theme foundation
+- M3-TASK-001 HomeScreen Premium UI polish reviewed at repo/code level
 
 ## Minimal Agent Workflow
 
