@@ -7,17 +7,13 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -36,10 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.theme.NexoraColors
 
-private enum class HomeSection(val label: String) {
+private enum class StableSection(val label: String) {
     Home("Home"),
     Live("Live TV"),
     Movies("Movies"),
@@ -47,7 +42,7 @@ private enum class HomeSection(val label: String) {
     Settings("Settings")
 }
 
-private data class RuntimePoster(
+private data class StablePoster(
     val title: String,
     val subtitle: String,
     val accent: Color
@@ -55,9 +50,9 @@ private data class RuntimePoster(
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    var selectedSection by remember { mutableStateOf(HomeSection.Home) }
+    var selectedSection by remember { mutableStateOf(StableSection.Home) }
     var focusedAccent by remember { mutableStateOf(NexoraColors.Cyan) }
-    val posters = remember(selectedSection) { postersFor(selectedSection) }
+    val posters = postersFor(selectedSection)
 
     Row(
         modifier = Modifier
@@ -65,254 +60,193 @@ fun HomeScreen(navController: NavController) {
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        focusedAccent.copy(alpha = 0.30f),
+                        focusedAccent.copy(alpha = 0.26f),
                         Color(0xFF07101D),
                         NexoraColors.Black
                     )
                 )
             )
-            .padding(horizontal = 42.dp, vertical = 34.dp),
-        horizontalArrangement = Arrangement.spacedBy(32.dp)
+            .padding(42.dp),
+        horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        NavigationShell(
-            selectedSection = selectedSection,
-            onSectionFocused = { selectedSection = it }
-        )
+        Column(
+            modifier = Modifier.width(180.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            Text(
+                text = "NEXORA",
+                color = NexoraColors.TextPrimary,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black
+            )
+            Text(
+                text = "Premium TV",
+                color = NexoraColors.TextSecondary,
+                fontSize = 13.sp
+            )
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            StableSection.values().forEach { section ->
+                StableNavItem(
+                    label = section.label,
+                    selected = selectedSection == section,
+                    onFocus = { selectedSection = section }
+                )
+            }
+        }
 
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(26.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            HeaderBlock(
+            StableHeader(
                 selectedSection = selectedSection,
-                focusedAccent = focusedAccent,
-                onOpenPlayer = {
-                    navController.navigate(AppDestinations.Player.route) {
-                        launchSingleTop = true
-                    }
-                }
+                focusedAccent = focusedAccent
             )
 
             Text(
-                text = sectionRowTitle(selectedSection),
+                text = rowTitleFor(selectedSection),
                 color = NexoraColors.TextPrimary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
 
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
-                contentPadding = PaddingValues(start = 4.dp, end = 120.dp)
-            ) {
-                itemsIndexed(
-                    items = posters,
-                    key = { index, item -> "${selectedSection.label}-$index-${item.title}" }
-                ) { _, poster ->
-                    RuntimePosterCard(
+            Row(horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                posters.forEach { poster ->
+                    StablePosterCard(
                         poster = poster,
-                        onFocused = { focusedAccent = poster.accent }
+                        onFocus = { focusedAccent = poster.accent }
                     )
                 }
             }
 
-            StateTiles()
+            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                StableStatusTile("Loading", "Visible")
+                StableStatusTile("Empty", "Visible")
+                StableStatusTile("Error", "Visible")
+            }
         }
     }
 }
 
-private fun sectionRowTitle(section: HomeSection): String = when (section) {
-    HomeSection.Home -> "Featured Library"
-    HomeSection.Live -> "Live TV Categories"
-    HomeSection.Movies -> "Movies • Continue Watching"
-    HomeSection.Series -> "Series • Continue Watching"
-    HomeSection.Settings -> "Settings Preview"
+private fun rowTitleFor(section: StableSection): String = when (section) {
+    StableSection.Home -> "Featured Library"
+    StableSection.Live -> "Live TV Categories"
+    StableSection.Movies -> "Movies • Continue Watching"
+    StableSection.Series -> "Series • Continue Watching"
+    StableSection.Settings -> "Settings Preview"
 }
 
-private fun postersFor(section: HomeSection): List<RuntimePoster> = when (section) {
-    HomeSection.Home -> listOf(
-        RuntimePoster("Featured One", "Premium home highlight", NexoraColors.Cyan),
-        RuntimePoster("Tonight Picks", "Curated mock content", NexoraColors.Blue),
-        RuntimePoster("Recently Added", "Fresh content row", Color(0xFF7C4DFF)),
-        RuntimePoster("Watch Later", "Saved mock library", Color(0xFF00BFA5)),
-        RuntimePoster("Top Rated", "Large TV poster layout", Color(0xFFFF6D00))
+private fun postersFor(section: StableSection): List<StablePoster> = when (section) {
+    StableSection.Home -> listOf(
+        StablePoster("Featured", "Premium home highlight", NexoraColors.Cyan),
+        StablePoster("Tonight", "Curated mock content", NexoraColors.Blue),
+        StablePoster("Added", "Fresh content row", Color(0xFF7C4DFF))
     )
-
-    HomeSection.Live -> listOf(
-        RuntimePoster("News", "Live category placeholder", NexoraColors.Cyan),
-        RuntimePoster("Sports", "Live event placeholder", Color(0xFFFFD600)),
-        RuntimePoster("Cinema", "Linear channel row", NexoraColors.Blue),
-        RuntimePoster("Documentary", "Licensed source ready", Color(0xFF64DD17)),
-        RuntimePoster("Kids", "Family category", Color(0xFFFF4081))
+    StableSection.Live -> listOf(
+        StablePoster("News", "Live category placeholder", NexoraColors.Cyan),
+        StablePoster("Sports", "Live event placeholder", Color(0xFFFFD600)),
+        StablePoster("Cinema", "Linear channel row", NexoraColors.Blue)
     )
-
-    HomeSection.Movies -> listOf(
-        RuntimePoster("Continue Movie", "Resume mock progress", NexoraColors.Cyan),
-        RuntimePoster("Orbit Fall", "Premium movie poster", Color(0xFF7C4DFF)),
-        RuntimePoster("Glass Tower", "Featured VOD", NexoraColors.Blue),
-        RuntimePoster("Silent Coast", "Watch later", Color(0xFF00BFA5)),
-        RuntimePoster("Afterglow", "Movie library shell", Color(0xFFFF6D00))
+    StableSection.Movies -> listOf(
+        StablePoster("Continue Movie", "Resume mock progress", NexoraColors.Cyan),
+        StablePoster("Orbit Fall", "Premium movie poster", Color(0xFF7C4DFF)),
+        StablePoster("Glass Tower", "Featured VOD", NexoraColors.Blue)
     )
-
-    HomeSection.Series -> listOf(
-        RuntimePoster("Continue Series", "Episode 4 • 42 min left", NexoraColors.Cyan),
-        RuntimePoster("Midnight Grid", "Series poster shell", Color(0xFF7C4DFF)),
-        RuntimePoster("Deep Archive", "New season", NexoraColors.Blue),
-        RuntimePoster("Signal Room", "Episode row", Color(0xFF00BFA5)),
-        RuntimePoster("Blue District", "Series library shell", Color(0xFF536DFE))
+    StableSection.Series -> listOf(
+        StablePoster("Continue Series", "Episode 4 • 42 min left", NexoraColors.Cyan),
+        StablePoster("Midnight Grid", "Series poster shell", Color(0xFF7C4DFF)),
+        StablePoster("Deep Archive", "New season", NexoraColors.Blue)
     )
-
-    HomeSection.Settings -> listOf(
-        RuntimePoster("Account", "Device access placeholder", NexoraColors.Cyan),
-        RuntimePoster("Playback", "Player preference shell", NexoraColors.Blue),
-        RuntimePoster("Display", "TV layout setting", Color(0xFF7C4DFF)),
-        RuntimePoster("Support", "Help placeholder", Color(0xFF00BFA5))
+    StableSection.Settings -> listOf(
+        StablePoster("Account", "Device access placeholder", NexoraColors.Cyan),
+        StablePoster("Playback", "Preference shell", NexoraColors.Blue),
+        StablePoster("Display", "TV layout setting", Color(0xFF7C4DFF))
     )
 }
 
 @Composable
-private fun NavigationShell(
-    selectedSection: HomeSection,
-    onSectionFocused: (HomeSection) -> Unit
-) {
-    Column(
-        modifier = Modifier.width(178.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "NEXORA",
-            color = NexoraColors.TextPrimary,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Black
-        )
-        Text(
-            text = "Premium TV",
-            color = NexoraColors.TextSecondary,
-            fontSize = 13.sp
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
-
-        HomeSection.values().forEach { section ->
-            NavItem(
-                label = section.label,
-                selected = selectedSection == section,
-                onFocused = { onSectionFocused(section) }
-            )
-        }
-    }
-}
-
-@Composable
-private fun NavItem(
+private fun StableNavItem(
     label: String,
     selected: Boolean,
-    onFocused: () -> Unit
+    onFocus: () -> Unit
 ) {
     var focused by remember { mutableStateOf(false) }
-    val borderColor = when {
-        focused -> NexoraColors.Cyan
-        selected -> NexoraColors.Blue.copy(alpha = 0.80f)
-        else -> Color.White.copy(alpha = 0.08f)
-    }
-    val backgroundColor = when {
-        focused -> NexoraColors.Cyan.copy(alpha = 0.20f)
-        selected -> NexoraColors.SurfaceSoft
-        else -> NexoraColors.Surface.copy(alpha = 0.72f)
-    }
+    val borderColor = if (focused || selected) NexoraColors.Cyan else Color.White.copy(alpha = 0.08f)
+    val backgroundColor = if (focused || selected) NexoraColors.Cyan.copy(alpha = 0.18f) else NexoraColors.Surface.copy(alpha = 0.72f)
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(180.dp)
             .height(50.dp)
             .background(backgroundColor, RoundedCornerShape(18.dp))
             .border(1.dp, borderColor, RoundedCornerShape(18.dp))
             .onFocusChanged {
                 focused = it.isFocused
-                if (it.isFocused) onFocused()
+                if (it.isFocused) onFocus()
             }
             .focusable()
-            .clickable { onFocused() }
+            .clickable { onFocus() }
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         Text(
             text = label,
-            color = if (selected || focused) NexoraColors.TextPrimary else NexoraColors.TextSecondary,
+            color = NexoraColors.TextPrimary,
             fontSize = 15.sp,
-            fontWeight = if (selected || focused) FontWeight.Bold else FontWeight.Medium
+            fontWeight = if (focused || selected) FontWeight.Bold else FontWeight.Medium
         )
     }
 }
 
 @Composable
-private fun HeaderBlock(
-    selectedSection: HomeSection,
-    focusedAccent: Color,
-    onOpenPlayer: () -> Unit
+private fun StableHeader(
+    selectedSection: StableSection,
+    focusedAccent: Color
 ) {
-    Row(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(164.dp)
+            .width(850.dp)
+            .height(160.dp)
             .background(
                 Brush.horizontalGradient(
                     listOf(
                         NexoraColors.SurfaceSoft,
                         focusedAccent.copy(alpha = 0.24f),
-                        NexoraColors.Black.copy(alpha = 0.18f)
+                        NexoraColors.Black.copy(alpha = 0.20f)
                     )
                 ),
                 RoundedCornerShape(30.dp)
             )
             .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(30.dp))
             .padding(26.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = selectedSection.label,
-                color = NexoraColors.Cyan,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "Premium UI Runtime Test",
-                color = NexoraColors.TextPrimary,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Black
-            )
-            Text(
-                text = "Navigation and poster focus are running with mock legal content.",
-                color = NexoraColors.TextSecondary,
-                fontSize = 15.sp
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .width(172.dp)
-                .height(54.dp)
-                .background(NexoraColors.Cyan.copy(alpha = 0.16f), RoundedCornerShape(999.dp))
-                .border(1.dp, NexoraColors.Cyan.copy(alpha = 0.82f), RoundedCornerShape(999.dp))
-                .clickable { onOpenPlayer() }
-                .focusable(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Open Player",
-                color = NexoraColors.TextPrimary,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Text(
+            text = selectedSection.label,
+            color = NexoraColors.Cyan,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Premium UI Stable Test",
+            color = NexoraColors.TextPrimary,
+            fontSize = 34.sp,
+            fontWeight = FontWeight.Black
+        )
+        Text(
+            text = "Mock legal content only. Player button disabled during Home runtime stabilization.",
+            color = NexoraColors.TextSecondary,
+            fontSize = 15.sp
+        )
     }
 }
 
 @Composable
-private fun RuntimePosterCard(
-    poster: RuntimePoster,
-    onFocused: () -> Unit
+private fun StablePosterCard(
+    poster: StablePoster,
+    onFocus: () -> Unit
 ) {
     var focused by remember { mutableStateOf(false) }
     val borderColor = if (focused) NexoraColors.Cyan else Color.White.copy(alpha = 0.10f)
@@ -324,7 +258,7 @@ private fun RuntimePosterCard(
             .border(2.dp, borderColor, RoundedCornerShape(24.dp))
             .onFocusChanged {
                 focused = it.isFocused
-                if (it.isFocused) onFocused()
+                if (it.isFocused) onFocus()
             }
             .focusable(),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
@@ -363,16 +297,7 @@ private fun RuntimePosterCard(
 }
 
 @Composable
-private fun StateTiles() {
-    Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-        SafeStatusTile("Loading", "Visible")
-        SafeStatusTile("Empty", "Visible")
-        SafeStatusTile("Error", "Visible")
-    }
-}
-
-@Composable
-private fun SafeStatusTile(title: String, body: String) {
+private fun StableStatusTile(title: String, body: String) {
     Column(
         modifier = Modifier
             .width(210.dp)
