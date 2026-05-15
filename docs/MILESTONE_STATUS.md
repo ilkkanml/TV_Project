@@ -2,11 +2,36 @@
 
 ## Current Active Milestone
 
-`None`
+`M4 Auth & Device Activation Foundation`
 
-Status: `AWAITING NEXT DIRECTOR INSTRUCTION`
+Status: `ACTIVE`
 
-No new milestone is active yet.
+M4 goal:
+
+Build the safe foundation for device identity plus password activation without production backend dependency.
+
+M4 allowed scope:
+
+- Device identity placeholder
+- Activation password screen polish
+- Mock auth validation
+- Active/inactive device state placeholder
+- Subscription expiration placeholder
+- Safe loading/empty/error states
+- Documentation-backed test checklist
+
+M4 not allowed:
+
+- Production backend implementation
+- Stripe/payment production flow
+- Admin panel
+- Real IPTV provider integration
+- Playback Core rewrite
+- Auth system rewrite beyond approved foundation placeholder
+- Illegal IPTV source logic
+- DRM bypass
+- Token/cookie theft
+- Unauthorized stream scraping
 
 ## Last Locked Milestone
 
@@ -71,32 +96,22 @@ Locked:
 - Navigation readability
 - Runtime checklist record
 
-## Latest Merge Record
+## Active Task
 
-M3 Safe Runtime Home Build merged into `main`.
+`M4-TASK-001 Auth & Device Activation Shell`
 
-- PR: `#8`
-- Merge commit: `232e947a30ba77fd63226ef13a6d4cc1bf1cdadd`
-- Branch: `feature/m3-premium-ui-polish`
-- Changed files:
-  - `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
-  - `docs/M3_MANUAL_RUNTIME_TEST_CHECKLIST.md`
+Assigned Agent: `DEVELOPER`
 
 ## Protection / Compliance Record
 
-Protected systems remain untouched:
+Protected systems must remain stable:
 
 - Playback Core
-- Auth System
 - Backend API
 - Hidden Backend API
 
-Legal/compliance risk: none detected.
+Auth work is limited to safe foundation placeholder unless Director explicitly expands scope.
 
-No illegal IPTV source logic, DRM bypass, token/cookie theft, or unauthorized stream scraping was added.
+Legal/compliance rule remains active.
 
-## Next Status
-
-Awaiting Director decision for the next task or next milestone.
-
-Do not create M4 unless the user explicitly says: `Yeni milestone aç`.
+No illegal IPTV source logic, DRM bypass, token/cookie theft, or unauthorized stream scraping may be added.
