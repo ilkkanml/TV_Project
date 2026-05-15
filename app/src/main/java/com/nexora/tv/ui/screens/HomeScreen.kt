@@ -2,8 +2,6 @@ package com.nexora.tv.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -91,7 +90,7 @@ private fun StaticMenu(
         Spacer(modifier = Modifier.height(14.dp))
 
         HomeMenu.values().forEach { menu ->
-            StaticMenuItem(
+            MenuButton(
                 title = menu.label,
                 selected = selectedMenu == menu,
                 onSelected = { onMenuSelected(menu) }
@@ -101,41 +100,26 @@ private fun StaticMenu(
 }
 
 @Composable
-private fun StaticMenuItem(
+private fun MenuButton(
     title: String,
     selected: Boolean,
     onSelected: () -> Unit
 ) {
-    var focused by remember { mutableStateOf(false) }
-    val active = selected || focused
-
-    Box(
+    Button(
+        onClick = onSelected,
         modifier = Modifier
             .width(180.dp)
-            .height(50.dp)
-            .background(
-                if (active) Color(0x3329E7FF) else Color(0xFF141821),
-                RoundedCornerShape(18.dp)
-            )
-            .border(
-                1.dp,
-                if (active) Color(0xFF00E5FF) else Color(0x22FFFFFF),
-                RoundedCornerShape(18.dp)
-            )
-            .onFocusChanged {
-                focused = it.isFocused
-                if (it.isFocused) onSelected()
-            }
-            .focusable()
-            .clickable { onSelected() }
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.CenterStart
+            .height(50.dp),
+        shape = RoundedCornerShape(18.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (selected) Color(0xFF123A46) else Color(0xFF141821),
+            contentColor = if (selected) Color.White else Color.LightGray
+        )
     ) {
         Text(
             text = title,
-            color = if (active) Color.White else Color.LightGray,
             fontSize = 15.sp,
-            fontWeight = if (active) FontWeight.Bold else FontWeight.Medium
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
         )
     }
 }
@@ -200,7 +184,7 @@ private fun StaticHeader(selectedMenu: HomeMenu) {
             fontWeight = FontWeight.Black
         )
         Text(
-            text = "Safe menu focus and category switching test. No player route.",
+            text = "Safe Material button menu test. No custom focus modifier.",
             color = Color.LightGray,
             fontSize = 15.sp
         )
