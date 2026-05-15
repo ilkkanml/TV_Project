@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -18,6 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,22 +46,29 @@ private data class StaticPosterModel(
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedMenu by remember { mutableStateOf(HomeMenu.Home) }
+    var selectedPosterIndex by remember { mutableIntStateOf(0) }
     val posters = postersFor(selectedMenu)
+    val selectedPoster = posters.getOrElse(selectedPosterIndex) { posters.first() }
 
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF06111D))
+            .background(backgroundFor(selectedPoster.accent))
             .padding(42.dp),
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         StaticMenu(
             selectedMenu = selectedMenu,
-            onMenuSelected = { selectedMenu = it }
+            onMenuSelected = {
+                selectedMenu = it
+                selectedPosterIndex = 0
+            }
         )
         StaticContent(
             selectedMenu = selectedMenu,
-            posters = posters
+            posters = posters,
+            selectedPosterIndex = selectedPosterIndex,
+            onPosterSelected = { selectedPosterIndex = it }
         )
     }
 }
@@ -127,13 +134,15 @@ private fun MenuButton(
 @Composable
 private fun StaticContent(
     selectedMenu: HomeMenu,
-    posters: List<StaticPosterModel>
+    posters: List<StaticPosterModel>,
+    selectedPosterIndex: Int,
+    onPosterSelected: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        StaticHeader(selectedMenu)
+        StaticHeader(selectedMenu, posters[selectedPosterIndex])
 
         Text(
             text = rowTitle(selectedMenu),
@@ -143,11 +152,11 @@ private fun StaticContent(
         )
 
         Row(horizontalArrangement = Arrangement.spacedBy(18.dp)) {
-            posters.forEach { poster ->
-                StaticPoster(
-                    title = poster.title,
-                    subtitle = poster.subtitle,
-                    accent = poster.accent
+            posters.forEachIndexed { index, poster ->
+                PosterButton(
+                    poster = poster,
+                    selected = selectedPosterIndex == index,
+                    onSelected = { onPosterSelected(index) }
                 )
             }
         }
@@ -161,30 +170,30 @@ private fun StaticContent(
 }
 
 @Composable
-private fun StaticHeader(selectedMenu: HomeMenu) {
+private fun StaticHeader(selectedMenu: HomeMenu, selectedPoster: StaticPosterModel) {
     Column(
         modifier = Modifier
             .width(850.dp)
             .height(154.dp)
             .background(Color(0xFF111722), RoundedCornerShape(28.dp))
-            .border(1.dp, Color(0xFF00E5FF), RoundedCornerShape(28.dp))
+            .border(1.dp, selectedPoster.accent, RoundedCornerShape(28.dp))
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
             text = selectedMenu.label,
-            color = Color(0xFF00E5FF),
+            color = selectedPoster.accent,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Nexora TV Home",
+            text = selectedPoster.title,
             color = Color.White,
             fontSize = 34.sp,
             fontWeight = FontWeight.Black
         )
         Text(
-            text = "Safe Material button menu test. No custom focus modifier.",
+            text = selectedPoster.subtitle,
             color = Color.LightGray,
             fontSize = 15.sp
         )
@@ -192,27 +201,46 @@ private fun StaticHeader(selectedMenu: HomeMenu) {
 }
 
 @Composable
-private fun StaticPoster(title: String, subtitle: String, accent: Color) {
-    Box(
+private fun PosterButton(
+    poster: StaticPosterModel,
+    selected: Boolean,
+    onSelected: () -> Unit
+) {
+    Button(
+        onClick = onSelected,
         modifier = Modifier
-            .size(width = 220.dp, height = 320.dp)
-            .background(Color(0xFF151A24), RoundedCornerShape(24.dp))
-            .border(2.dp, accent, RoundedCornerShape(24.dp))
-            .padding(18.dp),
-        contentAlignment = Alignment.BottomStart
+            .width(220.dp)
+            .height(320.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (selected) poster.accent.copy(alpha = 0.34f) else Color(0xFF151A24),
+            contentColor = Color.White
+        )
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = title,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = subtitle,
-                color = Color.LightGray,
-                fontSize = 13.sp
-            )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(
+                    2.dp,
+                    if (selected) poster.accent else Color(0x22FFFFFF),
+                    RoundedCornerShape(24.dp)
+                )
+                .padding(18.dp),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = poster.title,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = poster.subtitle,
+                    color = Color.LightGray,
+                    fontSize = 13.sp
+                )
+            }
         }
     }
 }
@@ -240,6 +268,15 @@ private fun StaticStatusTile(title: String, body: String) {
             fontSize = 12.sp
         )
     }
+}
+
+private fun backgroundFor(accent: Color): Color = when (accent) {
+    Color(0xFF00E5FF) -> Color(0xFF061A22)
+    Color(0xFF2962FF) -> Color(0xFF071226)
+    Color(0xFF7C4DFF) -> Color(0xFF130D2A)
+    Color(0xFF00BFA5) -> Color(0xFF06211D)
+    Color(0xFFFF6D00) -> Color(0xFF241206)
+    else -> Color(0xFF06111D)
 }
 
 private fun rowTitle(menu: HomeMenu): String = when (menu) {
