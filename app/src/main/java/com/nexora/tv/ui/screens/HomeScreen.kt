@@ -2,6 +2,7 @@ package com.nexora.tv.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -151,7 +153,12 @@ private fun StaticContent(
             fontWeight = FontWeight.Bold
         )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+        Row(
+            modifier = Modifier
+                .width(890.dp)
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
             posters.forEachIndexed { index, poster ->
                 PosterButton(
                     poster = poster,
@@ -291,26 +298,36 @@ private fun postersFor(menu: HomeMenu): List<StaticPosterModel> = when (menu) {
     HomeMenu.Home -> listOf(
         StaticPosterModel("Featured", "Main library highlight", Color(0xFF00E5FF)),
         StaticPosterModel("New Added", "Fresh mock content", Color(0xFF2962FF)),
-        StaticPosterModel("Watch Later", "Saved placeholder", Color(0xFF7C4DFF))
+        StaticPosterModel("Watch Later", "Saved placeholder", Color(0xFF7C4DFF)),
+        StaticPosterModel("Top Rated", "Large TV poster layout", Color(0xFF00BFA5)),
+        StaticPosterModel("Family Row", "Safe category preview", Color(0xFFFF6D00))
     )
     HomeMenu.Live -> listOf(
         StaticPosterModel("News", "Live category placeholder", Color(0xFF00E5FF)),
         StaticPosterModel("Sports", "Licensed channel shell", Color(0xFFFF6D00)),
-        StaticPosterModel("Cinema", "Linear TV row", Color(0xFF2962FF))
+        StaticPosterModel("Cinema", "Linear TV row", Color(0xFF2962FF)),
+        StaticPosterModel("Documentary", "Channel category", Color(0xFF00BFA5)),
+        StaticPosterModel("Kids", "Family category", Color(0xFF7C4DFF))
     )
     HomeMenu.Movies -> listOf(
         StaticPosterModel("Continue Movie", "Resume belongs here", Color(0xFF00E5FF)),
         StaticPosterModel("Orbit Fall", "Movie poster shell", Color(0xFF7C4DFF)),
-        StaticPosterModel("Glass Tower", "Featured VOD", Color(0xFF2962FF))
+        StaticPosterModel("Glass Tower", "Featured VOD", Color(0xFF2962FF)),
+        StaticPosterModel("Silent Coast", "Watch later", Color(0xFF00BFA5)),
+        StaticPosterModel("Afterglow", "Movie library shell", Color(0xFFFF6D00))
     )
     HomeMenu.Series -> listOf(
         StaticPosterModel("Continue Series", "Episode 4 • 42 min left", Color(0xFF00E5FF)),
         StaticPosterModel("Midnight Grid", "Series poster shell", Color(0xFF7C4DFF)),
-        StaticPosterModel("Deep Archive", "New season", Color(0xFF00BFA5))
+        StaticPosterModel("Deep Archive", "New season", Color(0xFF00BFA5)),
+        StaticPosterModel("Signal Room", "Episode row", Color(0xFF2962FF)),
+        StaticPosterModel("Blue District", "Series library shell", Color(0xFFFF6D00))
     )
     HomeMenu.Settings -> listOf(
         StaticPosterModel("Account", "Device access shell", Color(0xFF00E5FF)),
         StaticPosterModel("Playback", "Preference placeholder", Color(0xFF2962FF)),
-        StaticPosterModel("Display", "TV layout shell", Color(0xFF7C4DFF))
+        StaticPosterModel("Display", "TV layout shell", Color(0xFF7C4DFF)),
+        StaticPosterModel("Support", "Help placeholder", Color(0xFF00BFA5)),
+        StaticPosterModel("About", "App information", Color(0xFFFF6D00))
     )
 }
