@@ -6,7 +6,7 @@
 
 ## Build
 
-- [ ] GitHub Actions Build Debug APK green
+- [x] GitHub Actions Build Debug APK green
 - [ ] New APK downloaded
 - [ ] Old app fully uninstalled
 - [ ] New `app-debug.apk` installed
