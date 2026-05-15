@@ -15,7 +15,7 @@ Documentation Memory updates PROJECT_MEMORY.md, MILESTONE_STATUS.md, CHANGELOG.m
 
 ## Milestone Control
 
-- Current milestone: M3 Premium UI Expansion — QA repo review PASSED, Local Android TV runtime test pending
+- Current milestone: M3 Premium UI Expansion — USER TEST PASSED / QA PASSED / DIRECTOR LOCK PENDING
 - Completed / Locked milestones: M1, M2
 - Do not recreate milestones
 - Do not restart planning
