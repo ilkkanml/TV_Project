@@ -16,7 +16,6 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
 <category android:name="android.intent.category.LAUNCHER" />
 
-7. Commit changes de
             </intent-filter>
 
         </activity>
