@@ -2,6 +2,8 @@ package com.nexora.tv.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,16 +17,38 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+private enum class HomeMenu(val label: String) {
+    Home("Home"),
+    Live("Live TV"),
+    Movies("Movies"),
+    Series("Series"),
+    Settings("Settings")
+}
+
+private data class StaticPosterModel(
+    val title: String,
+    val subtitle: String,
+    val accent: Color
+)
+
 @Composable
 fun HomeScreen(navController: NavController) {
+    var selectedMenu by remember { mutableStateOf(HomeMenu.Home) }
+    val posters = postersFor(selectedMenu)
+
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -32,13 +56,22 @@ fun HomeScreen(navController: NavController) {
             .padding(42.dp),
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        StaticMenu()
-        StaticContent()
+        StaticMenu(
+            selectedMenu = selectedMenu,
+            onMenuSelected = { selectedMenu = it }
+        )
+        StaticContent(
+            selectedMenu = selectedMenu,
+            posters = posters
+        )
     }
 }
 
 @Composable
-private fun StaticMenu() {
+private fun StaticMenu(
+    selectedMenu: HomeMenu,
+    onMenuSelected: (HomeMenu) -> Unit
+) {
     Column(
         modifier = Modifier.width(180.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -57,60 +90,82 @@ private fun StaticMenu() {
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        StaticMenuItem("Home", true)
-        StaticMenuItem("Live TV", false)
-        StaticMenuItem("Movies", false)
-        StaticMenuItem("Series", false)
-        StaticMenuItem("Settings", false)
+        HomeMenu.values().forEach { menu ->
+            StaticMenuItem(
+                title = menu.label,
+                selected = selectedMenu == menu,
+                onSelected = { onMenuSelected(menu) }
+            )
+        }
     }
 }
 
 @Composable
-private fun StaticMenuItem(title: String, selected: Boolean) {
+private fun StaticMenuItem(
+    title: String,
+    selected: Boolean,
+    onSelected: () -> Unit
+) {
+    var focused by remember { mutableStateOf(false) }
+    val active = selected || focused
+
     Box(
         modifier = Modifier
             .width(180.dp)
             .height(50.dp)
             .background(
-                if (selected) Color(0x3329E7FF) else Color(0xFF141821),
+                if (active) Color(0x3329E7FF) else Color(0xFF141821),
                 RoundedCornerShape(18.dp)
             )
             .border(
                 1.dp,
-                if (selected) Color(0xFF00E5FF) else Color(0x22FFFFFF),
+                if (active) Color(0xFF00E5FF) else Color(0x22FFFFFF),
                 RoundedCornerShape(18.dp)
             )
+            .onFocusChanged {
+                focused = it.isFocused
+                if (it.isFocused) onSelected()
+            }
+            .focusable()
+            .clickable { onSelected() }
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         Text(
             text = title,
-            color = if (selected) Color.White else Color.LightGray,
+            color = if (active) Color.White else Color.LightGray,
             fontSize = 15.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
+            fontWeight = if (active) FontWeight.Bold else FontWeight.Medium
         )
     }
 }
 
 @Composable
-private fun StaticContent() {
+private fun StaticContent(
+    selectedMenu: HomeMenu,
+    posters: List<StaticPosterModel>
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        StaticHeader()
+        StaticHeader(selectedMenu)
 
         Text(
-            text = "Featured Library",
+            text = rowTitle(selectedMenu),
             color = Color.White,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
 
         Row(horizontalArrangement = Arrangement.spacedBy(18.dp)) {
-            StaticPoster("Featured", "Main library highlight", Color(0xFF00E5FF))
-            StaticPoster("Movies", "Continue watching belongs here", Color(0xFF7C4DFF))
-            StaticPoster("Series", "Episode progress belongs here", Color(0xFF00BFA5))
+            posters.forEach { poster ->
+                StaticPoster(
+                    title = poster.title,
+                    subtitle = poster.subtitle,
+                    accent = poster.accent
+                )
+            }
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -122,7 +177,7 @@ private fun StaticContent() {
 }
 
 @Composable
-private fun StaticHeader() {
+private fun StaticHeader(selectedMenu: HomeMenu) {
     Column(
         modifier = Modifier
             .width(850.dp)
@@ -133,7 +188,7 @@ private fun StaticHeader() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "Home",
+            text = selectedMenu.label,
             color = Color(0xFF00E5FF),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold
@@ -145,7 +200,7 @@ private fun StaticHeader() {
             fontWeight = FontWeight.Black
         )
         Text(
-            text = "Static safe layout test. No focus, no click, no player route.",
+            text = "Safe menu focus and category switching test. No player route.",
             color = Color.LightGray,
             fontSize = 15.sp
         )
@@ -201,4 +256,40 @@ private fun StaticStatusTile(title: String, body: String) {
             fontSize = 12.sp
         )
     }
+}
+
+private fun rowTitle(menu: HomeMenu): String = when (menu) {
+    HomeMenu.Home -> "Featured Library"
+    HomeMenu.Live -> "Live TV Categories"
+    HomeMenu.Movies -> "Movies"
+    HomeMenu.Series -> "Series"
+    HomeMenu.Settings -> "Settings"
+}
+
+private fun postersFor(menu: HomeMenu): List<StaticPosterModel> = when (menu) {
+    HomeMenu.Home -> listOf(
+        StaticPosterModel("Featured", "Main library highlight", Color(0xFF00E5FF)),
+        StaticPosterModel("New Added", "Fresh mock content", Color(0xFF2962FF)),
+        StaticPosterModel("Watch Later", "Saved placeholder", Color(0xFF7C4DFF))
+    )
+    HomeMenu.Live -> listOf(
+        StaticPosterModel("News", "Live category placeholder", Color(0xFF00E5FF)),
+        StaticPosterModel("Sports", "Licensed channel shell", Color(0xFFFF6D00)),
+        StaticPosterModel("Cinema", "Linear TV row", Color(0xFF2962FF))
+    )
+    HomeMenu.Movies -> listOf(
+        StaticPosterModel("Continue Movie", "Resume belongs here", Color(0xFF00E5FF)),
+        StaticPosterModel("Orbit Fall", "Movie poster shell", Color(0xFF7C4DFF)),
+        StaticPosterModel("Glass Tower", "Featured VOD", Color(0xFF2962FF))
+    )
+    HomeMenu.Series -> listOf(
+        StaticPosterModel("Continue Series", "Episode 4 • 42 min left", Color(0xFF00E5FF)),
+        StaticPosterModel("Midnight Grid", "Series poster shell", Color(0xFF7C4DFF)),
+        StaticPosterModel("Deep Archive", "New season", Color(0xFF00BFA5))
+    )
+    HomeMenu.Settings -> listOf(
+        StaticPosterModel("Account", "Device access shell", Color(0xFF00E5FF)),
+        StaticPosterModel("Playback", "Preference placeholder", Color(0xFF2962FF)),
+        StaticPosterModel("Display", "TV layout shell", Color(0xFF7C4DFF))
+    )
 }
