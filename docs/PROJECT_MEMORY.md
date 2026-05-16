@@ -119,6 +119,23 @@ M4 locked the safe device activation foundation:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
+### M5 Content Library & Navigation Expansion
+
+Status: ACTIVE
+
+Active task:
+
+`M5-TASK-001 Content Library Model & Navigation Foundation`
+
+M5 goal:
+
+- Strengthen content library structure
+- Improve Home → Live / Movies / Series navigation clarity
+- Add safe mock content organization
+- Prepare detail-screen foundation
+- Prepare content-selected Player route foundation
+- Preserve locked playback/auth/navigation systems
+
 ## Current Code Reality
 
 Current repository contains:
@@ -157,7 +174,7 @@ No large department structure unless explicitly requested
 
 Do not restart from zero.
 
-Continue from the last locked milestone unless the user explicitly opens a new milestone.
+Continue from the active milestone/task in runtime docs.
 
 Before work, read:
 
