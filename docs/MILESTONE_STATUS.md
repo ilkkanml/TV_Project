@@ -4,7 +4,7 @@
 
 `M4 Auth & Device Activation Foundation`
 
-Status: `ACTIVE`
+Status: `ACTIVE / USER TEST PASSED / QA PENDING`
 
 M4 goal:
 
@@ -59,48 +59,33 @@ M3 locked the safe runtime premium Home UI baseline:
 
 Status: `LOCKED`
 
-Locked:
-
-- Brand direction
-- Package direction: `com.nexora.tv`
-- Android TV / Fire TV priority
-- Visual identity
-- UX philosophy
-- Initial architecture baseline
-- MAC/device identity plus password activation direction
-
 ### M2 Playback Expansion
 
 Status: `LOCKED`
-
-Locked:
-
-- Playback direction
-- Fullscreen player baseline
-- Overlay behavior direction
-- Fast channel switching direction
-- Playback stability priority
 
 ### M3 Premium UI Expansion
 
 Status: `LOCKED`
 
-Locked:
-
-- Home UI refinement
-- Premium TV layout polish
-- Safe runtime HomeScreen build
-- Poster card visual hierarchy
-- Cinematic rows direction
-- Dynamic background direction
-- Navigation readability
-- Runtime checklist record
-
 ## Active Task
 
 `M4-TASK-001 Auth & Device Activation Shell`
 
-Assigned Agent: `DEVELOPER`
+Assigned Agent: `QA_TESTER`
+
+User Test: `PASSED`
+
+Validated by user:
+
+- Splash → Login → Connect → Device Activation screen: PASS
+- Device ID visible: PASS
+- Blank Activate → error state: PASS
+- Wrong password → error state: PASS
+- inactive → inactive state: PASS
+- expired → expired state: PASS
+- demo123 → active state: PASS
+- Active → Continue → Home: PASS
+- Crash: none reported
 
 ## Protection / Compliance Record
 
