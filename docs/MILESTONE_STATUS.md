@@ -17,20 +17,30 @@ M5 goal:
 
 ## Active Task
 
+`M5-TASK-003 Player Runtime Crash Fix`
+
+Status: `READY FOR DEVELOPER`
+
+Runtime failure source:
+
+- User runtime smoke test failed on Android Studio emulator
+- Splash → Login → Activation passed
+- demo123 activation passed
+- Home menu sections passed
+- Detail screen passed
+- Play Mock → Player failed
+- App closed after pressing Play Mock
+- Back navigation otherwise passed
+
+## Blocked Task
+
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `RUNTIME SMOKE TEST PENDING`
+Status: `RUNTIME FAILED`
 
 Blocker:
 
-`RUNTIME_SMOKE_TEST_EVIDENCE_MISSING`
-
-Reason:
-
-- Static repo review is clean
-- Developer patch exists on `main`
-- CI build evidence accepted from Android Build Verification workflow screenshot
-- Android emulator/device runtime smoke test is still pending
+`PLAYER_ROUTE_CRASH_ON_PLAY_MOCK`
 
 ## Completed M5 Support Task
 
@@ -73,7 +83,7 @@ Status: `LOCKED`
 
 ## Protection / Compliance Record
 
-Protected systems remain stable.
+Protected systems remain stable unless M5-TASK-003 makes an explicitly scoped minimal player runtime stability fix.
 
 M5 remains mock-data-first until explicitly approved.
 
@@ -81,4 +91,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Collect Android emulator/device runtime smoke test evidence for M5-TASK-001.
+Developer should fix Play Mock → Player crash with minimal scoped patch, then return to Director for QA/runtime retest.
