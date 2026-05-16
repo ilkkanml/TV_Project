@@ -17,47 +17,45 @@ M5 goal:
 
 ## Active Task
 
+`M5 Documentation Memory Review`
+
+Status: `READY FOR DOCUMENTATION MEMORY`
+
+## M5 QA Result
+
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `READY FOR QA FINAL REVIEW`
+Status: `QA PASSED`
 
-Runtime result:
+QA result:
 
-- User runtime retest: PASSED
-- Detail to Player safe shell works
-- Player shell opens without starting playback
+- M5 scope respected
+- Content library mock/local only
+- Home / Live TV / Movies / Series / Settings usable
+- Detail screen opens from playable mock content
+- Player safe shell opens from Detail
 - Back navigation works
+- Build verification infrastructure QA-passed
+- Runtime smoke test kept separate from build verification
+- No protected system rewrite
+- No backend/provider/payment/auth production change
+- No illegal source handling
+- No documentation conflict
 
-## Completed M5 Runtime Fix Task
-
-`M5-TASK-005 Player Safe Shell Fallback`
-
-Status: `USER RUNTIME PASSED`
-
-Fix summary:
-
-- `PlayerScreen.kt` updated only
-- ExoPlayer startup removed from initial render
-- AndroidView / PlayerView removed from initial shell
-- Plain visible Player shell added
-- Route confirmation text added: `Safe player shell route active`
-- Mock stream constant preserved but not auto-started
-
-## Previous M5 Runtime Fix Tasks
-
-`M5-TASK-004 Player Launch Flow Fix`
-
-Status: `RUNTIME FAILED`
-
-`M5-TASK-003 Player Runtime Crash Fix`
-
-Status: `PARTIAL / RUNTIME STILL FAILED`
-
-## Completed M5 Support Task
+## Completed M5 Support Tasks
 
 `M5-TASK-002 Build Verification Infrastructure`
 
 Status: `QA PASSED`
+
+`M5-TASK-005 Player Safe Shell Fallback`
+
+Status: `USER RUNTIME PASSED / QA ACCEPTED`
+
+Previous runtime tasks:
+
+- `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
+- `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
 
 ## Last Locked Milestone
 
@@ -93,4 +91,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Send M5-TASK-001 and M5-TASK-005 runtime result to QA Tester for final M5 review.
+Send M5 to Documentation Memory for final documentation consistency review before Director lock decision.
