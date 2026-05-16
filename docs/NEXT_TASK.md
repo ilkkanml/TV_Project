@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Ready for QA final review.
+Ready for Documentation Memory review.
 
 ## Active Milestone
 
@@ -10,19 +10,28 @@ Ready for QA final review.
 
 ## Active Task
 
+`M5 Documentation Memory Review`
+
+## M5 QA Result
+
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-## Current Task Status
+Status: `QA PASSED`
 
-`READY FOR QA FINAL REVIEW`
+QA accepted evidence:
 
-## Runtime Evidence
-
-User runtime retest on Android Studio emulator:
-
-- Detail to Player safe shell: PASSED
-- Player shell opens without starting playback
+- M5 scope respected
+- Content library mock/local only
+- Home / Live TV / Movies / Series / Settings usable
+- Detail screen opens from playable mock content
+- Player safe shell opens from Detail
 - Back navigation works
+- Build verification infrastructure QA-passed
+- Runtime smoke test kept separate from build verification
+- No protected system rewrite
+- No backend/provider/payment/auth production change
+- No illegal source handling
+- No documentation conflict
 
 ## Completed Support Tasks
 
@@ -32,34 +41,27 @@ Status: `QA PASSED`
 
 `M5-TASK-005 Player Safe Shell Fallback`
 
-Status: `USER RUNTIME PASSED`
+Status: `USER RUNTIME PASSED / QA ACCEPTED`
 
 Previous runtime attempts:
 
 - `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
 - `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
 
-## QA Final Review Focus
+## Documentation Memory Focus
 
-- M5-TASK-001 scope still respected
-- Content library remains mock/local only
-- Home / Live TV / Movies / Series / Settings sections remain usable
-- Detail screen opens from playable mock content
-- Player safe shell opens from Detail
-- Back navigation works
-- Build verification infrastructure passed QA
-- No protected system rewrite
-- No backend/provider/payment/auth production changes
-- No illegal source handling
+- Verify runtime docs are aligned
+- Verify M5 QA result is recorded consistently
+- Verify M5 is not marked LOCKED yet
+- Verify M5 completed task and support task records are clear
+- Verify protected systems and compliance notes remain intact
+- Identify any stale task/status language before Director lock decision
 
 ## Return To Director With
 
 ```text
-QA Result:
+Documentation Result:
 PASS / WARNING / BLOCKER
-
-Preflight:
-- confirmed / blocked reason
 
 Checked:
 - short item
