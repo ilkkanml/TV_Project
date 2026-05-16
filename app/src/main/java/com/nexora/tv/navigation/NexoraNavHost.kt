@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.nexora.tv.ui.screens.DeviceActivationScreen
 import com.nexora.tv.ui.screens.HomeScreen
 import com.nexora.tv.ui.screens.LoginScreen
 import com.nexora.tv.ui.screens.PlayerScreen
@@ -25,6 +26,10 @@ fun NexoraNavHost() {
 
         composable(AppDestinations.Login.route) {
             LoginScreen(navController)
+        }
+
+        composable(AppDestinations.Activation.route) {
+            DeviceActivationScreen(navController)
         }
 
         composable(AppDestinations.Home.route) {
