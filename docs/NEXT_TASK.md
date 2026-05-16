@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Active task ready for Developer.
+Runtime smoke test evidence required.
 
 ## Active Milestone
 
@@ -10,98 +10,91 @@ Active task ready for Developer.
 
 ## Active Task
 
+`M5-TASK-001 Content Library Model & Navigation Foundation`
+
+## Current Task Status
+
+`RUNTIME SMOKE TEST PENDING`
+
+## Completed Support Task
+
 `M5-TASK-002 Build Verification Infrastructure`
 
-## Objective
+Status: `QA PASSED`
 
-Add minimal build verification infrastructure so Android build evidence can be produced for M5-TASK-001 and future milestones.
+Result:
 
-## Background
+- GitHub Actions Android build workflow added
+- Build verification documentation added
+- CI green screenshot evidence accepted by QA
+- Runtime smoke test remains separate
 
-`M5-TASK-001 Content Library Model & Navigation Foundation` is implemented and static review is clean, but QA is blocked because actual build/runtime evidence is missing.
+## M5-TASK-001 Implementation Status
 
-Known constraints:
+Developer implementation exists on `main`.
 
-- No GitHub Actions Android build workflow found
-- Gradle wrapper is not present in repo
-- Current execution environment could not clone/build/run Android app
-- Runtime emulator/device smoke test still requires user/developer environment
+Static repo review:
 
-## Scope IN
+- Mock/local content library added
+- Home content rows updated
+- Detail placeholder added
+- Additive detail route wiring added
+- Existing Player route reused
+- No protected system rewrite detected
+- No legal/compliance risk detected
 
-- Add minimal GitHub Actions Android build workflow if feasible
-- Add Gradle wrapper files if feasible and safe
-- Add or update build verification documentation if needed
-- Validate build command target, preferably debug assemble
-- Preserve existing app behavior
-- Keep patch infrastructure-only unless build config requires a minimal fix
+## Remaining Blocker
+
+`RUNTIME_SMOKE_TEST_EVIDENCE_MISSING`
+
+Required smoke flow:
+
+1. Build/install app from current main/debug APK.
+2. Launch app.
+3. Splash → Login → Activation.
+4. Enter `demo123`.
+5. Continue to Home.
+6. Switch Home / Live TV / Movies / Series / Settings.
+7. Select playable mock content.
+8. Confirm Detail screen opens.
+9. Press Play Mock.
+10. Confirm Player opens.
+11. Test Back navigation.
 
 ## Scope OUT
 
-- No product feature changes
-- No UI overhaul
-- No playback rewrite
-- No auth rewrite
-- No backend/provider/payment work
+- No real backend
+- No real provider/API integration
+- No payment
+- No production auth changes
+- No illegal IPTV playlist
+- No unauthorized streams
+- No DRM bypass
+- No token/cookie handling
 - No protected system rewrite
-- No illegal stream/source handling
-- No milestone lock
+- No UI overhaul
+- No large architecture rewrite
 
-## Allowed Files / Areas
-
-Developer may work only where needed in these areas:
-
-- `.github/workflows/`
-- `gradle/`
-- `gradlew`
-- `gradlew.bat`
-- build-related Gradle files if a minimal build fix is required
-- `docs/` only for build verification notes if needed
-
-## Protected Systems Permission
-
-Protected systems must remain structurally stable.
-
-Allowed:
-
-- Build workflow addition
-- Gradle wrapper addition
-- Minimal build config correction if required for compilation
-
-Not allowed:
-
-- Playback core rewrite
-- Auth flow rewrite
-- Hidden backend/API work
-- Navigation redesign
-- Compose design system rewrite
-- Product feature changes
-
-## Required Return To Director
+## Return To Director With
 
 ```text
-Result:
-DONE / PARTIAL / BLOCKED
+Runtime Smoke Test:
+PASSED / FAILED
 
-Preflight:
-- active task confirmed / blocked reason
+Device/Emulator:
+<short info>
 
-Changed Files:
-- file/path
+Flow Checked:
+- Splash → Login → Activation
+- demo123 activation
+- Home menu sections
+- Detail screen
+- Play Mock → Player
+- Back navigation
 
-Build Verification:
-- local/CI build command
-- passed / failed / not run
+Issues:
+- none / issue list
 
-Summary:
-- short item
-
-Risk:
-- none / short risk
-
-Test:
-- short checklist
-
-Return To Director:
-- next recommended agent/action
+Notes:
+- short notes
 ```
