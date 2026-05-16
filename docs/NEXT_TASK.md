@@ -6,53 +6,36 @@
 
 ## Mode
 
-`BUILD`
+`QA`
 
 ## Assigned Agent
 
-`DEVELOPER`
+`QA_TESTER`
 
 ## Goal
 
-Build the safe foundation for device identity plus password activation.
+Verify M4 Auth and Device Activation Shell after user test passed.
 
-## Scope
+## QA Scope
 
-Allowed:
-- Device identity placeholder
-- Activation password screen polish
-- Mock auth validation
-- Active/inactive device state placeholder
-- Subscription expiration placeholder
-- Safe loading/empty/error states
-- Documentation-backed test checklist
+Check:
+- Login to Activation navigation
+- Activation state handling
+- Active path
+- Inactive path
+- Expired path
+- Error path
+- Continue to Home path
+- Protected systems unchanged
 
-Not Allowed:
-- Production backend implementation
-- Stripe/payment production flow
-- Admin panel
-- Real IPTV provider integration
-- Playback Core rewrite
-- Auth system rewrite beyond approved foundation placeholder
-- Illegal IPTV source logic
-- DRM bypass
-- Token/cookie theft
-- Unauthorized stream scraping
+## User Test Result
 
-## Acceptance Criteria
+`PASSED`
 
-- Device identity screen opens
-- Activation password flow placeholder works
-- Mock auth returns expected responses
-- Safe error/loading/empty states visible
-- Protected systems untouched
+## Expected QA Output
 
-## Output
-
-- List of changed files
-- Short patch summary
-- Minimal test checklist
-
-## Next Step
-
-Pass result to `DIRECTOR.md` for review and further instruction.
+- QA Result
+- Checked items
+- Issues
+- Risk
+- Return To Director
