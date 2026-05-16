@@ -17,28 +17,9 @@ M5 goal:
 
 ## Active Task
 
-`M5-TASK-002 Build Verification Infrastructure`
-
-Status: `READY FOR QA`
-
-Implementation status:
-
-- GitHub Actions Android build workflow added
-- Build verification documentation added
-- Product/runtime code unchanged
-- Protected systems unchanged
-- User screenshot shows Android Build Verification workflow runs completed with green status
-
-Pending evidence:
-
-- QA review of M5-TASK-002 build infrastructure
-- Runtime smoke test on emulator/device remains separate
-
-## Related Blocked Task
-
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `QA BLOCKED`
+Status: `RUNTIME SMOKE TEST PENDING`
 
 Blocker:
 
@@ -48,8 +29,23 @@ Reason:
 
 - Static repo review is clean
 - Developer patch exists on `main`
-- CI build evidence appears available from user screenshot
+- CI build evidence accepted from Android Build Verification workflow screenshot
 - Android emulator/device runtime smoke test is still pending
+
+## Completed M5 Support Task
+
+`M5-TASK-002 Build Verification Infrastructure`
+
+Status: `QA PASSED`
+
+Recorded result:
+
+- GitHub Actions Android build workflow added
+- Build verification documentation added
+- Product/runtime code unchanged
+- Protected systems unchanged
+- QA accepted green CI screenshot evidence
+- Runtime smoke test remains separate and is not passed yet
 
 ## Last Locked Milestone
 
@@ -85,4 +81,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Send M5-TASK-002 to QA Tester for build infrastructure review.
+Collect Android emulator/device runtime smoke test evidence for M5-TASK-001.
