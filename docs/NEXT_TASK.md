@@ -2,76 +2,55 @@
 
 ## Current Status
 
-Ready for Documentation Memory review.
+No active task.
 
-## Active Milestone
+## Current Active Milestone
+
+None.
+
+## Last Locked Milestone
 
 `M5 Content Library & Navigation Expansion`
 
-## Active Task
+Status: `LOCKED`
 
-`M5 Documentation Memory Review`
+Director LOCKED: YES
 
-## M5 QA Result
+Lock evidence:
+
+- User Runtime Test: PASSED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
+
+## M5 Locked Result
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `QA PASSED`
+Status: `LOCKED`
 
-QA accepted evidence:
+Delivered:
 
-- M5 scope respected
-- Content library mock/local only
-- Home / Live TV / Movies / Series / Settings usable
+- Safe mock/local content library foundation
+- Home / Live TV / Movies / Series / Settings usability
+- Home to Detail route foundation
 - Detail screen opens from playable mock content
-- Player safe shell opens from Detail
+- Detail to Player safe shell route
 - Back navigation works
-- Build verification infrastructure QA-passed
-- Runtime smoke test kept separate from build verification
-- No protected system rewrite
-- No backend/provider/payment/auth production change
-- No illegal source handling
-- No documentation conflict
 
-## Completed Support Tasks
+Completed support tasks:
 
-`M5-TASK-002 Build Verification Infrastructure`
+- `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
+- `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
 
-Status: `QA PASSED`
-
-`M5-TASK-005 Player Safe Shell Fallback`
-
-Status: `USER RUNTIME PASSED / QA ACCEPTED`
-
-Previous runtime attempts:
+Historical runtime tasks:
 
 - `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
 - `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
 
-## Documentation Memory Focus
+## Next Step
 
-- Verify runtime docs are aligned
-- Verify M5 QA result is recorded consistently
-- Verify M5 is not marked LOCKED yet
-- Verify M5 completed task and support task records are clear
-- Verify protected systems and compliance notes remain intact
-- Identify any stale task/status language before Director lock decision
+Wait for Director to open the next milestone/task.
 
-## Return To Director With
-
-```text
-Documentation Result:
-PASS / WARNING / BLOCKER
-
-Checked:
-- short item
-
-Issues:
-- none / short issue
-
-Risk:
-- none / short risk
-
-Return To Director:
-- next recommended action
-```
+Do not start implementation until a new active task is created.
