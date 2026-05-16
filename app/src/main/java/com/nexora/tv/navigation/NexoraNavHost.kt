@@ -9,6 +9,7 @@ import com.nexora.tv.ui.screens.DeviceActivationScreen
 import com.nexora.tv.ui.screens.HomeScreen
 import com.nexora.tv.ui.screens.LoginScreen
 import com.nexora.tv.ui.screens.PlayerScreen
+import com.nexora.tv.ui.screens.PlaylistProfileScreen
 import com.nexora.tv.ui.screens.SplashScreen
 
 @Composable
@@ -46,6 +47,10 @@ fun NexoraNavHost() {
 
         composable(AppDestinations.Player.route) {
             PlayerScreen()
+        }
+
+        composable(AppDestinations.PlaylistProfile.route) {
+            PlaylistProfileScreen(navController)
         }
     }
 }
