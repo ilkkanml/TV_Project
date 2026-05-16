@@ -17,9 +17,22 @@ M5 goal:
 
 ## Active Task
 
+`M5-TASK-001 Content Library Model & Navigation Foundation`
+
+Status: `READY FOR QA FINAL REVIEW`
+
+Runtime result:
+
+- User runtime retest: PASSED
+- Detail to Player safe shell works
+- Player shell opens without starting playback
+- Back navigation works
+
+## Completed M5 Runtime Fix Task
+
 `M5-TASK-005 Player Safe Shell Fallback`
 
-Status: `READY FOR QA RUNTIME RETEST`
+Status: `USER RUNTIME PASSED`
 
 Fix summary:
 
@@ -29,16 +42,6 @@ Fix summary:
 - Plain visible Player shell added
 - Route confirmation text added: `Safe player shell route active`
 - Mock stream constant preserved but not auto-started
-
-## Blocked Task
-
-`M5-TASK-001 Content Library Model & Navigation Foundation`
-
-Status: `RUNTIME RETEST REQUIRED`
-
-Previous blocker:
-
-`PLAYER_SCREEN_STARTUP_CLOSES_APP`
 
 ## Previous M5 Runtime Fix Tasks
 
@@ -90,4 +93,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Run Android emulator runtime retest for Detail to Player safe shell.
+Send M5-TASK-001 and M5-TASK-005 runtime result to QA Tester for final M5 review.
