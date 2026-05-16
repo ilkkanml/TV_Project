@@ -2,9 +2,7 @@
 
 ## Current Status
 
-Developer implementation returned, but Director pre-QA review found a routing blocker.
-
-Return to Developer for a minimal fix before QA.
+Ready for QA Tester.
 
 ## Current Active Milestone
 
@@ -16,62 +14,66 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `NEEDS DEVELOPER FIX BEFORE QA`
+Status: `READY FOR QA`
 
-## Director Pre-QA Finding
+## Director Pre-QA Result
 
-Developer added:
+PASSED FOR QA.
+
+Verified changed files:
 
 - `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
 - `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
+- `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
+- `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
 
-Issue:
+Result:
 
-- `PlaylistProfileScreen` exists but is not reachable from app navigation.
-- `AppDestinations.kt` has no playlist/profile destination.
-- `NexoraNavHost.kt` has no composable route for `PlaylistProfileScreen`.
+- Profile model exists.
+- Profile screen exists.
+- App route exists.
+- NavHost route opens the profile screen.
+- Legal ownership notice is present.
+- Flow remains local/mock-safe.
+- No live integration is approved in this task.
 
-Why this blocks QA:
+## QA Scope
 
-- M6-TASK-001 expected the user to reach a profile/source input shell.
-- QA cannot validate runtime access if the screen is not wired.
+QA Tester should verify:
 
-## Required Developer Fix
+- Build status
+- App route compiles
+- Profile screen renders
+- Legal ownership notice is visible
+- Supported source type selection works
+- Empty input state works
+- Invalid input state works
+- Saved local shell state works
+- Back/Home navigation remains safe
+- Existing Splash/Login/Activation/Home/Detail/Player routes are not broken
+- No protected system rewrite is present
+- No prohibited content/source behavior is introduced
 
-Add minimal additive navigation wiring only.
-
-Allowed:
-
-- Add a new route in `AppDestinations.kt`, for example `PlaylistProfile`.
-- Add a `composable` entry in `NexoraNavHost.kt` for `PlaylistProfileScreen(navController)`.
-- Add one minimal entry point from an existing safe screen only if required to reach the shell.
-
-Not allowed:
-
-- No navigation system rewrite
-- No playback/auth/backend changes
-- No provider/API integration
-- No real playlist fetch
-- No bundled content
-- No design system rewrite
-
-## Required Developer Return
+## QA Return Required
 
 Return to Director with:
 
 ```text
-Changed Files:
+QA Result:
+PASS / FAIL
+
+Checked Files:
 - ...
 
-Implementation Summary:
+Runtime / Build Notes:
 - ...
 
-Test Notes:
+Blockers:
 - ...
 
-Risk:
+Regression Risk:
 - ...
 
-Next Recommended Agent:
-QA_TESTER or DIRECTOR
+Recommendation:
+DOCUMENTATION_MEMORY or DEVELOPER
 ```
