@@ -10,35 +10,37 @@ Runtime retest failed.
 
 ## Active Task
 
-`M5-TASK-004 Player Launch Flow Fix`
+`M5-TASK-005 Player Safe Shell Fallback`
 
 ## Objective
 
-Fix the flow where the Detail screen playback button does not visibly open the Player screen.
+Make the Player route open a safe visible shell first, without starting playback during initial render.
 
 ## Runtime Evidence
 
 User retest on Android Studio emulator:
 
 - Detail screen playback button opens Player: NO
-- Back button after the attempt works: YES
+- Player route marker visible: NO
+- App closes after pressing the button
+- Back button works before the close
 
 ## Previous Task Result
 
-`M5-TASK-003 Player Runtime Crash Fix`
+`M5-TASK-004 Player Launch Flow Fix`
 
 Result:
 
-- Player lifecycle cleanup added
-- Player is still not visibly opening from Detail
+- Player route marker and full screen background added
+- Marker did not become visible during retest
 
 ## Scope IN
 
-- Inspect Detail to Player navigation path
-- Inspect PlayerScreen launch/render behavior
-- Minimal patch so Player screen is visibly opened
-- Add simple Player screen background/status text if needed to confirm route entry
-- Preserve existing mock stream if possible
+- Remove or delay ExoPlayer startup from initial PlayerScreen render
+- Show a plain safe Player shell first
+- Include visible text confirming Player route entry
+- Keep navigation route unchanged
+- Preserve mock stream constant if needed, but do not auto-start playback in initial shell
 
 ## Scope OUT
 
@@ -50,9 +52,7 @@ Result:
 
 ## Allowed Files
 
-- `app/src/main/java/com/nexora/tv/ui/screens/ContentDetailScreen.kt`
 - `app/src/main/java/com/nexora/tv/ui/screens/PlayerScreen.kt`
-- `app/src/main/java/com/nexora/tv/navigation/` only if route wiring issue is found
 - `docs/` only if fix notes are required
 
 ## Required Return To Director
