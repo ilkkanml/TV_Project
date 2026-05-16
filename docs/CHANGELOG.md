@@ -64,6 +64,37 @@
   - No protected system rewrite
   - Legal/compliance risk: none detected
 
+## Active Milestone
+
+### M6 Playlist Profile & Legal Source Input Foundation
+
+Status: ACTIVE
+
+Opened by Director after user request: `Yeni milestone aç`
+
+Milestone doc:
+
+- `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
+
+Active task:
+
+- `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+
+Task status:
+
+- READY FOR DEVELOPER
+
+Scope direction:
+
+- User-managed playlist profile foundation
+- Legal ownership notice
+- M3U URL input shell
+- Xtream Codes input shell
+- Local/mock-safe data flow
+- No bundled playlist
+- No real provider/API integration yet
+- No protected system rewrite
+
 ## Architecture Decisions Added
 
 ### App / Backend Integration Direction
@@ -88,10 +119,6 @@
   - web panel may optionally transfer profile data to device
   - longer cloud sync requires explicit user consent
 
-## Active Milestone
-
-None.
-
 ## Next Step
 
-Wait for Director to open the next milestone/task.
+Send `M6-TASK-001` to Developer.
