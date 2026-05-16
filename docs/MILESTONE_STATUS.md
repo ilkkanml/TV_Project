@@ -2,45 +2,42 @@
 
 ## Current Active Milestone
 
+None.
+
+## Current Active Task
+
+None.
+
+## Last Locked Milestone
+
 `M5 Content Library & Navigation Expansion`
 
-Status: `ACTIVE`
+Status: `LOCKED`
 
-M5 goal:
+Director LOCKED: YES
 
-- Strengthen content library structure
-- Improve Home → Live / Movies / Series navigation clarity
-- Add safe mock content organization
-- Prepare detail-screen foundation
-- Prepare content-selected Player route foundation
-- Preserve locked playback/auth/navigation systems
+Lock evidence:
 
-## Active Task
+- User Runtime Test: PASSED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
 
-`M5 Documentation Memory Review`
-
-Status: `READY FOR DOCUMENTATION MEMORY`
-
-## M5 QA Result
+## M5 Locked Scope
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `QA PASSED`
+Status: `LOCKED`
 
-QA result:
+Delivered:
 
-- M5 scope respected
-- Content library mock/local only
-- Home / Live TV / Movies / Series / Settings usable
+- Safe mock/local content library foundation
+- Home / Live TV / Movies / Series / Settings usability
+- Home to Detail route foundation
 - Detail screen opens from playable mock content
-- Player safe shell opens from Detail
+- Detail to Player safe shell route
 - Back navigation works
-- Build verification infrastructure QA-passed
-- Runtime smoke test kept separate from build verification
-- No protected system rewrite
-- No backend/provider/payment/auth production change
-- No illegal source handling
-- No documentation conflict
 
 ## Completed M5 Support Tasks
 
@@ -52,16 +49,10 @@ Status: `QA PASSED`
 
 Status: `USER RUNTIME PASSED / QA ACCEPTED`
 
-Previous runtime tasks:
+Historical runtime tasks:
 
 - `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
 - `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
-
-## Last Locked Milestone
-
-`M4 Auth & Device Activation Foundation`
-
-Status: `LOCKED`
 
 ## Completed / Locked
 
@@ -81,14 +72,24 @@ Status: `LOCKED`
 
 Status: `LOCKED`
 
+### M5 Content Library & Navigation Expansion
+
+Status: `LOCKED`
+
 ## Protection / Compliance Record
 
 Protected systems remain stable.
 
-M5 remains mock-data-first until explicitly approved.
+M5 remains mock/local-data-first.
+
+No backend integration was implemented in M5.
+
+No provider/API integration was implemented in M5.
 
 Legal/compliance risk: none detected.
 
 ## Next Status
 
-Send M5 to Documentation Memory for final documentation consistency review before Director lock decision.
+No active task.
+
+Wait for Director to open the next milestone/task.
