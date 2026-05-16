@@ -21,10 +21,11 @@ Before any new ChatGPT window works on the project, it must read these files fir
 
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
-- Current active milestone: `None`
+- Current active milestone: `M5 Content Library & Navigation Expansion`
+- Current active task: `M5-TASK-001 Content Library Model & Navigation Foundation`
 - Last locked milestone: `M4 Auth & Device Activation Foundation`
 - Current workflow: minimal Director-led handoff
-- Next status: `Awaiting Director decision for next milestone/task`
+- Next status: `Developer should implement M5-TASK-001 from NEXT_TASK.md`
 
 ## Locked Milestones
 
