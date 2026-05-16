@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - main
       - feature/m3-premium-ui-polish
+      - feature/m4-auth-device-activation
 
 jobs:
   build-debug-apk:
