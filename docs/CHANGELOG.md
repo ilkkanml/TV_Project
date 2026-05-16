@@ -14,8 +14,8 @@
 
 ### M3 Premium UI Expansion
 - User Test: PASSED
-- QA: PASSED
 - Final Android TV Runtime Test: PASSED
+- QA: PASSED
 - Sync/Re-compare: DONE
 - Main merge: DONE
 - Director LOCKED: YES
@@ -47,22 +47,59 @@
 
 ### M5 Content Library & Navigation Expansion
 - Status: ACTIVE
-- Active task: `M5-TASK-001 Content Library Model & Navigation Foundation`
-- Opened by Director after user command.
-- Scope:
-  - Safe mock content library foundation
+- Current stage: Documentation Memory review
+- Director LOCKED: NO
+- M5-TASK-001 Content Library Model & Navigation Foundation: QA PASSED
+- M5-TASK-002 Build Verification Infrastructure: QA PASSED
+- M5-TASK-005 Player Safe Shell Fallback: USER RUNTIME PASSED / QA ACCEPTED
+- Historical runtime tasks:
+  - M5-TASK-003 Player Runtime Crash Fix: PARTIAL
+  - M5-TASK-004 Player Launch Flow Fix: RUNTIME FAILED
+- Scope delivered:
+  - Safe mock/local content library foundation
   - Live / Movies / Series navigation clarity
-  - Category rows
-  - Detail-screen foundation if needed
-  - Content-selected Player route foundation if needed
-- Guardrails:
+  - Home to Detail route foundation
+  - Detail to Player safe shell route
+  - GitHub Actions Android build verification workflow
+- Runtime result:
+  - User retest PASSED
+  - Detail to Player safe shell opens
+  - Back navigation works
+- Guardrails preserved:
   - Mock/local data only
-  - No real backend
-  - No provider/API integration
-  - No payment
+  - No backend integration implemented
+  - No provider/API integration implemented
+  - No payment implementation
   - No production auth changes
   - No protected system rewrite
+  - Legal/compliance risk: none detected
+
+## Architecture Decisions Added
+
+### App / Backend Integration Direction
+- Added: `docs/APP_BACKEND_INTEGRATION.md`
+- Decision log added: `docs/DECISION_LOG.md`
+- Backend responsibility direction:
+  - account
+  - subscription/license state
+  - device activation
+  - payment/reseller state
+  - version check
+  - force update
+  - remote config
+- App responsibility direction:
+  - generated device ID
+  - license checks
+  - playlist/profile management
+  - encrypted local playlist profile storage
+  - multi-profile switching
+- Playlist profile source direction:
+  - default source of truth is encrypted local device storage
+  - web panel may optionally transfer profile data to device
+  - longer cloud sync requires explicit user consent
 
 ## Next Step
 
-Developer should implement `M5-TASK-001` from `docs/NEXT_TASK.md`.
+Documentation Memory should rerun final consistency review.
+
+If Documentation Memory passes, Director may decide whether to lock M5.
