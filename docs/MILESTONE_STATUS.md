@@ -19,7 +19,20 @@ M5 goal:
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `READY FOR DEVELOPER`
+Status: `QA BLOCKED`
+
+Blocker:
+
+`BUILD_RUNTIME_TEST_EVIDENCE_MISSING`
+
+Reason:
+
+- Static repo review is clean
+- Developer patch exists on `main`
+- Actual Android build/runtime smoke test has not passed
+- Current execution environment cannot clone/build/run Android app
+- No GitHub Actions Android build workflow is available
+- Gradle wrapper is not present in repo
 
 ## Last Locked Milestone
 
@@ -78,17 +91,10 @@ Protected systems remain stable:
 - Compose TV Design System
 - Premium Cinematic UX
 
-M5 must remain mock-data-first until explicitly approved.
+M5 remains mock-data-first until explicitly approved.
 
-Legal/compliance rule:
-
-- No pirate IPTV playlist
-- No illegal stream
-- No DRM bypass
-- No unauthorized scraping
-- No token/cookie theft
-- No credential bypass
+Legal/compliance risk: none detected.
 
 ## Next Status
 
-Developer should implement `M5-TASK-001` only, then return to Director for QA routing.
+M5-TASK-001 cannot pass QA until Android build/runtime smoke test evidence is available.
