@@ -112,22 +112,51 @@ Related docs:
 
 ## DECISION-005 — M5 QA Status
 
-Status: `APPROVED FOR DOCUMENTATION REVIEW`
+Status: `SUPERSEDED BY DECISION-006`
 
 Summary:
 
 M5-TASK-001 reached QA PASS after support tasks M5-TASK-002 and M5-TASK-005.
 
-M5 is not locked yet. Director lock decision requires Documentation Memory PASS.
-
-Impact:
-
-- M5 can move to Documentation Memory review
-- No milestone lock until documentation consistency is clean
+M5 moved to Documentation Memory review.
 
 Related docs:
 
 - `docs/MILESTONE_STATUS.md`
 - `docs/NEXT_TASK.md`
 - `docs/HANDOFF.md`
+- `docs/CHANGELOG.md`
+
+---
+
+## DECISION-006 — M5 Lock Decision
+
+Status: `APPROVED / LOCKED`
+
+Summary:
+
+M5 Content Library & Navigation Expansion is locked by Director decision.
+
+Lock evidence:
+
+- User Runtime Test: PASSED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
+
+Impact:
+
+- M5 is complete and locked
+- No active milestone remains
+- No active task remains
+- Next work requires Director to open a new milestone/task
+
+Related docs:
+
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/START_HERE.md`
 - `docs/CHANGELOG.md`
