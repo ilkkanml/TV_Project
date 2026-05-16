@@ -8,38 +8,48 @@ Active milestone:
 
 Current status:
 
-`READY FOR QA FINAL REVIEW`
+`READY FOR DOCUMENTATION MEMORY REVIEW`
 
 Active review target:
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
+`M5 Documentation Memory Review`
 
-Completed support tasks:
+M5 QA result:
 
+- `M5-TASK-001 Content Library Model & Navigation Foundation` — QA PASSED
 - `M5-TASK-002 Build Verification Infrastructure` — QA PASSED
-- `M5-TASK-005 Player Safe Shell Fallback` — USER RUNTIME PASSED
+- `M5-TASK-005 Player Safe Shell Fallback` — USER RUNTIME PASSED / QA ACCEPTED
 
-Previous runtime tasks:
+Historical runtime tasks:
 
 - `M5-TASK-003 Player Runtime Crash Fix` — PARTIAL
 - `M5-TASK-004 Player Launch Flow Fix` — RUNTIME FAILED
 
 Workflow remains Director → Developer → QA Tester → Documentation Memory → Director
 
-## QA Handoff
+## Documentation Memory Handoff
 
-Run final QA review from `docs/NEXT_TASK.md`.
+Run final documentation consistency review from `docs/NEXT_TASK.md`.
 
-Final QA focus:
+Review focus:
 
-- M5 scope still respected
-- Mock/local content only
-- Home / Live TV / Movies / Series / Settings usable
-- Detail screen opens from playable mock content
-- Player safe shell opens from Detail
-- Back navigation works
-- Build verification infrastructure passed QA
-- No protected system rewrite
-- No backend/provider/payment/auth production changes
+- Runtime docs are aligned
+- M5 QA result is recorded consistently
+- M5 is not marked LOCKED yet
+- M5 completed task and support task records are clear
+- Protected systems and compliance notes remain intact
+- No stale task/status language remains before Director lock decision
 
-Return to Director with QA Result, checked items, issues, risk, and next action.
+Required reading includes:
+
+- `docs/START_HERE.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/CHANGELOG.md`
+- `docs/DECISION_LOG.md`
+- `docs/PROTECTED_SYSTEMS.md`
+- `docs/APP_BACKEND_INTEGRATION.md`
+
+Return to Director with Documentation Result, checked items, issues, risk, and next action.
