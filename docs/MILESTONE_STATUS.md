@@ -17,6 +17,18 @@ M5 goal:
 
 ## Active Task
 
+`M5-TASK-002 Build Verification Infrastructure`
+
+Status: `READY FOR DEVELOPER`
+
+Purpose:
+
+- Add minimal Android build verification infrastructure
+- Enable repeatable build evidence for M5-TASK-001 and future milestones
+- Keep runtime/product code unchanged unless build config requires a minimal fix
+
+## Related Blocked Task
+
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
 Status: `QA BLOCKED`
@@ -72,13 +84,6 @@ Status: `LOCKED`
 
 Status: `LOCKED`
 
-Locked files / scope:
-
-- `app/src/main/java/com/nexora/tv/ui/screens/DeviceActivationScreen.kt`
-- `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
-- `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
-- `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
-
 ## Protection / Compliance Record
 
 Protected systems remain stable:
@@ -97,4 +102,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-M5-TASK-001 cannot pass QA until Android build/runtime smoke test evidence is available.
+Developer should implement `M5-TASK-002` only, then return to Director for QA routing.
