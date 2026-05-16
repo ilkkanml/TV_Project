@@ -10,7 +10,7 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `READY FOR DEVELOPER`
+Status: `READY FOR QA`
 
 ## Last Locked Milestone
 
@@ -36,15 +36,33 @@ See:
 
 ## M6-TASK-001 Goal
 
-Create a safe foundation for playlist profile creation without connecting to illegal or bundled content.
+Create a safe foundation for user-provided profile setup.
 
 Expected result:
 
 - User can reach a profile/source input shell
 - User can see legal ownership notice
-- User can choose M3U URL or Xtream Codes input direction
+- User can choose supported input direction
 - Data flow remains local/mock-safe unless explicitly approved later
-- No real provider integration is implemented in this task
+- No live service connection is implemented in this task
+
+## Director Pre-QA Review
+
+Status: PASSED FOR QA
+
+Verified changed files:
+
+- `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
+- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
+- `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
+- `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
+
+Pre-QA result:
+
+- Profile route exists.
+- NavHost route opens `PlaylistProfileScreen(navController)`.
+- Legal ownership boundary is visible.
+- Reviewed files stay local/mock-safe.
 
 ## Completed / Locked
 
@@ -74,12 +92,12 @@ Protected systems remain stable.
 
 M6 is user-provided legal source input foundation only.
 
-No bundled playlist is allowed.
+No bundled source is allowed.
 
-No provider/API integration is approved yet.
+No live service connection is approved yet.
 
 Legal/compliance risk: controlled by scope.
 
 ## Next Status
 
-Send `M6-TASK-001` to Developer.
+Send `M6-TASK-001` to QA Tester.
