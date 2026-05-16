@@ -2,7 +2,9 @@
 
 ## Current Status
 
-Active task ready for Developer.
+Developer implementation returned, but Director pre-QA review found a routing blocker.
+
+Return to Developer for a minimal fix before QA.
 
 ## Current Active Milestone
 
@@ -14,61 +16,44 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `READY FOR DEVELOPER`
+Status: `NEEDS DEVELOPER FIX BEFORE QA`
 
-## Task Goal
+## Director Pre-QA Finding
 
-Create a safe foundation for playlist profile creation without connecting to illegal or bundled content.
+Developer added:
 
-## Developer Scope IN
+- `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
+- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
 
-- Inspect current app structure before changes
-- Add or update minimal model/state needed for playlist profile shell
-- Add safe profile/source input shell
-- Include legal ownership notice
-- Allow source type direction selection:
-  - M3U URL
-  - Xtream Codes
-- Add basic form fields as UI shell only
-- Add safe validation/empty/invalid/saved UI states where minimal
-- Keep data local/mock-safe
-- Preserve existing navigation patterns
-- Preserve existing visual system
+Issue:
 
-## Developer Scope OUT
+- `PlaylistProfileScreen` exists but is not reachable from app navigation.
+- `AppDestinations.kt` has no playlist/profile destination.
+- `NexoraNavHost.kt` has no composable route for `PlaylistProfileScreen`.
 
-- No bundled playlist
-- No sample illegal stream
-- No unauthorized source discovery
-- No DRM bypass
-- No token/cookie harvesting
-- No credential bypass
-- No provider/API integration
-- No backend playlist storage
-- No cloud sync
-- No payment changes
-- No playback core rewrite
-- No auth system rewrite
-- No TV navigation system rewrite
-- No Compose design system rewrite
+Why this blocks QA:
 
-## Protected Systems Permission
+- M6-TASK-001 expected the user to reach a profile/source input shell.
+- QA cannot validate runtime access if the screen is not wired.
 
-Protected systems are not approved for structural changes.
+## Required Developer Fix
+
+Add minimal additive navigation wiring only.
 
 Allowed:
 
-- Minimal additive screen/route entry only if required
-- Existing component/style reuse
+- Add a new route in `AppDestinations.kt`, for example `PlaylistProfile`.
+- Add a `composable` entry in `NexoraNavHost.kt` for `PlaylistProfileScreen(navController)`.
+- Add one minimal entry point from an existing safe screen only if required to reach the shell.
 
 Not allowed:
 
-- Playback Core rewrite
-- Auth System rewrite
-- Hidden Backend API changes
-- TV Navigation System rewrite
-- Compose TV Design System rewrite
-- Premium Cinematic UX rewrite
+- No navigation system rewrite
+- No playback/auth/backend changes
+- No provider/API integration
+- No real playlist fetch
+- No bundled content
+- No design system rewrite
 
 ## Required Developer Return
 
