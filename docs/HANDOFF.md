@@ -2,21 +2,29 @@
 
 ## Current Handoff
 
-Active milestone:
+No active milestone.
+
+No active task.
+
+## Last Locked Milestone
 
 `M5 Content Library & Navigation Expansion`
 
-Current status:
+Status: `LOCKED`
 
-`READY FOR DOCUMENTATION MEMORY REVIEW`
+Director LOCKED: YES
 
-Active review target:
+Lock evidence:
 
-`M5 Documentation Memory Review`
+- User Runtime Test: PASSED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
 
-M5 QA result:
+## Locked M5 Result
 
-- `M5-TASK-001 Content Library Model & Navigation Foundation` — QA PASSED
+- `M5-TASK-001 Content Library Model & Navigation Foundation` — LOCKED
 - `M5-TASK-002 Build Verification Infrastructure` — QA PASSED
 - `M5-TASK-005 Player Safe Shell Fallback` — USER RUNTIME PASSED / QA ACCEPTED
 
@@ -25,31 +33,12 @@ Historical runtime tasks:
 - `M5-TASK-003 Player Runtime Crash Fix` — PARTIAL
 - `M5-TASK-004 Player Launch Flow Fix` — RUNTIME FAILED
 
-Workflow remains Director → Developer → QA Tester → Documentation Memory → Director
+## Workflow
 
-## Documentation Memory Handoff
+Director → Developer → QA Tester → Documentation Memory → Director
 
-Run final documentation consistency review from `docs/NEXT_TASK.md`.
+## Next Handoff
 
-Review focus:
+Wait for Director to open the next milestone/task.
 
-- Runtime docs are aligned
-- M5 QA result is recorded consistently
-- M5 is not marked LOCKED yet
-- M5 completed task and support task records are clear
-- Protected systems and compliance notes remain intact
-- No stale task/status language remains before Director lock decision
-
-Required reading includes:
-
-- `docs/START_HERE.md`
-- `docs/PROJECT_MEMORY.md`
-- `docs/MILESTONE_STATUS.md`
-- `docs/NEXT_TASK.md`
-- `docs/HANDOFF.md`
-- `docs/CHANGELOG.md`
-- `docs/DECISION_LOG.md`
-- `docs/PROTECTED_SYSTEMS.md`
-- `docs/APP_BACKEND_INTEGRATION.md`
-
-Return to Director with Documentation Result, checked items, issues, risk, and next action.
+Do not start implementation until a new active task is created in `docs/NEXT_TASK.md`.
