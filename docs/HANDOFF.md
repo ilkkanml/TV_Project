@@ -2,9 +2,17 @@
 
 ## Current Handoff
 
-No active milestone.
+Active milestone:
 
-No active task.
+`M6 Playlist Profile & Legal Source Input Foundation`
+
+Active task:
+
+`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+
+Status:
+
+`READY FOR DEVELOPER`
 
 ## Last Locked Milestone
 
@@ -22,23 +30,51 @@ Lock evidence:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Locked M5 Result
+## Current Developer Handoff
 
-- `M5-TASK-001 Content Library Model & Navigation Foundation` — LOCKED
-- `M5-TASK-002 Build Verification Infrastructure` — QA PASSED
-- `M5-TASK-005 Player Safe Shell Fallback` — USER RUNTIME PASSED / QA ACCEPTED
+Read first:
 
-Historical runtime tasks:
+- `docs/START_HERE.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/PROTECTED_SYSTEMS.md`
+- `docs/APP_BACKEND_INTEGRATION.md`
+- `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
+- `docs/agents/DEVELOPER.md`
 
-- `M5-TASK-003 Player Runtime Crash Fix` — PARTIAL
-- `M5-TASK-004 Player Launch Flow Fix` — RUNTIME FAILED
+Task:
+
+Build `M6-TASK-001 Playlist Profile Model & Legal Input Shell`.
+
+Important:
+
+- Keep it additive.
+- Keep it legal-source-only.
+- No real provider integration yet.
+- No backend playlist ownership.
+- No protected system rewrite.
+- Preserve existing app architecture.
+
+## Required Return
+
+```text
+Changed Files:
+- ...
+
+Implementation Summary:
+- ...
+
+Test Notes:
+- ...
+
+Risk:
+- ...
+
+Next Recommended Agent:
+QA_TESTER or DIRECTOR
+```
 
 ## Workflow
 
 Director → Developer → QA Tester → Documentation Memory → Director
-
-## Next Handoff
-
-Wait for Director to open the next milestone/task.
-
-Do not start implementation until a new active task is created in `docs/NEXT_TASK.md`.
