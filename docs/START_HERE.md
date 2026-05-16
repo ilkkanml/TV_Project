@@ -24,19 +24,21 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: `M5 Content Library & Navigation Expansion`
-- Current active task: `M5 Documentation Memory Review`
-- Last locked milestone: `M4 Auth & Device Activation Foundation`
+- Current active milestone: none
+- Current active task: none
+- Last locked milestone: `M5 Content Library & Navigation Expansion`
 - Current workflow: minimal Director-led handoff
-- Next status: Documentation Memory final review before Director lock decision
+- Next status: wait for Director to open the next milestone/task
 
 ## Current M5 Status
 
-- `M5-TASK-001 Content Library Model & Navigation Foundation`: QA PASSED
-- `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
-- `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
-- M5 is not locked yet.
-- Director lock decision requires Documentation Memory PASS.
+- `M5 Content Library & Navigation Expansion`: LOCKED
+- Director LOCKED: YES
+- User Runtime Test: PASSED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
 
 ## Current Architecture Direction
 
@@ -61,6 +63,7 @@ Key decisions:
 - M2 Playback Expansion: `LOCKED`
 - M3 Premium UI Expansion: `LOCKED`
 - M4 Auth & Device Activation Foundation: `LOCKED`
+- M5 Content Library & Navigation Expansion: `LOCKED`
 
 ## Hard Rules
 
