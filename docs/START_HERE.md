@@ -15,17 +15,36 @@ Before any new ChatGPT window works on the project, it must read these files fir
 5. `docs/NEXT_TASK.md`
 6. `docs/PROTECTED_SYSTEMS.md`
 7. `docs/HANDOFF.md`
-8. Relevant agent file from `docs/agents/`
+8. `docs/APP_BACKEND_INTEGRATION.md`
+9. Relevant agent file from `docs/agents/`
 
 ## Current Truth
 
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
+- Product type: legal Android TV / Fire TV player/client platform
 - Current active milestone: `M5 Content Library & Navigation Expansion`
-- Current active task: `M5-TASK-001 Content Library Model & Navigation Foundation`
+- Current active task: `M5 Documentation Memory Review`
 - Last locked milestone: `M4 Auth & Device Activation Foundation`
 - Current workflow: minimal Director-led handoff
-- Next status: `Developer should implement M5-TASK-001 from NEXT_TASK.md`
+- Next status: Documentation Memory final review before Director lock decision
+
+## Current Architecture Direction
+
+Approved app/backend direction lives in:
+
+- `docs/APP_BACKEND_INTEGRATION.md`
+
+Key decisions:
+
+- Backend manages account, subscription, activation, payment, reseller, version check, force update, remote config, maintenance mode, and feature flags.
+- App manages generated device identity, backend registration, license checks, playlist/profile management, encrypted local playlist profile storage, and player access.
+- MAC address is not the primary device ID.
+- Primary device ID is `app_generated_device_id`.
+- Default playlist source of truth is encrypted local device storage.
+- Backend may optionally transfer playlist/profile data to a device, but is not the default playlist owner.
+- Multi-profile playlist management is planned.
+- All playlist/profile input must be user-provided and legally authorized.
 
 ## Locked Milestones
 
@@ -44,7 +63,7 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Do not write long explanations.
 - Do not claim live code facts without reading repo files.
 - Do not modify protected systems unless `NEXT_TASK.md` explicitly allows it.
-- Do not implement pirate IPTV, illegal streams, DRM bypass, token/cookie theft, or unauthorized scraping.
+- Do not implement illegal streams, DRM bypass, token/cookie theft, credential bypass, or unauthorized scraping.
 
 ## Minimal Agent System
 
