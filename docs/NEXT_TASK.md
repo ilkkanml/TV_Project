@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Active task is QA blocked.
+Active task ready for Developer.
 
 ## Active Milestone
 
@@ -10,101 +10,98 @@ Active task is QA blocked.
 
 ## Active Task
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
-
-## Current Task Status
-
-`QA BLOCKED`
-
-Blocker:
-
-`BUILD_RUNTIME_TEST_EVIDENCE_MISSING`
+`M5-TASK-002 Build Verification Infrastructure`
 
 ## Objective
 
-Create a safe mock-data content library foundation and improve content navigation clarity without touching protected systems.
+Add minimal build verification infrastructure so Android build evidence can be produced for M5-TASK-001 and future milestones.
 
-## Implementation Status
+## Background
 
-Developer implementation exists on `main`.
-
-Static repo review:
-
-- Mock/local content library added
-- Home content rows updated
-- Detail placeholder added
-- Additive detail route wiring added
-- Existing Player route reused
-- No protected system rewrite detected
-- No legal/compliance risk detected
-
-## Blocking Issue
-
-Actual Android build/runtime smoke test evidence is missing.
+`M5-TASK-001 Content Library Model & Navigation Foundation` is implemented and static review is clean, but QA is blocked because actual build/runtime evidence is missing.
 
 Known constraints:
 
-- Current execution environment cannot clone/build/run Android app
-- No usable Android SDK / Gradle runtime confirmed in current environment
-- No emulator/device access available
 - No GitHub Actions Android build workflow found
 - Gradle wrapper is not present in repo
+- Current execution environment could not clone/build/run Android app
+- Runtime emulator/device smoke test still requires user/developer environment
 
-## Required Evidence To Clear Blocker
+## Scope IN
 
-One of the following is required:
-
-1. User runs Android Studio local build/runtime test and reports result
-2. Developer runs valid Android build/runtime test and reports result
-3. Approved CI/build workflow is added, run, and passes
-
-Required smoke flow:
-
-- Build app
-- Launch app
-- Splash → Login → Activation
-- Enter `demo123`
-- Continue to Home
-- Switch Home / Live TV / Movies / Series / Settings
-- Select playable mock content
-- Confirm Detail screen opens
-- Press Play Mock
-- Confirm Player opens
-- Test Back navigation
+- Add minimal GitHub Actions Android build workflow if feasible
+- Add Gradle wrapper files if feasible and safe
+- Add or update build verification documentation if needed
+- Validate build command target, preferably debug assemble
+- Preserve existing app behavior
+- Keep patch infrastructure-only unless build config requires a minimal fix
 
 ## Scope OUT
 
-- No real backend
-- No real provider/API integration
-- No payment
-- No production auth changes
-- No illegal IPTV playlist
-- No unauthorized streams
-- No DRM bypass
-- No token/cookie handling
-- No protected system rewrite
+- No product feature changes
 - No UI overhaul
-- No large architecture rewrite
+- No playback rewrite
+- No auth rewrite
+- No backend/provider/payment work
+- No protected system rewrite
+- No illegal stream/source handling
+- No milestone lock
 
-## Next Required Action
+## Allowed Files / Areas
 
-Provide actual build/runtime smoke test evidence, or approve a separate build infrastructure task.
+Developer may work only where needed in these areas:
 
-## Return To Director With
+- `.github/workflows/`
+- `gradle/`
+- `gradlew`
+- `gradlew.bat`
+- build-related Gradle files if a minimal build fix is required
+- `docs/` only for build verification notes if needed
+
+## Protected Systems Permission
+
+Protected systems must remain structurally stable.
+
+Allowed:
+
+- Build workflow addition
+- Gradle wrapper addition
+- Minimal build config correction if required for compilation
+
+Not allowed:
+
+- Playback core rewrite
+- Auth flow rewrite
+- Hidden backend/API work
+- Navigation redesign
+- Compose design system rewrite
+- Product feature changes
+
+## Required Return To Director
 
 ```text
-Runtime Test Result:
-PASSED / FAILED
+Result:
+DONE / PARTIAL / BLOCKED
 
-Build:
-PASSED / FAILED
+Preflight:
+- active task confirmed / blocked reason
 
-Device/Emulator/CI:
-<short info>
+Changed Files:
+- file/path
 
-Issues:
-- none / issue list
+Build Verification:
+- local/CI build command
+- passed / failed / not run
 
-Notes:
-- short notes
+Summary:
+- short item
+
+Risk:
+- none / short risk
+
+Test:
+- short checklist
+
+Return To Director:
+- next recommended agent/action
 ```
