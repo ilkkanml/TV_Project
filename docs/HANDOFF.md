@@ -6,34 +6,40 @@ Active milestone:
 
 `M5 Content Library & Navigation Expansion`
 
-Active task:
-
-`M5-TASK-005 Player Safe Shell Fallback`
-
 Current status:
 
-`READY FOR DEVELOPER`
+`READY FOR QA FINAL REVIEW`
 
-## Developer Handoff
+Active review target:
 
-Implement the active task from `docs/NEXT_TASK.md`.
+`M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Goal:
+Completed support tasks:
 
-- Make Player route open a safe visible shell first.
-- Do not start playback during initial PlayerScreen render.
-- Show visible text confirming Player route entry.
+- `M5-TASK-002 Build Verification Infrastructure` — QA PASSED
+- `M5-TASK-005 Player Safe Shell Fallback` — USER RUNTIME PASSED
 
-Allowed file:
+Previous runtime tasks:
 
-- `app/src/main/java/com/nexora/tv/ui/screens/PlayerScreen.kt`
+- `M5-TASK-003 Player Runtime Crash Fix` — PARTIAL
+- `M5-TASK-004 Player Launch Flow Fix` — RUNTIME FAILED
 
-Guardrails:
+Workflow remains Director → Developer → QA Tester → Documentation Memory → Director
 
-- Minimal PlayerScreen shell fallback only
-- No playback architecture rewrite
-- No provider/API integration
-- No auth/backend changes
-- No UI overhaul
+## QA Handoff
 
-Return to Director with changed files, fix summary, build result, runtime result if available, and risk.
+Run final QA review from `docs/NEXT_TASK.md`.
+
+Final QA focus:
+
+- M5 scope still respected
+- Mock/local content only
+- Home / Live TV / Movies / Series / Settings usable
+- Detail screen opens from playable mock content
+- Player safe shell opens from Detail
+- Back navigation works
+- Build verification infrastructure passed QA
+- No protected system rewrite
+- No backend/provider/payment/auth production changes
+
+Return to Director with QA Result, checked items, issues, risk, and next action.
