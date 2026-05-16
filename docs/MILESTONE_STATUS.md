@@ -19,7 +19,7 @@ M5 goal:
 
 `M5-TASK-002 Build Verification Infrastructure`
 
-Status: `CI RUN EVIDENCE PENDING`
+Status: `READY FOR QA`
 
 Implementation status:
 
@@ -27,11 +27,12 @@ Implementation status:
 - Build verification documentation added
 - Product/runtime code unchanged
 - Protected systems unchanged
+- User screenshot shows Android Build Verification workflow runs completed with green status
 
 Pending evidence:
 
-- GitHub Actions workflow run result
-- Android runtime smoke test on emulator/device
+- QA review of M5-TASK-002 build infrastructure
+- Runtime smoke test on emulator/device remains separate
 
 ## Related Blocked Task
 
@@ -41,15 +42,14 @@ Status: `QA BLOCKED`
 
 Blocker:
 
-`BUILD_RUNTIME_TEST_EVIDENCE_MISSING`
+`RUNTIME_SMOKE_TEST_EVIDENCE_MISSING`
 
 Reason:
 
 - Static repo review is clean
 - Developer patch exists on `main`
-- Actual Android build/runtime smoke test has not passed
-- Build workflow now exists but no verified pass result is recorded yet
-- Runtime emulator/device test is still pending
+- CI build evidence appears available from user screenshot
+- Android emulator/device runtime smoke test is still pending
 
 ## Last Locked Milestone
 
@@ -85,4 +85,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Run GitHub Actions `Android Build Verification`, then send result back to Director for QA routing.
+Send M5-TASK-002 to QA Tester for build infrastructure review.
