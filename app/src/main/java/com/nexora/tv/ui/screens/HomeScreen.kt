@@ -30,32 +30,38 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nexora.tv.data.content.MockContentLibrary
+import com.nexora.tv.data.content.NexoraContentItem
+import com.nexora.tv.data.content.NexoraContentRow
+import com.nexora.tv.data.content.NexoraContentSection
+import com.nexora.tv.navigation.AppDestinations
 
-private enum class HomeMenu(val label: String) {
-    Home("Home"),
-    Live("Live TV"),
-    Movies("Movies"),
-    Series("Series"),
-    Settings("Settings")
+private enum class HomeMenu(
+    val label: String,
+    val section: NexoraContentSection
+) {
+    Home("Home", NexoraContentSection.Home),
+    Live("Live TV", NexoraContentSection.Live),
+    Movies("Movies", NexoraContentSection.Movies),
+    Series("Series", NexoraContentSection.Series),
+    Settings("Settings", NexoraContentSection.Settings)
 }
-
-private data class StaticPosterModel(
-    val title: String,
-    val subtitle: String,
-    val accent: Color
-)
 
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedMenu by remember { mutableStateOf(HomeMenu.Home) }
-    var selectedPosterIndex by remember { mutableIntStateOf(0) }
-    val posters = postersFor(selectedMenu)
-    val selectedPoster = posters.getOrElse(selectedPosterIndex) { posters.first() }
+    var selectedItemId by remember {
+        mutableStateOf(MockContentLibrary.firstItemFor(NexoraContentSection.Home)?.id)
+    }
+
+    val rows = MockContentLibrary.rowsFor(selectedMenu.section)
+    val selectedItem = MockContentLibrary.findContent(selectedItemId)
+        ?: rows.firstOrNull()?.items?.firstOrNull()
 
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundFor(selectedPoster.accent))
+            .background(backgroundFor(selectedItem?.accentColor))
             .padding(42.dp),
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
@@ -63,14 +69,21 @@ fun HomeScreen(navController: NavController) {
             selectedMenu = selectedMenu,
             onMenuSelected = {
                 selectedMenu = it
-                selectedPosterIndex = 0
+                selectedItemId = MockContentLibrary.firstItemFor(it.section)?.id
             }
         )
         StaticContent(
             selectedMenu = selectedMenu,
-            posters = posters,
-            selectedPosterIndex = selectedPosterIndex,
-            onPosterSelected = { selectedPosterIndex = it }
+            rows = rows,
+            selectedItem = selectedItem,
+            onItemFocused = { selectedItemId = it.id },
+            onItemOpen = {
+                if (it.isPlayable) {
+                    navController.navigate(AppDestinations.Detail.createRoute(it.id)) {
+                        launchSingleTop = true
+                    }
+                }
+            }
         )
     }
 }
@@ -136,21 +149,85 @@ private fun MenuButton(
 @Composable
 private fun StaticContent(
     selectedMenu: HomeMenu,
-    posters: List<StaticPosterModel>,
-    selectedPosterIndex: Int,
-    onPosterSelected: (Int) -> Unit
+    rows: List<NexoraContentRow>,
+    selectedItem: NexoraContentItem?,
+    onItemFocused: (NexoraContentItem) -> Unit,
+    onItemOpen: (NexoraContentItem) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        StaticHeader(selectedMenu, posters[selectedPosterIndex])
+        StaticHeader(selectedMenu, selectedItem)
 
+        rows.forEach { row ->
+            ContentRow(
+                row = row,
+                selectedItemId = selectedItem?.id,
+                onItemFocused = onItemFocused,
+                onItemOpen = onItemOpen
+            )
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            StaticStatusTile("Library", "Mock/local")
+            StaticStatusTile("Routes", "Detail ready")
+            StaticStatusTile("Streams", "No real source")
+        }
+    }
+}
+
+@Composable
+private fun StaticHeader(selectedMenu: HomeMenu, selectedItem: NexoraContentItem?) {
+    val accent = Color(selectedItem?.accentColor ?: 0xFF00E5FF)
+
+    Column(
+        modifier = Modifier
+            .width(850.dp)
+            .height(164.dp)
+            .background(Color(0xFF111722), RoundedCornerShape(28.dp))
+            .border(1.dp, accent, RoundedCornerShape(28.dp))
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Text(
-            text = rowTitle(selectedMenu),
-            color = Color.White,
-            fontSize = 24.sp,
+            text = selectedMenu.label,
+            color = accent,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = selectedItem?.title ?: "Content Library",
+            color = Color.White,
+            fontSize = 34.sp,
+            fontWeight = FontWeight.Black
+        )
+        Text(
+            text = selectedItem?.description ?: "Safe mock content library foundation.",
+            color = Color.LightGray,
+            fontSize = 15.sp
+        )
+    }
+}
+
+@Composable
+private fun ContentRow(
+    row: NexoraContentRow,
+    selectedItemId: String?,
+    onItemFocused: (NexoraContentItem) -> Unit,
+    onItemOpen: (NexoraContentItem) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = row.title,
+            color = Color.White,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = row.subtitle,
+            color = Color.LightGray,
+            fontSize = 12.sp
         )
 
         Row(
@@ -159,68 +236,36 @@ private fun StaticContent(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(18.dp)
         ) {
-            posters.forEachIndexed { index, poster ->
-                PosterButton(
-                    poster = poster,
-                    selected = selectedPosterIndex == index,
-                    onSelected = { onPosterSelected(index) }
+            row.items.forEach { item ->
+                ContentCard(
+                    item = item,
+                    selected = selectedItemId == item.id,
+                    onSelected = {
+                        onItemFocused(item)
+                        onItemOpen(item)
+                    }
                 )
             }
         }
-
-        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            StaticStatusTile("Loading", "Visible")
-            StaticStatusTile("Empty", "Visible")
-            StaticStatusTile("Error", "Visible")
-        }
     }
 }
 
 @Composable
-private fun StaticHeader(selectedMenu: HomeMenu, selectedPoster: StaticPosterModel) {
-    Column(
-        modifier = Modifier
-            .width(850.dp)
-            .height(154.dp)
-            .background(Color(0xFF111722), RoundedCornerShape(28.dp))
-            .border(1.dp, selectedPoster.accent, RoundedCornerShape(28.dp))
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = selectedMenu.label,
-            color = selectedPoster.accent,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = selectedPoster.title,
-            color = Color.White,
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Black
-        )
-        Text(
-            text = selectedPoster.subtitle,
-            color = Color.LightGray,
-            fontSize = 15.sp
-        )
-    }
-}
-
-@Composable
-private fun PosterButton(
-    poster: StaticPosterModel,
+private fun ContentCard(
+    item: NexoraContentItem,
     selected: Boolean,
     onSelected: () -> Unit
 ) {
+    val accent = Color(item.accentColor)
+
     Button(
         onClick = onSelected,
         modifier = Modifier
             .width(220.dp)
-            .height(320.dp),
+            .height(292.dp),
         shape = RoundedCornerShape(24.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) poster.accent.copy(alpha = 0.34f) else Color(0xFF151A24),
+            containerColor = if (selected) accent.copy(alpha = 0.34f) else Color(0xFF151A24),
             contentColor = Color.White
         )
     ) {
@@ -229,7 +274,7 @@ private fun PosterButton(
                 .fillMaxSize()
                 .border(
                     2.dp,
-                    if (selected) poster.accent else Color(0x22FFFFFF),
+                    if (selected) accent else Color(0x22FFFFFF),
                     RoundedCornerShape(24.dp)
                 )
                 .padding(18.dp),
@@ -237,13 +282,19 @@ private fun PosterButton(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
-                    text = poster.title,
+                    text = item.badge,
+                    color = accent,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = item.title,
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = poster.subtitle,
+                    text = item.subtitle,
                     color = Color.LightGray,
                     fontSize = 13.sp
                 )
@@ -277,57 +328,11 @@ private fun StaticStatusTile(title: String, body: String) {
     }
 }
 
-private fun backgroundFor(accent: Color): Color = when (accent) {
-    Color(0xFF00E5FF) -> Color(0xFF061A22)
-    Color(0xFF2962FF) -> Color(0xFF071226)
-    Color(0xFF7C4DFF) -> Color(0xFF130D2A)
-    Color(0xFF00BFA5) -> Color(0xFF06211D)
-    Color(0xFFFF6D00) -> Color(0xFF241206)
+private fun backgroundFor(accentColor: Long?): Color = when (accentColor) {
+    0xFF00E5FF -> Color(0xFF061A22)
+    0xFF2962FF -> Color(0xFF071226)
+    0xFF7C4DFF -> Color(0xFF130D2A)
+    0xFF00BFA5 -> Color(0xFF06211D)
+    0xFFFF6D00 -> Color(0xFF241206)
     else -> Color(0xFF06111D)
-}
-
-private fun rowTitle(menu: HomeMenu): String = when (menu) {
-    HomeMenu.Home -> "Featured Library"
-    HomeMenu.Live -> "Live TV Categories"
-    HomeMenu.Movies -> "Movies"
-    HomeMenu.Series -> "Series"
-    HomeMenu.Settings -> "Settings"
-}
-
-private fun postersFor(menu: HomeMenu): List<StaticPosterModel> = when (menu) {
-    HomeMenu.Home -> listOf(
-        StaticPosterModel("Featured", "Main library highlight", Color(0xFF00E5FF)),
-        StaticPosterModel("New Added", "Fresh mock content", Color(0xFF2962FF)),
-        StaticPosterModel("Watch Later", "Saved placeholder", Color(0xFF7C4DFF)),
-        StaticPosterModel("Top Rated", "Large TV poster layout", Color(0xFF00BFA5)),
-        StaticPosterModel("Family Row", "Safe category preview", Color(0xFFFF6D00))
-    )
-    HomeMenu.Live -> listOf(
-        StaticPosterModel("News", "Live category placeholder", Color(0xFF00E5FF)),
-        StaticPosterModel("Sports", "Licensed channel shell", Color(0xFFFF6D00)),
-        StaticPosterModel("Cinema", "Linear TV row", Color(0xFF2962FF)),
-        StaticPosterModel("Documentary", "Channel category", Color(0xFF00BFA5)),
-        StaticPosterModel("Kids", "Family category", Color(0xFF7C4DFF))
-    )
-    HomeMenu.Movies -> listOf(
-        StaticPosterModel("Continue Movie", "Resume belongs here", Color(0xFF00E5FF)),
-        StaticPosterModel("Orbit Fall", "Movie poster shell", Color(0xFF7C4DFF)),
-        StaticPosterModel("Glass Tower", "Featured VOD", Color(0xFF2962FF)),
-        StaticPosterModel("Silent Coast", "Watch later", Color(0xFF00BFA5)),
-        StaticPosterModel("Afterglow", "Movie library shell", Color(0xFFFF6D00))
-    )
-    HomeMenu.Series -> listOf(
-        StaticPosterModel("Continue Series", "Episode 4 • 42 min left", Color(0xFF00E5FF)),
-        StaticPosterModel("Midnight Grid", "Series poster shell", Color(0xFF7C4DFF)),
-        StaticPosterModel("Deep Archive", "New season", Color(0xFF00BFA5)),
-        StaticPosterModel("Signal Room", "Episode row", Color(0xFF2962FF)),
-        StaticPosterModel("Blue District", "Series library shell", Color(0xFFFF6D00))
-    )
-    HomeMenu.Settings -> listOf(
-        StaticPosterModel("Account", "Device access shell", Color(0xFF00E5FF)),
-        StaticPosterModel("Playback", "Preference placeholder", Color(0xFF2962FF)),
-        StaticPosterModel("Display", "TV layout shell", Color(0xFF7C4DFF)),
-        StaticPosterModel("Support", "Help placeholder", Color(0xFF00BFA5)),
-        StaticPosterModel("About", "App information", Color(0xFFFF6D00))
-    )
 }
