@@ -2,11 +2,24 @@
 
 ## Current Active Milestone
 
-`None`
+`M5 Content Library & Navigation Expansion`
 
-Status: `AWAITING NEXT DIRECTOR INSTRUCTION`
+Status: `ACTIVE`
 
-No active milestone is open.
+M5 goal:
+
+- Strengthen content library structure
+- Improve Home → Live / Movies / Series navigation clarity
+- Add safe mock content organization
+- Prepare detail-screen foundation
+- Prepare content-selected Player route foundation
+- Preserve locked playback/auth/navigation systems
+
+## Active Task
+
+`M5-TASK-001 Content Library Model & Navigation Foundation`
+
+Status: `READY FOR DEVELOPER`
 
 ## Last Locked Milestone
 
@@ -60,11 +73,22 @@ Protected systems remain stable:
 - Playback Core
 - Backend API
 - Hidden Backend API
+- Auth System
+- TV Navigation System
+- Compose TV Design System
+- Premium Cinematic UX
 
-M4 remains a local/mock foundation only.
+M5 must remain mock-data-first until explicitly approved.
 
-Legal/compliance risk: none detected.
+Legal/compliance rule:
+
+- No pirate IPTV playlist
+- No illegal stream
+- No DRM bypass
+- No unauthorized scraping
+- No token/cookie theft
+- No credential bypass
 
 ## Next Status
 
-Awaiting Director decision for the next task or next milestone.
+Developer should implement `M5-TASK-001` only, then return to Director for QA routing.
