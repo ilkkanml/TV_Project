@@ -89,40 +89,34 @@ Future platforms:
 
 Status: LOCKED
 
-M1 locked the product identity, visual direction, UX philosophy, subscription direction, and initial architecture baseline.
-
 ### M2 Playback Expansion
 
 Status: LOCKED
-
-M2 locked the playback baseline:
-
-- Media3 / ExoPlayer direction
-- Fullscreen playback shell
-- Fast live TV switching direction
-- Player overlay timeout rule
-- Stream recovery direction
-- Premium playback continuity rules
 
 ### M3 Premium UI Expansion
 
 Status: LOCKED
 
-M3 locked the safe runtime HomeScreen premium UI baseline:
+M3 locked the safe runtime HomeScreen premium UI baseline.
 
-- Branch: `feature/m3-premium-ui-polish`
-- HomeScreen safe runtime build
-- Premium TV layout polish
-- Category menu flow
-- Poster row interaction
-- Dynamic background direction
-- Runtime checklist validation
+### M4 Auth & Device Activation Foundation
+
+Status: LOCKED
+
+M4 locked the safe device activation foundation:
+
+- Device identity placeholder
+- Activation password screen polish
+- Mock auth validation
+- Active/inactive device state placeholder
+- Subscription expiration placeholder
+- Safe loading/empty/error states
+- Login to Activation route wiring
+- Activation to Home continue path
 - User Test: PASSED
 - QA Tester: PASSED
-- Final Android TV Runtime Test: PASSED
-- Sync/Re-compare: DONE
-- Main merge: DONE
-- Protected systems untouched
+- Director LOCKED: YES
+- Protected systems stable
 - Legal/compliance risk: none detected
 
 ## Current Code Reality
@@ -132,11 +126,11 @@ Current repository contains:
 - Android app module
 - Kotlin / Jetpack Compose setup
 - Android TV launcher manifest
-- Splash → Login → Home → Player navigation
+- Splash → Login → Activation → Home → Player navigation
 - Safe runtime HomeScreen build
+- DeviceActivationScreen mock/local activation shell
 - Basic Media3 ExoPlayer test player shell
 - Nexora color/theme foundation
-- M3-TASK-001 HomeScreen Premium UI polish passed user runtime test and QA review
 
 ## Minimal Agent Workflow
 
@@ -163,7 +157,7 @@ No large department structure unless explicitly requested
 
 Do not restart from zero.
 
-Continue from M3 Premium UI Expansion unless the user explicitly changes milestone.
+Continue from the last locked milestone unless the user explicitly opens a new milestone.
 
 Before work, read:
 
