@@ -2,55 +2,91 @@
 
 ## Current Status
 
-No active task.
+Active task ready for Developer.
 
 ## Current Active Milestone
 
-None.
+`M6 Playlist Profile & Legal Source Input Foundation`
 
-## Last Locked Milestone
+Status: `ACTIVE`
 
-`M5 Content Library & Navigation Expansion`
+## Current Active Task
 
-Status: `LOCKED`
+`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Director LOCKED: YES
+Status: `READY FOR DEVELOPER`
 
-Lock evidence:
+## Task Goal
 
-- User Runtime Test: PASSED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none detected
+Create a safe foundation for playlist profile creation without connecting to illegal or bundled content.
 
-## M5 Locked Result
+## Developer Scope IN
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
+- Inspect current app structure before changes
+- Add or update minimal model/state needed for playlist profile shell
+- Add safe profile/source input shell
+- Include legal ownership notice
+- Allow source type direction selection:
+  - M3U URL
+  - Xtream Codes
+- Add basic form fields as UI shell only
+- Add safe validation/empty/invalid/saved UI states where minimal
+- Keep data local/mock-safe
+- Preserve existing navigation patterns
+- Preserve existing visual system
 
-Status: `LOCKED`
+## Developer Scope OUT
 
-Delivered:
+- No bundled playlist
+- No sample illegal stream
+- No unauthorized source discovery
+- No DRM bypass
+- No token/cookie harvesting
+- No credential bypass
+- No provider/API integration
+- No backend playlist storage
+- No cloud sync
+- No payment changes
+- No playback core rewrite
+- No auth system rewrite
+- No TV navigation system rewrite
+- No Compose design system rewrite
 
-- Safe mock/local content library foundation
-- Home / Live TV / Movies / Series / Settings usability
-- Home to Detail route foundation
-- Detail screen opens from playable mock content
-- Detail to Player safe shell route
-- Back navigation works
+## Protected Systems Permission
 
-Completed support tasks:
+Protected systems are not approved for structural changes.
 
-- `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
-- `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
+Allowed:
 
-Historical runtime tasks:
+- Minimal additive screen/route entry only if required
+- Existing component/style reuse
 
-- `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
-- `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
+Not allowed:
 
-## Next Step
+- Playback Core rewrite
+- Auth System rewrite
+- Hidden Backend API changes
+- TV Navigation System rewrite
+- Compose TV Design System rewrite
+- Premium Cinematic UX rewrite
 
-Wait for Director to open the next milestone/task.
+## Required Developer Return
 
-Do not start implementation until a new active task is created.
+Return to Director with:
+
+```text
+Changed Files:
+- ...
+
+Implementation Summary:
+- ...
+
+Test Notes:
+- ...
+
+Risk:
+- ...
+
+Next Recommended Agent:
+QA_TESTER or DIRECTOR
+```
