@@ -17,35 +17,51 @@ M5 goal:
 
 ## Active Task
 
+`M5-TASK-005 Player Safe Shell Fallback`
+
+Status: `READY FOR DEVELOPER`
+
+Runtime retest result:
+
+- Detail screen playback button opens Player: NO
+- Player route marker visible: NO
+- App closes after pressing the button
+- Back button works before the close
+
+Interpretation:
+
+- Player screen does not reach visible shell state
+- Failure likely happens during PlayerScreen startup
+- M5-TASK-001 remains runtime failed
+
+## Previous M5 Runtime Fix Tasks
+
 `M5-TASK-004 Player Launch Flow Fix`
 
-Status: `READY FOR QA RUNTIME RETEST`
+Status: `RUNTIME FAILED`
 
-Fix summary:
+Patch summary:
 
-- `PlayerScreen.kt` updated only
-- Full-screen black Player background added
-- Visible route marker added: `NEXORA PLAYER • Mock playback route active`
-- `AndroidView` uses `Modifier.fillMaxSize()`
-- Existing mock stream preserved
-- Lifecycle-safe ExoPlayer handling preserved
-- No route/auth/backend/provider changes
+- Player route marker and full screen background added
+- Marker did not become visible during retest
+
+`M5-TASK-003 Player Runtime Crash Fix`
+
+Status: `PARTIAL / RUNTIME STILL FAILED`
+
+Patch summary:
+
+- Player lifecycle cleanup added
 
 ## Blocked Task
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `RUNTIME RETEST REQUIRED`
+Status: `RUNTIME FAILED`
 
-Previous blocker:
+Blocker:
 
-`PLAYER_DOES_NOT_OPEN_FROM_PLAY_MOCK`
-
-## Previous M5 Runtime Fix Task
-
-`M5-TASK-003 Player Runtime Crash Fix`
-
-Status: `PARTIAL / RUNTIME STILL FAILED`
+`PLAYER_SCREEN_STARTUP_CLOSES_APP`
 
 ## Completed M5 Support Task
 
@@ -87,4 +103,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Send M5-TASK-004 to QA/runtime retest.
+Developer should make Player route open a safe shell first, without starting playback during initial render.
