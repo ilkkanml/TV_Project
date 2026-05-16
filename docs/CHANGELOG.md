@@ -31,25 +31,15 @@
   - `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
   - `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
   - `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
-- Locked scope:
-  - Device identity placeholder
-  - Activation password screen polish
-  - Mock auth validation
-  - Active/inactive device state placeholder
-  - Subscription expiration placeholder
-  - Safe loading/empty/error states
-  - Login to Activation route wiring
-  - Activation to Home continue path
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Active Milestone
-
 ### M5 Content Library & Navigation Expansion
-- Status: ACTIVE
-- Current stage: Documentation Memory review
-- Director LOCKED: NO
-- M5-TASK-001 Content Library Model & Navigation Foundation: QA PASSED
+- User Runtime Test: PASSED
+- QA: PASSED
+- Documentation Memory: PASSED
+- Director LOCKED: YES
+- M5-TASK-001 Content Library Model & Navigation Foundation: LOCKED
 - M5-TASK-002 Build Verification Infrastructure: QA PASSED
 - M5-TASK-005 Player Safe Shell Fallback: USER RUNTIME PASSED / QA ACCEPTED
 - Historical runtime tasks:
@@ -98,8 +88,10 @@
   - web panel may optionally transfer profile data to device
   - longer cloud sync requires explicit user consent
 
+## Active Milestone
+
+None.
+
 ## Next Step
 
-Documentation Memory should rerun final consistency review.
-
-If Documentation Memory passes, Director may decide whether to lock M5.
+Wait for Director to open the next milestone/task.
