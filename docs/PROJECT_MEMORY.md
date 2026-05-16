@@ -142,21 +142,35 @@ Lock evidence:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-M5 locked result:
+### M6 Playlist Profile & Legal Source Input Foundation
 
-- `M5-TASK-001 Content Library Model & Navigation Foundation`: LOCKED
-- `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
-- `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
-- `M5-TASK-003 Player Runtime Crash Fix`: historical partial result
-- `M5-TASK-004 Player Launch Flow Fix`: historical runtime failed result
+Status: ACTIVE
+
+Current task:
+
+`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+
+Status: READY FOR DEVELOPER
+
+M6 purpose:
+
+- user-managed playlist profile foundation
+- legal source input shell
+- M3U URL direction
+- Xtream Codes direction
+- local/mock-safe data flow
+- no bundled content
+- no real provider integration yet
 
 ## Current Active Work
 
-No active milestone.
+Active milestone:
 
-No active task.
+`M6 Playlist Profile & Legal Source Input Foundation`
 
-Wait for Director to open the next milestone/task.
+Active task:
+
+`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
 ## Current Code Reality
 
