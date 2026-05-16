@@ -17,43 +17,48 @@ M5 goal:
 
 ## Active Task
 
+`M5-TASK-004 Player Launch Flow Fix`
+
+Status: `READY FOR DEVELOPER`
+
+Runtime retest result:
+
+- Detail screen → Play Mock → Player opens: NO
+- Back button from attempted Player path: YES
+
+Interpretation:
+
+- Previous app-closing crash may be reduced
+- Player route still does not visibly open from Play Mock
+- M5-TASK-001 remains runtime failed
+
+## Previous M5 Runtime Fix Task
+
 `M5-TASK-003 Player Runtime Crash Fix`
 
-Status: `READY FOR QA RUNTIME RETEST`
+Status: `PARTIAL / RUNTIME STILL FAILED`
 
-Fix summary:
+Patch summary:
 
-- `PlayerScreen.kt` updated only
-- ExoPlayer creation moved into `remember`
-- `DisposableEffect` cleanup added
-- Player stops, clears media items, and releases on dispose
-- Existing mock test stream preserved
-- No route/UI/auth/backend/provider changes
+- `PlayerScreen.kt` lifecycle cleanup added
+- ExoPlayer remembered and released on dispose
+- App still does not pass Play Mock → Player runtime flow
 
 ## Blocked Task
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `RUNTIME RETEST REQUIRED`
+Status: `RUNTIME FAILED`
 
-Previous blocker:
+Blocker:
 
-`PLAYER_ROUTE_CRASH_ON_PLAY_MOCK`
+`PLAYER_DOES_NOT_OPEN_FROM_PLAY_MOCK`
 
 ## Completed M5 Support Task
 
 `M5-TASK-002 Build Verification Infrastructure`
 
 Status: `QA PASSED`
-
-Recorded result:
-
-- GitHub Actions Android build workflow added
-- Build verification documentation added
-- Product/runtime code unchanged
-- Protected systems unchanged
-- QA accepted green CI screenshot evidence
-- Runtime smoke test remains separate
 
 ## Last Locked Milestone
 
@@ -89,4 +94,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Send M5-TASK-003 to QA/runtime retest.
+Developer should inspect Detail → Player navigation and Player launch visibility with minimal scoped patch.
