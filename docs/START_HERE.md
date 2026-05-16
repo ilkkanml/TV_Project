@@ -16,7 +16,8 @@ Before any new ChatGPT window works on the project, it must read these files fir
 6. `docs/PROTECTED_SYSTEMS.md`
 7. `docs/HANDOFF.md`
 8. `docs/APP_BACKEND_INTEGRATION.md`
-9. Relevant agent file from `docs/agents/`
+9. `docs/DECISION_LOG.md`
+10. Relevant agent file from `docs/agents/`
 
 ## Current Truth
 
@@ -28,6 +29,14 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Last locked milestone: `M4 Auth & Device Activation Foundation`
 - Current workflow: minimal Director-led handoff
 - Next status: Documentation Memory final review before Director lock decision
+
+## Current M5 Status
+
+- `M5-TASK-001 Content Library Model & Navigation Foundation`: QA PASSED
+- `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
+- `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
+- M5 is not locked yet.
+- Director lock decision requires Documentation Memory PASS.
 
 ## Current Architecture Direction
 
