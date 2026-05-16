@@ -19,40 +19,33 @@ M5 goal:
 
 `M5-TASK-004 Player Launch Flow Fix`
 
-Status: `READY FOR DEVELOPER`
+Status: `READY FOR QA RUNTIME RETEST`
 
-Runtime retest result:
+Fix summary:
 
-- Detail screen → Play Mock → Player opens: NO
-- Back button from attempted Player path: YES
+- `PlayerScreen.kt` updated only
+- Full-screen black Player background added
+- Visible route marker added: `NEXORA PLAYER • Mock playback route active`
+- `AndroidView` uses `Modifier.fillMaxSize()`
+- Existing mock stream preserved
+- Lifecycle-safe ExoPlayer handling preserved
+- No route/auth/backend/provider changes
 
-Interpretation:
+## Blocked Task
 
-- Previous app-closing crash may be reduced
-- Player route still does not visibly open from Play Mock
-- M5-TASK-001 remains runtime failed
+`M5-TASK-001 Content Library Model & Navigation Foundation`
+
+Status: `RUNTIME RETEST REQUIRED`
+
+Previous blocker:
+
+`PLAYER_DOES_NOT_OPEN_FROM_PLAY_MOCK`
 
 ## Previous M5 Runtime Fix Task
 
 `M5-TASK-003 Player Runtime Crash Fix`
 
 Status: `PARTIAL / RUNTIME STILL FAILED`
-
-Patch summary:
-
-- `PlayerScreen.kt` lifecycle cleanup added
-- ExoPlayer remembered and released on dispose
-- App still does not pass Play Mock → Player runtime flow
-
-## Blocked Task
-
-`M5-TASK-001 Content Library Model & Navigation Foundation`
-
-Status: `RUNTIME FAILED`
-
-Blocker:
-
-`PLAYER_DOES_NOT_OPEN_FROM_PLAY_MOCK`
 
 ## Completed M5 Support Task
 
@@ -94,4 +87,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Developer should inspect Detail → Player navigation and Player launch visibility with minimal scoped patch.
+Send M5-TASK-004 to QA/runtime retest.
