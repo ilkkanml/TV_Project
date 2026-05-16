@@ -2,11 +2,15 @@
 
 ## Current Active Milestone
 
-None.
+`M6 Playlist Profile & Legal Source Input Foundation`
+
+Status: `ACTIVE`
 
 ## Current Active Task
 
-None.
+`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+
+Status: `READY FOR DEVELOPER`
 
 ## Last Locked Milestone
 
@@ -24,35 +28,23 @@ Lock evidence:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## M5 Locked Scope
+## M6 Scope
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
+See:
 
-Status: `LOCKED`
+- `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
 
-Delivered:
+## M6-TASK-001 Goal
 
-- Safe mock/local content library foundation
-- Home / Live TV / Movies / Series / Settings usability
-- Home to Detail route foundation
-- Detail screen opens from playable mock content
-- Detail to Player safe shell route
-- Back navigation works
+Create a safe foundation for playlist profile creation without connecting to illegal or bundled content.
 
-## Completed M5 Support Tasks
+Expected result:
 
-`M5-TASK-002 Build Verification Infrastructure`
-
-Status: `QA PASSED`
-
-`M5-TASK-005 Player Safe Shell Fallback`
-
-Status: `USER RUNTIME PASSED / QA ACCEPTED`
-
-Historical runtime tasks:
-
-- `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
-- `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
+- User can reach a profile/source input shell
+- User can see legal ownership notice
+- User can choose M3U URL or Xtream Codes input direction
+- Data flow remains local/mock-safe unless explicitly approved later
+- No real provider integration is implemented in this task
 
 ## Completed / Locked
 
@@ -80,16 +72,14 @@ Status: `LOCKED`
 
 Protected systems remain stable.
 
-M5 remains mock/local-data-first.
+M6 is user-provided legal source input foundation only.
 
-No backend integration was implemented in M5.
+No bundled playlist is allowed.
 
-No provider/API integration was implemented in M5.
+No provider/API integration is approved yet.
 
-Legal/compliance risk: none detected.
+Legal/compliance risk: controlled by scope.
 
 ## Next Status
 
-No active task.
-
-Wait for Director to open the next milestone/task.
+Send `M6-TASK-001` to Developer.
