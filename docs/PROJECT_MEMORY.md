@@ -146,15 +146,17 @@ M4 locked the safe device activation foundation:
 
 Status: ACTIVE
 
-Active task:
+Current task:
 
 `M5 Documentation Memory Review`
 
-M5 result so far:
+M5 QA result:
 
 - `M5-TASK-001 Content Library Model & Navigation Foundation`: QA PASSED
 - `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
 - `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
+- `M5-TASK-003 Player Runtime Crash Fix`: historical partial result
+- `M5-TASK-004 Player Launch Flow Fix`: historical runtime failed result
 - M5 is not locked until Documentation Memory PASS and Director lock decision.
 
 ## Current Code Reality
@@ -208,3 +210,4 @@ Before work, read:
 - `docs/PROTECTED_SYSTEMS.md`
 - `docs/HANDOFF.md`
 - `docs/APP_BACKEND_INTEGRATION.md`
+- `docs/DECISION_LOG.md`
