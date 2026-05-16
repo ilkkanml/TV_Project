@@ -19,20 +19,26 @@ M5 goal:
 
 `M5-TASK-005 Player Safe Shell Fallback`
 
-Status: `READY FOR DEVELOPER`
+Status: `READY FOR QA RUNTIME RETEST`
 
-Runtime retest result:
+Fix summary:
 
-- Detail screen playback button opens Player: NO
-- Player route marker visible: NO
-- App closes after pressing the button
-- Back button works before the close
+- `PlayerScreen.kt` updated only
+- ExoPlayer startup removed from initial render
+- AndroidView / PlayerView removed from initial shell
+- Plain visible Player shell added
+- Route confirmation text added: `Safe player shell route active`
+- Mock stream constant preserved but not auto-started
 
-Interpretation:
+## Blocked Task
 
-- Player screen does not reach visible shell state
-- Failure likely happens during PlayerScreen startup
-- M5-TASK-001 remains runtime failed
+`M5-TASK-001 Content Library Model & Navigation Foundation`
+
+Status: `RUNTIME RETEST REQUIRED`
+
+Previous blocker:
+
+`PLAYER_SCREEN_STARTUP_CLOSES_APP`
 
 ## Previous M5 Runtime Fix Tasks
 
@@ -40,28 +46,9 @@ Interpretation:
 
 Status: `RUNTIME FAILED`
 
-Patch summary:
-
-- Player route marker and full screen background added
-- Marker did not become visible during retest
-
 `M5-TASK-003 Player Runtime Crash Fix`
 
 Status: `PARTIAL / RUNTIME STILL FAILED`
-
-Patch summary:
-
-- Player lifecycle cleanup added
-
-## Blocked Task
-
-`M5-TASK-001 Content Library Model & Navigation Foundation`
-
-Status: `RUNTIME FAILED`
-
-Blocker:
-
-`PLAYER_SCREEN_STARTUP_CLOSES_APP`
 
 ## Completed M5 Support Task
 
@@ -103,4 +90,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Developer should make Player route open a safe shell first, without starting playback during initial render.
+Run Android emulator runtime retest for Detail to Player safe shell.
