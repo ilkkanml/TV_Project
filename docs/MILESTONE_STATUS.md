@@ -19,13 +19,19 @@ M5 goal:
 
 `M5-TASK-002 Build Verification Infrastructure`
 
-Status: `READY FOR DEVELOPER`
+Status: `CI RUN EVIDENCE PENDING`
 
-Purpose:
+Implementation status:
 
-- Add minimal Android build verification infrastructure
-- Enable repeatable build evidence for M5-TASK-001 and future milestones
-- Keep runtime/product code unchanged unless build config requires a minimal fix
+- GitHub Actions Android build workflow added
+- Build verification documentation added
+- Product/runtime code unchanged
+- Protected systems unchanged
+
+Pending evidence:
+
+- GitHub Actions workflow run result
+- Android runtime smoke test on emulator/device
 
 ## Related Blocked Task
 
@@ -42,29 +48,14 @@ Reason:
 - Static repo review is clean
 - Developer patch exists on `main`
 - Actual Android build/runtime smoke test has not passed
-- Current execution environment cannot clone/build/run Android app
-- No GitHub Actions Android build workflow is available
-- Gradle wrapper is not present in repo
+- Build workflow now exists but no verified pass result is recorded yet
+- Runtime emulator/device test is still pending
 
 ## Last Locked Milestone
 
 `M4 Auth & Device Activation Foundation`
 
 Status: `LOCKED`
-
-M4 locked the safe device activation foundation:
-
-- Device identity placeholder
-- Activation password screen polish
-- Mock auth validation
-- Active/inactive device state placeholder
-- Subscription expiration placeholder
-- Safe loading/empty/error states
-- Login to Activation route wiring
-- Activation to Home continue path
-- User Test: PASSED
-- QA Tester: PASSED
-- Director LOCKED: YES
 
 ## Completed / Locked
 
@@ -86,15 +77,7 @@ Status: `LOCKED`
 
 ## Protection / Compliance Record
 
-Protected systems remain stable:
-
-- Playback Core
-- Backend API
-- Hidden Backend API
-- Auth System
-- TV Navigation System
-- Compose TV Design System
-- Premium Cinematic UX
+Protected systems remain stable.
 
 M5 remains mock-data-first until explicitly approved.
 
@@ -102,4 +85,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Developer should implement `M5-TASK-002` only, then return to Director for QA routing.
+Run GitHub Actions `Android Build Verification`, then send result back to Director for QA routing.
