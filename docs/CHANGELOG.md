@@ -43,6 +43,26 @@
 - Protected systems stable
 - Legal/compliance risk: none detected
 
+## Active Milestone
+
+### M5 Content Library & Navigation Expansion
+- Status: ACTIVE
+- Active task: `M5-TASK-001 Content Library Model & Navigation Foundation`
+- Opened by Director after user command.
+- Scope:
+  - Safe mock content library foundation
+  - Live / Movies / Series navigation clarity
+  - Category rows
+  - Detail-screen foundation if needed
+  - Content-selected Player route foundation if needed
+- Guardrails:
+  - Mock/local data only
+  - No real backend
+  - No provider/API integration
+  - No payment
+  - No production auth changes
+  - No protected system rewrite
+
 ## Next Step
 
-Awaiting user instruction for next milestone.
+Developer should implement `M5-TASK-001` from `docs/NEXT_TASK.md`.
