@@ -63,7 +63,9 @@ fun LoginScreen(navController: NavController) {
 
         Button(
             onClick = {
-                navController.navigate(AppDestinations.Home.route)
+                navController.navigate(AppDestinations.Activation.route) {
+                    launchSingleTop = true
+                }
             }
         ) {
             Text("Connect")
