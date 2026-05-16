@@ -8,11 +8,11 @@ Active milestone:
 
 Active task:
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
+`M5-TASK-003 Player Runtime Stability Fix`
 
-Current status:
+Blocked task:
 
-`RUNTIME SMOKE TEST PENDING`
+`M5-TASK-001 Content Library Model & Navigation Foundation` — runtime test failed
 
 Completed support task:
 
@@ -20,21 +20,22 @@ Completed support task:
 
 Workflow remains Director → Developer → QA Tester → Documentation Memory → Director
 
-## Runtime Test Handoff
+## Developer Handoff
 
-Run M5-TASK-001 runtime smoke test using Android emulator/device or installed debug APK.
+Implement the active task from `docs/NEXT_TASK.md`.
 
-Required flow:
+Goal:
 
-1. Launch app.
-2. Splash → Login → Activation.
-3. Enter `demo123`.
-4. Continue to Home.
-5. Switch Home / Live TV / Movies / Series / Settings.
-6. Select playable mock content.
-7. Confirm Detail screen opens.
-8. Press Play Mock.
-9. Confirm Player opens.
-10. Test Back navigation.
+- Apply a minimal PlayerScreen stability fix for the Play Mock to Player path.
+- Keep the existing app flow and mock content behavior.
 
-Return to Director with runtime result, device/emulator info, issues, and notes.
+Guardrails:
+
+- Minimal PlayerScreen fix only
+- No playback architecture rewrite
+- No provider/API integration
+- No auth/backend changes
+- No UI overhaul
+- No source handling changes
+
+Return to Director with changed files, fix summary, build result, runtime result if available, and risk.
