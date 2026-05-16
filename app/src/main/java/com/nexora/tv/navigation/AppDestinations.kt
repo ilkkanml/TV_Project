@@ -9,4 +9,5 @@ sealed class AppDestinations(val route: String) {
         fun createRoute(contentId: String): String = "detail/$contentId"
     }
     data object Player : AppDestinations("player")
+    data object PlaylistProfile : AppDestinations("playlist-profile")
 }
