@@ -8,31 +8,33 @@ Active milestone:
 
 Active task:
 
-`M5-TASK-002 Build Verification Infrastructure`
-
-Related blocked task:
-
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Current blocker:
+Current status:
 
-`BUILD_RUNTIME_TEST_EVIDENCE_MISSING`
+`RUNTIME SMOKE TEST PENDING`
+
+Completed support task:
+
+`M5-TASK-002 Build Verification Infrastructure` — QA PASSED
 
 Workflow remains Director → Developer → QA Tester → Documentation Memory → Director
 
-## Developer Handoff
+## Runtime Test Handoff
 
-Implement `M5-TASK-002` from `docs/NEXT_TASK.md`.
+Run M5-TASK-001 runtime smoke test using Android emulator/device or installed debug APK.
 
-Key guardrails:
+Required flow:
 
-- Build infrastructure only
-- No product feature changes
-- No UI overhaul
-- No playback rewrite
-- No auth rewrite
-- No backend/provider/payment work
-- No protected system rewrite
-- No illegal source handling
+1. Launch app.
+2. Splash → Login → Activation.
+3. Enter `demo123`.
+4. Continue to Home.
+5. Switch Home / Live TV / Movies / Series / Settings.
+6. Select playable mock content.
+7. Confirm Detail screen opens.
+8. Press Play Mock.
+9. Confirm Player opens.
+10. Test Back navigation.
 
-Return to Director with changed files, build verification result, summary, risk, and test checklist.
+Return to Director with runtime result, device/emulator info, issues, and notes.
