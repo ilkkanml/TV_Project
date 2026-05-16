@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Runtime retest failed.
+Ready for QA final review.
 
 ## Active Milestone
 
@@ -10,75 +10,66 @@ Runtime retest failed.
 
 ## Active Task
 
-`M5-TASK-005 Player Safe Shell Fallback`
+`M5-TASK-001 Content Library Model & Navigation Foundation`
 
-## Objective
+## Current Task Status
 
-Make the Player route open a safe visible shell first, without starting playback during initial render.
+`READY FOR QA FINAL REVIEW`
 
 ## Runtime Evidence
 
-User retest on Android Studio emulator:
+User runtime retest on Android Studio emulator:
 
-- Detail screen playback button opens Player: NO
-- Player route marker visible: NO
-- App closes after pressing the button
-- Back button works before the close
+- Detail to Player safe shell: PASSED
+- Player shell opens without starting playback
+- Back navigation works
 
-## Previous Task Result
+## Completed Support Tasks
 
-`M5-TASK-004 Player Launch Flow Fix`
+`M5-TASK-002 Build Verification Infrastructure`
 
-Result:
+Status: `QA PASSED`
 
-- Player route marker and full screen background added
-- Marker did not become visible during retest
+`M5-TASK-005 Player Safe Shell Fallback`
 
-## Scope IN
+Status: `USER RUNTIME PASSED`
 
-- Remove or delay ExoPlayer startup from initial PlayerScreen render
-- Show a plain safe Player shell first
-- Include visible text confirming Player route entry
-- Keep navigation route unchanged
-- Preserve mock stream constant if needed, but do not auto-start playback in initial shell
+Previous runtime attempts:
 
-## Scope OUT
+- `M5-TASK-003 Player Runtime Crash Fix`: PARTIAL
+- `M5-TASK-004 Player Launch Flow Fix`: RUNTIME FAILED
 
-- No playback architecture rewrite
-- No provider/API integration
-- No auth/backend changes
-- No UI overhaul
-- No milestone lock
+## QA Final Review Focus
 
-## Allowed Files
+- M5-TASK-001 scope still respected
+- Content library remains mock/local only
+- Home / Live TV / Movies / Series / Settings sections remain usable
+- Detail screen opens from playable mock content
+- Player safe shell opens from Detail
+- Back navigation works
+- Build verification infrastructure passed QA
+- No protected system rewrite
+- No backend/provider/payment/auth production changes
+- No illegal source handling
 
-- `app/src/main/java/com/nexora/tv/ui/screens/PlayerScreen.kt`
-- `docs/` only if fix notes are required
-
-## Required Return To Director
+## Return To Director With
 
 ```text
-Result:
-DONE / PARTIAL / BLOCKED
+QA Result:
+PASS / WARNING / BLOCKER
 
 Preflight:
-- active task confirmed / blocked reason
+- confirmed / blocked reason
 
-Changed Files:
-- file/path
-
-Fix Summary:
+Checked:
 - short item
 
-Build Verification:
-- CI/local build passed / failed / not run
-
-Runtime Test:
-- passed / failed / not run
+Issues:
+- none / short issue
 
 Risk:
 - none / short risk
 
 Return To Director:
-- next recommended agent/action
+- next recommended action
 ```
