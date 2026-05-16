@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Runtime smoke test failed.
+Runtime retest failed.
 
 ## Active Milestone
 
@@ -10,75 +10,50 @@ Runtime smoke test failed.
 
 ## Active Task
 
-`M5-TASK-003 Player Runtime Crash Fix`
+`M5-TASK-004 Player Launch Flow Fix`
 
 ## Objective
 
-Fix the emulator runtime crash that happens when Detail screen `Play Mock` navigates to Player.
+Fix the flow where the Detail screen playback button does not visibly open the Player screen.
 
-## Failure Evidence
+## Runtime Evidence
 
-User runtime smoke test on Android Studio emulator:
+User retest on Android Studio emulator:
 
-Passed:
+- Detail screen playback button opens Player: NO
+- Back button after the attempt works: YES
 
-- Splash → Login → Activation
-- `demo123` activation
-- Home menu sections
-- Detail screen
-- Back navigation outside Player
+## Previous Task Result
 
-Failed:
+`M5-TASK-003 Player Runtime Crash Fix`
 
-- Play Mock → Player
+Result:
 
-Issue:
-
-- App closed after pressing Play Mock
-
-## Likely Risk Area
-
-`PlayerScreen.kt` currently creates an ExoPlayer instance directly inside the composable without lifecycle-safe release handling.
-
-Developer must inspect and fix only what is required.
+- Player lifecycle cleanup added
+- Player is still not visibly opening from Detail
 
 ## Scope IN
 
-- Minimal player runtime stability fix
-- Keep existing test stream behavior if possible
-- Make PlayerScreen lifecycle-safe if needed
-- Add basic fallback/error-safe UI only if required to prevent crash
-- Preserve existing routes and M5 content library behavior
+- Inspect Detail to Player navigation path
+- Inspect PlayerScreen launch/render behavior
+- Minimal patch so Player screen is visibly opened
+- Add simple Player screen background/status text if needed to confirm route entry
+- Preserve existing mock stream if possible
 
 ## Scope OUT
 
-- No playback engine rewrite
+- No playback architecture rewrite
 - No provider/API integration
-- No illegal stream/source handling
-- No auth changes
-- No backend changes
+- No auth/backend changes
 - No UI overhaul
-- No new player feature set
 - No milestone lock
 
-## Allowed Files / Areas
+## Allowed Files
 
-Developer may work only where needed in these areas:
-
+- `app/src/main/java/com/nexora/tv/ui/screens/ContentDetailScreen.kt`
 - `app/src/main/java/com/nexora/tv/ui/screens/PlayerScreen.kt`
-- Build files only if compile fix is required
-- Docs only if noting test/fix details is required
-
-## Protected Systems Permission
-
-Limited permission granted only for minimal PlayerScreen runtime stability fix.
-
-Not allowed:
-
-- Playback architecture rewrite
-- Stream switching system change
-- Recovery system change
-- Auth/navigation redesign
+- `app/src/main/java/com/nexora/tv/navigation/` only if route wiring issue is found
+- `docs/` only if fix notes are required
 
 ## Required Return To Director
 
