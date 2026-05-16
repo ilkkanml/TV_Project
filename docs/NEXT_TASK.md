@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Active task ready for Developer.
+Active task is QA blocked.
 
 ## Active Milestone
 
@@ -12,19 +12,65 @@ Active task ready for Developer.
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
+## Current Task Status
+
+`QA BLOCKED`
+
+Blocker:
+
+`BUILD_RUNTIME_TEST_EVIDENCE_MISSING`
+
 ## Objective
 
 Create a safe mock-data content library foundation and improve content navigation clarity without touching protected systems.
 
-## Scope IN
+## Implementation Status
 
-- Add or refine mock content models for Live / Movies / Series
-- Organize Home content into clearer category rows
-- Prepare a safe detail-screen foundation if needed
-- Prepare content-selected Player route foundation if needed
-- Keep all data local/mock
-- Keep UI TV-friendly and remote-readable
-- Preserve current Splash → Login → Activation → Home → Player flow
+Developer implementation exists on `main`.
+
+Static repo review:
+
+- Mock/local content library added
+- Home content rows updated
+- Detail placeholder added
+- Additive detail route wiring added
+- Existing Player route reused
+- No protected system rewrite detected
+- No legal/compliance risk detected
+
+## Blocking Issue
+
+Actual Android build/runtime smoke test evidence is missing.
+
+Known constraints:
+
+- Current execution environment cannot clone/build/run Android app
+- No usable Android SDK / Gradle runtime confirmed in current environment
+- No emulator/device access available
+- No GitHub Actions Android build workflow found
+- Gradle wrapper is not present in repo
+
+## Required Evidence To Clear Blocker
+
+One of the following is required:
+
+1. User runs Android Studio local build/runtime test and reports result
+2. Developer runs valid Android build/runtime test and reports result
+3. Approved CI/build workflow is added, run, and passes
+
+Required smoke flow:
+
+- Build app
+- Launch app
+- Splash → Login → Activation
+- Enter `demo123`
+- Continue to Home
+- Switch Home / Live TV / Movies / Series / Settings
+- Select playable mock content
+- Confirm Detail screen opens
+- Press Play Mock
+- Confirm Player opens
+- Test Back navigation
 
 ## Scope OUT
 
@@ -40,52 +86,25 @@ Create a safe mock-data content library foundation and improve content navigatio
 - No UI overhaul
 - No large architecture rewrite
 
-## Allowed Files / Areas
+## Next Required Action
 
-Developer may work only where needed in these areas:
-
-- `app/src/main/java/com/nexora/tv/ui/screens/`
-- `app/src/main/java/com/nexora/tv/navigation/`
-- New local mock data/model files under `app/src/main/java/com/nexora/tv/` if needed
-
-## Protected Systems Permission
-
-Protected systems must remain structurally stable.
-
-Allowed:
-
-- Additive route/detail placeholder wiring if minimal
-- Mock content selection foundation
-
-Not allowed:
-
-- Playback core rewrite
-- Auth flow rewrite
-- Hidden backend/API work
-- Navigation system redesign
-- Compose design system rewrite
+Provide actual build/runtime smoke test evidence, or approve a separate build infrastructure task.
 
 ## Return To Director With
 
 ```text
-Result:
-DONE / PARTIAL / BLOCKED
+Runtime Test Result:
+PASSED / FAILED
 
-Preflight:
-- active task confirmed / blocked reason
+Build:
+PASSED / FAILED
 
-Changed Files:
-- file/path
+Device/Emulator/CI:
+<short info>
 
-Summary:
-- short item
+Issues:
+- none / issue list
 
-Risk:
-- none / short risk
-
-Test:
-- short checklist
-
-Return To Director:
-- next recommended agent/action
+Notes:
+- short notes
 ```
