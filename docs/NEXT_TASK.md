@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Runtime smoke test evidence required.
+Runtime smoke test failed.
 
 ## Active Milestone
 
@@ -10,91 +10,100 @@ Runtime smoke test evidence required.
 
 ## Active Task
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
+`M5-TASK-003 Player Runtime Crash Fix`
 
-## Current Task Status
+## Objective
 
-`RUNTIME SMOKE TEST PENDING`
+Fix the emulator runtime crash that happens when Detail screen `Play Mock` navigates to Player.
 
-## Completed Support Task
+## Failure Evidence
 
-`M5-TASK-002 Build Verification Infrastructure`
+User runtime smoke test on Android Studio emulator:
 
-Status: `QA PASSED`
+Passed:
 
-Result:
+- Splash → Login → Activation
+- `demo123` activation
+- Home menu sections
+- Detail screen
+- Back navigation outside Player
 
-- GitHub Actions Android build workflow added
-- Build verification documentation added
-- CI green screenshot evidence accepted by QA
-- Runtime smoke test remains separate
+Failed:
 
-## M5-TASK-001 Implementation Status
+- Play Mock → Player
 
-Developer implementation exists on `main`.
+Issue:
 
-Static repo review:
+- App closed after pressing Play Mock
 
-- Mock/local content library added
-- Home content rows updated
-- Detail placeholder added
-- Additive detail route wiring added
-- Existing Player route reused
-- No protected system rewrite detected
-- No legal/compliance risk detected
+## Likely Risk Area
 
-## Remaining Blocker
+`PlayerScreen.kt` currently creates an ExoPlayer instance directly inside the composable without lifecycle-safe release handling.
 
-`RUNTIME_SMOKE_TEST_EVIDENCE_MISSING`
+Developer must inspect and fix only what is required.
 
-Required smoke flow:
+## Scope IN
 
-1. Build/install app from current main/debug APK.
-2. Launch app.
-3. Splash → Login → Activation.
-4. Enter `demo123`.
-5. Continue to Home.
-6. Switch Home / Live TV / Movies / Series / Settings.
-7. Select playable mock content.
-8. Confirm Detail screen opens.
-9. Press Play Mock.
-10. Confirm Player opens.
-11. Test Back navigation.
+- Minimal player runtime stability fix
+- Keep existing test stream behavior if possible
+- Make PlayerScreen lifecycle-safe if needed
+- Add basic fallback/error-safe UI only if required to prevent crash
+- Preserve existing routes and M5 content library behavior
 
 ## Scope OUT
 
-- No real backend
-- No real provider/API integration
-- No payment
-- No production auth changes
-- No illegal IPTV playlist
-- No unauthorized streams
-- No DRM bypass
-- No token/cookie handling
-- No protected system rewrite
+- No playback engine rewrite
+- No provider/API integration
+- No illegal stream/source handling
+- No auth changes
+- No backend changes
 - No UI overhaul
-- No large architecture rewrite
+- No new player feature set
+- No milestone lock
 
-## Return To Director With
+## Allowed Files / Areas
+
+Developer may work only where needed in these areas:
+
+- `app/src/main/java/com/nexora/tv/ui/screens/PlayerScreen.kt`
+- Build files only if compile fix is required
+- Docs only if noting test/fix details is required
+
+## Protected Systems Permission
+
+Limited permission granted only for minimal PlayerScreen runtime stability fix.
+
+Not allowed:
+
+- Playback architecture rewrite
+- Stream switching system change
+- Recovery system change
+- Auth/navigation redesign
+
+## Required Return To Director
 
 ```text
-Runtime Smoke Test:
-PASSED / FAILED
+Result:
+DONE / PARTIAL / BLOCKED
 
-Device/Emulator:
-<short info>
+Preflight:
+- active task confirmed / blocked reason
 
-Flow Checked:
-- Splash → Login → Activation
-- demo123 activation
-- Home menu sections
-- Detail screen
-- Play Mock → Player
-- Back navigation
+Changed Files:
+- file/path
 
-Issues:
-- none / issue list
+Fix Summary:
+- short item
 
-Notes:
-- short notes
+Build Verification:
+- CI/local build passed / failed / not run
+
+Runtime Test:
+- passed / failed / not run
+
+Risk:
+- none / short risk
+
+Return To Director:
+- next recommended agent/action
 ```
