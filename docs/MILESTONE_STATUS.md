@@ -19,26 +19,24 @@ M5 goal:
 
 `M5-TASK-003 Player Runtime Crash Fix`
 
-Status: `READY FOR DEVELOPER`
+Status: `READY FOR QA RUNTIME RETEST`
 
-Runtime failure source:
+Fix summary:
 
-- User runtime smoke test failed on Android Studio emulator
-- Splash → Login → Activation passed
-- demo123 activation passed
-- Home menu sections passed
-- Detail screen passed
-- Play Mock → Player failed
-- App closed after pressing Play Mock
-- Back navigation otherwise passed
+- `PlayerScreen.kt` updated only
+- ExoPlayer creation moved into `remember`
+- `DisposableEffect` cleanup added
+- Player stops, clears media items, and releases on dispose
+- Existing mock test stream preserved
+- No route/UI/auth/backend/provider changes
 
 ## Blocked Task
 
 `M5-TASK-001 Content Library Model & Navigation Foundation`
 
-Status: `RUNTIME FAILED`
+Status: `RUNTIME RETEST REQUIRED`
 
-Blocker:
+Previous blocker:
 
 `PLAYER_ROUTE_CRASH_ON_PLAY_MOCK`
 
@@ -55,7 +53,7 @@ Recorded result:
 - Product/runtime code unchanged
 - Protected systems unchanged
 - QA accepted green CI screenshot evidence
-- Runtime smoke test remains separate and is not passed yet
+- Runtime smoke test remains separate
 
 ## Last Locked Milestone
 
@@ -83,7 +81,7 @@ Status: `LOCKED`
 
 ## Protection / Compliance Record
 
-Protected systems remain stable unless M5-TASK-003 makes an explicitly scoped minimal player runtime stability fix.
+Protected systems remain stable.
 
 M5 remains mock-data-first until explicitly approved.
 
@@ -91,4 +89,4 @@ Legal/compliance risk: none detected.
 
 ## Next Status
 
-Developer should fix Play Mock → Player crash with minimal scoped patch, then return to Director for QA/runtime retest.
+Send M5-TASK-003 to QA/runtime retest.
