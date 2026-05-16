@@ -126,38 +126,37 @@ M3 locked the safe runtime HomeScreen premium UI baseline.
 
 Status: LOCKED
 
-M4 locked the safe device activation foundation:
-
-- Device identity placeholder
-- Activation password screen polish
-- Mock auth validation
-- Active/inactive device state placeholder
-- Subscription expiration placeholder
-- Safe loading/empty/error states
-- Login to Activation route wiring
-- Activation to Home continue path
-- User Test: PASSED
-- QA Tester: PASSED
-- Director LOCKED: YES
-- Protected systems stable
-- Legal/compliance risk: none detected
+M4 locked the safe device activation foundation.
 
 ### M5 Content Library & Navigation Expansion
 
-Status: ACTIVE
+Status: LOCKED
 
-Current task:
+Director LOCKED: YES
 
-`M5 Documentation Memory Review`
+Lock evidence:
 
-M5 QA result:
+- User Runtime Test: PASSED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
 
-- `M5-TASK-001 Content Library Model & Navigation Foundation`: QA PASSED
+M5 locked result:
+
+- `M5-TASK-001 Content Library Model & Navigation Foundation`: LOCKED
 - `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
 - `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
 - `M5-TASK-003 Player Runtime Crash Fix`: historical partial result
 - `M5-TASK-004 Player Launch Flow Fix`: historical runtime failed result
-- M5 is not locked until Documentation Memory PASS and Director lock decision.
+
+## Current Active Work
+
+No active milestone.
+
+No active task.
+
+Wait for Director to open the next milestone/task.
 
 ## Current Code Reality
 
