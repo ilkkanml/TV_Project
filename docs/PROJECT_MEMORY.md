@@ -32,6 +32,29 @@ Allowed development sources:
 - User-owned licensed streams
 - Legal provider/API integrations
 
+## App / Backend Integration Direction
+
+Approved direction document:
+
+- `docs/APP_BACKEND_INTEGRATION.md`
+
+Core decisions:
+
+- Backend owns user account, subscription status, device activation, payment status, reseller system, version check, force update, remote config, maintenance mode, and feature flags.
+- App owns device identity creation, backend registration, license/subscription check, playlist/profile management, encrypted local playlist profile storage, and player access when license is valid.
+- MAC address is not the primary device ID.
+- Primary device ID is `app_generated_device_id`.
+- Android ID, model, platform, app version, and install metadata are secondary signals.
+- Default playlist source of truth is device local encrypted storage.
+- Backend is not the default source of truth for user playlist profiles.
+- Web panel may optionally transfer a playlist/profile to a selected device.
+- Longer cloud sync requires explicit user consent.
+- App should support multi-profile playlist management.
+- Initial source direction: M3U URL and Xtream Codes; Portal and Local/JSON later if approved.
+- License checks should happen on app launch, before player access, and during active use at intervals.
+- Offline tolerance direction: 6 hours soft grace, 24 hours maximum hard limit after previous valid license check.
+- API format direction: JSON responses and Bearer token.
+
 ## Primary Platforms
 
 - Android TV
@@ -125,16 +148,14 @@ Status: ACTIVE
 
 Active task:
 
-`M5-TASK-001 Content Library Model & Navigation Foundation`
+`M5 Documentation Memory Review`
 
-M5 goal:
+M5 result so far:
 
-- Strengthen content library structure
-- Improve Home → Live / Movies / Series navigation clarity
-- Add safe mock content organization
-- Prepare detail-screen foundation
-- Prepare content-selected Player route foundation
-- Preserve locked playback/auth/navigation systems
+- `M5-TASK-001 Content Library Model & Navigation Foundation`: QA PASSED
+- `M5-TASK-002 Build Verification Infrastructure`: QA PASSED
+- `M5-TASK-005 Player Safe Shell Fallback`: USER RUNTIME PASSED / QA ACCEPTED
+- M5 is not locked until Documentation Memory PASS and Director lock decision.
 
 ## Current Code Reality
 
@@ -143,10 +164,13 @@ Current repository contains:
 - Android app module
 - Kotlin / Jetpack Compose setup
 - Android TV launcher manifest
-- Splash → Login → Activation → Home → Player navigation
+- Splash → Login → Activation → Home → Detail → Player navigation
 - Safe runtime HomeScreen build
 - DeviceActivationScreen mock/local activation shell
-- Basic Media3 ExoPlayer test player shell
+- Mock/local content library foundation
+- Detail screen foundation
+- Safe Player shell fallback
+- GitHub Actions Android build verification workflow
 - Nexora color/theme foundation
 
 ## Minimal Agent Workflow
@@ -183,3 +207,4 @@ Before work, read:
 - `docs/NEXT_TASK.md`
 - `docs/PROTECTED_SYSTEMS.md`
 - `docs/HANDOFF.md`
+- `docs/APP_BACKEND_INTEGRATION.md`
