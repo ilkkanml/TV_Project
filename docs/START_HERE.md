@@ -27,21 +27,26 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Product type: legal Android TV / Fire TV player/client platform
 - Current active milestone: `M7 Local Profile Persistence Foundation`
 - Current active task: `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-- Current task status: `READY FOR DEVELOPER`
+- Current task status: `DOCUMENTATION RECORDED — READY FOR DIRECTOR LOCK DECISION`
 - Last locked milestone: `M6 Playlist Profile & Legal Source Input Foundation`
 - Current workflow: minimal Director-led handoff with Safe Code Engine
-- Next status: send M7-TASK-001 to Developer
+- Next status: Director reviews M7 lock decision
 
 ## Current M7 Status
 
 - `M7 Local Profile Persistence Foundation`: ACTIVE
-- `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`: READY FOR DEVELOPER
+- `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`: DOCUMENTATION RECORDED — READY FOR DIRECTOR LOCK DECISION
 - Goal: safe local saved profile shell foundation
-- Must preserve M6 profile input shell behavior
-- Must keep profile flow local/mock-safe
-- No production connection is approved
-- No unsafe sensitive-data persistence is approved
-- Safe Code Engine evidence is required before QA
+- Scope delivered: saved profiles list shell, active/selected profile state, minimal add/edit/delete behavior
+- M6 profile input shell preserved
+- Profile flow remains local/mock-safe
+- No production connection approved or added
+- No unsafe sensitive-data persistence approved or added
+- Safe Code Engine evidence recorded
+- Build: PASSED
+- Runtime: CONFIRMED
+- QA: PASSED
+- Documentation Memory: PASSED
 
 ## Current M6 Status
 
