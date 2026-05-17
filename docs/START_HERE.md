@@ -6,7 +6,7 @@ This repository is the source of truth.
 
 Chat history is not the source of truth.
 
-Before any new ChatGPT window works on the project, it must read these files first:
+Read first:
 
 1. `docs/START_HERE.md`
 2. `docs/PROJECT_MEMORY.md`
@@ -27,11 +27,21 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Product type: legal Android TV / Fire TV player/client platform
 - Current active milestone: `M8 TV Navigation & Access Polish`
 - Current active task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
+- Current task status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
 - Last locked milestone: `M7 Local Profile Persistence Foundation`
-- Current workflow: Director-led handoff with Safe Code Engine
-- Build Evidence: PASSED
-- Runtime Evidence: CONFIRMED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none
+- PR: `#10`
+- Build Evidence: Android Build Verification #109 success
+- Developer result: DONE
+- Developer runtime evidence: provided
+- QA code/regression risk: none found
+- QA final result: BLOCKED
+- Documentation Memory: pending
+- M8 status: ACTIVE
+- M8 locked: NO
+- Splash cleanup: excluded from delivered scope
+- Protected systems clear
+- Legal/compliance clear
+
+## Required Next Action
+
+Documentation cleanup, then return to Director for QA retry.
