@@ -27,15 +27,16 @@ Read first:
 - Product type: legal Android TV / Fire TV player/client platform
 - Current active milestone: `M8 TV Navigation & Access Polish`
 - Current active task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
-- Current task status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
+- Current task status: `READY FOR QA RETRY`
 - Last locked milestone: `M7 Local Profile Persistence Foundation`
 - PR: `#10`
 - Build Evidence: Android Build Verification #109 success
 - Developer result: DONE
 - Developer runtime evidence: provided
-- QA code/regression risk: none found
-- QA final result: BLOCKED
-- Documentation Memory: pending
+- Previous QA result: BLOCKED due documentation conflict
+- Documentation conflict cleanup: completed
+- QA final PASS: not yet granted
+- Documentation Memory PASS: not yet granted
 - M8 status: ACTIVE
 - M8 locked: NO
 - Splash cleanup: excluded from delivered scope
@@ -44,4 +45,4 @@ Read first:
 
 ## Required Next Action
 
-Documentation cleanup, then return to Director for QA retry.
+Director sends `M8-TASK-001` back to QA Tester for retry.
