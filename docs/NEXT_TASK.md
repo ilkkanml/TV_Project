@@ -2,51 +2,50 @@
 
 ## Current Status
 
-M9 task QA PASSED. Awaiting Director PR/lock decision.
+No active tasks
 
 ## Current Active Milestone
 
-`M9 Startup Flow & Session Entry Polish`
-
-Status: ACTIVE
+None
 
 ## Current Active Task
 
-`M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
+None
 
-Status: QA PASSED
+## Last Locked Milestone
 
-## Task Evidence
+`M9 Startup Flow & Session Entry Polish`
 
-- PR #11 exists
-- PR #11 merge status: NOT MERGED / awaiting Director decision
-- Changed files:
+Status: LOCKED
+
+## M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish
+
+Status: PASSED / COMPLETED
+
+Evidence:
+
+- PR #11 merged to main
+- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
+- Changed file:
   - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #135 success
-- Runtime Evidence: Developer runtime evidence accepted
+- Build Evidence: Android Build Verification #144 success
+- Runtime Evidence: accepted
 - QA Result: PASS
+- Documentation Memory: PASSED
+- Director LOCKED: YES
 - Blockers: none
 - Regression risk: none
 - Protected systems clear
 - Legal/compliance clear
 
-## Last Locked Milestone
-
-`M8 TV Navigation & Access Polish`
-
-Status: LOCKED
-
 ## Required Next Action
 
-Return to Director for PR #11 merge / M9 lock decision.
+No active task.
+
+Do not open M10 unless Director receives explicit user instruction.
 
 ## Guardrails
 
-- M8 remains LOCKED
-- M9 is not Documentation Memory PASSED
-- M9 is not LOCKED
-- Director LOCKED is not recorded for M9
-- PR #11 is not recorded as merged
 - Protected systems rewrite remains forbidden
 - Legal/compliance boundary must remain preserved
 - No auth system rewrite
@@ -59,10 +58,3 @@ Return to Director for PR #11 merge / M9 lock decision.
 - No UI redesign
 - No payment/subscription
 - No illegal source support
-
-## Evidence Accepted
-
-- Safe Code Engine recorded
-- Build evidence accepted
-- Runtime evidence accepted
-- QA PASS recorded
