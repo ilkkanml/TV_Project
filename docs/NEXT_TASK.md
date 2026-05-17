@@ -2,68 +2,38 @@
 
 ## Current Status
 
-No active tasks.
+`M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
+
+Status: READY FOR DEVELOPER
 
 ## Current Active Milestone
 
-None.
+`M8 TV Navigation & Access Polish`
+
+Status: ACTIVE
 
 ## Current Active Task
 
-None.
+`M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
+
+Status: READY FOR DEVELOPER
 
 ## Last Locked Milestone
 
 `M7 Local Profile Persistence Foundation`
 
-Status: `LOCKED`
-
-## M7 Lock Record
-
-`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-
-Status: `LOCKED`
-
-Pull Request:
-
-- PR #9 merged to main
-
-Evidence:
-
-- Build Evidence: PASSED
-- Runtime Evidence: CONFIRMED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none detected
-
-Delivered scope:
-
-- Local profile repository shell
-- Saved profiles list shell
-- Active/selected profile state shell
-- Minimal local add/edit/delete shell behavior
-- M6 profile input shell preserved
-- Session-local/mock-safe flow
-- Sensitive values not stored
-
-Changed files:
-
-- `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
-- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
+Status: LOCKED
 
 ## Required Next Action
 
-No active task.
+Send task to Developer.
 
-Director may open the next milestone only after explicit user instruction.
-
-It is safe to switch to a new chat window before opening the next milestone.
+No PASS or LOCKED status is approved before implementation, evidence, QA, Documentation Memory, and Director decision.
 
 ## Guardrails
 
 - Do not create a new milestone unless the user explicitly says: `Yeni milestone aç`.
 - Do not create a new task without Director instruction.
 - Do not modify protected systems.
-- Do not modify app code from Documentation Memory.
+- Do not modify app code.
 - Keep legal/compliance boundary preserved.
