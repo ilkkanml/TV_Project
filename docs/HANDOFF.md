@@ -2,35 +2,29 @@
 
 ## Current Handoff
 
-No active milestone.
+`M8 TV Navigation & Access Polish`
 
-No active task.
+Task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
+
+Status: READY FOR DEVELOPER
 
 ## Last Locked Milestone
 
 `M7 Local Profile Persistence Foundation`
 
-Status: `LOCKED`
+Status: LOCKED
 
 Director LOCKED: YES
 
 Lock evidence:
 
-- Pull Request: #9 merged to main
+- PR #9 merged to main
 - Build Evidence: PASSED
 - Runtime Evidence: CONFIRMED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
 - Protected systems stable
 - Legal/compliance risk: none detected
-
-## Post-M7 Developer Handoff
-
-No new tasks assigned.
-
-All previous M7 deliverables are complete.
-
-It is safe to switch to a new chat window before opening the next milestone.
 
 ## Guardrails
 
