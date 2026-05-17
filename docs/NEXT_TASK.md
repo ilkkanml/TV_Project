@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Ready for QA Tester.
+Blocked by missing build/runtime evidence.
 
 ## Current Active Milestone
 
@@ -14,66 +14,60 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `READY FOR QA`
+Status: `BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
 
-## Director Pre-QA Result
+## QA Result
 
-PASSED FOR QA.
-
-Verified changed files:
-
-- `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
-- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
-- `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
-- `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
-
-Result:
-
-- Profile model exists.
-- Profile screen exists.
-- App route exists.
-- NavHost route opens the profile screen.
-- Legal ownership notice is present.
-- Flow remains local/mock-safe.
-- No live integration is approved in this task.
-
-## QA Scope
-
-QA Tester should verify:
-
-- Build status
-- App route compiles
-- Profile screen renders
-- Legal ownership notice is visible
-- Supported source type selection works
-- Empty input state works
-- Invalid input state works
-- Saved local shell state works
-- Back/Home navigation remains safe
-- Existing Splash/Login/Activation/Home/Detail/Player routes are not broken
-- No protected system rewrite is present
-- No prohibited content/source behavior is introduced
-
-## QA Return Required
-
-Return to Director with:
-
-```text
-QA Result:
-PASS / FAIL
-
-Checked Files:
-- ...
-
-Runtime / Build Notes:
-- ...
+QA Result: FAIL
 
 Blockers:
-- ...
 
-Regression Risk:
-- ...
+- `BUILD_COMPILE_EVIDENCE_MISSING`
+- `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
 
-Recommendation:
-DOCUMENTATION_MEMORY or DEVELOPER
+## Developer Evidence Return
+
+Developer returned no code changes.
+
+Build evidence:
+
+- Intended command: `./gradlew :app:assembleDebug`
+- Build result: NOT CONFIRMED
+- GitHub combined status: no statuses/checks
+- GitHub workflow runs: none
+- Local build attempt failed before build command due network/DNS access failure
+
+Runtime evidence:
+
+- NOT CONFIRMED by emulator/device/runtime
+- Source-only evidence exists but is not enough for QA pass
+
+## Required Next Action
+
+A real build/runtime check is required before QA can continue.
+
+Accepted evidence:
+
+1. Local build result from developer/user machine:
+
+```bash
+./gradlew :app:assembleDebug
 ```
+
+2. Runtime confirmation on emulator/device:
+
+- app launches
+- route opens profile screen
+- legal notice visible
+- empty/invalid/saved state behavior works
+- back/home navigation safe
+
+3. Or a valid CI workflow run result for the implementation commit.
+
+## No New Feature Work
+
+Do not add new features until this blocker is cleared.
+
+## QA Return Required After Evidence
+
+Return to QA Tester only after build/runtime evidence is available.
