@@ -289,3 +289,72 @@ Related docs:
 - `docs/PROJECT_MEMORY.md`
 - `docs/CHANGELOG.md`
 - `docs/milestones/M8_TV_NAVIGATION_ACCESS_POLISH.md`
+
+---
+
+## DECISION-011 — M9 Opened
+
+Status: `APPROVED / ACTIVE`
+
+Summary:
+
+M9 Startup Flow & Session Entry Polish milestone opened by Director.
+
+Impact:
+
+- Current Active Milestone: M9 Startup Flow & Session Entry Polish
+- Current Active Task: M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish
+- M9 status: ACTIVE
+
+Related docs:
+
+- `docs/START_HERE.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/milestones/M9_STARTUP_FLOW_SESSION_ENTRY_POLISH.md`
+
+---
+
+## DECISION-012 — M9-TASK-001 QA Pass Recorded
+
+Status: `QA PASSED / AWAITING DIRECTOR`
+
+Summary:
+
+M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish has QA PASS recorded.
+
+Evidence:
+
+- PR #11 exists
+- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #135 success
+- Runtime Evidence: Developer runtime evidence accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
+
+Impact:
+
+- M9 remains ACTIVE
+- M9-TASK-001 is QA PASSED
+- M9 is not Documentation Memory PASSED
+- M9 is not LOCKED
+- Director LOCKED is not recorded for M9
+- Next action: return to Director for PR #11 merge / M9 lock decision
+
+Related docs:
+
+- `docs/START_HERE.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/milestones/M9_STARTUP_FLOW_SESSION_ENTRY_POLISH.md`
