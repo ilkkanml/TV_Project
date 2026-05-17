@@ -2,37 +2,15 @@
 
 ## Current Handoff
 
-`M9 Startup Flow & Session Entry Polish`
-
-Status: ACTIVE
+No active task
 
 ## Current Task
 
-`M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
-
-Status: QA PASSED
-
-## Task Evidence
-
-- PR #11 exists
-- PR #11 merge status: NOT MERGED / awaiting Director decision
-- Changed files:
-  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #135 success
-- Runtime Evidence: Developer runtime evidence accepted
-- QA Result: PASS
-- Blockers: none
-- Regression risk: none
-- Protected systems clear
-- Legal/compliance clear
-
-## Required Next Action
-
-Return to Director for PR #11 merge / M9 lock decision.
+None
 
 ## Last Locked Milestone
 
-`M8 TV Navigation & Access Polish`
+`M9 Startup Flow & Session Entry Polish`
 
 Status: LOCKED
 
@@ -40,9 +18,11 @@ Director LOCKED: YES
 
 Lock evidence:
 
-- PR #10 merged to main
-- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
-- Build Evidence: Android Build Verification #109 success
+- PR #11 merged to main
+- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
+- Changed file:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #144 success
 - Runtime Evidence: accepted
 - QA Result: PASS
 - Documentation Memory: PASSED
@@ -50,21 +30,17 @@ Lock evidence:
 - Regression risk: none
 - Protected systems clear
 - Legal/compliance clear
-- Splash cleanup: excluded from delivered scope
 
-## M9 Status Boundaries
+## Required Next Action
 
-- M9 is ACTIVE
-- M9-TASK-001 is QA PASSED
-- M9 is not Documentation Memory PASSED
-- M9 is not LOCKED
-- Director LOCKED is not recorded for M9
-- PR #11 is not recorded as merged
+No active task.
+
+Do not open M10 unless Director receives explicit user instruction.
 
 ## Guardrails
 
-- Protected systems rewrite forbidden
-- Legal/compliance boundary preserved
+- Protected systems rewrite remains forbidden
+- Legal/compliance boundary must remain preserved
 - No auth system rewrite
 - No session persistence expansion
 - No secure storage implementation
