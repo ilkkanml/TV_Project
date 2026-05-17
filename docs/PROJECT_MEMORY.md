@@ -16,7 +16,7 @@ https://github.com/ilkkanml/TV_Project.git
 
 ## Product Type
 
-Premium subscription-based Android TV / Fire TV IPTV player application.
+Premium subscription-based Android TV / Fire TV player application.
 
 ## Core Rule
 
@@ -44,67 +44,12 @@ Core decisions:
 - App owns device identity creation, backend registration, license/subscription check, playlist/profile management, encrypted local playlist profile storage, and player access when license is valid.
 - MAC address is not the primary device ID.
 - Primary ID is `app_generated_device_id`.
-- Android ID, model, platform, app version, and install metadata are secondary signals.
 - Default playlist source of truth is device local encrypted storage.
 - Backend is not the default source of truth for user playlist profiles.
 - Web panel may optionally transfer a playlist/profile to a selected device.
 - Longer cloud sync requires explicit user consent.
 - App should support multi-profile playlist management.
 - Initial source direction: M3U URL and Xtream Codes; Portal and Local/JSON later if approved.
-- License checks should happen on app launch, before player access, and during active use at intervals.
-- Offline tolerance direction: 6 hours soft grace, 24 hours maximum hard limit after previous valid license check.
-- API format direction: JSON responses and Bearer token.
-
-## Primary Platforms
-
-- Android TV
-- Fire TV
-
-Future platforms:
-
-- Samsung Tizen
-- LG webOS
-- Apple tvOS
-
-## Brand Direction
-
-- Futuristic
-- Cinematic
-- Premium
-- Dark metallic
-- Deep neon cyan accent
-- Electric blue secondary accent
-
-## UX Direction
-
-- Netflix-like familiarity
-- IPTV practicality
-- Large cinematic posters
-- Remote-first navigation
-- Dynamic blurred artwork background
-- Scale plus glow focus behavior
-- Premium cinematic transitions
-- Calm, clean, high-end TV experience
-
-## Locked Product Decisions
-
-- Brand: Nexora TV
-- Package direction: `com.nexora.tv`
-- Platform priority: Android TV / Fire TV
-- Homepage hero: auto-sliding featured content
-- Hero timing: 8 seconds
-- First home row: Continue Watching
-- Poster style: large cinematic posters
-- Live TV layout: Netflix-like poster rows
-- Live TV playback: instant fullscreen
-- Movies and Series playback: detail page before playback
-- Live TV transition: ultra fast hard cut
-- VOD transition: smooth fade
-- Player overlay timeout: 5 seconds
-- Splash style: cinematic animated
-- Homepage background: dynamic blurred artwork
-- Focus effect: scale plus glow
-- Detail preview: muted autoplay preview
 
 ## Safe Code Engine
 
@@ -121,6 +66,15 @@ Rule:
 - Documentation Memory must record build/runtime evidence state.
 - Missing evidence keeps the task BLOCKED.
 
+## Window Transition Rule
+
+Current window transition rule:
+
+- Do not move to a new chat window right now.
+- Continue M7 in the current window.
+- After every future milestone is fully locked, Director must tell the user: `Yeni pencereye geçmek güvenli.`
+- Each new milestone after that should start in a new chat window unless the user cancels it.
+
 ## Current Milestone Truth
 
 ### M1 Foundation
@@ -135,77 +89,63 @@ Status: LOCKED
 
 Status: LOCKED
 
-M3 locked the safe runtime HomeScreen premium UI baseline.
-
 ### M4 Auth & Device Activation Foundation
 
 Status: LOCKED
-
-M4 locked the safe device activation foundation.
 
 ### M5 Content Library & Navigation Expansion
 
 Status: LOCKED
 
-Director LOCKED: YES
+### M6 Playlist Profile & Legal Source Input Foundation
+
+Status: LOCKED
 
 Lock evidence:
 
+- Build Evidence: PASSED
 - User Runtime Test: PASSED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-### M6 Playlist Profile & Legal Source Input Foundation
+### M7 Local Profile Persistence Foundation
 
 Status: ACTIVE
 
 Current task:
 
-`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
 Status:
 
-`BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
+`READY FOR DEVELOPER`
 
-M6 current blocker:
+M7 purpose:
 
-- Build compile evidence missing
-- Runtime render evidence missing
-- QA Tester result: FAIL until evidence is provided
-
-Required evidence:
-
-- Build command/result: `./gradlew :app:assembleDebug`
-- Runtime confirmation that profile screen renders
-- Legal notice visible
-- Empty/invalid/saved local shell states checked
-- Back/Home navigation remains safe
-
-M6 purpose:
-
-- user-managed playlist profile foundation
-- legal source input shell
-- M3U URL direction
-- Xtream Codes direction
-- local/mock-safe data flow
-- no bundled content
-- no real provider integration yet
+- safe local saved profile shell foundation
+- saved profiles list shell
+- active/selected profile state shell
+- minimal add/edit/delete shell behavior
+- preserve M6 profile input shell
+- local/mock-safe flow only
+- no production connection
+- no unsafe sensitive-data persistence
 
 ## Current Active Work
 
 Active milestone:
 
-`M6 Playlist Profile & Legal Source Input Foundation`
+`M7 Local Profile Persistence Foundation`
 
 Active task:
 
-`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
 Current task status:
 
-`BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
+`READY FOR DEVELOPER`
 
 ## Current Code Reality
 
@@ -222,7 +162,7 @@ Current repository contains:
 - Safe Player shell fallback
 - GitHub Actions Android build verification workflow
 - Nexora color/theme foundation
-- Playlist profile model/screen shell added for M6
+- Playlist profile model/screen shell from M6
 - Playlist profile route wired in app navigation
 
 ## Minimal Agent Workflow
@@ -247,6 +187,8 @@ No large department structure unless explicitly requested.
 - Do not restart planning
 - Do not recreate milestones
 - Keep docs updated so new chats can continue
+- Notify the user when it is safe to switch to a new chat window after milestone lock
+- Start each new future milestone in a new chat window unless user cancels it
 
 ## Important Instruction For Future ChatGPT Sessions
 
