@@ -4,7 +4,7 @@
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `READY FOR QA RETRY`
+Status: `QA PASSED — READY FOR DIRECTOR PR/LOCK DECISION`
 
 ## Current Active Milestone
 
@@ -16,7 +16,7 @@ Status: ACTIVE
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `READY FOR QA RETRY`
+Status: `QA PASSED — READY FOR DIRECTOR PR/LOCK DECISION`
 
 ## Last Locked Milestone
 
@@ -26,7 +26,7 @@ Status: `LOCKED`
 
 ## Required Next Action
 
-Director sends `M8-TASK-001` back to QA Tester for retry.
+Return to Director for PR #10 review/merge and M8 lock decision.
 
 ## Guardrails
 
