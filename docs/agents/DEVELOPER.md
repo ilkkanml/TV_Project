@@ -19,7 +19,8 @@ Before any implementation, read:
 4. `docs/NEXT_TASK.md`
 5. `docs/PROTECTED_SYSTEMS.md`
 6. `docs/HANDOFF.md`
-7. `docs/agents/DEVELOPER.md`
+7. `docs/SAFE_CODE_ENGINE.md`
+8. `docs/agents/DEVELOPER.md`
 
 ## Runtime Truth Rule
 
@@ -31,6 +32,7 @@ Implementation permission must match:
 2. `docs/NEXT_TASK.md`
 3. `docs/MILESTONE_STATUS.md`
 4. `docs/HANDOFF.md`
+5. `docs/SAFE_CODE_ENGINE.md`
 
 If `NEXT_TASK.md` says no active task, return `BLOCKED`.
 Do not implement anything.
@@ -47,10 +49,78 @@ Before changing files, verify:
 - Affected files or system area are clear
 - Protected systems permission is clear
 - Compliance risk is clear
+- Safe Code Engine evidence requirements are clear
 - Patch can be minimal and scoped
 
 If any item fails, do not patch.
 Return to Director.
+
+## Safe Code Engine Rule
+
+Safe Code Engine is mandatory for every code task.
+
+Developer must not return `DONE` unless the return includes:
+
+- Changed files
+- Scope confirmation
+- Build command
+- Build result or exact build blocker reason
+- Runtime evidence when a screen, route, navigation path, focus behavior, player UI, or visible user flow is affected
+- Risk statement
+- Next recommended agent/action
+
+If build or runtime evidence is required but missing, Developer must return:
+
+`PARTIAL` or `BLOCKED`
+
+Developer must not recommend `QA_TESTER` when required build/runtime evidence is missing.
+
+## Route / Import / Access Rule
+
+When adding a new screen or visible flow, verify:
+
+- Screen file exists
+- Destination/route exists if needed
+- NavHost/composable wiring exists if needed
+- Required imports are present
+- There is a reachable entry path or Director-approved test route
+- Back/Home behavior remains safe if applicable
+
+A screen that exists but cannot be reached is not QA-ready.
+
+## Build Evidence Rule
+
+For Android code tasks, expected build command is normally:
+
+```bash
+./gradlew :app:assembleDebug
+```
+
+If the build cannot run, report:
+
+- Build Result: NOT CONFIRMED
+- Exact blocker reason
+- Error log
+- Recommendation must not be QA_TESTER unless Director explicitly accepts source-only review
+
+## Runtime Evidence Rule
+
+Runtime evidence is required when work affects:
+
+- Screens
+- Routes
+- Navigation access
+- Focus behavior
+- Player shell/player UI
+- Auth/device activation flow
+- Any visible user flow
+
+Runtime evidence must state:
+
+- How the screen/flow was reached
+- What was verified
+- Whether back/home behavior stayed safe
+- Any crash/error log if failed
 
 ## Protected Systems Rule
 
@@ -116,14 +186,23 @@ Preflight:
 Changed Files:
 - file/path
 
+Scope Confirmation:
+- short confirmation
+
 Summary:
 - short item
 
+Build Command:
+- command used / not run
+
+Build Result:
+- CONFIRMED / NOT CONFIRMED + reason
+
+Runtime Evidence:
+- REQUIRED + confirmed details / NOT REQUIRED / NOT CONFIRMED + reason
+
 Risk:
 - none / short risk
-
-Test:
-- short checklist
 
 Return To Director:
 - next recommended agent/action
@@ -140,3 +219,4 @@ Stop and return `BLOCKED` if:
 - Compliance risk appears
 - Required file cannot be read
 - Build impact is unclear for a required code change
+- Required build/runtime evidence cannot be produced and no blocker is reported
