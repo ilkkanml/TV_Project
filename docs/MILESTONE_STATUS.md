@@ -2,19 +2,15 @@
 
 ## Current Active Milestone
 
-`M6 Playlist Profile & Legal Source Input Foundation`
-
-Status: `ACTIVE`
+None.
 
 ## Current Active Task
 
-`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
-
-Status: `USER RUNTIME PASSED — READY FOR QA`
+None.
 
 ## Last Locked Milestone
 
-`M5 Content Library & Navigation Expansion`
+`M6 Playlist Profile & Legal Source Input Foundation`
 
 Status: `LOCKED`
 
@@ -22,62 +18,59 @@ Director LOCKED: YES
 
 Lock evidence:
 
+- Build Evidence: PASSED
 - User Runtime Test: PASSED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## M6 Scope
+## M6 Locked Scope
 
-See:
+`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-- `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
+Status: `LOCKED`
 
-## M6-TASK-001 Result So Far
+Delivered:
 
-Director pre-QA review: PASSED FOR QA
+- Playlist profile model foundation
+- Playlist profile screen shell
+- Legal ownership notice
+- Supported local input direction shell
+- Empty / invalid / saved shell states
+- Additive navigation route
+- Mock/local-safe flow only
 
-Verified changed files:
+Changed files:
 
 - `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
 - `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
 - `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
 - `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
 
-## Build Evidence
+## M6 Evidence
 
-Status: PASSED
-
-Evidence:
+Build Evidence:
 
 - GitHub Actions: Android Build Verification #68
 - Job: Assemble debug APK
 - Conclusion: success
 - Build command: `gradle :app:assembleDebug --no-daemon --stacktrace`
 
-## User Runtime Evidence
+Runtime Evidence:
 
-Status: PASSED
-
-User reported:
-
-- App works without issue
+- User reported app works without issue
 - Mock play button works
 - Info screen appears
 
-## Previous QA Blockers
+QA Evidence:
 
-Resolved:
+- QA PASS recorded by Documentation Memory
+- Previous blockers resolved
 
-- `BUILD_COMPILE_EVIDENCE_MISSING`
-- `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
+Documentation Evidence:
 
-## Required Next Action
-
-Send `M6-TASK-001` to QA Tester.
-
-No new feature work is approved before QA.
+- Documentation Memory: PASS
 
 ## Completed / Locked
 
@@ -101,16 +94,24 @@ Status: `LOCKED`
 
 Status: `LOCKED`
 
+### M6 Playlist Profile & Legal Source Input Foundation
+
+Status: `LOCKED`
+
 ## Protection / Compliance Record
 
-Protected systems remain stable.
+Protected systems stable.
 
 M6 remains local/profile-shell foundation only.
 
-No production connection is approved yet.
+No production connection implemented.
 
-Legal/compliance risk: none detected in current evidence.
+No bundled source implemented.
+
+Legal/compliance risk: none detected.
 
 ## Next Status
 
-QA Tester review required.
+No active task.
+
+Wait for Director to open the next milestone/task.
