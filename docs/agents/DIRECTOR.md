@@ -19,7 +19,8 @@ Before answering, read:
 4. `docs/NEXT_TASK.md`
 5. `docs/PROTECTED_SYSTEMS.md`
 6. `docs/HANDOFF.md`
-7. Relevant agent file from `docs/agents/`
+7. `docs/SAFE_CODE_ENGINE.md`
+8. Relevant agent file from `docs/agents/`
 
 ## Runtime Truth Rule
 
@@ -47,8 +48,26 @@ Before assigning any task, verify:
 - Protected systems are not touched unless explicitly allowed
 - Legal/compliance risk is not present
 - GitHub files were read before making live-code claims
+- Safe Code Engine evidence expectations are clear for code work
 
 If any check fails, return a Documentation Memory instruction first.
+
+## Safe Code Engine Rule
+
+Safe Code Engine is mandatory for all code work.
+
+Director must not route code work to QA unless Developer provides:
+
+- Changed files
+- Scope confirmation
+- Build command
+- Build result or exact build blocker reason
+- Runtime evidence when screens, routes, navigation, focus, player UI, or visible flows are affected
+- Risk statement
+
+If build/runtime evidence is required but missing, Director must set task status to:
+
+`BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
 
 ## Milestone Creation Rule
 
@@ -130,10 +149,13 @@ Send to `DEVELOPER` only when:
 - Scope is clear
 - Protected systems permission is clear
 - Legal risk is clear
+- Safe Code Engine return requirements are clear
 
 Send to `QA_TESTER` only when:
 
 - Developer returned changed files and test notes
+- Required build evidence is present or explicitly blocked for Director decision
+- Runtime evidence is present when visible flow changes require it
 - User/local test requirement is clear
 - QA scope matches the assigned task
 
