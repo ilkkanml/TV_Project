@@ -10,7 +10,7 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `READY FOR QA`
+Status: `QA FAILED — DEVELOPER BUILD/RUNTIME EVIDENCE REQUIRED`
 
 ## Last Locked Milestone
 
@@ -57,12 +57,32 @@ Verified changed files:
 - `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
 - `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
 
-Pre-QA result:
+## QA Result
 
-- Profile route exists.
-- NavHost route opens `PlaylistProfileScreen(navController)`.
-- Legal ownership boundary is visible.
-- Reviewed files stay local/mock-safe.
+Status: FAIL
+
+QA blockers:
+
+- `BUILD_COMPILE_EVIDENCE_MISSING`
+- `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
+
+QA note:
+
+- Code risk is low because changes are additive and local/mock-safe.
+- QA cannot pass without build compile evidence and runtime render confirmation.
+
+## Required Next Action
+
+Return to Developer for evidence only.
+
+Developer must provide:
+
+- Build command used
+- Build result
+- Runtime render confirmation for profile screen
+- Any error logs if build or render fails
+
+No new feature work is approved.
 
 ## Completed / Locked
 
@@ -100,4 +120,4 @@ Legal/compliance risk: controlled by scope.
 
 ## Next Status
 
-Send `M6-TASK-001` to QA Tester.
+Send `M6-TASK-001` back to Developer for build/runtime evidence.
