@@ -10,7 +10,7 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `QA FAILED — DEVELOPER BUILD/RUNTIME EVIDENCE REQUIRED`
+Status: `USER RUNTIME PASSED — READY FOR QA`
 
 ## Last Locked Milestone
 
@@ -34,21 +34,9 @@ See:
 
 - `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
 
-## M6-TASK-001 Goal
+## M6-TASK-001 Result So Far
 
-Create a safe foundation for user-provided profile setup.
-
-Expected result:
-
-- User can reach a profile/source input shell
-- User can see legal ownership notice
-- User can choose supported input direction
-- Data flow remains local/mock-safe unless explicitly approved later
-- No live service connection is implemented in this task
-
-## Director Pre-QA Review
-
-Status: PASSED FOR QA
+Director pre-QA review: PASSED FOR QA
 
 Verified changed files:
 
@@ -57,32 +45,39 @@ Verified changed files:
 - `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
 - `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
 
-## QA Result
+## Build Evidence
 
-Status: FAIL
+Status: PASSED
 
-QA blockers:
+Evidence:
+
+- GitHub Actions: Android Build Verification #68
+- Job: Assemble debug APK
+- Conclusion: success
+- Build command: `gradle :app:assembleDebug --no-daemon --stacktrace`
+
+## User Runtime Evidence
+
+Status: PASSED
+
+User reported:
+
+- App works without issue
+- Mock play button works
+- Info screen appears
+
+## Previous QA Blockers
+
+Resolved:
 
 - `BUILD_COMPILE_EVIDENCE_MISSING`
 - `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
 
-QA note:
-
-- Code risk is low because changes are additive and local/mock-safe.
-- QA cannot pass without build compile evidence and runtime render confirmation.
-
 ## Required Next Action
 
-Return to Developer for evidence only.
+Send `M6-TASK-001` to QA Tester.
 
-Developer must provide:
-
-- Build command used
-- Build result
-- Runtime render confirmation for profile screen
-- Any error logs if build or render fails
-
-No new feature work is approved.
+No new feature work is approved before QA.
 
 ## Completed / Locked
 
@@ -110,14 +105,12 @@ Status: `LOCKED`
 
 Protected systems remain stable.
 
-M6 is user-provided legal source input foundation only.
+M6 remains local/profile-shell foundation only.
 
-No bundled source is allowed.
+No production connection is approved yet.
 
-No live service connection is approved yet.
-
-Legal/compliance risk: controlled by scope.
+Legal/compliance risk: none detected in current evidence.
 
 ## Next Status
 
-Send `M6-TASK-001` back to Developer for build/runtime evidence.
+QA Tester review required.
