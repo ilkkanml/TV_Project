@@ -13,11 +13,8 @@
 - Director LOCKED: YES
 
 ### M3 Premium UI Expansion
-- User Test: PASSED
 - Final Android TV Runtime Test: PASSED
 - QA: PASSED
-- Sync/Re-compare: DONE
-- Main merge: DONE
 - Director LOCKED: YES
 - Protected systems untouched
 - Legal/compliance risk: none detected
@@ -26,11 +23,6 @@
 - User Test: PASSED
 - QA: PASSED
 - Director LOCKED: YES
-- Changed files:
-  - `app/src/main/java/com/nexora/tv/ui/screens/DeviceActivationScreen.kt`
-  - `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
-  - `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
-  - `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
 - Protected systems stable
 - Legal/compliance risk: none detected
 
@@ -42,31 +34,35 @@
 - M5-TASK-001 Content Library Model & Navigation Foundation: LOCKED
 - M5-TASK-002 Build Verification Infrastructure: QA PASSED
 - M5-TASK-005 Player Safe Shell Fallback: USER RUNTIME PASSED / QA ACCEPTED
-- Historical runtime tasks:
-  - M5-TASK-003 Player Runtime Crash Fix: PARTIAL
-  - M5-TASK-004 Player Launch Flow Fix: RUNTIME FAILED
+- Protected systems stable
+- Legal/compliance risk: none detected
+
+### M6 Playlist Profile & Legal Source Input Foundation
+- Build Evidence: PASSED
+- User Runtime Test: PASSED
+- QA: PASSED
+- Documentation Memory: PASSED
+- Director LOCKED: YES
+- M6-TASK-001 Playlist Profile Model & Legal Input Shell: LOCKED
 - Scope delivered:
-  - Safe mock/local content library foundation
-  - Live / Movies / Series navigation clarity
-  - Home to Detail route foundation
-  - Detail to Player safe shell route
-  - GitHub Actions Android build verification workflow
-- Runtime result:
-  - User retest PASSED
-  - Detail to Player safe shell opens
-  - Back navigation works
-- Guardrails preserved:
-  - Mock/local data only
-  - No backend integration implemented
-  - No provider/API integration implemented
-  - No payment implementation
-  - No production auth changes
-  - No protected system rewrite
-  - Legal/compliance risk: none detected
+  - Playlist profile model foundation
+  - Playlist profile screen shell
+  - Legal ownership notice
+  - Supported local input direction shell
+  - Empty / invalid / saved shell states
+  - Additive navigation route
+  - Mock/local-safe flow only
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
+  - `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
+  - `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
+  - `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
+- Protected systems stable
+- Legal/compliance risk: none detected
 
 ## Active Milestone
 
-### M6 Playlist Profile & Legal Source Input Foundation
+### M7 Local Profile Persistence Foundation
 
 Status: ACTIVE
 
@@ -74,28 +70,48 @@ Opened by Director after user request: `Yeni milestone aç`
 
 Milestone doc:
 
-- `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
+- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
 
 Active task:
 
-- `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+- `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
 Task status:
 
-- BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED
+- READY FOR DEVELOPER
 
 Scope direction:
 
-- User-managed playlist profile foundation
-- Legal ownership notice
-- M3U URL input shell
-- Xtream Codes input shell
-- Local/mock-safe data flow
-- No bundled playlist
-- No real provider/API integration yet
+- Saved local profile shell foundation
+- Saved profiles list shell
+- Active/selected profile state shell
+- Minimal add/edit/delete shell behavior
+- Preserve M6 profile input shell
+- Local/mock-safe flow only
+- No production connection
+- No unsafe sensitive-data persistence
 - No protected system rewrite
 
-Safe Code Engine active: Developer cannot send task to QA without build/runtime evidence
+Safe Code Engine active: Developer must return build/runtime evidence before QA.
+
+## Process Decisions Added
+
+### Safe Code Engine
+- Added: `docs/SAFE_CODE_ENGINE.md`
+- Recorded in: `docs/DECISION_LOG.md`
+- Applies to:
+  - Director
+  - Developer
+  - QA Tester
+  - Documentation Memory
+- Rule:
+  - No code task can move forward without required build/runtime evidence.
+
+### Window Transition Rule
+- New chat transition is currently cancelled.
+- Continue M7 in the current window.
+- After every future milestone lock, Director must tell user: `Yeni pencereye geçmek güvenli.`
+- Each new future milestone should start in a new chat window unless user cancels it.
 
 ## Architecture Decisions Added
 
@@ -123,4 +139,4 @@ Safe Code Engine active: Developer cannot send task to QA without build/runtime 
 
 ## Next Step
 
-Provide real build/runtime evidence before QA can continue.
+Send `M7-TASK-001` to Developer.
