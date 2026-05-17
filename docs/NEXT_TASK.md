@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Active task ready for Developer.
+Ready for QA Tester.
 
 ## Current Active Milestone
 
@@ -14,100 +14,97 @@ Status: `ACTIVE`
 
 `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
-Status: `READY FOR DEVELOPER`
+Status: `PR OPEN — CI PASSED — READY FOR QA`
+
+## Pull Request
+
+- PR: `#9 M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
+- Branch: `m7-local-profile-shell`
+- Base: `main`
+- Changed files: 2
+
+## Changed Files
+
+- `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
+- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
 
 ## Task Goal
 
 Create a safe foundation for saved local profile shell management without connecting to external services.
 
-## Developer Scope IN
+## Developer Result
 
-- Read current runtime docs first
-- Inspect M6 profile model and screen before changes
-- Preserve existing M6 profile input shell behavior
-- Add safe local profile repository direction
-- Add saved profiles list shell
-- Add active/selected profile state shell
-- Add minimal add/edit/delete shell behavior
-- Keep flow local/mock-safe
-- Keep legal ownership notice visible
-- Keep changes additive and minimal
-- Follow Safe Code Engine
+Developer reported:
 
-## Developer Scope OUT
+- M6 profile input shell preserved
+- Saved profiles list shell added
+- Active/selected profile state added
+- Minimal add/edit/delete shell behavior added
+- Flow remains local/mock-safe
+- Sensitive values are not persisted
+- Protected systems unchanged
 
-- No bundled content/source
-- No live provider connection
-- No profile fetch/parsing
-- No backend integration
-- No cloud sync
-- No payment changes
-- No player core changes
-- No auth changes
-- No hidden API work
+## Build Evidence
+
+Status: PASSED
+
+Evidence:
+
+- GitHub Actions: Android Build Verification #81
+- Job: Assemble debug APK
+- Conclusion: success
+
+## Runtime Evidence
+
+Status: PASSED BY DEVELOPER REPORT
+
+Reported:
+
+- PlaylistProfileScreen opens
+- Saved profiles list works
+- Add/edit/delete/select shell behavior works
+- Home/back navigation remains safe
+
+## QA Scope
+
+QA Tester should verify:
+
+- PR #9 changed files match M7 scope
+- LocalProfileRepository is session-local/mock-safe
+- Sensitive values are not persisted
+- M6 input shell behavior is preserved
+- Saved profiles list shell works conceptually
+- Active/select behavior is safe
+- Edit/delete shell behavior is safe
 - No protected system rewrite
-- No production release behavior
+- No production connection
+- No compliance risk
+- Build evidence is present
+- Runtime evidence is present by Developer report
 
-## Sensitive Data Rule
+## QA Return Required
 
-Do not introduce unsafe plain-text persistence for sensitive profile fields.
-
-If secure local storage already exists, report whether it can be reused safely.
-
-If secure storage is not already available, keep sensitive values mock/in-memory or ask Director for a decision before persistence.
-
-## Protected Systems Permission
-
-Protected systems are not approved for structural changes.
-
-Allowed:
-
-- Minimal additive screen/route entry only if required
-- Existing component/style reuse
-- Existing navigation pattern reuse
-
-Not allowed:
-
-- Playback Core rewrite
-- Auth System rewrite
-- Hidden Backend API changes
-- TV Navigation System rewrite
-- Compose TV Design System rewrite
-- Premium Cinematic UX rewrite
-
-## Safe Code Engine Requirement
-
-Developer must return:
+Return to Director with:
 
 ```text
-Result:
-DONE / PARTIAL / BLOCKED
+QA Result:
+PASS / FAIL
 
-Preflight:
-- active task confirmed / blocked reason
-
-Changed Files:
+Checked Files:
 - ...
 
-Scope Confirmation:
+Build Evidence:
 - ...
-
-Build Command:
-- ...
-
-Build Result:
-- CONFIRMED / NOT CONFIRMED + reason
 
 Runtime Evidence:
-- REQUIRED + confirmed details / NOT REQUIRED / NOT CONFIRMED + reason
-
-Risk:
 - ...
 
-Return To Director:
-- QA_TESTER or DIRECTOR
+Blockers:
+- ...
+
+Regression Risk:
+- ...
+
+Recommendation:
+DOCUMENTATION_MEMORY or DEVELOPER
 ```
-
-## Required Next Action
-
-Send this task to Developer.
