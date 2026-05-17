@@ -175,11 +175,11 @@ It is not a new agent or department. It is a required quality gate used by Direc
 
 Impact:
 
-- Developer cannot return code work as DONE without build evidence or an exact blocker reason.
-- Developer cannot recommend QA when required build/runtime evidence is missing.
-- QA cannot PASS code work without required build/runtime evidence.
-- Documentation Memory must record build/runtime evidence state and preserve BLOCKED status when evidence is missing.
-- Tasks affecting screens, routes, navigation, focus, player UI, or visible user flows require runtime evidence.
+- Developer cannot return code work as DONE without build evidence or an exact blocker reason
+- Developer cannot recommend QA when required build/runtime evidence is missing
+- QA cannot PASS code work without required build/runtime evidence
+- Documentation Memory must record build/runtime evidence state and preserve BLOCKED status when evidence is missing
+- Tasks affecting screens, routes, navigation, focus, player UI, or visible user flows require runtime evidence
 
 Related docs:
 
@@ -224,3 +224,28 @@ Related docs:
 - `docs/PROJECT_MEMORY.md`
 - `docs/CHANGELOG.md`
 - `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
+
+---
+
+## DECISION-009 — M8 Opened
+
+Status: `APPROVED / ACTIVE`
+
+Summary:
+
+M8 TV Navigation & Access Polish milestone opened by Director.
+
+Impact:
+
+- Current Active Milestone: M8 TV Navigation & Access Polish
+- Current Active Task: M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
+- Safe to send task to Developer
+
+Related docs:
+
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/milestones/M8_TV_NAVIGATION_ACCESS_POLISH.md`
