@@ -10,21 +10,25 @@ Status: ACTIVE
 
 `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: QA PASSED
+
+## Task Evidence
+
+- PR #11 exists
+- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #135 success
+- Runtime Evidence: Developer runtime evidence accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
 
 ## Required Next Action
 
-Send `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish` to Developer.
-
-## Developer Scope
-
-- Patch Splash → Login navigation so Splash is removed from back stack
-- Confirm Login → Home behavior remains safe
-- Confirm Home back behavior does not expose Splash
-- Keep changes minimal/additive
-- Do not touch playback/provider/backend/storage systems
-- Build must pass
-- Runtime evidence required
+Return to Director for PR #11 merge / M9 lock decision.
 
 ## Last Locked Milestone
 
@@ -51,10 +55,11 @@ Lock evidence:
 ## M9 Status Boundaries
 
 - M9 is ACTIVE
-- M9-TASK-001 is READY FOR DEVELOPER
-- M9 is not QA PASSED
+- M9-TASK-001 is QA PASSED
 - M9 is not Documentation Memory PASSED
 - M9 is not LOCKED
+- Director LOCKED is not recorded for M9
+- PR #11 is not recorded as merged
 
 ## Guardrails
 
