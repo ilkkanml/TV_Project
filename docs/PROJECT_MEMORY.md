@@ -109,18 +109,24 @@ Lock evidence:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Current Active Work
+### M8 TV Navigation & Access Polish
 
-No active milestone.
+Status: ACTIVE
 
-No active task.
+Current task:
+
+`M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
+
+Status:
+
+`READY FOR DEVELOPER`
 
 ## Current Code Reality
 
-- LocalProfileRepository.kt and PlaylistProfileScreen.kt delivered
-- M6 profile input shell preserved
-- Local/mock-safe flow maintained
-- Sensitive values not stored
+- Local profile repo, screens preserved
+- Existing navigation patterns reused
+- Minimal additive changes
+- Safe Code Engine required for M8
 
 ## Minimal Agent Workflow
 
