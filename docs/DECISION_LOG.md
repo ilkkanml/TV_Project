@@ -4,7 +4,7 @@
 
 This file records approved Director-level project decisions.
 
-Chat history is not the source of truth. Repository docs are the source of truth.
+Chat history is disposable. Repository docs are the source of truth.
 
 ## Decision Format
 
@@ -184,11 +184,43 @@ Impact:
 Related docs:
 
 - `docs/SAFE_CODE_ENGINE.md`
-- `docs/agents/DIRECTOR.md`
-- `docs/agents/DEVELOPER.md`
-- `docs/agents/QA_TESTER.md`
-- `docs/agents/DOCUMENTATION_MEMORY.md`
+- `docs/agents/DIRECTATION_MEMORY.md`
 - `docs/START_HERE.md`
 - `docs/PROJECT_MEMORY.md`
 - `docs/HANDOFF.md`
 - `docs/CHANGELOG.md`
+
+---
+
+## DECISION-008 — M7 Lock Decision
+
+Status: `APPROVED / LOCKED`
+
+Summary:
+
+M7 Local Profile Persistence Foundation milestone is now locked by Director.
+
+Lock evidence:
+
+- PR #9 merged to main
+- Build Evidence: PASSED
+- Runtime Evidence: CONFIRMED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
+
+Impact:
+
+- No active milestone remains
+- No active task remains
+- Safe to switch to new milestone/chat window
+
+Related docs:
+
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
