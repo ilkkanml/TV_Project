@@ -2,11 +2,7 @@
 
 ## Current Status
 
-Partially unblocked.
-
-Build evidence is confirmed by GitHub Actions.
-
-Runtime evidence is still required before QA can PASS.
+Ready for QA Tester.
 
 ## Current Active Milestone
 
@@ -18,50 +14,65 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `BUILD PASSED — RUNTIME EVIDENCE REQUIRED`
-
-## QA Result
-
-Previous QA Result: FAIL
-
-Remaining blocker:
-
-- `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
-
-Resolved blocker:
-
-- `BUILD_COMPILE_EVIDENCE_MISSING` resolved by GitHub Actions run #68
+Status: `USER RUNTIME PASSED — READY FOR QA`
 
 ## Build Evidence
 
-Confirmed by GitHub Actions:
+Status: PASSED
 
-- Workflow: Android Build Verification #68
+Evidence:
+
+- GitHub Actions: Android Build Verification #68
 - Job: Assemble debug APK
 - Conclusion: success
-- Command in workflow: `gradle :app:assembleDebug --no-daemon --stacktrace`
-- Artifact count shown: 1
+- Build command: `gradle :app:assembleDebug --no-daemon --stacktrace`
 
-## Runtime Evidence
+## User Runtime Evidence
 
-Runtime evidence remains NOT CONFIRMED by emulator/device.
+Status: PASSED
 
-Required runtime confirmation:
+User reported:
 
-- app launches
-- route opens profile screen
-- legal notice visible
-- empty/invalid/saved state behavior works
-- back/home navigation safe
+- App works without issue
+- Mock play button works
+- Info screen appears
+
+## Previous QA Blockers
+
+Resolved:
+
+- `BUILD_COMPILE_EVIDENCE_MISSING`
+- `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
 
 ## Required Next Action
 
-Run app on Android Studio emulator, Android TV emulator, Fire TV, or Android TV device and confirm runtime behavior.
+Send `M6-TASK-001` back to QA Tester.
 
-## No New Feature Work
+No new feature work is approved before QA.
 
-Do not add new features until runtime evidence is cleared.
+## QA Return Required
 
-## QA Return Required After Runtime Evidence
+Return to Director with:
 
-Return to QA Tester only after runtime evidence is available.
+```text
+QA Result:
+PASS / FAIL
+
+Checked Files:
+- ...
+
+Build Evidence:
+- ...
+
+Runtime Evidence:
+- ...
+
+Blockers:
+- ...
+
+Regression Risk:
+- ...
+
+Recommendation:
+DOCUMENTATION_MEMORY or DEVELOPER
+```
