@@ -10,7 +10,7 @@ Status: `ACTIVE`
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `READY FOR QA RETRY`
+Status: `QA PASSED — READY FOR DIRECTOR PR/LOCK DECISION`
 
 ## Last Locked Milestone
 
@@ -21,10 +21,15 @@ Status: `LOCKED`
 Evidence:
 
 - PR #10 exists
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
+  - `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
 - Build Evidence: Android Build Verification #109 success
 - Developer result: DONE
-- Developer runtime evidence: provided
-- Previous QA result: BLOCKED due documentation conflict
+- Developer runtime evidence: accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
 - Documentation conflict cleanup: completed
 - Protected systems clear
 - Legal/compliance clear
@@ -37,9 +42,9 @@ See:
 
 ## Required Next Action
 
-Director sends `M8-TASK-001` back to QA Tester for retry.
+Return to Director for PR #10 review/merge and M8 lock decision.
 
-Do not mark M8 passed or locked before QA retry and Director decision.
+Do not mark M8 LOCKED before Director decision.
 
 ## Completed / Locked
 
