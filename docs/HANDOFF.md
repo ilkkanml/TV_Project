@@ -6,7 +6,7 @@
 
 Task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
+Status: `READY FOR QA RETRY`
 
 ## Last Locked Milestone
 
@@ -22,9 +22,8 @@ Lock evidence:
 - Build Evidence: Android Build Verification #109 success
 - Developer result: DONE
 - Developer runtime evidence: provided
-- QA code/regression risk: none found
-- QA final result: BLOCKED, not PASS
-- Documentation Memory: pending
+- Previous QA result: BLOCKED due documentation conflict
+- Documentation conflict cleanup: completed
 - Protected systems stable
 - Legal/compliance risk: clear
 
@@ -40,3 +39,7 @@ Lock evidence:
 - Safe Code Engine required.
 - Build evidence required.
 - Runtime evidence required because screens/navigation are affected.
+
+## Required Next Action
+
+Director sends `M8-TASK-001` back to QA Tester for retry.
