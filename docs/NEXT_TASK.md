@@ -2,94 +2,68 @@
 
 ## Current Status
 
-Ready for Documentation Memory.
+No active tasks.
 
 ## Current Active Milestone
 
-`M7 Local Profile Persistence Foundation`
-
-Status: `ACTIVE`
+None.
 
 ## Current Active Task
 
+None.
+
+## Last Locked Milestone
+
+`M7 Local Profile Persistence Foundation`
+
+Status: `LOCKED`
+
+## M7 Lock Record
+
 `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
-Status: `QA PASSED — READY FOR DOCUMENTATION MEMORY`
+Status: `LOCKED`
 
-## Pull Request
+Pull Request:
 
-- PR: `#9 M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-- Branch: `m7-local-profile-shell`
-- Base: `main`
-- Changed files: 2
+- PR #9 merged to main
 
-## Changed Files
+Evidence:
+
+- Build Evidence: PASSED
+- Runtime Evidence: CONFIRMED
+- QA Tester: PASSED
+- Documentation Memory: PASSED
+- Protected systems stable
+- Legal/compliance risk: none detected
+
+Delivered scope:
+
+- Local profile repository shell
+- Saved profiles list shell
+- Active/selected profile state shell
+- Minimal local add/edit/delete shell behavior
+- M6 profile input shell preserved
+- Session-local/mock-safe flow
+- Sensitive values not stored
+
+Changed files:
 
 - `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
 - `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
 
-## Build Evidence
-
-Status: PASSED
-
-Evidence:
-
-- GitHub Actions: Android Build Verification #81
-- Job: Assemble debug APK
-- Conclusion: success
-
-## Runtime Evidence
-
-Status: CONFIRMED
-
-Evidence:
-
-- Developer runtime report confirmed screen/shell behavior
-- QA accepted runtime evidence
-
-## QA Result
-
-Status: PASS
-
-QA checked:
-
-- LocalProfileRepository.kt
-- PlaylistProfileScreen.kt
-
-QA blockers:
-
-- none
-
-QA risk:
-
-- none
-
 ## Required Next Action
 
-Send `M7-TASK-001` to Documentation Memory.
+No active task.
 
-No Director lock before Documentation Memory records the result.
+Director may open the next milestone only after explicit user instruction.
 
-## Documentation Memory Return Required
+It is safe to switch to a new chat window before opening the next milestone.
 
-Return to Director with:
+## Guardrails
 
-```text
-Documentation Result:
-PASS / FAIL
-
-Updated Files:
-- ...
-
-Recorded:
-- ...
-
-Issues:
-- ...
-
-Risk:
-- ...
-
-Recommendation:
-DIRECTOR
-```
+- Do not create a new milestone unless the user explicitly says: `Yeni milestone aç`.
+- Do not create a new task without Director instruction.
+- Do not modify protected systems.
+- Do not modify app code from Documentation Memory.
+- Keep legal/compliance boundary preserved.
