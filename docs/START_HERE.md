@@ -25,39 +25,35 @@ Read first:
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: `M9 Startup Flow & Session Entry Polish`
-- Current active task: `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
-- M9 status: ACTIVE
-- M9-TASK-001 status: QA PASSED
-- PR #11 exists
-- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: `M9 Startup Flow & Session Entry Polish`
+- M9 status: LOCKED
+- M9-TASK-001 status: PASSED / COMPLETED
+- PR #11 merged to main
+- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
 - Changed files:
   - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #135 success
-- Runtime Evidence: Developer runtime evidence accepted
+- Build Evidence: Android Build Verification #144 success
+- Runtime Evidence: accepted
 - QA Result: PASS
+- Documentation Memory: PASSED
+- Director LOCKED: YES
 - Blockers: none
 - Regression risk: none
 - Protected systems clear
 - Legal/compliance clear
-- Last locked milestone: `M8 TV Navigation & Access Polish`
+- Previous locked milestone: `M8 TV Navigation & Access Polish`
 - M8 status: LOCKED
-- M8-TASK-001 status: PASSED / COMPLETED
-- M8 PR #10 merged to main
-- M8 merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
 
 ## M9 Scope Summary
 
-M9 cleans startup/navigation entry behavior after M8, especially the previously excluded Splash cleanup, while keeping auth/session behavior mock-safe and additive.
+M9 cleaned startup/navigation entry behavior after M8, especially the previously excluded Splash cleanup, while keeping auth/session behavior mock-safe and additive.
 
-M9 does not approve real auth/session implementation, backend integration, provider connection, playlist fetching/parsing, playback changes, payment/subscription work, protected system rewrite, or UI redesign.
+M9 did not approve real auth/session implementation, backend integration, provider connection, playlist fetching/parsing, playback changes, payment/subscription work, protected system rewrite, or UI redesign.
 
 ## Required Next Action
 
-Return to Director for PR #11 merge / M9 lock decision.
+No active task.
 
-M9 is not LOCKED.
-
-Director LOCKED is not recorded for M9.
-
-M9 Documentation Memory PASSED is not recorded.
+Do not open M10 unless Director receives explicit user instruction.
