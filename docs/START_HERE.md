@@ -25,33 +25,29 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: `M6 Playlist Profile & Legal Source Input Foundation`
-- Current active task: `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
-- Current task status: `QA PASSED — READY FOR DIRECTOR REVIEW`
-- Last locked milestone: `M5 Content Library & Navigation Expansion`
+- Current active milestone: `M7 Local Profile Persistence Foundation`
+- Current active task: `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
+- Current task status: `READY FOR DEVELOPER`
+- Last locked milestone: `M6 Playlist Profile & Legal Source Input Foundation`
 - Current workflow: minimal Director-led handoff with Safe Code Engine
-- Next status: Director review for M6-TASK-001 / M6 lock decision
+- Next status: send M7-TASK-001 to Developer
+
+## Current M7 Status
+
+- `M7 Local Profile Persistence Foundation`: ACTIVE
+- `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`: READY FOR DEVELOPER
+- Goal: safe local saved profile shell foundation
+- Must preserve M6 profile input shell behavior
+- Must keep profile flow local/mock-safe
+- No production connection is approved
+- No unsafe sensitive-data persistence is approved
+- Safe Code Engine evidence is required before QA
 
 ## Current M6 Status
 
-- `M6 Playlist Profile & Legal Source Input Foundation`: ACTIVE
-- `M6-TASK-001 Playlist Profile Model & Legal Input Shell`: QA PASSED
-- Build passed: GitHub Actions Android Build Verification #68
-- Runtime evidence: CONFIRMED
-- App launches
-- PlaylistProfileScreen renders
-- Legal ownership notice visible
-- Empty / Invalid / Saved shell states work
-- Back/Home navigation safe
-- Existing Splash/Login/Activation/Home/Detail/Player routes intact
-- Protected systems stable
-- No illegal content or provider integration
-- M6 is not locked yet.
-
-## Current M5 Status
-
-- `M5 Content Library & Navigation Expansion`: LOCKED
+- `M6 Playlist Profile & Legal Source Input Foundation`: LOCKED
 - Director LOCKED: YES
+- Build Evidence: PASSED
 - User Runtime Test: PASSED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
@@ -90,6 +86,13 @@ Rules:
 - Documentation Memory cannot record completion without the evidence chain.
 - Missing evidence keeps the task BLOCKED.
 
+## Window Transition Rule
+
+- Do not move to a new chat window right now.
+- Continue M7 in the current window.
+- After every future milestone is fully locked, Director must tell the user: `Yeni pencereye geçmek güvenli.`
+- Each new milestone after that should start in a new chat window unless the user cancels it.
+
 ## Locked Milestones
 
 - M1 Foundation: `LOCKED`
@@ -97,6 +100,7 @@ Rules:
 - M3 Premium UI Expansion: `LOCKED`
 - M4 Auth & Device Activation Foundation: `LOCKED`
 - M5 Content Library & Navigation Expansion: `LOCKED`
+- M6 Playlist Profile & Legal Source Input Foundation: `LOCKED`
 
 ## Hard Rules
 
@@ -108,7 +112,7 @@ Rules:
 - Do not write long explanations.
 - Do not claim live code facts without reading repo files.
 - Do not modify protected systems unless `NEXT_TASK.md` explicitly allows it.
-- Do not implement illegal streams, DRM bypass, token/cookie theft, credential bypass, or unauthorized scraping.
+- Do not implement prohibited streams, DRM bypass, token/cookie theft, credential bypass, or unauthorized scraping.
 
 ## Minimal Agent System
 
