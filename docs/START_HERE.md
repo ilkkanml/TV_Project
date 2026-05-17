@@ -25,28 +25,26 @@ Read first:
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: `M8 TV Navigation & Access Polish`
-- Current active task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
-- Current task status: `QA PASSED — READY FOR DIRECTOR PR/LOCK DECISION`
-- Last locked milestone: `M7 Local Profile Persistence Foundation`
-- PR: `#10`
-- Changed files:
-  - `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
-  - `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: `M8 TV Navigation & Access Polish`
+- M8 status: LOCKED
+- M8-TASK-001 status: PASSED / COMPLETED
+- PR #10 merged to main
+- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
 - Build Evidence: Android Build Verification #109 success
-- Developer result: DONE
-- Developer runtime evidence: accepted
+- Runtime Evidence: accepted
 - QA Result: PASS
+- Documentation Memory: PASSED
+- Director LOCKED: YES
 - Blockers: none
 - Regression risk: none
-- Documentation conflict cleanup: completed
-- M8 status: ACTIVE
-- M8 locked: NO
-- Director LOCKED: NO
 - Splash cleanup: excluded from delivered scope
 - Protected systems clear
 - Legal/compliance clear
 
 ## Required Next Action
 
-Return to Director for PR #10 review/merge and M8 lock decision.
+No active task.
+
+Do not open M9 unless Director receives explicit user instruction.
