@@ -65,10 +65,6 @@ Rule:
 - Documentation Memory must record build/runtime evidence state.
 - Missing evidence keeps the task BLOCKED.
 
-## Window Transition Rule
-
-- It is safe to switch to a new chat window for the next milestone.
-
 ## Current Milestone Truth
 
 ### M1 Foundation
@@ -99,32 +95,71 @@ Status: LOCKED
 
 Status: LOCKED
 
-Lock evidence:
-
-- Pull Request: #9 merged to main
-- Build Evidence: PASSED
-- Runtime Evidence: CONFIRMED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none detected
-
 ### M8 TV Navigation & Access Polish
 
 Status: LOCKED
 
-Current task:
+Task:
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
 Status: PASSED / COMPLETED
 
+Lock evidence:
+
+- PR #10 merged to main
+- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
+- Build Evidence: Android Build Verification #109 success
+- Runtime Evidence: accepted
+- QA Result: PASS
+- Documentation Memory: PASSED
+- Director LOCKED: YES
+- Splash cleanup excluded from delivered scope
+- Protected systems clear
+- Legal/compliance clear
+
+### M9 Startup Flow & Session Entry Polish
+
+Status: ACTIVE
+
+Current task:
+
+`M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
+
+Status: QA PASSED
+
+Evidence:
+
+- PR #11 exists
+- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #135 success
+- Runtime Evidence: Developer runtime evidence accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
+
+Current next action:
+
+Return to Director for PR #11 merge / M9 lock decision.
+
+M9 is not Documentation Memory PASSED.
+
+M9 is not LOCKED.
+
+Director LOCKED is not recorded for M9.
+
 ## Current Code Reality
 
-- Local profile repo, screens preserved
+- Local profile repo and screens preserved
 - Existing navigation patterns reused
-- Minimal additive changes
-- Safe Code Engine required for M8
+- M9 changed file: `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Minimal additive startup/navigation entry polish
+- No playback/provider/backend/storage systems touched by M9
+- Safe Code Engine required and evidence accepted for M9-TASK-001
 
 ## Minimal Agent Workflow
 
@@ -137,7 +172,7 @@ Use only:
 
 Safe Code Engine applies to every code task.
 
-No large department structure unless explicitly requested
+No large department structure unless explicitly requested.
 
 ## User Preference
 
