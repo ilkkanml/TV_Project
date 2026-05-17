@@ -2,77 +2,112 @@
 
 ## Current Status
 
-Ready for QA Tester.
+Active task ready for Developer.
 
 ## Current Active Milestone
 
-`M6 Playlist Profile & Legal Source Input Foundation`
+`M7 Local Profile Persistence Foundation`
 
 Status: `ACTIVE`
 
 ## Current Active Task
 
-`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
-Status: `USER RUNTIME PASSED — READY FOR QA`
+Status: `READY FOR DEVELOPER`
 
-## Build Evidence
+## Task Goal
 
-Status: PASSED
+Create a safe foundation for saved local profile shell management without connecting to external services.
 
-Evidence:
+## Developer Scope IN
 
-- GitHub Actions: Android Build Verification #68
-- Job: Assemble debug APK
-- Conclusion: success
-- Build command: `gradle :app:assembleDebug --no-daemon --stacktrace`
+- Read current runtime docs first
+- Inspect M6 profile model and screen before changes
+- Preserve existing M6 profile input shell behavior
+- Add safe local profile repository direction
+- Add saved profiles list shell
+- Add active/selected profile state shell
+- Add minimal add/edit/delete shell behavior
+- Keep flow local/mock-safe
+- Keep legal ownership notice visible
+- Keep changes additive and minimal
+- Follow Safe Code Engine
 
-## User Runtime Evidence
+## Developer Scope OUT
 
-Status: PASSED
+- No bundled content/source
+- No live provider connection
+- No profile fetch/parsing
+- No backend integration
+- No cloud sync
+- No payment changes
+- No player core changes
+- No auth changes
+- No hidden API work
+- No protected system rewrite
+- No production release behavior
 
-User reported:
+## Sensitive Data Rule
 
-- App works without issue
-- Mock play button works
-- Info screen appears
+Do not introduce unsafe plain-text persistence for sensitive profile fields.
 
-## Previous QA Blockers
+If secure local storage already exists, report whether it can be reused safely.
 
-Resolved:
+If secure storage is not already available, keep sensitive values mock/in-memory or ask Director for a decision before persistence.
 
-- `BUILD_COMPILE_EVIDENCE_MISSING`
-- `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
+## Protected Systems Permission
+
+Protected systems are not approved for structural changes.
+
+Allowed:
+
+- Minimal additive screen/route entry only if required
+- Existing component/style reuse
+- Existing navigation pattern reuse
+
+Not allowed:
+
+- Playback Core rewrite
+- Auth System rewrite
+- Hidden Backend API changes
+- TV Navigation System rewrite
+- Compose TV Design System rewrite
+- Premium Cinematic UX rewrite
+
+## Safe Code Engine Requirement
+
+Developer must return:
+
+```text
+Result:
+DONE / PARTIAL / BLOCKED
+
+Preflight:
+- active task confirmed / blocked reason
+
+Changed Files:
+- ...
+
+Scope Confirmation:
+- ...
+
+Build Command:
+- ...
+
+Build Result:
+- CONFIRMED / NOT CONFIRMED + reason
+
+Runtime Evidence:
+- REQUIRED + confirmed details / NOT REQUIRED / NOT CONFIRMED + reason
+
+Risk:
+- ...
+
+Return To Director:
+- QA_TESTER or DIRECTOR
+```
 
 ## Required Next Action
 
-Send `M6-TASK-001` back to QA Tester.
-
-No new feature work is approved before QA.
-
-## QA Return Required
-
-Return to Director with:
-
-```text
-QA Result:
-PASS / FAIL
-
-Checked Files:
-- ...
-
-Build Evidence:
-- ...
-
-Runtime Evidence:
-- ...
-
-Blockers:
-- ...
-
-Regression Risk:
-- ...
-
-Recommendation:
-DOCUMENTATION_MEMORY or DEVELOPER
-```
+Send this task to Developer.
