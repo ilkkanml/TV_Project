@@ -25,26 +25,30 @@ Read first:
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: `M9 Startup Flow & Session Entry Polish`
+- Current active task: `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
+- M9 status: ACTIVE
+- M9-TASK-001 status: READY FOR DEVELOPER
 - Last locked milestone: `M8 TV Navigation & Access Polish`
 - M8 status: LOCKED
 - M8-TASK-001 status: PASSED / COMPLETED
-- PR #10 merged to main
-- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
-- Build Evidence: Android Build Verification #109 success
-- Runtime Evidence: accepted
-- QA Result: PASS
-- Documentation Memory: PASSED
-- Director LOCKED: YES
-- Blockers: none
-- Regression risk: none
-- Splash cleanup: excluded from delivered scope
-- Protected systems clear
-- Legal/compliance clear
+- M8 PR #10 merged to main
+- M8 merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
+- Protected systems preserved
+- Legal/compliance preserved
+
+## M9 Scope Summary
+
+M9 cleans startup/navigation entry behavior after M8, especially the previously excluded Splash cleanup, while keeping auth/session behavior mock-safe and additive.
+
+M9 does not approve real auth/session implementation, backend integration, provider connection, playlist fetching/parsing, playback changes, payment/subscription work, protected system rewrite, or UI redesign.
 
 ## Required Next Action
 
-No active task.
+Send `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish` to Developer.
 
-Do not open M9 unless Director receives explicit user instruction.
+M9 is not QA PASSED.
+
+M9 is not Documentation Memory PASSED.
+
+M9 is not LOCKED.
