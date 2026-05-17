@@ -178,13 +178,13 @@ Impact:
 - Developer cannot return code work as DONE without build evidence or an exact blocker reason
 - Developer cannot recommend QA when required build/runtime evidence is missing
 - QA cannot PASS code work without required build/runtime evidence
-- Documentation Memory must record build/runtime evidence state and preserve BLOCKED status when evidence is missing
+- Documentation Memory must record build/runtime evidence status
 - Tasks affecting screens, routes, navigation, focus, player UI, or visible user flows require runtime evidence
 
 Related docs:
 
 - `docs/SAFE_CODE_ENGINE.md`
-- `docs/agents/DIRECTATION_MEMORY.md`
+- `docs/agents/DOCUMENTATION_MEMORY.md`
 - `docs/START_HERE.md`
 - `docs/PROJECT_MEMORY.md`
 - `docs/HANDOFF.md`
@@ -229,7 +229,7 @@ Related docs:
 
 ## DECISION-009 — M8 Opened
 
-Status: `APPROVED / ACTIVE`
+Status: `SUPERSEDED BY DECISION-010`
 
 Summary:
 
@@ -240,6 +240,46 @@ Impact:
 - Current Active Milestone: M8 TV Navigation & Access Polish
 - Current Active Task: M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
 - Safe to send task to Developer
+
+Related docs:
+
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/milestones/M8_TV_NAVIGATION_ACCESS_POLISH.md`
+
+---
+
+## DECISION-010 — M8 Lock Decision
+
+Status: `APPROVED / LOCKED`
+
+Summary:
+
+M8 TV Navigation & Access Polish milestone is now LOCKED.
+
+Lock evidence:
+
+- PR #10 merged to main
+- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
+- Build Evidence: Android Build Verification #109 success
+- Runtime Evidence: accepted
+- QA Result: PASS
+- Documentation Memory: PASSED
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
+- Splash cleanup excluded from delivered scope
+
+Impact:
+
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: M8 TV Navigation & Access Polish
+- Director LOCKED: YES
 
 Related docs:
 
