@@ -4,7 +4,7 @@
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
+Status: `READY FOR QA RETRY`
 
 ## Current Active Milestone
 
@@ -16,7 +16,7 @@ Status: ACTIVE
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
+Status: `READY FOR QA RETRY`
 
 ## Last Locked Milestone
 
@@ -26,7 +26,7 @@ Status: `LOCKED`
 
 ## Required Next Action
 
-Documentation cleanup, then return to Director for QA retry.
+Director sends `M8-TASK-001` back to QA Tester for retry.
 
 ## Guardrails
 
