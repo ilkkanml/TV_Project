@@ -60,39 +60,26 @@
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Active Milestone
-
 ### M7 Local Profile Persistence Foundation
-
-Status: ACTIVE
-
-Opened by Director after user request: `Yeni milestone aç`
-
-Milestone doc:
-
-- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
-
-Active task:
-
-- `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-
-Task status:
-
-- READY FOR DEVELOPER
-
-Scope direction:
-
-- Saved local profile shell foundation
-- Saved profiles list shell
-- Active/selected profile state shell
-- Minimal add/edit/delete shell behavior
-- Preserve M6 profile input shell
-- Local/mock-safe flow only
-- No production connection
-- No unsafe sensitive-data persistence
-- No protected system rewrite
-
-Safe Code Engine active: Developer must return build/runtime evidence before QA.
+- Build Evidence: PASSED
+- User Runtime Test: PASSED
+- QA: PASSED
+- Documentation Memory: PASSED
+- Director LOCKED: YES
+- PR #9 merged to main
+- Scope delivered:
+  - Local profile repository shell
+  - Saved profiles list shell
+  - Active/selected profile state shell
+  - Minimal local add/edit/delete shell behavior
+  - M6 profile input shell preserved
+  - Session-local/mock-safe profile flow
+  - Sensitive values not stored
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
+  - `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
+- Protected systems stable
+- Legal/compliance risk: none detected
 
 ## Process Decisions Added
 
@@ -108,10 +95,8 @@ Safe Code Engine active: Developer must return build/runtime evidence before QA.
   - No code task can move forward without required build/runtime evidence.
 
 ### Window Transition Rule
-- New chat transition is currently cancelled.
-- Continue M7 in the current window.
+- It is safe to switch to a new chat window for next milestone.
 - After every future milestone lock, Director must tell user: `Yeni pencereye geçmek güvenli.`
-- Each new future milestone should start in a new chat window unless user cancels it.
 
 ## Architecture Decisions Added
 
@@ -136,7 +121,3 @@ Safe Code Engine active: Developer must return build/runtime evidence before QA.
   - default source of truth is encrypted local device storage
   - web panel may optionally transfer profile data to device
   - longer cloud sync requires explicit user consent
-
-## Next Step
-
-Send `M7-TASK-001` to Developer.
