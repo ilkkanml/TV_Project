@@ -2,35 +2,50 @@
 
 ## Current Active Milestone
 
-`M9 Startup Flow & Session Entry Polish`
-
-Status: ACTIVE
+None
 
 ## Current Active Task
 
-`M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
+None
 
-Status: QA PASSED
+## Last Locked Milestone
 
-## Current Task Evidence
+`M9 Startup Flow & Session Entry Polish`
 
-- PR #11 exists
-- PR #11 merge status: NOT MERGED / awaiting Director decision
-- Changed files:
+Status: LOCKED
+
+## M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish
+
+Status: PASSED / COMPLETED
+
+Lock evidence:
+
+- PR #11 merged to main
+- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
+- Changed file:
   - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #135 success
-- Runtime Evidence: Developer runtime evidence accepted
+- Build Evidence: Android Build Verification #144 success
+- Runtime Evidence: accepted
 - QA Result: PASS
+- Documentation Memory: PASSED
+- Director LOCKED: YES
 - Blockers: none
 - Regression risk: none
 - Protected systems clear
 - Legal/compliance clear
 
-## Required Next Action
+Scope delivered:
 
-Return to Director for PR #11 merge / M9 lock decision.
+- Splash → Login backstack cleanup
+- Startup entry flow review
+- Basic back behavior safety from Splash/Login/Home
+- Login route behavior kept stable
+- Splash prevented from remaining in navigation stack after entry transition
+- Minimal additive navigation polish
+- Existing visual style preserved
+- Mock-safe startup/session behavior
 
-## Last Locked Milestone
+## Previous Locked Milestone
 
 `M8 TV Navigation & Access Polish`
 
@@ -44,8 +59,7 @@ Evidence:
 - Runtime Evidence: accepted
 - QA Result: PASS
 - Documentation Memory: PASSED
-- Blockers: none
-- Regression risk: none
+- Director LOCKED: YES
 - Protected systems clear
 - Legal/compliance clear
 - Splash cleanup: excluded from delivered scope
@@ -53,34 +67,6 @@ Evidence:
 ## M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
 
 Status: PASSED / COMPLETED
-
-## M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish
-
-Status: QA PASSED
-
-Scope delivered by PR #11:
-
-- Splash → Login backstack cleanup
-- Startup entry flow review
-- Basic back behavior safety from Splash/Login/Home
-- Login route behavior kept stable
-- Splash prevented from remaining in navigation stack after entry transition
-- Minimal additive navigation polish
-- Existing visual style preserved
-- No real auth/session implementation
-- No backend requirement
-- Safe Code Engine evidence accepted
-- Build evidence accepted
-- Runtime evidence accepted
-
-## M9 Status Boundaries
-
-- M9 is ACTIVE
-- M9-TASK-001 is QA PASSED
-- M9 is not Documentation Memory PASSED
-- M9 is not LOCKED
-- Director LOCKED is not recorded for M9
-- PR #11 is not recorded as merged
 
 ## Milestone Docs
 
@@ -97,6 +83,13 @@ Scope delivered by PR #11:
 - M6 Playlist Profile & Legal Source Input Foundation: `LOCKED`
 - M7 Local Profile Persistence Foundation: `LOCKED`
 - M8 TV Navigation & Access Polish: `LOCKED`
+- M9 Startup Flow & Session Entry Polish: `LOCKED`
+
+## Required Next Action
+
+No active task.
+
+Do not open M10 unless Director receives explicit user instruction.
 
 ## Protection Record
 
@@ -104,4 +97,4 @@ Protected systems clear.
 
 Legal/compliance clear.
 
-M9 is startup/navigation entry polish only.
+M9 was startup/navigation entry polish only.
