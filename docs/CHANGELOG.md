@@ -81,43 +81,15 @@
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Process Decisions Added
+## Active Milestone
 
-### Safe Code Engine
-- Added: `docs/SAFE_CODE_ENGINE.md`
-- Recorded in: `docs/DECISION_LOG.md`
-- Applies to:
-  - Director
-  - Developer
-  - QA Tester
-  - Documentation Memory
-- Rule:
-  - No code task can move forward without required build/runtime evidence.
-
-### Window Transition Rule
-- It is safe to switch to a new chat window for next milestone.
-- After every future milestone lock, Director must tell user: `Yeni pencereye geçmek güvenli.`
-
-## Architecture Decisions Added
-
-### App / Backend Integration Direction
-- Added: `docs/APP_BACKEND_INTEGRATION.md`
-- Decision log added: `docs/DECISION_LOG.md`
-- Backend responsibility direction:
-  - account
-  - subscription/license state
-  - device activation
-  - payment/reseller state
-  - version check
-  - force update
-  - remote config
-- App responsibility direction:
-  - generated device ID
-  - license checks
-  - playlist/profile management
-  - encrypted local playlist profile storage
-  - multi-profile switching
-- Playlist profile source direction:
-  - default source of truth is encrypted local device storage
-  - web panel may optionally transfer profile data to device
-  - longer cloud sync requires explicit user consent
+### M8 TV Navigation & Access Polish
+- Status: ACTIVE
+- Current task: M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
+- Status: READY FOR DEVELOPER
+- Scope: navigation/access polish only, additive, TV-friendly
+- Safe Code Engine required
+- No core system or protected system rewrite
+- No playback/auth/backend/storage changes
+- No feature expansion
+- No UI redesign
