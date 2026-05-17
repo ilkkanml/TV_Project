@@ -27,22 +27,26 @@ Read first:
 - Product type: legal Android TV / Fire TV player/client platform
 - Current active milestone: `M8 TV Navigation & Access Polish`
 - Current active task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
-- Current task status: `READY FOR QA RETRY`
+- Current task status: `QA PASSED — READY FOR DIRECTOR PR/LOCK DECISION`
 - Last locked milestone: `M7 Local Profile Persistence Foundation`
 - PR: `#10`
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
+  - `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
 - Build Evidence: Android Build Verification #109 success
 - Developer result: DONE
-- Developer runtime evidence: provided
-- Previous QA result: BLOCKED due documentation conflict
+- Developer runtime evidence: accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
 - Documentation conflict cleanup: completed
-- QA final PASS: not yet granted
-- Documentation Memory PASS: not yet granted
 - M8 status: ACTIVE
 - M8 locked: NO
+- Director LOCKED: NO
 - Splash cleanup: excluded from delivered scope
 - Protected systems clear
 - Legal/compliance clear
 
 ## Required Next Action
 
-Director sends `M8-TASK-001` back to QA Tester for retry.
+Return to Director for PR #10 review/merge and M8 lock decision.
