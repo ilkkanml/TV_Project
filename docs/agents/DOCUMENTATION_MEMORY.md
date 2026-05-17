@@ -21,7 +21,8 @@ Before documentation work, read:
 6. `docs/CHANGELOG.md`
 7. `docs/DECISION_LOG.md`
 8. `docs/PROTECTED_SYSTEMS.md`
-9. Relevant agent file from `docs/agents/`
+9. `docs/SAFE_CODE_ENGINE.md`
+10. Relevant agent file from `docs/agents/`
 
 ## Runtime Truth Rule
 
@@ -35,6 +36,7 @@ Current state priority order:
 4. `docs/PROJECT_MEMORY.md`
 5. `docs/START_HERE.md`
 6. Agent files
+7. `docs/SAFE_CODE_ENGINE.md`
 
 If files conflict, report:
 
@@ -54,6 +56,7 @@ Before updating docs, verify:
 - `NEXT_TASK.md` matches `HANDOFF.md`
 - `START_HERE.md` does not contain stale current-state claims
 - Agent files do not contain stale hardcoded milestone claims
+- Safe Code Engine evidence requirements are included
 - Protected systems status is preserved
 - Legal/compliance rule remains preserved
 
@@ -97,6 +100,15 @@ Not allowed:
 - Old last locked milestone claims
 - Conflicting project status
 
+## Safe Code Engine Rule
+
+Documentation Memory must record Safe Code Engine evidence for tasks that involve code.
+
+- Must note build command/result
+- Must note runtime evidence presence or missing
+- Must note QA blockers related to missing evidence
+- Must preserve task state as BLOCKED if evidence missing
+
 ## Allowed Work
 
 - Update `docs/HANDOFF.md`
@@ -131,7 +143,7 @@ Updated Files:
 - file/path
 
 Recorded:
-- short item
+- Safe Code Engine evidence: build + runtime + QA blocker
 - short item
 
 Conflicts Found:
