@@ -2,31 +2,15 @@
 
 ## Current Active Milestone
 
-`M7 Local Profile Persistence Foundation`
-
-Status: `ACTIVE`
+None.
 
 ## Current Active Task
 
-`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-
-Status: `PR OPEN — CI PASSED — READY FOR QA`
-
-## Pull Request
-
-- PR: `#9 M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-- Branch: `m7-local-profile-shell`
-- Base: `main`
-- Changed files: 2
-
-## Changed Files
-
-- `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
-- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
+None.
 
 ## Last Locked Milestone
 
-`M6 Playlist Profile & Legal Source Input Foundation`
+`M7 Local Profile Persistence Foundation`
 
 Status: `LOCKED`
 
@@ -34,57 +18,60 @@ Director LOCKED: YES
 
 Lock evidence:
 
+- Pull Request: #9 merged to main
 - Build Evidence: PASSED
-- User Runtime Test: PASSED
+- Runtime Evidence: CONFIRMED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## M7 Scope
+## M7 Locked Scope
 
-See:
+`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
-- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
+Status: `LOCKED`
 
-## M7-TASK-001 Result So Far
+Delivered:
 
-Developer reported:
-
+- Local profile repository shell
+- Saved profiles list shell
+- Active/selected profile state shell
+- Minimal local add/edit/delete shell behavior
 - M6 profile input shell preserved
-- Saved profile list shell added
-- Active profile shell state added
-- Minimal local add/edit/delete behavior added
-- Flow remains local/mock-safe
-- Sensitive values are not stored
-- Protected systems unchanged
+- Session-local/mock-safe profile flow
+- Sensitive values not stored
 
-## Build Evidence
+Changed files:
 
-Status: PASSED
+- `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
+- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
 
-Evidence:
+## M7 Evidence
+
+Build Evidence:
 
 - GitHub Actions: Android Build Verification #81
 - Job: Assemble debug APK
 - Conclusion: success
 
-## Runtime Evidence
+Runtime Evidence:
 
-Status: PASSED BY DEVELOPER REPORT
-
-Reported:
-
-- PlaylistProfileScreen opens
+- Developer reported PlaylistProfileScreen opens
 - Saved profile list works
 - Add/edit/delete/select shell behavior works
 - Home/back navigation remains safe
 
-## Required Next Action
+QA Evidence:
 
-Send `M7-TASK-001` to QA Tester.
+- QA PASS
+- Blockers: none
+- Risk: none
 
-No merge or lock is approved before QA and Documentation Memory.
+Documentation Evidence:
+
+- Documentation Memory: DONE
+- Conflicts found: none
 
 ## Completed / Locked
 
@@ -112,20 +99,24 @@ Status: `LOCKED`
 
 Status: `LOCKED`
 
+### M7 Local Profile Persistence Foundation
+
+Status: `LOCKED`
+
 ## Protection / Compliance Record
 
 Protected systems stable.
 
-M7 remains local/profile-shell foundation only.
+No production connection implemented.
 
-No production connection is approved.
+No bundled source implemented.
 
-No bundled source is allowed.
+No unsafe sensitive-data persistence implemented.
 
-No unsafe sensitive-data persistence is approved.
-
-Legal/compliance risk: controlled by scope.
+Legal/compliance risk: none detected.
 
 ## Next Status
 
-QA Tester review required.
+No active task.
+
+It is safe to switch to a new chat window before opening the next milestone.
