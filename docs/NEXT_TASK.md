@@ -4,7 +4,7 @@
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
 
 ## Current Active Milestone
 
@@ -16,24 +16,20 @@ Status: ACTIVE
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
 
 ## Last Locked Milestone
 
 `M7 Local Profile Persistence Foundation`
 
-Status: LOCKED
+Status: `LOCKED`
 
 ## Required Next Action
 
-Send task to Developer.
-
-No PASS or LOCKED status is approved before implementation, evidence, QA, Documentation Memory, and Director decision.
+Documentation cleanup, then return to Director for QA retry.
 
 ## Guardrails
 
-- Do not create a new milestone unless the user explicitly says: `Yeni milestone aç`.
-- Do not create a new task without Director instruction.
 - App code changes allowed only within M8-TASK-001 approved scope.
 - Changes must be minimal, additive, and limited to navigation/access polish.
 - Protected systems rewrite remains forbidden.
