@@ -36,6 +36,8 @@ import com.nexora.tv.data.content.NexoraContentRow
 import com.nexora.tv.data.content.NexoraContentSection
 import com.nexora.tv.navigation.AppDestinations
 
+private const val PROFILE_ACCESS_SETTING_ID = "setting-account"
+
 private enum class HomeMenu(
     val label: String,
     val section: NexoraContentSection
@@ -78,9 +80,17 @@ fun HomeScreen(navController: NavController) {
             selectedItem = selectedItem,
             onItemFocused = { selectedItemId = it.id },
             onItemOpen = {
-                if (it.isPlayable) {
-                    navController.navigate(AppDestinations.Detail.createRoute(it.id)) {
-                        launchSingleTop = true
+                when {
+                    it.id == PROFILE_ACCESS_SETTING_ID -> {
+                        navController.navigate(AppDestinations.PlaylistProfile.route) {
+                            launchSingleTop = true
+                        }
+                    }
+
+                    it.isPlayable -> {
+                        navController.navigate(AppDestinations.Detail.createRoute(it.id)) {
+                            launchSingleTop = true
+                        }
                     }
                 }
             }
