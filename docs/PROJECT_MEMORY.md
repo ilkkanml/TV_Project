@@ -48,8 +48,7 @@ Core decisions:
 - Backend is not the default source of truth for user playlist profiles.
 - Web panel may optionally transfer a playlist/profile to a selected device.
 - Longer cloud sync requires explicit user consent.
-- App should support multi-profile playlist management.
-- Initial source direction: M3U URL and Xtream Codes; Portal and Local/JSON later if approved.
+- App should support multi-profile playlist management
 
 ## Safe Code Engine
 
@@ -68,12 +67,7 @@ Rule:
 
 ## Window Transition Rule
 
-Current window transition rule:
-
-- Do not move to a new chat window right now.
-- Continue M7 in the current window.
-- After every future milestone is fully locked, Director must tell the user: `Yeni pencereye geçmek güvenli.`
-- Each new milestone after that should start in a new chat window unless the user cancels it.
+- It is safe to switch to a new chat window for the next milestone.
 
 ## Current Milestone Truth
 
@@ -101,69 +95,32 @@ Status: LOCKED
 
 Status: LOCKED
 
+### M7 Local Profile Persistence Foundation
+
+Status: LOCKED
+
 Lock evidence:
 
+- Pull Request: #9 merged to main
 - Build Evidence: PASSED
-- User Runtime Test: PASSED
+- Runtime Evidence: CONFIRMED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-### M7 Local Profile Persistence Foundation
-
-Status: ACTIVE
-
-Current task:
-
-`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-
-Status:
-
-`READY FOR DEVELOPER`
-
-M7 purpose:
-
-- safe local saved profile shell foundation
-- saved profiles list shell
-- active/selected profile state shell
-- minimal add/edit/delete shell behavior
-- preserve M6 profile input shell
-- local/mock-safe flow only
-- no production connection
-- no unsafe sensitive-data persistence
-
 ## Current Active Work
 
-Active milestone:
+No active milestone.
 
-`M7 Local Profile Persistence Foundation`
-
-Active task:
-
-`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-
-Current task status:
-
-`READY FOR DEVELOPER`
+No active task.
 
 ## Current Code Reality
 
-Current repository contains:
-
-- Android app module
-- Kotlin / Jetpack Compose setup
-- Android TV launcher manifest
-- Splash → Login → Activation → Home → Detail → Player navigation
-- Safe runtime HomeScreen build
-- DeviceActivationScreen mock/local activation shell
-- Mock/local content library foundation
-- Detail screen foundation
-- Safe Player shell fallback
-- GitHub Actions Android build verification workflow
-- Nexora color/theme foundation
-- Playlist profile model/screen shell from M6
-- Playlist profile route wired in app navigation
+- LocalProfileRepository.kt and PlaylistProfileScreen.kt delivered
+- M6 profile input shell preserved
+- Local/mock-safe flow maintained
+- Sensitive values not stored
 
 ## Minimal Agent Workflow
 
@@ -183,26 +140,5 @@ No large department structure unless explicitly requested.
 - Minimal explanations
 - Direct instructions
 - Continuous progress
-- Ask only critical decision questions
-- Do not restart planning
-- Do not recreate milestones
 - Keep docs updated so new chats can continue
 - Notify the user when it is safe to switch to a new chat window after milestone lock
-- Start each new future milestone in a new chat window unless user cancels it
-
-## Important Instruction For Future ChatGPT Sessions
-
-Do not restart from zero.
-
-Continue from the active milestone/task in runtime docs.
-
-Before work, read:
-
-- `docs/START_HERE.md`
-- `docs/MILESTONE_STATUS.md`
-- `docs/NEXT_TASK.md`
-- `docs/PROTECTED_SYSTEMS.md`
-- `docs/HANDOFF.md`
-- `docs/SAFE_CODE_ENGINE.md`
-- `docs/APP_BACKEND_INTEGRATION.md`
-- `docs/DECISION_LOG.md`
