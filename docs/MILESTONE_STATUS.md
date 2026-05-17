@@ -2,37 +2,35 @@
 
 ## Current Active Milestone
 
-`M8 TV Navigation & Access Polish`
-
-Status: `ACTIVE`
+None
 
 ## Current Active Task
 
-`M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
-
-Status: `QA PASSED — READY FOR DIRECTOR PR/LOCK DECISION`
+None
 
 ## Last Locked Milestone
 
-`M7 Local Profile Persistence Foundation`
+`M8 TV Navigation & Access Polish`
 
-Status: `LOCKED`
+Status: LOCKED
 
 Evidence:
 
-- PR #10 exists
-- Changed files:
-  - `app/src/main/java/com/nexora/tv/ui/screens/HomeScreen.kt`
-  - `app/src/main/java/com/nexora/tv/ui/screens/LoginScreen.kt`
+- PR #10 merged to main
+- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
 - Build Evidence: Android Build Verification #109 success
-- Developer result: DONE
-- Developer runtime evidence: accepted
+- Runtime Evidence: accepted
 - QA Result: PASS
+- Documentation Memory: PASSED
 - Blockers: none
 - Regression risk: none
-- Documentation conflict cleanup: completed
 - Protected systems clear
 - Legal/compliance clear
+- Splash cleanup: excluded from delivered scope
+
+## M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
+
+Status: PASSED / COMPLETED
 
 ## M8 Scope
 
@@ -42,9 +40,9 @@ See:
 
 ## Required Next Action
 
-Return to Director for PR #10 review/merge and M8 lock decision.
+No active task.
 
-Do not mark M8 LOCKED before Director decision.
+Do not open M9 unless Director receives explicit user instruction.
 
 ## Completed / Locked
 
@@ -55,9 +53,10 @@ Do not mark M8 LOCKED before Director decision.
 - M5 Content Library & Navigation Expansion: `LOCKED`
 - M6 Playlist Profile & Legal Source Input Foundation: `LOCKED`
 - M7 Local Profile Persistence Foundation: `LOCKED`
+- M8 TV Navigation & Access Polish: `LOCKED`
 
 ## Protection Record
 
 Protected systems stable.
 
-M8 is navigation/access polish only.
+M8 was navigation/access polish only.
