@@ -14,16 +14,20 @@ import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.theme.NexoraColors
 import kotlinx.coroutines.delay
 
+private const val SPLASH_ENTRY_DELAY_MS = 1800L
+
 @Composable
 fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(Unit) {
-        delay(1800)
+        delay(SPLASH_ENTRY_DELAY_MS)
         navController.navigate(AppDestinations.Login.route) {
             popUpTo(AppDestinations.Splash.route) {
                 inclusive = true
+                saveState = false
             }
             launchSingleTop = true
+            restoreState = false
         }
     }
 
