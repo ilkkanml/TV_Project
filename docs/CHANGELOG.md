@@ -81,15 +81,19 @@
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Active Milestone
-
 ### M8 TV Navigation & Access Polish
-- Status: ACTIVE
+- Status: LOCKED
 - Current task: M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
-- Status: READY FOR DEVELOPER
+- Status: PASSED / COMPLETED
 - Scope: navigation/access polish only, additive, TV-friendly
 - Safe Code Engine required
+- Build Evidence: Android Build Verification #109 success
+- Runtime Evidence: accepted
+- QA Result: PASS
 - No core system or protected system rewrite
 - No playback/auth/backend/storage changes
 - No feature expansion
 - No UI redesign
+- Protected systems clear
+- Legal/compliance clear
+- Splash cleanup excluded from delivered scope
