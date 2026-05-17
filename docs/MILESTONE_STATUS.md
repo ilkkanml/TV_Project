@@ -2,11 +2,15 @@
 
 ## Current Active Milestone
 
-None.
+`M7 Local Profile Persistence Foundation`
+
+Status: `ACTIVE`
 
 ## Current Active Task
 
-None.
+`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
+
+Status: `READY FOR DEVELOPER`
 
 ## Last Locked Milestone
 
@@ -25,52 +29,36 @@ Lock evidence:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## M6 Locked Scope
+## M7 Scope
 
-`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+See:
 
-Status: `LOCKED`
+- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
 
-Delivered:
+## M7-TASK-001 Goal
 
-- Playlist profile model foundation
-- Playlist profile screen shell
-- Legal ownership notice
-- Supported local input direction shell
-- Empty / invalid / saved shell states
-- Additive navigation route
-- Mock/local-safe flow only
+Create a safe foundation for saved local profile shell management without connecting to external services.
 
-Changed files:
+Expected result:
 
-- `app/src/main/java/com/nexora/tv/data/playlist/PlaylistProfile.kt`
-- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
-- `app/src/main/java/com/nexora/tv/navigation/AppDestinations.kt`
-- `app/src/main/java/com/nexora/tv/navigation/NexoraNavHost.kt`
+- Existing M6 profile shell remains working
+- Saved profile list shell exists
+- Active profile shell/state direction exists
+- Add/edit/delete shell behavior is minimal and local/mock-safe
+- No real playlist fetch/parsing is implemented
+- No unsafe sensitive-data persistence is introduced
 
-## M6 Evidence
+## Safe Code Engine Requirement
 
-Build Evidence:
+Developer must provide:
 
-- GitHub Actions: Android Build Verification #68
-- Job: Assemble debug APK
-- Conclusion: success
-- Build command: `gradle :app:assembleDebug --no-daemon --stacktrace`
-
-Runtime Evidence:
-
-- User reported app works without issue
-- Mock play button works
-- Info screen appears
-
-QA Evidence:
-
-- QA PASS recorded by Documentation Memory
-- Previous blockers resolved
-
-Documentation Evidence:
-
-- Documentation Memory: PASS
+- Changed files
+- Scope confirmation
+- Build command
+- Build result
+- Runtime evidence if UI/route behavior changes
+- Risk statement
+- Next recommended agent
 
 ## Completed / Locked
 
@@ -102,16 +90,16 @@ Status: `LOCKED`
 
 Protected systems stable.
 
-M6 remains local/profile-shell foundation only.
+M7 remains local/profile-shell foundation only.
 
-No production connection implemented.
+No production connection is approved.
 
-No bundled source implemented.
+No bundled source is allowed.
 
-Legal/compliance risk: none detected.
+No unsafe sensitive-data persistence is approved.
+
+Legal/compliance risk: controlled by scope.
 
 ## Next Status
 
-No active task.
-
-Wait for Director to open the next milestone/task.
+Send `M7-TASK-001` to Developer.
