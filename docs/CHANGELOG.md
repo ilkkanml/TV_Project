@@ -82,7 +82,7 @@ Active task:
 
 Task status:
 
-- READY FOR DEVELOPER
+- BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED
 
 Scope direction:
 
@@ -94,6 +94,8 @@ Scope direction:
 - No bundled playlist
 - No real provider/API integration yet
 - No protected system rewrite
+
+Safe Code Engine active: Developer cannot send task to QA without build/runtime evidence
 
 ## Architecture Decisions Added
 
@@ -121,4 +123,4 @@ Scope direction:
 
 ## Next Step
 
-Send `M6-TASK-001` to Developer.
+Provide real build/runtime evidence before QA can continue.
