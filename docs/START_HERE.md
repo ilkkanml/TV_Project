@@ -27,21 +27,26 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Product type: legal Android TV / Fire TV player/client platform
 - Current active milestone: `M6 Playlist Profile & Legal Source Input Foundation`
 - Current active task: `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
-- Current task status: `BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
+- Current task status: `QA PASSED — READY FOR DIRECTOR REVIEW`
 - Last locked milestone: `M5 Content Library & Navigation Expansion`
 - Current workflow: minimal Director-led handoff with Safe Code Engine
-- Next status: provide real build/runtime evidence before QA can continue
+- Next status: Director review for M6-TASK-001 / M6 lock decision
 
 ## Current M6 Status
 
 - `M6 Playlist Profile & Legal Source Input Foundation`: ACTIVE
-- `M6-TASK-001 Playlist Profile Model & Legal Input Shell`: BLOCKED
-- Blocker: build/runtime evidence missing
-- Required build command: `./gradlew :app:assembleDebug`
-- Runtime evidence required: profile screen render and basic state/navigation behavior
-- QA Tester result: FAIL until evidence is provided
+- `M6-TASK-001 Playlist Profile Model & Legal Input Shell`: QA PASSED
+- Build passed: GitHub Actions Android Build Verification #68
+- Runtime evidence: CONFIRMED
+- App launches
+- PlaylistProfileScreen renders
+- Legal ownership notice visible
+- Empty / Invalid / Saved shell states work
+- Back/Home navigation safe
+- Existing Splash/Login/Activation/Home/Detail/Player routes intact
 - Protected systems stable
-- Legal/compliance risk: controlled by scope
+- No illegal content or provider integration
+- M6 is not locked yet.
 
 ## Current M5 Status
 
