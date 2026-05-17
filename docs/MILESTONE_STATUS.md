@@ -10,7 +10,7 @@ Status: `ACTIVE`
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: `READY FOR DEVELOPER`
+Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
 
 ## Last Locked Milestone
 
@@ -20,13 +20,15 @@ Status: `LOCKED`
 
 Evidence:
 
-- PR #9 merged to main
-- Build Evidence: PASSED
-- Runtime Evidence: CONFIRMED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none detected
+- PR #10 exists
+- Build Evidence: Android Build Verification #109 success
+- Developer returned DONE
+- Developer runtime evidence: provided
+- QA code/regression risk: none found
+- QA final result: BLOCKED, not PASS
+- Documentation Memory pending
+- Protected systems clear
+- Legal/compliance clear
 
 ## M8 Scope
 
@@ -36,7 +38,7 @@ See:
 
 ## Required Next Action
 
-Send `M8-TASK-001` to Developer.
+Documentation cleanup, then return to Director for QA retry.
 
 Do not mark M8 passed or locked before implementation evidence, QA, Documentation Memory, and Director decision.
 
