@@ -160,3 +160,35 @@ Related docs:
 - `docs/PROJECT_MEMORY.md`
 - `docs/START_HERE.md`
 - `docs/CHANGELOG.md`
+
+---
+
+## DECISION-007 — Safe Code Engine Process Rule
+
+Status: `APPROVED`
+
+Summary:
+
+Safe Code Engine is now mandatory for all code-related work.
+
+It is not a new agent or department. It is a required quality gate used by Director, Developer, QA Tester, and Documentation Memory.
+
+Impact:
+
+- Developer cannot return code work as DONE without build evidence or an exact blocker reason.
+- Developer cannot recommend QA when required build/runtime evidence is missing.
+- QA cannot PASS code work without required build/runtime evidence.
+- Documentation Memory must record build/runtime evidence state and preserve BLOCKED status when evidence is missing.
+- Tasks affecting screens, routes, navigation, focus, player UI, or visible user flows require runtime evidence.
+
+Related docs:
+
+- `docs/SAFE_CODE_ENGINE.md`
+- `docs/agents/DIRECTOR.md`
+- `docs/agents/DEVELOPER.md`
+- `docs/agents/QA_TESTER.md`
+- `docs/agents/DOCUMENTATION_MEMORY.md`
+- `docs/START_HERE.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/HANDOFF.md`
+- `docs/CHANGELOG.md`
