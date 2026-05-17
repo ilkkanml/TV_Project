@@ -2,7 +2,11 @@
 
 ## Current Status
 
-Blocked by missing build/runtime evidence.
+Partially unblocked.
+
+Build evidence is confirmed by GitHub Actions.
+
+Runtime evidence is still required before QA can PASS.
 
 ## Current Active Milestone
 
@@ -14,47 +18,35 @@ Status: `ACTIVE`
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: `BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
+Status: `BUILD PASSED — RUNTIME EVIDENCE REQUIRED`
 
 ## QA Result
 
-QA Result: FAIL
+Previous QA Result: FAIL
 
-Blockers:
+Remaining blocker:
 
-- `BUILD_COMPILE_EVIDENCE_MISSING`
 - `PROFILE_SCREEN_RUNTIME_RENDER_NOT_CONFIRMED`
 
-## Developer Evidence Return
+Resolved blocker:
 
-Developer returned no code changes.
+- `BUILD_COMPILE_EVIDENCE_MISSING` resolved by GitHub Actions run #68
 
-Build evidence:
+## Build Evidence
 
-- Intended command: `./gradlew :app:assembleDebug`
-- Build result: NOT CONFIRMED
-- GitHub combined status: no statuses/checks
-- GitHub workflow runs: none
-- Local build attempt failed before build command due network/DNS access failure
+Confirmed by GitHub Actions:
 
-Runtime evidence:
+- Workflow: Android Build Verification #68
+- Job: Assemble debug APK
+- Conclusion: success
+- Command in workflow: `gradle :app:assembleDebug --no-daemon --stacktrace`
+- Artifact count shown: 1
 
-- NOT CONFIRMED by emulator/device/runtime
-- Source-only evidence exists but is not enough for QA pass
+## Runtime Evidence
 
-## Required Next Action
+Runtime evidence remains NOT CONFIRMED by emulator/device.
 
-A real build/runtime check is required before QA can continue.
-
-Accepted evidence:
-
-1. Local build result from developer/user machine:
-
-```bash
-./gradlew :app:assembleDebug
-```
-
-2. Runtime confirmation on emulator/device:
+Required runtime confirmation:
 
 - app launches
 - route opens profile screen
@@ -62,12 +54,14 @@ Accepted evidence:
 - empty/invalid/saved state behavior works
 - back/home navigation safe
 
-3. Or a valid CI workflow run result for the implementation commit.
+## Required Next Action
+
+Run app on Android Studio emulator, Android TV emulator, Fire TV, or Android TV device and confirm runtime behavior.
 
 ## No New Feature Work
 
-Do not add new features until this blocker is cleared.
+Do not add new features until runtime evidence is cleared.
 
-## QA Return Required After Evidence
+## QA Return Required After Runtime Evidence
 
-Return to QA Tester only after build/runtime evidence is available.
+Return to QA Tester only after runtime evidence is available.
