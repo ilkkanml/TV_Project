@@ -10,11 +10,25 @@ Status: ACTIVE
 
 `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: QA PASSED
+
+## Current Task Evidence
+
+- PR #11 exists
+- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #135 success
+- Runtime Evidence: Developer runtime evidence accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
 
 ## Required Next Action
 
-Send `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish` to Developer.
+Return to Director for PR #11 merge / M9 lock decision.
 
 ## Last Locked Milestone
 
@@ -42,29 +56,31 @@ Status: PASSED / COMPLETED
 
 ## M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish
 
-Status: READY FOR DEVELOPER
+Status: QA PASSED
 
-Scope:
+Scope delivered by PR #11:
 
 - Splash → Login backstack cleanup
 - Startup entry flow review
 - Basic back behavior safety from Splash/Login/Home
-- Keep Login route behavior stable
-- Prevent Splash from remaining in navigation stack after entry transition
+- Login route behavior kept stable
+- Splash prevented from remaining in navigation stack after entry transition
 - Minimal additive navigation polish
 - Existing visual style preserved
 - No real auth/session implementation
 - No backend requirement
-- Safe Code Engine required
-- Build evidence required
-- Runtime evidence required
+- Safe Code Engine evidence accepted
+- Build evidence accepted
+- Runtime evidence accepted
 
 ## M9 Status Boundaries
 
 - M9 is ACTIVE
-- M9 is not QA PASSED
+- M9-TASK-001 is QA PASSED
 - M9 is not Documentation Memory PASSED
 - M9 is not LOCKED
+- Director LOCKED is not recorded for M9
+- PR #11 is not recorded as merged
 
 ## Milestone Docs
 
@@ -84,8 +100,8 @@ Scope:
 
 ## Protection Record
 
-Protected systems preserved.
+Protected systems clear.
 
-Legal/compliance preserved.
+Legal/compliance clear.
 
 M9 is startup/navigation entry polish only.
