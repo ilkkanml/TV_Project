@@ -19,7 +19,12 @@ fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(Unit) {
         delay(1800)
-        navController.navigate(AppDestinations.Login.route)
+        navController.navigate(AppDestinations.Login.route) {
+            popUpTo(AppDestinations.Splash.route) {
+                inclusive = true
+            }
+            launchSingleTop = true
+        }
     }
 
     Box(
