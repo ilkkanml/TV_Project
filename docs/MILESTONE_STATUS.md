@@ -2,11 +2,15 @@
 
 ## Current Active Milestone
 
-None.
+`M8 TV Navigation & Access Polish`
+
+Status: `ACTIVE`
 
 ## Current Active Task
 
-None.
+`M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
+
+Status: `READY FOR DEVELOPER`
 
 ## Last Locked Milestone
 
@@ -14,11 +18,9 @@ None.
 
 Status: `LOCKED`
 
-Director LOCKED: YES
+Evidence:
 
-Lock evidence:
-
-- Pull Request: #9 merged to main
+- PR #9 merged to main
 - Build Evidence: PASSED
 - Runtime Evidence: CONFIRMED
 - QA Tester: PASSED
@@ -26,97 +28,30 @@ Lock evidence:
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## M7 Locked Scope
+## M8 Scope
 
-`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
+See:
 
-Status: `LOCKED`
+- `docs/milestones/M8_TV_NAVIGATION_ACCESS_POLISH.md`
 
-Delivered:
+## Required Next Action
 
-- Local profile repository shell
-- Saved profiles list shell
-- Active/selected profile state shell
-- Minimal local add/edit/delete shell behavior
-- M6 profile input shell preserved
-- Session-local/mock-safe profile flow
-- Sensitive values not stored
+Send `M8-TASK-001` to Developer.
 
-Changed files:
-
-- `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
-- `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
-
-## M7 Evidence
-
-Build Evidence:
-
-- GitHub Actions: Android Build Verification #81
-- Job: Assemble debug APK
-- Conclusion: success
-
-Runtime Evidence:
-
-- Developer reported PlaylistProfileScreen opens
-- Saved profile list works
-- Add/edit/delete/select shell behavior works
-- Home/back navigation remains safe
-
-QA Evidence:
-
-- QA PASS
-- Blockers: none
-- Risk: none
-
-Documentation Evidence:
-
-- Documentation Memory: DONE
-- Conflicts found: none
+Do not mark M8 passed or locked before implementation evidence, QA, Documentation Memory, and Director decision.
 
 ## Completed / Locked
 
-### M1 Foundation
+- M1 Foundation: `LOCKED`
+- M2 Playback Expansion: `LOCKED`
+- M3 Premium UI Expansion: `LOCKED`
+- M4 Auth & Device Activation Foundation: `LOCKED`
+- M5 Content Library & Navigation Expansion: `LOCKED`
+- M6 Playlist Profile & Legal Source Input Foundation: `LOCKED`
+- M7 Local Profile Persistence Foundation: `LOCKED`
 
-Status: `LOCKED`
-
-### M2 Playback Expansion
-
-Status: `LOCKED`
-
-### M3 Premium UI Expansion
-
-Status: `LOCKED`
-
-### M4 Auth & Device Activation Foundation
-
-Status: `LOCKED`
-
-### M5 Content Library & Navigation Expansion
-
-Status: `LOCKED`
-
-### M6 Playlist Profile & Legal Source Input Foundation
-
-Status: `LOCKED`
-
-### M7 Local Profile Persistence Foundation
-
-Status: `LOCKED`
-
-## Protection / Compliance Record
+## Protection Record
 
 Protected systems stable.
 
-No production connection implemented.
-
-No bundled source implemented.
-
-No unsafe sensitive-data persistence implemented.
-
-Legal/compliance risk: none detected.
-
-## Next Status
-
-No active task.
-
-It is safe to switch to a new chat window before opening the next milestone.
+M8 is navigation/access polish only.
