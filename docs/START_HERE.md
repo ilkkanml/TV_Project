@@ -25,10 +25,9 @@ Before any new ChatGPT window works on the project, it must read these files fir
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: `M8 TV Navigation & Access Polish`
+- Current active task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 - Last locked milestone: `M7 Local Profile Persistence Foundation`
-- Next status: no active task, safe to open new chat window for next milestone
 - Current workflow: Director-led handoff with Safe Code Engine
 - Build Evidence: PASSED
 - Runtime Evidence: CONFIRMED
