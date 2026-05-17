@@ -43,7 +43,7 @@ Core decisions:
 - Backend owns user account, subscription status, device activation, payment status, reseller system, version check, force update, remote config, maintenance mode, and feature flags.
 - App owns device identity creation, backend registration, license/subscription check, playlist/profile management, encrypted local playlist profile storage, and player access when license is valid.
 - MAC address is not the primary device ID.
-- Primary device ID is `app_generated_device_id`.
+- Primary ID is `app_generated_device_id`.
 - Android ID, model, platform, app version, and install metadata are secondary signals.
 - Default playlist source of truth is device local encrypted storage.
 - Backend is not the default source of truth for user playlist profiles.
@@ -106,6 +106,21 @@ Future platforms:
 - Focus effect: scale plus glow
 - Detail preview: muted autoplay preview
 
+## Safe Code Engine
+
+Status: ACTIVE
+
+Document:
+
+- `docs/SAFE_CODE_ENGINE.md`
+
+Rule:
+
+- Developer cannot send code work to QA without required build/runtime evidence.
+- QA cannot PASS without required evidence.
+- Documentation Memory must record build/runtime evidence state.
+- Missing evidence keeps the task BLOCKED.
+
 ## Current Milestone Truth
 
 ### M1 Foundation
@@ -150,7 +165,23 @@ Current task:
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
-Status: READY FOR DEVELOPER
+Status:
+
+`BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
+
+M6 current blocker:
+
+- Build compile evidence missing
+- Runtime render evidence missing
+- QA Tester result: FAIL until evidence is provided
+
+Required evidence:
+
+- Build command/result: `./gradlew :app:assembleDebug`
+- Runtime confirmation that profile screen renders
+- Legal notice visible
+- Empty/invalid/saved local shell states checked
+- Back/Home navigation remains safe
 
 M6 purpose:
 
@@ -172,6 +203,10 @@ Active task:
 
 `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
 
+Current task status:
+
+`BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
+
 ## Current Code Reality
 
 Current repository contains:
@@ -187,6 +222,8 @@ Current repository contains:
 - Safe Player shell fallback
 - GitHub Actions Android build verification workflow
 - Nexora color/theme foundation
+- Playlist profile model/screen shell added for M6
+- Playlist profile route wired in app navigation
 
 ## Minimal Agent Workflow
 
@@ -197,7 +234,9 @@ Use only:
 3. QA_TESTER
 4. DOCUMENTATION_MEMORY
 
-No large department structure unless explicitly requested
+Safe Code Engine applies to every code task.
+
+No large department structure unless explicitly requested.
 
 ## User Preference
 
@@ -222,5 +261,6 @@ Before work, read:
 - `docs/NEXT_TASK.md`
 - `docs/PROTECTED_SYSTEMS.md`
 - `docs/HANDOFF.md`
+- `docs/SAFE_CODE_ENGINE.md`
 - `docs/APP_BACKEND_INTEGRATION.md`
 - `docs/DECISION_LOG.md`
