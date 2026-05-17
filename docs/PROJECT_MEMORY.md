@@ -111,15 +111,13 @@ Lock evidence:
 
 ### M8 TV Navigation & Access Polish
 
-Status: ACTIVE
+Status: LOCKED
 
 Current task:
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status:
-
-`READY FOR DEVELOPER`
+Status: PASSED / COMPLETED
 
 ## Current Code Reality
 
@@ -139,7 +137,7 @@ Use only:
 
 Safe Code Engine applies to every code task.
 
-No large department structure unless explicitly requested.
+No large department structure unless explicitly requested
 
 ## User Preference
 
