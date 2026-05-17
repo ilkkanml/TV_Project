@@ -2,35 +2,56 @@
 
 ## Status
 
-ACTIVE
+LOCKED
+
+## Current Project State After M8
+
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: `M8 TV Navigation & Access Polish`
 
 ## Purpose
 
 Polish existing TV navigation, screen access, back behavior, and remote-friendly usability across the current app shell.
 
-M8 does not approve new product feature expansion.
+M8 did not approve new product feature expansion.
 
-## First Task
+## Completed Task
 
 `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: PASSED / COMPLETED
 
-## Scope IN
+## Lock Evidence
+
+- PR #10 merged to main
+- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
+- Build Evidence: Android Build Verification #109 success
+- Runtime Evidence: accepted
+- QA Result: PASS
+- Documentation Memory: PASSED
+- Director LOCKED: YES
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
+- Splash cleanup excluded from delivered scope
+
+## Scope Delivered
 
 - Clear access path to PlaylistProfile screen
 - Settings/Profile/Account placeholder route access
-- Splash to Login backstack cleanup
 - Login password field visual masking
 - Home / Detail / Player / PlaylistProfile back behavior review
 - Minimal TV remote focus/access polish
-- Existing navigation pattern reuse
+- Existing navigation pattern reused
 - Existing visual style preserved
 - Additive-only changes
-- Safe Code Engine required
+- Safe Code Engine evidence recorded
 
-## Scope OUT
+## Scope Excluded
 
+- Splash cleanup excluded / not delivered
 - No playback core rewrite
 - No auth system rewrite
 - No backend integration
@@ -45,25 +66,21 @@ Status: READY FOR DEVELOPER
 
 ## Protected Systems Boundary
 
-M8 may touch only minimal additive access/navigation wiring.
+Protected systems remained clear.
 
 No TV Navigation System rewrite.
 No Compose TV Design System rewrite.
 No Premium Cinematic UX rewrite.
 No Playback Core change.
 
-## Required Evidence
+## Final State
 
-Developer must return:
+M8 is LOCKED.
 
-- Changed files
-- Scope confirmation
-- Build command
-- Build result
-- Runtime evidence because screens/navigation are affected
-- Risk statement
-- Next recommended agent
+M8-TASK-001 is PASSED / COMPLETED.
 
-## Exit Condition
+No active milestone remains.
 
-M8 cannot become LOCKED until implementation, build evidence, runtime evidence, QA Tester, Documentation Memory, and Director decision are complete.
+No active task remains.
+
+Do not open M9 unless Director receives explicit user instruction.
