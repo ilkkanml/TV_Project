@@ -2,15 +2,11 @@
 
 ## Current Handoff
 
-`M8 TV Navigation & Access Polish`
-
-Task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
-
-Status: `READY FOR QA RETRY`
+No active task
 
 ## Last Locked Milestone
 
-`M7 Local Profile Persistence Foundation`
+`M8 TV Navigation & Access Polish`
 
 Status: LOCKED
 
@@ -18,28 +14,23 @@ Director LOCKED: YES
 
 Lock evidence:
 
-- PR #10 exists
+- PR #10 merged to main
+- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
 - Build Evidence: Android Build Verification #109 success
-- Developer result: DONE
-- Developer runtime evidence: provided
-- Previous QA result: BLOCKED due documentation conflict
-- Documentation conflict cleanup: completed
-- Protected systems stable
-- Legal/compliance risk: clear
+- Runtime Evidence: accepted
+- QA Result: PASS
+- Documentation Memory: PASSED
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
+- Splash cleanup: excluded from delivered scope
 
 ## Guardrails
 
-- App code changes allowed only within M8-TASK-001 approved scope.
-- Changes must be minimal, additive, and limited to navigation/access polish.
-- Protected systems rewrite remains forbidden.
-- Legal/compliance boundary must remain preserved.
-
-## Evidence Required
-
-- Safe Code Engine required.
-- Build evidence required.
-- Runtime evidence required because screens/navigation are affected.
+- Protected systems rewrite remains forbidden
+- Legal/compliance boundary must remain preserved
 
 ## Required Next Action
 
-Director sends `M8-TASK-001` back to QA Tester for retry.
+No active task. Director may decide next milestone.
