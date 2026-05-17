@@ -2,21 +2,13 @@
 
 ## Current Handoff
 
-Active milestone:
+No active milestone.
 
-`M7 Local Profile Persistence Foundation`
-
-Active task:
-
-`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
-
-Status:
-
-`READY FOR DEVELOPER`
+No active task.
 
 ## Last Locked Milestone
 
-`M6 Playlist Profile & Legal Source Input Foundation`
+`M7 Local Profile Persistence Foundation`
 
 Status: `LOCKED`
 
@@ -24,86 +16,26 @@ Director LOCKED: YES
 
 Lock evidence:
 
+- Pull Request: #9 merged to main
 - Build Evidence: PASSED
-- User Runtime Test: PASSED
+- Runtime Evidence: CONFIRMED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
 - Protected systems stable
 - Legal/compliance risk: none detected
 
-## Current Developer Handoff
+## Post-M7 Developer Handoff
 
-Read first:
+No new tasks assigned.
 
-- `docs/START_HERE.md`
-- `docs/PROJECT_MEMORY.md`
-- `docs/MILESTONE_STATUS.md`
-- `docs/NEXT_TASK.md`
-- `docs/PROTECTED_SYSTEMS.md`
-- `docs/SAFE_CODE_ENGINE.md`
-- `docs/APP_BACKEND_INTEGRATION.md`
-- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
-- `docs/agents/DEVELOPER.md`
+All previous M7 deliverables are complete.
 
-Task:
+It is safe to switch to a new chat window before opening the next milestone.
 
-Build `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`.
+## Guardrails
 
-Important:
-
-- Preserve M6 profile input shell behavior.
-- Keep changes additive and minimal.
-- Keep profile flow local/mock-safe.
-- No production connection is approved.
-- No unsafe sensitive-data persistence is approved.
-- No protected system rewrite.
-- Follow Safe Code Engine.
-
-## Required Return
-
-```text
-Result:
-DONE / PARTIAL / BLOCKED
-
-Preflight:
-- active task confirmed / blocked reason
-
-Changed Files:
-- ...
-
-Scope Confirmation:
-- ...
-
-Build Command:
-- ...
-
-Build Result:
-- CONFIRMED / NOT CONFIRMED + reason
-
-Runtime Evidence:
-- REQUIRED + confirmed details / NOT REQUIRED / NOT CONFIRMED + reason
-
-Risk:
-- ...
-
-Return To Director:
-- QA_TESTER or DIRECTOR
-```
-
-## Window Transition Rule
-
-Do not move to a new chat window right now.
-
-Continue M7 in the current window.
-
-After every future milestone is fully locked, Director must tell the user:
-
-`Yeni pencereye geçmek güvenli.`
-
-Each new future milestone should start in a new chat window unless the user cancels it.
-
-## Workflow
-
-Director → Developer → QA Tester → Documentation Memory → Director
-
-Safe Code Engine applies across the whole workflow.
+- Do not create a new milestone unless the user explicitly says: `Yeni milestone aç`.
+- Do not create a new task without Director instruction.
+- Do not modify protected systems.
+- Do not modify app code.
+- Keep legal/compliance boundary preserved.
