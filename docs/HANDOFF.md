@@ -4,60 +4,19 @@
 
 Active milestone:
 
-`M6 Playlist Profile & Legal Source Input Foundation`
+`M7 Local Profile Persistence Foundation`
 
 Active task:
 
-`M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+`M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
 Status:
 
-`BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
-
-## Current Blocker
-
-QA Tester returned FAIL because required evidence is missing:
-
-- Build compile evidence missing
-- Profile screen runtime render not confirmed
-
-Developer returned no code changes and no confirmed build/runtime result.
-
-## Required Next Action
-
-Provide real build/runtime evidence before QA can continue.
-
-Required build command:
-
-```bash
-./gradlew :app:assembleDebug
-```
-
-Required runtime confirmation:
-
-- App launches
-- Profile screen opens
-- Legal ownership notice is visible
-- Empty/invalid/saved local shell states work
-- Back/Home navigation remains safe
-
-## Safe Code Engine
-
-Safe Code Engine is active and mandatory.
-
-Read:
-
-- `docs/SAFE_CODE_ENGINE.md`
-
-Rules:
-
-- Developer must not recommend QA without required build/runtime evidence.
-- QA must not PASS without required evidence.
-- Documentation Memory must preserve blocker state until evidence exists.
+`READY FOR DEVELOPER`
 
 ## Last Locked Milestone
 
-`M5 Content Library & Navigation Expansion`
+`M6 Playlist Profile & Legal Source Input Foundation`
 
 Status: `LOCKED`
 
@@ -65,6 +24,7 @@ Director LOCKED: YES
 
 Lock evidence:
 
+- Build Evidence: PASSED
 - User Runtime Test: PASSED
 - QA Tester: PASSED
 - Documentation Memory: PASSED
@@ -82,14 +42,22 @@ Read first:
 - `docs/PROTECTED_SYSTEMS.md`
 - `docs/SAFE_CODE_ENGINE.md`
 - `docs/APP_BACKEND_INTEGRATION.md`
-- `docs/milestones/M6_PLAYLIST_PROFILE_FOUNDATION.md`
+- `docs/milestones/M7_LOCAL_PROFILE_PERSISTENCE_FOUNDATION.md`
 - `docs/agents/DEVELOPER.md`
 
 Task:
 
-Provide build/runtime evidence for `M6-TASK-001 Playlist Profile Model & Legal Input Shell`.
+Build `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`.
 
-No new feature work is approved.
+Important:
+
+- Preserve M6 profile input shell behavior.
+- Keep changes additive and minimal.
+- Keep profile flow local/mock-safe.
+- No production connection is approved.
+- No unsafe sensitive-data persistence is approved.
+- No protected system rewrite.
+- Follow Safe Code Engine.
 
 ## Required Return
 
@@ -97,8 +65,14 @@ No new feature work is approved.
 Result:
 DONE / PARTIAL / BLOCKED
 
+Preflight:
+- active task confirmed / blocked reason
+
 Changed Files:
-- None unless evidence fix required
+- ...
+
+Scope Confirmation:
+- ...
 
 Build Command:
 - ...
@@ -107,14 +81,26 @@ Build Result:
 - CONFIRMED / NOT CONFIRMED + reason
 
 Runtime Evidence:
-- CONFIRMED / NOT CONFIRMED + details
+- REQUIRED + confirmed details / NOT REQUIRED / NOT CONFIRMED + reason
 
 Risk:
 - ...
 
 Return To Director:
-- QA_TESTER only if required evidence is confirmed
+- QA_TESTER or DIRECTOR
 ```
+
+## Window Transition Rule
+
+Do not move to a new chat window right now.
+
+Continue M7 in the current window.
+
+After every future milestone is fully locked, Director must tell the user:
+
+`Yeni pencereye geçmek güvenli.`
+
+Each new future milestone should start in a new chat window unless the user cancels it.
 
 ## Workflow
 
