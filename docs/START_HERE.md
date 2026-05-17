@@ -28,14 +28,23 @@ Read first:
 - Current active milestone: `M9 Startup Flow & Session Entry Polish`
 - Current active task: `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
 - M9 status: ACTIVE
-- M9-TASK-001 status: READY FOR DEVELOPER
+- M9-TASK-001 status: QA PASSED
+- PR #11 exists
+- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #135 success
+- Runtime Evidence: Developer runtime evidence accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
 - Last locked milestone: `M8 TV Navigation & Access Polish`
 - M8 status: LOCKED
 - M8-TASK-001 status: PASSED / COMPLETED
 - M8 PR #10 merged to main
 - M8 merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
-- Protected systems preserved
-- Legal/compliance preserved
 
 ## M9 Scope Summary
 
@@ -45,10 +54,10 @@ M9 does not approve real auth/session implementation, backend integration, provi
 
 ## Required Next Action
 
-Send `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish` to Developer.
-
-M9 is not QA PASSED.
-
-M9 is not Documentation Memory PASSED.
+Return to Director for PR #11 merge / M9 lock decision.
 
 M9 is not LOCKED.
+
+Director LOCKED is not recorded for M9.
+
+M9 Documentation Memory PASSED is not recorded.
