@@ -8,6 +8,7 @@ ACTIVE
 
 - Current active milestone: `M9 Startup Flow & Session Entry Polish`
 - Current active task: `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
+- Current task status: QA PASSED
 - Last locked milestone: `M8 TV Navigation & Access Polish`
 
 ## Purpose
@@ -16,11 +17,25 @@ Clean up app startup/navigation entry behavior after M8, especially the previous
 
 M9 does not approve real auth/session implementation, backend integration, provider connection, playlist fetching, playback changes, payment/subscription work, or UI redesign.
 
-## First Task
+## Task
 
 `M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: QA PASSED
+
+## QA PASS Evidence
+
+- PR #11 exists
+- PR #11 merge status: NOT MERGED / awaiting Director decision
+- Changed files:
+  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #135 success
+- Runtime Evidence: Developer runtime evidence accepted
+- QA Result: PASS
+- Blockers: none
+- Regression risk: none
+- Protected systems clear
+- Legal/compliance clear
 
 ## Scope IN
 
@@ -51,34 +66,21 @@ Status: READY FOR DEVELOPER
 - No protected system rewrite
 - No illegal source support
 
-## Expected Developer Scope
-
-- Patch Splash → Login navigation so Splash is removed from back stack.
-- Confirm Login → Home behavior remains safe.
-- Confirm Home back behavior does not expose Splash.
-- Keep changes minimal/additive.
-- Do not touch playback/provider/backend/storage systems.
-- Build must pass.
-- Runtime evidence required.
-
 ## Safe Code Engine Requirements
 
-Developer must record:
+Recorded:
 
 - Files changed
 - Scope boundary confirmation
 - Protected systems confirmation
 - Legal/compliance confirmation
-- Build evidence
-- Runtime evidence
-
-QA cannot PASS without required evidence.
-
-Documentation Memory cannot mark M9 passed or locked without QA PASS and Director instruction.
+- Build evidence accepted
+- Runtime evidence accepted
+- QA PASS
 
 ## Protected Systems Boundary
 
-Protected systems remain preserved.
+Protected systems remain clear.
 
 No Playback Core rewrite.
 No Auth System rewrite.
@@ -97,8 +99,16 @@ No content source, playlist provider, illegal stream support, unauthorized scrap
 
 M9 is ACTIVE.
 
-M9-TASK-001 is READY FOR DEVELOPER.
+M9-TASK-001 is QA PASSED.
 
-M9 is not passed.
+PR #11 is not recorded as merged.
+
+M9 is not Documentation Memory PASSED.
 
 M9 is not locked.
+
+Director LOCKED is not recorded for M9.
+
+## Required Next Action
+
+Return to Director for PR #11 merge / M9 lock decision.
