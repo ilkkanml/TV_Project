@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -29,15 +31,22 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nexora.tv.data.playlist.LocalProfileRepository
 import com.nexora.tv.data.playlist.PlaylistProfileDraft
 import com.nexora.tv.data.playlist.PlaylistProfileShellState
 import com.nexora.tv.data.playlist.PlaylistProfileValidationResult
 import com.nexora.tv.data.playlist.PlaylistSourceType
+import com.nexora.tv.data.playlist.SavedLocalProfileShell
 import com.nexora.tv.data.playlist.validateForLocalShell
 import com.nexora.tv.navigation.AppDestinations
 
 @Composable
 fun PlaylistProfileScreen(navController: NavController) {
+    val repository = remember { LocalProfileRepository() }
+    var savedProfiles by remember { mutableStateOf<List<SavedLocalProfileShell>>(emptyList()) }
+    var selectedProfileId by remember { mutableStateOf<String?>(null) }
+    var editingProfileId by remember { mutableStateOf<String?>(null) }
+
     var profileName by remember { mutableStateOf("") }
     var sourceType by remember { mutableStateOf(PlaylistSourceType.M3uUrl) }
     var m3uUrl by remember { mutableStateOf("") }
@@ -72,7 +81,9 @@ fun PlaylistProfileScreen(navController: NavController) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.width(470.dp),
+            modifier = Modifier
+                .width(470.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
@@ -82,7 +93,7 @@ fun PlaylistProfileScreen(navController: NavController) {
                 fontWeight = FontWeight.Black
             )
             Text(
-                text = "Playlist Profile",
+                text = if (editingProfileId == null) "Playlist Profile" else "Edit Profile Shell",
                 color = Color(0xFF00E5FF),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
@@ -172,22 +183,41 @@ fun PlaylistProfileScreen(navController: NavController) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Button(
-                    onClick = { result = draft.validateForLocalShell() },
+                    onClick = {
+                        val validation = draft.validateForLocalShell()
+                        result = validation
+
+                        if (validation.state == PlaylistProfileShellState.Saved) {
+                            val nextProfiles = repository.upsertShell(
+                                currentProfiles = savedProfiles,
+                                editingProfileId = editingProfileId,
+                                draft = draft
+                            )
+                            savedProfiles = nextProfiles
+                            selectedProfileId = nextProfiles.firstOrNull { it.isActive }?.id
+                            editingProfileId = null
+                            result = validation.copy(
+                                message = "${validation.message} Sensitive values are not persisted; only a safe local shell summary is kept."
+                            )
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF123A46),
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Save Local Shell")
+                    Text(if (editingProfileId == null) "Save Local Shell" else "Update Shell")
                 }
 
                 Button(
                     onClick = {
                         profileName = ""
+                        sourceType = PlaylistSourceType.M3uUrl
                         m3uUrl = ""
                         xtreamServerUrl = ""
                         xtreamUsername = ""
                         xtreamPassword = ""
+                        editingProfileId = null
                         result = emptyResult()
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -215,10 +245,60 @@ fun PlaylistProfileScreen(navController: NavController) {
         }
 
         Column(
-            modifier = Modifier.width(620.dp),
+            modifier = Modifier
+                .width(620.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             StatusCard(result)
+
+            SavedProfilesShell(
+                profiles = savedProfiles,
+                selectedProfileId = selectedProfileId,
+                onSelect = { profile ->
+                    val nextProfiles = repository.selectActive(savedProfiles, profile.id)
+                    savedProfiles = nextProfiles
+                    selectedProfileId = profile.id
+                    result = PlaylistProfileValidationResult(
+                        state = PlaylistProfileShellState.Saved,
+                        title = "Active profile selected",
+                        message = "${profile.profileName} is active locally. No provider connection was made."
+                    )
+                },
+                onEdit = { profile ->
+                    profileName = profile.profileName
+                    sourceType = profile.sourceType
+                    m3uUrl = ""
+                    xtreamServerUrl = ""
+                    xtreamUsername = ""
+                    xtreamPassword = ""
+                    editingProfileId = profile.id
+                    selectedProfileId = profile.id
+                    result = PlaylistProfileValidationResult(
+                        state = PlaylistProfileShellState.Empty,
+                        title = "Editing safe profile shell",
+                        message = "Sensitive source fields are intentionally blank. Re-enter authorized values to update this local shell."
+                    )
+                },
+                onDelete = { profile ->
+                    val nextProfiles = repository.deleteShell(savedProfiles, profile.id)
+                    savedProfiles = nextProfiles
+                    selectedProfileId = nextProfiles.firstOrNull { it.isActive }?.id
+                    if (editingProfileId == profile.id) {
+                        editingProfileId = null
+                        profileName = ""
+                        m3uUrl = ""
+                        xtreamServerUrl = ""
+                        xtreamUsername = ""
+                        xtreamPassword = ""
+                    }
+                    result = PlaylistProfileValidationResult(
+                        state = PlaylistProfileShellState.Empty,
+                        title = "Profile shell deleted",
+                        message = "Deleted the local in-memory shell. No remote data or provider source was touched."
+                    )
+                }
+            )
 
             SourceSummaryCard(
                 title = sourceType.label,
@@ -322,7 +402,7 @@ private fun StatusCard(result: PlaylistProfileValidationResult) {
         Text(
             text = result.message,
             color = Color.White,
-            fontSize = 26.sp,
+            fontSize = 24.sp,
             fontWeight = FontWeight.Black
         )
         Text(
@@ -330,6 +410,122 @@ private fun StatusCard(result: PlaylistProfileValidationResult) {
             color = Color.LightGray,
             fontSize = 14.sp
         )
+    }
+}
+
+@Composable
+private fun SavedProfilesShell(
+    profiles: List<SavedLocalProfileShell>,
+    selectedProfileId: String?,
+    onSelect: (SavedLocalProfileShell) -> Unit,
+    onEdit: (SavedLocalProfileShell) -> Unit,
+    onDelete: (SavedLocalProfileShell) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .width(620.dp)
+            .background(Color(0xFF111722), RoundedCornerShape(24.dp))
+            .border(1.dp, Color(0xFF00E5FF), RoundedCornerShape(24.dp))
+            .padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = "Saved Profiles Shell",
+            color = Color(0xFF00E5FF),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Local in-memory list only. Source URLs and credentials are not persisted in this shell.",
+            color = Color.LightGray,
+            fontSize = 13.sp
+        )
+
+        if (profiles.isEmpty()) {
+            SmallProfileStateCard(
+                title = "No saved shell",
+                body = "Save a valid local profile shell to see it here.",
+                accent = Color(0xFF7C4DFF)
+            )
+        } else {
+            profiles.forEach { profile ->
+                SavedProfileCard(
+                    profile = profile,
+                    selected = selectedProfileId == profile.id,
+                    onSelect = { onSelect(profile) },
+                    onEdit = { onEdit(profile) },
+                    onDelete = { onDelete(profile) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SavedProfileCard(
+    profile: SavedLocalProfileShell,
+    selected: Boolean,
+    onSelect: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val accent = if (profile.isActive || selected) Color(0xFF00BFA5) else Color(0xFF2962FF)
+
+    Column(
+        modifier = Modifier
+            .width(584.dp)
+            .background(Color(0xFF151A24), RoundedCornerShape(20.dp))
+            .border(1.dp, accent, RoundedCornerShape(20.dp))
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = profile.profileName,
+            color = Color.White,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "${profile.sourceType.label} • ${profile.sourceSummary}",
+            color = Color.LightGray,
+            fontSize = 13.sp
+        )
+        Text(
+            text = if (profile.isActive) "Active local shell" else "Saved local shell",
+            color = accent,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Button(
+                onClick = onSelect,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF123A46),
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Select")
+            }
+            Button(
+                onClick = onEdit,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF141821),
+                    contentColor = Color.LightGray
+                )
+            ) {
+                Text("Edit")
+            }
+            Button(
+                onClick = onDelete,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF241206),
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Delete")
+            }
+        }
     }
 }
 
