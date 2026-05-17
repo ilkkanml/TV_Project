@@ -6,7 +6,7 @@
 
 Task: `M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
 
-Status: READY FOR DEVELOPER
+Status: `QA BLOCKED — DOCUMENTATION_CONFLICT`
 
 ## Last Locked Milestone
 
@@ -18,18 +18,18 @@ Director LOCKED: YES
 
 Lock evidence:
 
-- PR #9 merged to main
-- Build Evidence: PASSED
-- Runtime Evidence: CONFIRMED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
+- PR #10 exists
+- Build Evidence: Android Build Verification #109 success
+- Developer result: DONE
+- Developer runtime evidence: provided
+- QA code/regression risk: none found
+- QA final result: BLOCKED, not PASS
+- Documentation Memory: pending
 - Protected systems stable
-- Legal/compliance risk: none detected
+- Legal/compliance risk: clear
 
 ## Guardrails
 
-- Do not create a new milestone unless the user explicitly says: `Yeni milestone aç`.
-- Do not create a new task without Director instruction.
 - App code changes allowed only within M8-TASK-001 approved scope.
 - Changes must be minimal, additive, and limited to navigation/access polish.
 - Protected systems rewrite remains forbidden.
