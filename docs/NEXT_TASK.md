@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Ready for QA Tester.
+Ready for Documentation Memory.
 
 ## Current Active Milestone
 
@@ -14,7 +14,7 @@ Status: `ACTIVE`
 
 `M7-TASK-001 Local Profile Repository & Saved Profiles Shell`
 
-Status: `PR OPEN — CI PASSED — READY FOR QA`
+Status: `QA PASSED — READY FOR DOCUMENTATION MEMORY`
 
 ## Pull Request
 
@@ -28,22 +28,6 @@ Status: `PR OPEN — CI PASSED — READY FOR QA`
 - `app/src/main/java/com/nexora/tv/data/playlist/LocalProfileRepository.kt`
 - `app/src/main/java/com/nexora/tv/ui/screens/PlaylistProfileScreen.kt`
 
-## Task Goal
-
-Create a safe foundation for saved local profile shell management without connecting to external services.
-
-## Developer Result
-
-Developer reported:
-
-- M6 profile input shell preserved
-- Saved profiles list shell added
-- Active/selected profile state added
-- Minimal add/edit/delete shell behavior added
-- Flow remains local/mock-safe
-- Sensitive values are not persisted
-- Protected systems unchanged
-
 ## Build Evidence
 
 Status: PASSED
@@ -56,55 +40,56 @@ Evidence:
 
 ## Runtime Evidence
 
-Status: PASSED BY DEVELOPER REPORT
+Status: CONFIRMED
 
-Reported:
+Evidence:
 
-- PlaylistProfileScreen opens
-- Saved profiles list works
-- Add/edit/delete/select shell behavior works
-- Home/back navigation remains safe
+- Developer runtime report confirmed screen/shell behavior
+- QA accepted runtime evidence
 
-## QA Scope
+## QA Result
 
-QA Tester should verify:
+Status: PASS
 
-- PR #9 changed files match M7 scope
-- LocalProfileRepository is session-local/mock-safe
-- Sensitive values are not persisted
-- M6 input shell behavior is preserved
-- Saved profiles list shell works conceptually
-- Active/select behavior is safe
-- Edit/delete shell behavior is safe
-- No protected system rewrite
-- No production connection
-- No compliance risk
-- Build evidence is present
-- Runtime evidence is present by Developer report
+QA checked:
 
-## QA Return Required
+- LocalProfileRepository.kt
+- PlaylistProfileScreen.kt
+
+QA blockers:
+
+- none
+
+QA risk:
+
+- none
+
+## Required Next Action
+
+Send `M7-TASK-001` to Documentation Memory.
+
+No Director lock before Documentation Memory records the result.
+
+## Documentation Memory Return Required
 
 Return to Director with:
 
 ```text
-QA Result:
+Documentation Result:
 PASS / FAIL
 
-Checked Files:
+Updated Files:
 - ...
 
-Build Evidence:
+Recorded:
 - ...
 
-Runtime Evidence:
+Issues:
 - ...
 
-Blockers:
-- ...
-
-Regression Risk:
+Risk:
 - ...
 
 Recommendation:
-DOCUMENTATION_MEMORY or DEVELOPER
+DIRECTOR
 ```
