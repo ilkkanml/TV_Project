@@ -17,18 +17,31 @@ Before any new ChatGPT window works on the project, it must read these files fir
 7. `docs/HANDOFF.md`
 8. `docs/APP_BACKEND_INTEGRATION.md`
 9. `docs/DECISION_LOG.md`
-10. Relevant agent file from `docs/agents/`
+10. `docs/SAFE_CODE_ENGINE.md`
+11. Relevant agent file from `docs/agents/`
 
 ## Current Truth
 
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: none
-- Current active task: none
+- Current active milestone: `M6 Playlist Profile & Legal Source Input Foundation`
+- Current active task: `M6-TASK-001 Playlist Profile Model & Legal Input Shell`
+- Current task status: `BLOCKED — BUILD/RUNTIME EVIDENCE REQUIRED`
 - Last locked milestone: `M5 Content Library & Navigation Expansion`
-- Current workflow: minimal Director-led handoff
-- Next status: wait for Director to open the next milestone/task
+- Current workflow: minimal Director-led handoff with Safe Code Engine
+- Next status: provide real build/runtime evidence before QA can continue
+
+## Current M6 Status
+
+- `M6 Playlist Profile & Legal Source Input Foundation`: ACTIVE
+- `M6-TASK-001 Playlist Profile Model & Legal Input Shell`: BLOCKED
+- Blocker: build/runtime evidence missing
+- Required build command: `./gradlew :app:assembleDebug`
+- Runtime evidence required: profile screen render and basic state/navigation behavior
+- QA Tester result: FAIL until evidence is provided
+- Protected systems stable
+- Legal/compliance risk: controlled by scope
 
 ## Current M5 Status
 
@@ -56,6 +69,21 @@ Key decisions:
 - Backend may optionally transfer playlist/profile data to a device, but is not the default playlist owner.
 - Multi-profile playlist management is planned.
 - All playlist/profile input must be user-provided and legally authorized.
+
+## Safe Code Engine
+
+Safe Code Engine is active and mandatory.
+
+Read:
+
+- `docs/SAFE_CODE_ENGINE.md`
+
+Rules:
+
+- Developer cannot send code work to QA without required build/runtime evidence.
+- QA cannot PASS without required evidence.
+- Documentation Memory cannot record completion without the evidence chain.
+- Missing evidence keeps the task BLOCKED.
 
 ## Locked Milestones
 
@@ -90,9 +118,11 @@ Use only:
 
 Director → Developer → QA Tester → Documentation Memory → Director
 
+Safe Code Engine applies across the whole workflow.
+
 The user manually carries messages between windows.
 
-Each agent must obey its own `.md` file and the active `NEXT_TASK.md`.
+Each agent must obey its own `.md` file, `docs/SAFE_CODE_ENGINE.md`, and the active `NEXT_TASK.md`.
 
 ## Response Rule
 
