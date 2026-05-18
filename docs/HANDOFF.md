@@ -4,13 +4,21 @@
 
 Director
 
-## Current Task
-
-None
-
 ## Current Active Milestone
 
-None
+`M12 Platform Database Baseline & Migration Foundation`
+
+## Current Task
+
+`M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition`
+
+## M12 Status
+
+OPEN / DIRECTOR SCOPING
+
+## M12-TASK-001 Status
+
+OPEN / SCOPING
 
 ## Last Locked Milestone
 
@@ -36,9 +44,43 @@ LOCKED
 
 PASSED / COMPLETED
 
+## Current Director Decision
+
+M12 is opened for database baseline and migration foundation scoping only.
+
+No code, database migration, production database action, API implementation, Android bridge, payment enforcement, provider integration, content hosting, or channel selling is approved by this handoff.
+
+## M12 Initial Scope
+
+M12 may define:
+
+- Prisma migration baseline policy
+- Local database setup validation plan
+- Migration naming/versioning policy
+- Seed policy
+- Rollback policy
+- Data retention/deletion policy
+- Sensitive temporary profile-transfer data lifecycle
+- Audit-log baseline expectations
+- Database service/connection foundation plan
+
+## M12 Guardrails
+
+- Legal media player boundary preserved
+- Platform does not become content provider
+- No bundled channels or streams
+- No payment enforcement
+- No provider integration
+- No content hosting
+- No channel selling
+- No platform-owned stream catalog
+- No DRM bypass
+- No unauthorized stream scraping
+- Protected systems preserved
+
 ## Required Next Action
 
-Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
+Database Architect must provide M12 baseline/migration risk report before any Builder implementation.
 
 ## Department Boot Requirement
 
@@ -56,31 +98,3 @@ Before any department reports, it must read:
 Departments report only. Director decides.
 
 If runtime docs conflict, return `DOCUMENTATION_CONFLICT` before continuing.
-
-## M11 Lock Summary
-
-M11 locked as Platform source-of-truth audit/documentation milestone.
-
-Completed scope:
-
-- Platform repository audit
-- Platform repo structure review
-- API/database/security/legal gap review
-- M11 audit report
-- Platform README
-- Platform START_HERE
-- Platform source-of-truth docs
-- API contract alignment doc
-- Database baseline doc
-- Security/session policy doc
-- Legal boundary doc
-
-Guardrails:
-
-- No backend implementation approved
-- No database migration approved
-- No Android bridge approved
-- No payment enforcement approved
-- No provider integration approved
-- Protected systems preserved
-- Legal media player boundary preserved
