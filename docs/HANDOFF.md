@@ -2,21 +2,29 @@
 
 ## Current Handoff
 
-Ecosystem Integration / Systems Architect
+Director
 
 ## Current Task
 
-M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
+None
 
 ## Current Active Milestone
 
-M10 Ecosystem Alignment & Client Integration Contract
+None
+
+## Last Locked Milestone
+
+`M10 Ecosystem Alignment & Client Integration Contract`
 
 ## M10 Status
 
-ACTIVE
+LOCKED
 
-## Last Locked Milestone
+## M10-TASK-001 Status
+
+PASSED / COMPLETED
+
+## Previous Locked Milestone
 
 `M9 Startup Flow & Session Entry Polish`
 
@@ -26,7 +34,7 @@ LOCKED
 
 ## Required Next Action
 
-Ecosystem Integration / Systems Architect
+Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
 
 ## Department Boot Requirement
 
@@ -45,11 +53,25 @@ Departments report only. Director decides.
 
 If runtime docs conflict, return `DOCUMENTATION_CONFLICT` before continuing.
 
-## M10 Guardrails
+## M10 Lock Summary
 
-- M10 is ACTIVE
-- M10 is not PASSED
-- M10 is not LOCKED
-- App code must remain unchanged unless a future implementation task explicitly allows code changes
-- Protected systems remain protected
-- Legal/compliance boundary remains mandatory
+M10 locked as documentation/contract milestone.
+
+Completed scope:
+
+- Ecosystem alignment
+- Client integration contract
+- Contract hardening
+- Security & Privacy review
+- Legal Compliance review
+- Backend/Database feasibility review
+- Final documentation consistency check
+
+Guardrails:
+
+- App code unchanged
+- Backend code unchanged
+- Database implementation not approved
+- Payment enforcement not approved
+- Protected systems preserved
+- Legal/compliance boundary preserved
