@@ -35,16 +35,65 @@ Truth priority:
 5. `docs/START_HERE.md`
 6. Department/agent files
 
-At the time this protocol is created:
+Runtime docs remain the authority.
 
-- M10 is ACTIVE
-- Current task is `M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment`
-- Task status is `READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT`
-- Last locked milestone is `M9 Startup Flow & Session Entry Polish`
-- M10 is not PASSED
-- M10 is not LOCKED
+## Lean Workflow Rule
 
-These lines are a snapshot only. Runtime docs remain the authority.
+Avoid unnecessary procedure.
+
+Default flow:
+
+1. Department report
+2. Director decision
+3. Builder only if code is approved
+4. QA only if code/runtime/release risk exists
+5. Documentation update only when runtime truth, milestone status, or major decision changes
+6. Director lock only after required evidence
+
+Do not create a documentation/update loop for every small review.
+
+Do not update `CHANGELOG.md` or `DECISION_LOG.md` after every minor department report.
+
+Do not open separate department chats unless specialized review is actually useful.
+
+Director may handle simple documentation updates directly in the main Director thread.
+
+## Documentation Update Rule
+
+Documentation updates are required when:
+
+- Runtime truth changes
+- Active milestone/task changes
+- A milestone is opened or locked
+- A major Director decision is approved
+- A contract/source-of-truth document changes
+- A code task reaches QA/lock stage
+
+Documentation updates are not required for:
+
+- Minor review comments
+- Non-binding recommendations
+- Repeated confirmation of already-recorded facts
+- Intermediate discussion with no decision change
+
+Milestone final documentation may be batched.
+
+## QA Scope Rule
+
+QA is required for:
+
+- Code changes
+- Runtime/user-visible behavior
+- UI/navigation/playback/auth/session changes
+- Release readiness
+- Regression-sensitive changes
+
+QA is not required for:
+
+- Pure planning reports
+- Pure documentation notes
+- Advisory department opinions
+- Contract discussion with no implementation
 
 ## Authority Model
 
@@ -73,7 +122,7 @@ A department may return:
 - Blockers
 - Exact files/systems affected
 
-A department must not return final approval unless its role explicitly allows QA/documentation verification, and even then Director still decides milestone state.
+Keep reports short and decision-useful.
 
 ## Ecosystem Integration Ownership
 
@@ -113,6 +162,9 @@ Nexora TV is a legal player/client platform. It must not include or enable:
 - Credential bypass
 - Unauthorized scraping
 - Illegal restreaming
+- Channel selling
+- Bundled streams
+- Content hosting without legal approval
 
 Any legal risk is a HOLD.
 
@@ -129,17 +181,16 @@ Documentation Memory must not report `DONE` unless:
 - Every target file is updated or intentionally confirmed unchanged
 - Commit SHA list is provided
 - Repository verification was performed after commits
-- Runtime docs still preserve M10 ACTIVE when M10 is active
-- M10 is not accidentally marked PASSED or LOCKED
+- Runtime truth remains consistent
 - App code remains unchanged when the task is documentation-only
 
-Sequential commits are allowed.
+Sequential commits are allowed when atomic multi-file commit is unavailable.
 
 ## Protected Systems
 
 Protected systems remain protected unless the active task explicitly grants permission.
 
-Protected system status must be preserved in handoff, project memory, and decision records.
+Protected system status must be preserved in handoff, project memory, and decision records when those files are updated.
 
 ## Stop Conditions
 
