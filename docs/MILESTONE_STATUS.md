@@ -2,23 +2,27 @@
 
 ## Current Active Milestone
 
-M11 Platform Source-of-Truth Audit
+None
 
 ## Current Active Task
 
-M11-TASK-001 Platform Repository Source-of-Truth Audit
+None
 
 ## Last Locked Milestone
 
-`M10 Ecosystem Alignment & Client Integration Contract`
+`M11 Platform Source-of-Truth Audit`
 
 ## M11 Status
 
-ACTIVE
+LOCKED
 
 ## M11-TASK-001 Status
 
-READY
+PASSED / COMPLETED
+
+## Previous Locked Milestone
+
+`M10 Ecosystem Alignment & Client Integration Contract`
 
 ## M10 Status
 
@@ -28,7 +32,7 @@ LOCKED
 
 PASSED / COMPLETED
 
-## Previous Locked Milestone
+## Previous Locked Milestone Before M10
 
 `M9 Startup Flow & Session Entry Polish`
 
@@ -38,4 +42,4 @@ LOCKED
 
 ## Required Next Action
 
-Platform repository source-of-truth audit
+Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
