@@ -6,15 +6,19 @@
 
 ## M12 Status
 
-OPEN / DIRECTOR SCOPING
+OPEN / POLICY DRAFTING
 
 ## Current Active Task
 
-`M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition`
+`M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft`
 
 ## M12-TASK-001 Status
 
-OPEN / SCOPING
+REPORT RECORDED / COMPLETED
+
+## M12-TASK-002 Status
+
+OPEN / POLICY DRAFT RECORDED
 
 ## Last Locked Milestone
 
@@ -79,6 +83,14 @@ M12 does not approve:
 - Auth/session/token implementation unless separately scoped
 - Legal media player boundary changes
 
+## Current M12 Docs
+
+Platform repo:
+
+- `docs/M12_DATABASE_BASELINE_SCOPE.md`
+- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
+- `docs/M12_DATABASE_POLICY_DRAFT.md`
+
 ## Required Next Action
 
-Database Architect should provide M12 baseline/migration risk report before any Builder implementation.
+Director should review the M12 policy draft and decide whether Systems Architect / Security Privacy review is needed before any implementation task.
