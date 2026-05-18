@@ -10,15 +10,19 @@ Director
 
 ## Current Task
 
-`M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition`
+`M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft`
 
 ## M12 Status
 
-OPEN / DIRECTOR SCOPING
+OPEN / POLICY DRAFTING
 
 ## M12-TASK-001 Status
 
-OPEN / SCOPING
+REPORT RECORDED / COMPLETED
+
+## M12-TASK-002 Status
+
+OPEN / POLICY DRAFT RECORDED
 
 ## Last Locked Milestone
 
@@ -46,23 +50,21 @@ PASSED / COMPLETED
 
 ## Current Director Decision
 
-M12 is opened for database baseline and migration foundation scoping only.
+M12 remains planning and policy-only.
+
+M12-TASK-001 Database Architect report is recorded.
+
+M12-TASK-002 database migration / seed / rollback / retention policy draft is recorded in the platform repo.
 
 No code, database migration, production database action, API implementation, Android bridge, payment enforcement, provider integration, content hosting, or channel selling is approved by this handoff.
 
-## M12 Initial Scope
+## Current M12 Docs
 
-M12 may define:
+Platform repo:
 
-- Prisma migration baseline policy
-- Local database setup validation plan
-- Migration naming/versioning policy
-- Seed policy
-- Rollback policy
-- Data retention/deletion policy
-- Sensitive temporary profile-transfer data lifecycle
-- Audit-log baseline expectations
-- Database service/connection foundation plan
+- `docs/M12_DATABASE_BASELINE_SCOPE.md`
+- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
+- `docs/M12_DATABASE_POLICY_DRAFT.md`
 
 ## M12 Guardrails
 
@@ -74,13 +76,13 @@ M12 may define:
 - No content hosting
 - No channel selling
 - No platform-owned stream catalog
-- No DRM bypass
-- No unauthorized stream scraping
+- No rights-bypass behavior
+- No unauthorized source extraction behavior
 - Protected systems preserved
 
 ## Required Next Action
 
-Database Architect must provide M12 baseline/migration risk report before any Builder implementation.
+Director should review the M12 policy draft and decide whether Systems Architect / Security Privacy review is needed before any implementation task.
 
 ## Department Boot Requirement
 
