@@ -2,15 +2,23 @@
 
 ## Current Handoff
 
-Director
+Platform Source-of-Truth Audit
 
 ## Current Task
 
-None
+M11-TASK-001 Platform Repository Source-of-Truth Audit
 
 ## Current Active Milestone
 
-None
+M11 Platform Source-of-Truth Audit
+
+## M11 Status
+
+ACTIVE
+
+## Task Status
+
+READY
 
 ## Last Locked Milestone
 
@@ -24,17 +32,9 @@ LOCKED
 
 PASSED / COMPLETED
 
-## Previous Locked Milestone
-
-`M9 Startup Flow & Session Entry Polish`
-
-## M9 Status
-
-LOCKED
-
 ## Required Next Action
 
-Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
+Audit `TV_Project_Platform` repository source of truth.
 
 ## Department Boot Requirement
 
@@ -53,25 +53,26 @@ Departments report only. Director decides.
 
 If runtime docs conflict, return `DOCUMENTATION_CONFLICT` before continuing.
 
-## M10 Lock Summary
+## M11 Guardrails
 
-M10 locked as documentation/contract milestone.
-
-Completed scope:
-
-- Ecosystem alignment
-- Client integration contract
-- Contract hardening
-- Security & Privacy review
-- Legal Compliance review
-- Backend/Database feasibility review
-- Final documentation consistency check
-
-Guardrails:
-
-- App code unchanged
-- Backend code unchanged
-- Database implementation not approved
-- Payment enforcement not approved
+- Audit only
+- No backend implementation
+- No database implementation
+- No Android bridge implementation
+- No payment enforcement
+- No provider integration
+- Legal media player boundary preserved
 - Protected systems preserved
-- Legal/compliance boundary preserved
+
+## M11 Audit Targets
+
+- `TV_Project_Platform` repository existence/status
+- Repo structure
+- README/docs status
+- Backend/API status
+- Database/schema status
+- Account/auth/device/license/config/profile-transfer readiness
+- Environment/deployment status
+- Security/privacy gaps
+- Legal/compliance gaps
+- M12 readiness recommendation
