@@ -2,45 +2,53 @@
 
 ## Current Status
 
-No active task
+M12 opened by Director for scope and guardrail definition.
 
 ## Current Active Milestone
 
-None
+`M12 Platform Database Baseline & Migration Foundation`
 
 ## Current Active Task
 
-None
+`M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition`
 
-## Last Locked Milestone
+## M12-TASK-001 Status
 
-`M11 Platform Source-of-Truth Audit`
+OPEN / SCOPING
 
-## M11 Status
+## Task Owner Flow
 
-LOCKED
+Director → Database Architect report → Technical Director/System Architect risk check if needed → Director implementation decision → Builder only if approved → User Test → QA → Documentation → Director lock.
 
-## M11-TASK-001 Status
+## M12 Initial Scope
 
-PASSED / COMPLETED
+Define the safe database foundation before implementation.
 
-## Previous Locked Milestone
+IN:
 
-`M10 Ecosystem Alignment & Client Integration Contract`
+- Prisma migration baseline policy
+- Local database setup validation plan
+- Migration naming/versioning policy
+- Seed policy
+- Rollback policy
+- Data retention/deletion policy
+- Sensitive temporary profile-transfer data lifecycle
+- Audit-log baseline expectations
+- Database service/connection foundation plan
 
-## M10 Status
+OUT:
 
-LOCKED
+- Production DB deployment
+- Running real migrations
+- Payment enforcement
+- Provider integration
+- Content hosting
+- Channel selling
+- Platform-owned stream catalog
+- Android bridge implementation
+- Auth/session/token implementation unless separately approved
 
-## M10-TASK-001 Status
-
-PASSED / COMPLETED
-
-## Required Next Action
-
-Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
-
-## M12 Candidate Guardrails
+## Guardrails
 
 - No production deployment without approval
 - No payment enforcement
@@ -49,3 +57,12 @@ Director may open next milestone candidate: `M12 Platform Database Baseline & Mi
 - No channel selling
 - Legal media player boundary preserved
 - Protected systems preserved
+- No illegal IPTV list/source handling
+- No DRM bypass
+- No unauthorized stream scraping
+
+## Required Next Action
+
+Request Database Architect report for M12 baseline/migration foundation.
+
+Do not start code, Prisma migration, DB execution, API implementation, or Android bridge yet.
