@@ -2,7 +2,7 @@
 
 ## Current Status
 
-M12 opened by Director for scope and guardrail definition.
+M12-TASK-002 policy draft recorded.
 
 ## Current Active Milestone
 
@@ -10,59 +10,53 @@ M12 opened by Director for scope and guardrail definition.
 
 ## Current Active Task
 
-`M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition`
+`M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft`
 
 ## M12-TASK-001 Status
 
-OPEN / SCOPING
+REPORT RECORDED / COMPLETED
+
+## M12-TASK-002 Status
+
+OPEN / POLICY DRAFT RECORDED
 
 ## Task Owner Flow
 
-Director → Database Architect report → Technical Director/System Architect risk check if needed → Director implementation decision → Builder only if approved → User Test → QA → Documentation → Director lock.
+Director → Database Architect report → Policy draft → Systems Architect / Security Privacy review if needed → Director implementation decision → Builder only if approved → User Test → QA → Documentation → Director lock.
 
-## M12 Initial Scope
+## M12-TASK-002 Output
 
-Define the safe database foundation before implementation.
+Platform repo policy draft:
 
-IN:
+- `docs/M12_DATABASE_POLICY_DRAFT.md`
 
-- Prisma migration baseline policy
-- Local database setup validation plan
-- Migration naming/versioning policy
+Policy areas:
+
+- Migration baseline policy
+- Local DB validation policy
+- Production migration policy
 - Seed policy
 - Rollback policy
-- Data retention/deletion policy
-- Sensitive temporary profile-transfer data lifecycle
-- Audit-log baseline expectations
-- Database service/connection foundation plan
-
-OUT:
-
-- Production DB deployment
-- Running real migrations
-- Payment enforcement
-- Provider integration
-- Content hosting
-- Channel selling
-- Platform-owned stream catalog
-- Android bridge implementation
-- Auth/session/token implementation unless separately approved
+- Retention/deletion policy
+- Sensitive data policy
+- Legal database boundary
 
 ## Guardrails
 
 - No production deployment without approval
+- No Prisma migration execution
 - No payment enforcement
 - No provider integration
 - No content hosting
 - No channel selling
 - Legal media player boundary preserved
 - Protected systems preserved
-- No illegal IPTV list/source handling
-- No DRM bypass
-- No unauthorized stream scraping
+- No unauthorized source handling
+- No rights-bypass behavior
+- No unapproved stream extraction behavior
 
 ## Required Next Action
 
-Request Database Architect report for M12 baseline/migration foundation.
+Director should review the policy draft and decide if Systems Architect / Security Privacy review is required.
 
 Do not start code, Prisma migration, DB execution, API implementation, or Android bridge yet.
