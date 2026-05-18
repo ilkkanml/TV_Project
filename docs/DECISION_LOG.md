@@ -43,7 +43,7 @@ Related docs:
 
 ## DECISION-002 — App / Backend Responsibility Split
 
-Status: `APPROVED`
+Status: `SUPERSEDED BY DECISION-013`
 
 Summary:
 
@@ -53,9 +53,7 @@ App manages generated device identity, backend registration, license checks, pla
 
 Impact:
 
-- Backend controls business/license/config state
-- App controls local client/player behavior
-- Integration implementation requires a future approved milestone/task
+Superseded by Core Media Player Ecosystem direction and M10 Client Integration Contract.
 
 Related docs:
 
@@ -78,12 +76,13 @@ Secondary signals may include Android ID, device model, platform, app version, a
 Impact:
 
 - Android TV and Fire TV use the same identity model
-- `platform` separates Android TV / Fire TV where needed
-- Device activation foundation can evolve safely in a later milestone
+- Real hardware MAC address must not be primary license identity
+- Device activation foundation evolves under M10 contract direction
 
 Related docs:
 
-- `docs/APP_BACKEND_INTEGRATION.md`
+- `docs/DEVICE_IDENTITY_POLICY.md`
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
 
 ---
 
@@ -105,7 +104,7 @@ Impact:
 
 Related docs:
 
-- `docs/APP_BACKEND_INTEGRATION.md`
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
 - `docs/PROJECT_MEMORY.md`
 
 ---
@@ -169,17 +168,14 @@ Status: `APPROVED`
 
 Summary:
 
-Safe Code Engine is now mandatory for all code-related work.
-
-It is not a new agent or department. It is a required quality gate used by Director, Developer, QA Tester, and Documentation Memory.
+Safe Code Engine is mandatory for all code-related work.
 
 Impact:
 
-- Developer cannot return code work as DONE without build evidence or an exact blocker reason
-- Developer cannot recommend QA when required build/runtime evidence is missing
+- Developer cannot return code work as DONE without build evidence or exact blocker reason
 - QA cannot PASS code work without required build/runtime evidence
 - Documentation Memory must record build/runtime evidence status
-- Tasks affecting screens, routes, navigation, focus, player UI, or visible user flows require runtime evidence
+- Visible flow changes require runtime evidence
 
 Related docs:
 
@@ -198,23 +194,7 @@ Status: `APPROVED / LOCKED`
 
 Summary:
 
-M7 Local Profile Persistence Foundation milestone is now locked by Director.
-
-Lock evidence:
-
-- PR #9 merged to main
-- Build Evidence: PASSED
-- Runtime Evidence: CONFIRMED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none detected
-
-Impact:
-
-- No active milestone remains
-- No active task remains
-- Safe to switch to new milestone/chat window
+M7 Local Profile Persistence Foundation milestone is locked by Director.
 
 Related docs:
 
@@ -235,12 +215,6 @@ Summary:
 
 M8 TV Navigation & Access Polish milestone opened by Director.
 
-Impact:
-
-- Current Active Milestone: M8 TV Navigation & Access Polish
-- Current Active Task: M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish
-- Safe to send task to Developer
-
 Related docs:
 
 - `docs/MILESTONE_STATUS.md`
@@ -258,7 +232,7 @@ Status: `APPROVED / LOCKED`
 
 Summary:
 
-M8 TV Navigation & Access Polish milestone is now LOCKED.
+M8 TV Navigation & Access Polish milestone is LOCKED.
 
 Lock evidence:
 
@@ -268,18 +242,9 @@ Lock evidence:
 - Runtime Evidence: accepted
 - QA Result: PASS
 - Documentation Memory: PASSED
-- Blockers: none
-- Regression risk: none
 - Protected systems clear
 - Legal/compliance clear
 - Splash cleanup excluded from delivered scope
-
-Impact:
-
-- Current active milestone: None
-- Current active task: None
-- Last locked milestone: M8 TV Navigation & Access Polish
-- Director LOCKED: YES
 
 Related docs:
 
@@ -294,17 +259,11 @@ Related docs:
 
 ## DECISION-011 — M9 Opened
 
-Status: `APPROVED / ACTIVE`
+Status: `SUPERSEDED BY DECISION-012`
 
 Summary:
 
 M9 Startup Flow & Session Entry Polish milestone opened by Director.
-
-Impact:
-
-- Current Active Milestone: M9 Startup Flow & Session Entry Polish
-- Current Active Task: M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish
-- M9 status: ACTIVE
 
 Related docs:
 
@@ -318,36 +277,33 @@ Related docs:
 
 ---
 
-## DECISION-012 — M9-TASK-001 QA Pass Recorded
+## DECISION-012 — M9 Lock Decision
 
-Status: `QA PASSED / AWAITING DIRECTOR`
+Status: `APPROVED / LOCKED`
 
 Summary:
 
-M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish has QA PASS recorded.
+M9 Startup Flow & Session Entry Polish is locked by Director.
 
-Evidence:
+Lock evidence:
 
-- PR #11 exists
-- PR #11 merge status: NOT MERGED / awaiting Director decision
-- Changed files:
+- PR #11 merged to main
+- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
+- Changed file:
   - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #135 success
-- Runtime Evidence: Developer runtime evidence accepted
+- Build Evidence: Android Build Verification #144 success
+- Runtime Evidence: accepted
 - QA Result: PASS
-- Blockers: none
-- Regression risk: none
+- Documentation Memory: PASSED
+- Director LOCKED: YES
 - Protected systems clear
 - Legal/compliance clear
 
 Impact:
 
-- M9 remains ACTIVE
-- M9-TASK-001 is QA PASSED
-- M9 is not Documentation Memory PASSED
-- M9 is not LOCKED
-- Director LOCKED is not recorded for M9
-- Next action: return to Director for PR #11 merge / M9 lock decision
+- M9 is complete and locked
+- Last locked milestone is M9
+- M10 may proceed only after Director/user opens it
 
 Related docs:
 
@@ -358,3 +314,78 @@ Related docs:
 - `docs/PROJECT_MEMORY.md`
 - `docs/CHANGELOG.md`
 - `docs/milestones/M9_STARTUP_FLOW_SESSION_ENTRY_POLISH.md`
+
+---
+
+## DECISION-013 — M10 Ecosystem Direction
+
+Status: `APPROVED / ACTIVE`
+
+Summary:
+
+Nexora is aligned as a legal Core Media Player Ecosystem.
+
+- `TV_Project` is the Android TV / Fire TV first client.
+- `TV_Project_Platform` is the Core Account / Device / License / Admin / Remote Config / App Version / Profile Transfer center.
+- M10 is an ecosystem alignment and client integration contract milestone.
+
+Impact:
+
+- Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
+- Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
+- Required next action: Ecosystem Integration / Systems Architect
+- Database/API/Android bridge work must wait for contract alignment
+- M10 is not PASSED
+- M10 is not LOCKED
+
+Related docs:
+
+- `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/ECOSYSTEM_CONTRACT.md`
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/DEVICE_IDENTITY_POLICY.md`
+- `docs/LEGAL_PUBLIC_LANGUAGE.md`
+- `docs/PLATFORM_ANDROID_ROADMAP.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
+
+---
+
+## DECISION-014 — Department Boot Protocol
+
+Status: `APPROVED`
+
+Summary:
+
+Department Boot Protocol and Department Role Cards are approved so every department understands its role from the first chat window.
+
+Impact:
+
+- Every department must start from repo runtime truth
+- Departments report only
+- Director decides
+- Ecosystem Integration owns cross-repo alignment
+- Agent files define role, owns, does-not-do, stop conditions, output format, and legal boundary reminders
+- Runtime docs override chat memory and stale role files
+- Documentation Memory must not return DONE after partial file updates
+
+Related docs:
+
+- `docs/DEPARTMENT_BOOT_PROTOCOL.md`
+- `docs/DEPARTMENT_ROLE_CARDS.md`
+- `docs/agents/DIRECTOR.md`
+- `docs/agents/ECOSYSTEM_INTEGRATION.md`
+- `docs/agents/SYSTEMS_ARCHITECT.md`
+- `docs/agents/PRODUCT_DIRECTOR.md`
+- `docs/agents/PLATFORM_WEB_LEAD.md`
+- `docs/agents/BACKEND_ENGINEER.md`
+- `docs/agents/DATABASE_ARCHITECT.md`
+- `docs/agents/ANDROID_APP_BUILDER.md`
+- `docs/agents/PLAYBACK_ENGINEER.md`
+- `docs/agents/TV_UX_REMOTE_NAVIGATION.md`
+- `docs/agents/SECURITY_PRIVACY.md`
+- `docs/agents/LEGAL_COMPLIANCE.md`
+- `docs/agents/QA_TESTER.md`
+- `docs/agents/DOCUMENTATION_MEMORY.md`
+- `docs/agents/RELEASE_MANAGER.md`
