@@ -2,7 +2,7 @@
 
 ## Current Status
 
-M12-TASK-002 policy draft recorded.
+M12-TASK-003 local-only implementation plan recorded.
 
 ## Current Active Milestone
 
@@ -10,7 +10,7 @@ M12-TASK-002 policy draft recorded.
 
 ## Current Active Task
 
-`M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft`
+`M12-TASK-003 Local-only Migration Baseline Implementation Plan`
 
 ## M12-TASK-001 Status
 
@@ -18,33 +18,36 @@ REPORT RECORDED / COMPLETED
 
 ## M12-TASK-002 Status
 
-OPEN / POLICY DRAFT RECORDED
+POLICY DRAFT RECORDED / COMPLETED
+
+## M12-TASK-003 Status
+
+OPEN / IMPLEMENTATION PLAN RECORDED
 
 ## Task Owner Flow
 
-Director → Database Architect report → Policy draft → Systems Architect / Security Privacy review if needed → Director implementation decision → Builder only if approved → User Test → QA → Documentation → Director lock.
+Director → Builder only if implementation is explicitly approved → User Test / local verification → QA → Documentation → Director lock.
 
-## M12-TASK-002 Output
+## M12-TASK-003 Output
 
-Platform repo policy draft:
+Platform repo planning document:
 
-- `docs/M12_DATABASE_POLICY_DRAFT.md`
+- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
 
-Policy areas:
+Plan areas:
 
-- Migration baseline policy
-- Local DB validation policy
-- Production migration policy
-- Seed policy
-- Rollback policy
-- Retention/deletion policy
-- Sensitive data policy
+- Local-only target boundary
+- Allowed future files/areas
+- Required Builder preflight
+- Candidate commands after approval
+- Required evidence if implemented
+- QA requirement if implemented
 - Legal database boundary
 
 ## Guardrails
 
 - No production deployment without approval
-- No Prisma migration execution
+- No Prisma migration execution until a separate Builder task is approved
 - No payment enforcement
 - No provider integration
 - No content hosting
@@ -57,6 +60,6 @@ Policy areas:
 
 ## Required Next Action
 
-Director should review the policy draft and decide if Systems Architect / Security Privacy review is required.
+Director must decide whether to approve Builder for local-only migration baseline implementation.
 
 Do not start code, Prisma migration, DB execution, API implementation, or Android bridge yet.
