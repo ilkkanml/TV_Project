@@ -6,11 +6,11 @@
 
 ## M12 Status
 
-OPEN / POLICY DRAFTING
+OPEN / IMPLEMENTATION PLANNING
 
 ## Current Active Task
 
-`M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft`
+`M12-TASK-003 Local-only Migration Baseline Implementation Plan`
 
 ## M12-TASK-001 Status
 
@@ -18,7 +18,11 @@ REPORT RECORDED / COMPLETED
 
 ## M12-TASK-002 Status
 
-OPEN / POLICY DRAFT RECORDED
+POLICY DRAFT RECORDED / COMPLETED
+
+## M12-TASK-003 Status
+
+OPEN / IMPLEMENTATION PLAN RECORDED
 
 ## Last Locked Milestone
 
@@ -73,7 +77,7 @@ M12 may define:
 M12 does not approve:
 
 - Production database deployment
-- Prisma migration execution
+- Prisma migration execution without separate Director implementation approval
 - Payment enforcement
 - Provider integration
 - Content hosting
@@ -90,7 +94,12 @@ Platform repo:
 - `docs/M12_DATABASE_BASELINE_SCOPE.md`
 - `docs/M12_DATABASE_ARCHITECT_REPORT.md`
 - `docs/M12_DATABASE_POLICY_DRAFT.md`
+- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
+- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
+- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
 
 ## Required Next Action
 
-Director should review the M12 policy draft and decide whether Systems Architect / Security Privacy review is needed before any implementation task.
+Director must decide whether to approve a Builder task for local-only migration baseline implementation.
+
+No Builder implementation is approved yet.
