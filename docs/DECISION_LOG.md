@@ -293,7 +293,7 @@ Related docs:
 
 ## DECISION-013 — M10 Ecosystem Direction
 
-Status: `APPROVED / ACTIVE`
+Status: `APPROVED / LOCKED BY DECISION-016`
 
 Summary:
 
@@ -305,12 +305,8 @@ Nexora is aligned as a legal Core Media Player Ecosystem.
 
 Impact:
 
-- Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
-- Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
-- Required next action: Ecosystem Integration / Systems Architect
-- Database/API/Android bridge work must wait for contract alignment
-- M10 is not PASSED
-- M10 is not LOCKED
+- M10 contract alignment completed.
+- Database/API/Android bridge work must wait for future explicit milestone/task.
 
 Related docs:
 
@@ -326,28 +322,32 @@ Related docs:
 
 ---
 
-## DECISION-014 — Department Boot Protocol
+## DECISION-014 — Department Boot Protocol + Lean Workflow
 
 Status: `APPROVED`
 
 Summary:
 
-Department Boot Protocol and Department Role Cards are approved so every department understands its role from the first chat window.
+Department Boot Protocol, Department Role Cards, and Lean Workflow rules are approved.
 
 Impact:
 
-- Every department must start from repo runtime truth
-- Departments report only
-- Director decides
-- Ecosystem Integration owns cross-repo alignment
-- Agent files define role, owns, does-not-do, stop conditions, output format, and legal boundary reminders
-- Runtime docs override chat memory and stale role files
-- Documentation Memory must not return DONE after partial file updates
+- Every department must start from repo runtime truth.
+- Departments report only.
+- Director decides.
+- Ecosystem Integration owns cross-repo alignment.
+- Runtime docs override chat memory and stale role files.
+- Documentation Memory must not return DONE after partial file updates.
+- Minor reviews do not require repeated CHANGELOG/DECISION_LOG updates.
+- Director may handle simple documentation updates directly.
+- QA is reserved for code/runtime/release risk.
 
 Related docs:
 
 - `docs/DEPARTMENT_BOOT_PROTOCOL.md`
 - `docs/DEPARTMENT_ROLE_CARDS.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/START_HERE.md`
 - `docs/agents/DIRECTOR.md`
 - `docs/agents/ECOSYSTEM_INTEGRATION.md`
 - `docs/agents/SYSTEMS_ARCHITECT.md`
@@ -372,7 +372,7 @@ Status: `APPROVED / DOCUMENTATION-ONLY`
 
 Summary:
 
-`docs/CLIENT_INTEGRATION_CONTRACT.md` is hardened for M10 before any M11 database/API/backend bridge implementation.
+`docs/CLIENT_INTEGRATION_CONTRACT.md` was hardened for M10 before any M11 database/API/backend bridge implementation.
 
 Hardening includes:
 
@@ -395,15 +395,64 @@ Impact:
 - This does not approve backend code changes.
 - This does not approve database implementation.
 - This does not approve payment enforcement.
-- M10 remains ACTIVE.
-- M10 is not PASSED.
-- M10 is not LOCKED.
 
 Related docs:
 
 - `docs/CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/reviews/M10_SECURITY_PRIVACY_REVIEW.md`
+- `docs/reviews/M10_LEGAL_COMPLIANCE_REVIEW.md`
 - `docs/PROJECT_MEMORY.md`
 - `docs/CHANGELOG.md`
+
+---
+
+## DECISION-016 — M10 Lock Decision
+
+Status: `APPROVED / LOCKED`
+
+Summary:
+
+M10 Ecosystem Alignment & Client Integration Contract is locked by Director.
+
+Completed scope:
+
+- Ecosystem alignment
+- Client integration contract
+- Contract hardening
+- Security & Privacy review
+- Legal Compliance review
+- Backend/Database feasibility review
+- Final documentation consistency check
+
+Lock guardrails:
+
+- Documentation/contract milestone only
+- No app code changed
+- No backend code changed
+- No database implementation approved
+- No payment enforcement approved
+- No provider integration approved
+- Protected systems preserved
+- Legal/compliance boundary preserved
+
+Impact:
+
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: M10 Ecosystem Alignment & Client Integration Contract
+- Next candidate: M11 Platform Source-of-Truth Audit
+- M11 must be explicitly opened by Director before work begins
+
+Related docs:
+
 - `docs/MILESTONE_STATUS.md`
 - `docs/NEXT_TASK.md`
 - `docs/HANDOFF.md`
+- `docs/START_HERE.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/ECOSYSTEM_CONTRACT.md`
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/reviews/M10_SECURITY_PRIVACY_REVIEW.md`
+- `docs/reviews/M10_LEGAL_COMPLIANCE_REVIEW.md`
