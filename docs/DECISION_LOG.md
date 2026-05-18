@@ -47,19 +47,16 @@ Status: `SUPERSEDED BY DECISION-013`
 
 Summary:
 
-Backend manages account, subscription status, device activation, payment status, reseller system, version check, force update, remote config, maintenance mode, and feature flags.
-
-App manages generated device identity, backend registration, license checks, playlist/profile management, encrypted local playlist profile storage, and player access.
+Earlier app/backend responsibility split is superseded by M10 Core Media Player Ecosystem direction and Client Integration Contract.
 
 Impact:
 
-Superseded by Core Media Player Ecosystem direction and M10 Client Integration Contract.
+- Use M10 contract docs as source of truth for Android ↔ Platform split.
 
 Related docs:
 
-- `docs/APP_BACKEND_INTEGRATION.md`
-- `docs/PROJECT_MEMORY.md`
-- `docs/START_HERE.md`
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/ECOSYSTEM_CONTRACT.md`
 
 ---
 
@@ -69,15 +66,13 @@ Status: `APPROVED`
 
 Summary:
 
-MAC address is not the primary device ID. The app should generate `app_generated_device_id` on first launch.
-
-Secondary signals may include Android ID, device model, platform, app version, and install metadata.
+MAC address is not the primary device ID. The app should generate `app_generated_device_id` on first launch. Backend assigns `platform_device_id` after activation.
 
 Impact:
 
-- Android TV and Fire TV use the same identity model
-- Real hardware MAC address must not be primary license identity
-- Device activation foundation evolves under M10 contract direction
+- Android TV and Fire TV use the same identity model.
+- Real hardware MAC address must not be primary license identity.
+- Device activation evolves under M10 contract direction.
 
 Related docs:
 
@@ -92,15 +87,12 @@ Status: `APPROVED`
 
 Summary:
 
-Default playlist source of truth is encrypted local device storage. Backend is not the default source of truth for user playlist profiles.
-
-Web panel may optionally transfer a playlist/profile to a selected user device. Longer cloud sync requires explicit user consent.
+Default playlist/profile source of truth is local device storage. Backend is not the default source of truth for user playlist profiles. Web/platform may provide temporary profile transfer.
 
 Impact:
 
-- App must support local encrypted profile storage in a future milestone
-- Multi-profile management is planned
-- Web playlist push is optional transfer helper, not default ownership
+- Web profile transfer is helper flow, not permanent backend ownership.
+- Longer cloud sync requires explicit future approval.
 
 Related docs:
 
@@ -116,8 +108,6 @@ Status: `SUPERSEDED BY DECISION-006`
 Summary:
 
 M5-TASK-001 reached QA PASS after support tasks M5-TASK-002 and M5-TASK-005.
-
-M5 moved to Documentation Memory review.
 
 Related docs:
 
@@ -135,21 +125,6 @@ Status: `APPROVED / LOCKED`
 Summary:
 
 M5 Content Library & Navigation Expansion is locked by Director decision.
-
-Lock evidence:
-
-- User Runtime Test: PASSED
-- QA Tester: PASSED
-- Documentation Memory: PASSED
-- Protected systems stable
-- Legal/compliance risk: none detected
-
-Impact:
-
-- M5 is complete and locked
-- No active milestone remains
-- No active task remains
-- Next work requires Director to open a new milestone/task
 
 Related docs:
 
@@ -172,10 +147,10 @@ Safe Code Engine is mandatory for all code-related work.
 
 Impact:
 
-- Developer cannot return code work as DONE without build evidence or exact blocker reason
-- QA cannot PASS code work without required build/runtime evidence
-- Documentation Memory must record build/runtime evidence status
-- Visible flow changes require runtime evidence
+- Developer cannot return code work as DONE without build evidence or exact blocker reason.
+- QA cannot PASS code work without required build/runtime evidence.
+- Documentation Memory must record build/runtime evidence status.
+- Visible flow changes require runtime evidence.
 
 Related docs:
 
@@ -301,9 +276,8 @@ Lock evidence:
 
 Impact:
 
-- M9 is complete and locked
-- Last locked milestone is M9
-- M10 may proceed only after Director/user opens it
+- M9 is complete and locked.
+- Last locked milestone is M9.
 
 Related docs:
 
@@ -389,3 +363,47 @@ Related docs:
 - `docs/agents/QA_TESTER.md`
 - `docs/agents/DOCUMENTATION_MEMORY.md`
 - `docs/agents/RELEASE_MANAGER.md`
+
+---
+
+## DECISION-015 — M10 Client Integration Contract Hardening
+
+Status: `APPROVED / DOCUMENTATION-ONLY`
+
+Summary:
+
+`docs/CLIENT_INTEGRATION_CONTRACT.md` is hardened for M10 before any M11 database/API/backend bridge implementation.
+
+Hardening includes:
+
+- Android ↔ Platform responsibility table
+- Endpoint contract draft
+- Request/response examples
+- Error state matrix
+- Session/token behavior placeholders
+- Remote config schema boundary
+- Profile transfer MVP flow
+- Free early launch behavior
+- Legal media player boundary
+
+Impact:
+
+- Contract is stronger for Security & Privacy and Legal Compliance review.
+- Backend Engineer and Database Architect may use the document for feasibility reporting only.
+- This does not approve implementation.
+- This does not approve app code changes.
+- This does not approve backend code changes.
+- This does not approve database implementation.
+- This does not approve payment enforcement.
+- M10 remains ACTIVE.
+- M10 is not PASSED.
+- M10 is not LOCKED.
+
+Related docs:
+
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/PROJECT_MEMORY.md`
+- `docs/CHANGELOG.md`
+- `docs/MILESTONE_STATUS.md`
+- `docs/NEXT_TASK.md`
+- `docs/HANDOFF.md`
