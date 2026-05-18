@@ -6,7 +6,7 @@
 
 ## M12 Status
 
-OPEN / IMPLEMENTATION PLANNING
+OPEN / IMPLEMENTATION PARTIAL
 
 ## Current Active Task
 
@@ -22,7 +22,7 @@ POLICY DRAFT RECORDED / COMPLETED
 
 ## M12-TASK-003 Status
 
-OPEN / IMPLEMENTATION PLAN RECORDED
+PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
 
 ## Last Locked Milestone
 
@@ -72,12 +72,30 @@ M12 may define:
 - Sensitive transfer-data lifecycle rules
 - Audit-log baseline expectations
 
+## M12-TASK-003 Implementation Record
+
+Platform repo migration files were added:
+
+- `apps/api/prisma/migrations/migration_lock.toml`
+- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
+
+Evidence status:
+
+- Build/typecheck: NOT CONFIRMED
+- Prisma generate: NOT CONFIRMED
+- Local migration apply: NOT CONFIRMED
+- Local DB verification: NOT CONFIRMED
+
+Reason:
+
+- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
+
 ## M12 Out of Scope
 
 M12 does not approve:
 
 - Production database deployment
-- Prisma migration execution without separate Director implementation approval
+- Production database mutation
 - Payment enforcement
 - Provider integration
 - Content hosting
@@ -100,6 +118,12 @@ Platform repo:
 
 ## Required Next Action
 
-Director must decide whether to approve a Builder task for local-only migration baseline implementation.
+Run local verification before QA:
 
-No Builder implementation is approved yet.
+- `pnpm install`
+- `docker compose up -d`
+- `pnpm db:generate`
+- `pnpm db:migrate`
+- `pnpm --filter @tv-platform/api run typecheck`
+
+QA cannot PASS until evidence is provided.
