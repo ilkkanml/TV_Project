@@ -20,6 +20,10 @@ ACTIVE
 
 READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
 
+## M9 Status
+
+LOCKED
+
 ## Required Next Action
 
 Ecosystem Integration / Systems Architect
