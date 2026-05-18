@@ -12,34 +12,54 @@
 - M8 TV Navigation & Access Polish: LOCKED
 - M9 Startup Flow & Session Entry Polish: LOCKED
 - M10 Ecosystem Alignment & Client Integration Contract: LOCKED
+- M11 Platform Source-of-Truth Audit: LOCKED
 
-## Current Active Milestone
+## Last Locked Milestone
 
 ### M11 Platform Source-of-Truth Audit
 
-Status: ACTIVE
+Status: LOCKED
 
-Current task:
+Completed scope:
 
-`M11-TASK-001 Platform Repository Source-of-Truth Audit`
+- Platform repository audit
+- Platform repo structure review
+- API/database/security/legal gap review
+- M11 audit report
+- Platform README
+- Platform START_HERE
+- Platform source-of-truth docs
+- API contract alignment doc
+- Database baseline doc
+- Security/session policy doc
+- Legal boundary doc
 
-Task status:
+Guardrails:
 
-READY
-
-Scope:
-
-- Audit `TV_Project_Platform` repository source of truth
-- No implementation
-- No backend code
-- No database changes
-- No Android bridge
-- No payment enforcement
-- No provider integration
+- Audit/documentation milestone only
+- No Android app code changed
+- No backend implementation approved
+- No database migration approved
+- No payment enforcement approved
+- No provider integration approved
 - Protected systems preserved
 - Legal media player boundary preserved
 
-## Last Locked Milestone
+## Current Active Milestone
+
+None
+
+## Current Active Task
+
+None
+
+## Next Candidate
+
+`M12 Platform Database Baseline & Migration Foundation`
+
+Director must explicitly open M12 before any new milestone/task begins.
+
+## Previous Locked Milestone
 
 ### M10 Ecosystem Alignment & Client Integration Contract
 
@@ -55,49 +75,23 @@ Completed scope:
 - Backend/Database feasibility review
 - Final documentation consistency check
 
-Guardrails:
+## M11 Files
 
-- Documentation/contract milestone only
-- No app code changed
-- No backend code changed
-- No database implementation approved
-- No payment enforcement approved
-- No provider integration approved
-- Protected systems preserved
-- Legal/compliance boundary preserved
-
-## Previous Locked Milestone
-
-### M9 Startup Flow & Session Entry Polish
-
-Status: LOCKED
-
-Evidence:
-
-- PR #11 merged to main
-- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
-- Build Evidence: Android Build Verification #144 success
-- Runtime Evidence: accepted
-- QA Result: PASS
-- Director LOCKED: YES
-- Protected systems clear
-- Legal/compliance clear
-
-## M11 Milestone File
+Android repo:
 
 - `docs/milestones/M11_PLATFORM_SOURCE_OF_TRUTH_AUDIT.md`
+- `docs/reviews/M11_PLATFORM_SOURCE_OF_TRUTH_AUDIT_REPORT.md`
 
-## M10 Documentation / Contract Files
+Platform repo:
 
-- `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
-- `docs/ECOSYSTEM_CONTRACT.md`
-- `docs/CLIENT_INTEGRATION_CONTRACT.md`
-- `docs/DEVICE_IDENTITY_POLICY.md`
-- `docs/LEGAL_PUBLIC_LANGUAGE.md`
-- `docs/PLATFORM_ANDROID_ROADMAP.md`
-- `docs/reviews/M10_SECURITY_PRIVACY_REVIEW.md`
-- `docs/reviews/M10_LEGAL_COMPLIANCE_REVIEW.md`
+- `README.md`
+- `docs/START_HERE.md`
+- `docs/PLATFORM_SOURCE_OF_TRUTH.md`
+- `docs/API_CONTRACT_ALIGNMENT.md`
+- `docs/DATABASE_BASELINE.md`
+- `docs/SECURITY_SESSION_POLICY.md`
+- `docs/LEGAL_BOUNDARY.md`
 
 ## Current Required Next Action
 
-Audit `TV_Project_Platform` repository source of truth.
+Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`.
