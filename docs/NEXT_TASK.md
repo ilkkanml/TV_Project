@@ -2,25 +2,29 @@
 
 ## Current Status
 
-One active task
+No active task
 
 ## Current Active Milestone
 
-M11 Platform Source-of-Truth Audit
-
-## M11 Status
-
-ACTIVE
+None
 
 ## Current Active Task
 
-M11-TASK-001 Platform Repository Source-of-Truth Audit
-
-## Task Status
-
-READY
+None
 
 ## Last Locked Milestone
+
+`M11 Platform Source-of-Truth Audit`
+
+## M11 Status
+
+LOCKED
+
+## M11-TASK-001 Status
+
+PASSED / COMPLETED
+
+## Previous Locked Milestone
 
 `M10 Ecosystem Alignment & Client Integration Contract`
 
@@ -32,25 +36,16 @@ LOCKED
 
 PASSED / COMPLETED
 
-## Previous Locked Milestone
-
-`M9 Startup Flow & Session Entry Polish`
-
-## M9 Status
-
-LOCKED
-
 ## Required Next Action
 
-Audit `TV_Project_Platform` repository source of truth.
+Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
 
-## M11 Guardrails
+## M12 Candidate Guardrails
 
-- Audit only
-- No backend implementation
-- No database implementation
-- No Android bridge implementation
+- No production deployment without approval
 - No payment enforcement
 - No provider integration
+- No content hosting
+- No channel selling
 - Legal media player boundary preserved
 - Protected systems preserved
