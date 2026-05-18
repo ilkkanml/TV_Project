@@ -29,14 +29,15 @@ Chat history is not the source of truth.
 - Product type: legal Core Media Player Ecosystem / Android TV + Fire TV first client
 - Platform center: `TV_Project_Platform`
 - Android client: `TV_Project`
-- Current active milestone: `M11 Platform Source-of-Truth Audit`
-- Current active task: `M11-TASK-001 Platform Repository Source-of-Truth Audit`
-- M11 status: ACTIVE
-- M11-TASK-001 status: READY
-- Last locked milestone: `M10 Ecosystem Alignment & Client Integration Contract`
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: `M11 Platform Source-of-Truth Audit`
+- M11 status: LOCKED
+- M11-TASK-001 status: PASSED / COMPLETED
+- Previous locked milestone: `M10 Ecosystem Alignment & Client Integration Contract`
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Audit `TV_Project_Platform` repository source of truth
+- Required next action: Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
 
 ## Lean Workflow Rule
 
@@ -62,39 +63,32 @@ Departments report only. Director decides.
 
 If runtime docs conflict, stop and report `DOCUMENTATION_CONFLICT`.
 
-## M11 Guardrails
+## M11 Lock Summary
 
-M11 is audit-only.
+M11 locked as Platform source-of-truth audit/documentation milestone.
 
-Not approved:
+Completed scope:
 
-- Backend implementation
-- Database implementation
-- Android bridge implementation
-- Payment enforcement
-- Provider integration
-- Content hosting
-- Channel selling
-- Bundled streams
-- Rights-protection bypass or equivalent circumvention
-- Unauthorized scraping
-- Credential sharing
-- Protected-system rewrite
-
-## M10 Lock Summary
-
-M10 locked as documentation/contract milestone.
+- Platform repository audit
+- M11 audit report
+- Platform README
+- Platform START_HERE
+- Platform source-of-truth docs
+- API contract alignment doc
+- Database baseline doc
+- Security/session policy doc
+- Legal boundary doc
 
 Guardrails preserved:
 
-- App code unchanged
-- Backend code unchanged
-- Database implementation not approved
-- Payment enforcement not approved
-- Provider integration not approved
+- No backend implementation approved
+- No database migration approved
+- No Android bridge approved
+- No payment enforcement approved
+- No provider integration approved
 - Protected systems preserved
-- Legal/compliance boundary preserved
+- Legal media player boundary preserved
 
 ## Required Next Action
 
-Audit `TV_Project_Platform` repository source of truth.
+Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`.
