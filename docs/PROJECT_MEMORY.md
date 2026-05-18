@@ -91,6 +91,36 @@ Core M10 rules:
 - Payment/subscription enforcement is inactive during early/free launch.
 - Contract comes before database/API/Android bridge implementation.
 
+## M10 Contract Hardening Record
+
+`docs/CLIENT_INTEGRATION_CONTRACT.md` has been hardened for M10 with:
+
+- Android ↔ Platform responsibility table
+- Endpoint contract draft
+- Request/response examples
+- Error state matrix
+- Session/token behavior placeholders
+- Remote config schema boundary
+- Profile transfer MVP flow
+- Free early launch behavior
+- Legal media player boundary
+
+This is documentation-only.
+
+No app code, backend code, database implementation, payment enforcement, provider integration, or protected-system change is approved by this record.
+
+M10 remains ACTIVE.
+
+M10 is not PASSED.
+
+M10 is not LOCKED.
+
+Next recommended review:
+
+- Security & Privacy review
+- Legal Compliance review
+- Backend Engineer / Database Architect feasibility report only
+
 ## Department Boot Protocol
 
 Department boot docs:
