@@ -24,18 +24,18 @@ Legal Core Media Player Ecosystem.
 ## Current Runtime Truth
 
 - Current active milestone: M12 Platform Database Baseline & Migration Foundation
-- M12 status: OPEN / IMPLEMENTATION PLANNING
+- M12 status: OPEN / IMPLEMENTATION PARTIAL
 - Current active task: M12-TASK-003 Local-only Migration Baseline Implementation Plan
 - M12-TASK-001 status: REPORT RECORDED / COMPLETED
 - M12-TASK-002 status: POLICY DRAFT RECORDED / COMPLETED
-- M12-TASK-003 status: OPEN / IMPLEMENTATION PLAN RECORDED
+- M12-TASK-003 status: PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
 - Last locked milestone: M11 Platform Source-of-Truth Audit
 - M11 status: LOCKED
 - M11-TASK-001 status: PASSED / COMPLETED
 - Previous locked milestone: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Director must decide whether to approve Builder for local-only migration baseline implementation
+- Required next action: run local verification before QA
 
 Runtime truth priority:
 
@@ -81,7 +81,7 @@ Allowed development sources:
 
 ## M12 Current Scope
 
-M12 Platform Database Baseline & Migration Foundation is OPEN / IMPLEMENTATION PLANNING.
+M12 Platform Database Baseline & Migration Foundation is OPEN / IMPLEMENTATION PARTIAL.
 
 Current platform docs:
 
@@ -91,6 +91,22 @@ Current platform docs:
 - `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
 - `docs/M12_SECURITY_PRIVACY_REVIEW.md`
 - `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
+
+M12-TASK-003 changed platform files:
+
+- `apps/api/prisma/migrations/migration_lock.toml`
+- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
+
+Evidence status:
+
+- Build/typecheck: NOT CONFIRMED
+- Prisma generate: NOT CONFIRMED
+- Local migration apply: NOT CONFIRMED
+- Local DB verification: NOT CONFIRMED
+
+Reason:
+
+- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
 
 M12 may define:
 
@@ -107,7 +123,7 @@ M12 may define:
 M12 must not approve:
 
 - Production database deployment
-- Prisma migration execution without separate Director implementation approval
+- Production database mutation
 - Payment enforcement
 - Provider integration
 - Content hosting
@@ -119,7 +135,14 @@ M12 must not approve:
 
 Required next action:
 
-- Director must decide whether to approve Builder for local-only migration baseline implementation.
+- Run local verification before QA:
+  - `pnpm install`
+  - `docker compose up -d`
+  - `pnpm db:generate`
+  - `pnpm db:migrate`
+  - `pnpm --filter @tv-platform/api run typecheck`
+
+QA cannot PASS until evidence is provided.
 
 ## M11 Lock Summary
 
@@ -208,9 +231,9 @@ Rule:
 ## Current Code Reality
 
 - Android client code unchanged by M11
-- Platform M12 docs added/updated
-- M12 is currently implementation planning only
-- M12 has not approved backend/API/database implementation yet
+- Platform migration baseline files added by M12-TASK-003
+- M12-TASK-003 is PARTIAL until local verification evidence exists
+- M12 has not approved production backend/API/database deployment
 
 ## User Preference
 
