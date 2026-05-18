@@ -23,14 +23,14 @@ Legal Core Media Player Ecosystem.
 
 ## Current Runtime Truth
 
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: M11 Platform Source-of-Truth Audit
+- Current active task: M11-TASK-001 Platform Repository Source-of-Truth Audit
+- M11 status: ACTIVE
+- M11-TASK-001 status: READY
 - Last locked milestone: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Previous locked milestone: M9 Startup Flow & Session Entry Polish
-- M9 status: LOCKED
-- Required next action: Director may open next milestone candidate: M11 Platform Source-of-Truth Audit
+- Required next action: Audit `TV_Project_Platform` repository source of truth
 
 Runtime truth priority:
 
@@ -74,30 +74,42 @@ Allowed development sources:
 - User-owned licensed streams
 - Legal provider/API integrations
 
+## M11 Platform Source-of-Truth Audit
+
+M11 audits `TV_Project_Platform` before database/API/backend bridge implementation begins.
+
+Audit targets:
+
+- Repository structure
+- README/docs status
+- Framework/runtime setup
+- Backend/API status
+- Database/schema status
+- Account/auth/device/license/config/profile-transfer readiness
+- Environment/deployment status
+- Security/privacy gaps
+- Legal/compliance gaps
+- M12 readiness recommendation
+
+M11 is audit-only.
+
+Not approved:
+
+- Backend implementation
+- Database implementation
+- Android bridge implementation
+- Payment enforcement
+- Provider integration
+- Content hosting
+- Channel selling
+- Bundled streams
+- Unauthorized source extraction
+- Credential sharing
+- Protected-system rewrite
+
 ## M10 Lock Summary
 
 M10 Ecosystem Alignment & Client Integration Contract is LOCKED.
-
-Completed scope:
-
-- Ecosystem alignment
-- Client integration contract
-- Contract hardening
-- Security & Privacy review
-- Legal Compliance review
-- Backend/Database feasibility review
-- Final documentation consistency check
-
-M10 contract docs:
-
-- `docs/ECOSYSTEM_CONTRACT.md`
-- `docs/CLIENT_INTEGRATION_CONTRACT.md`
-- `docs/DEVICE_IDENTITY_POLICY.md`
-- `docs/LEGAL_PUBLIC_LANGUAGE.md`
-- `docs/PLATFORM_ANDROID_ROADMAP.md`
-- `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
-- `docs/reviews/M10_SECURITY_PRIVACY_REVIEW.md`
-- `docs/reviews/M10_LEGAL_COMPLIANCE_REVIEW.md`
 
 M10 guardrails preserved:
 
@@ -109,16 +121,6 @@ M10 guardrails preserved:
 - Protected systems preserved
 - Legal/compliance boundary preserved
 
-## M11 Candidate
-
-Next candidate milestone:
-
-`M11 Platform Source-of-Truth Audit`
-
-M11 should audit the Platform repo before implementation.
-
-M11 should not start database/API/client implementation until Director opens the milestone and task explicitly.
-
 ## Department Boot Protocol
 
 Department boot docs:
@@ -129,8 +131,6 @@ Department boot docs:
 Every department must read boot protocol, role cards, runtime docs, protected systems, Safe Code Engine, and its own agent file before reporting.
 
 Departments report only. Director decides.
-
-Ecosystem Integration owns cross-repo alignment.
 
 ## Safe Code Engine
 
@@ -160,27 +160,13 @@ Rule:
 - M9 Startup Flow & Session Entry Polish: LOCKED
 - M10 Ecosystem Alignment & Client Integration Contract: LOCKED
 
-M9 lock evidence:
-
-- PR #11 merged to main
-- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
-- Changed file: `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #144 success
-- Runtime Evidence: accepted
-- QA Result: PASS
-- Documentation Memory: PASSED
-- Director LOCKED: YES
-- Protected systems clear
-- Legal/compliance clear
-
 ## Current Code Reality
 
 - Local profile repo and screens preserved
 - Existing navigation patterns reused
-- M9 changed only Splash startup/backstack behavior
-- No playback/provider/backend/storage systems touched by M9
 - M10 was documentation/contract alignment only
-- M10 did not change app code
+- M11 is Platform repo audit only
+- M11 does not change app/backend/database code
 
 ## User Preference
 
