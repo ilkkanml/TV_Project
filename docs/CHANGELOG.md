@@ -61,6 +61,36 @@ Created:
 - `docs/LEGAL_PUBLIC_LANGUAGE.md`
 - `docs/PLATFORM_ANDROID_ROADMAP.md`
 
+Hardened:
+
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
+
+Hardening scope:
+
+- Android ↔ Platform responsibility table
+- Endpoint contract draft
+- Request/response examples
+- Error state matrix
+- Session/token behavior placeholders
+- Remote config schema boundary
+- Profile transfer MVP flow
+- Free early launch behavior
+- Legal media player boundary
+
+Hardening guardrails:
+
+- Documentation only
+- No app code changed
+- No backend code changed
+- No database implementation approved
+- No payment enforcement approved
+- No provider integration approved
+- Protected systems preserved
+- Legal/compliance boundary preserved
+- M10 remains ACTIVE
+- M10 is not PASSED
+- M10 is not LOCKED
+
 ## Department Boot Rollout
 
 Created / updated:
@@ -94,4 +124,4 @@ Purpose:
 
 ## Current Required Next Action
 
-Ecosystem Integration / Systems Architect
+Security & Privacy review and Legal Compliance review for M10 contract hardening.
