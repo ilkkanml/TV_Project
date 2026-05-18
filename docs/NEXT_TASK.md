@@ -2,7 +2,7 @@
 
 ## Current Status
 
-M12-TASK-003 local-only implementation plan recorded.
+M12-TASK-003 local-only baseline migration files added, but verification evidence is missing.
 
 ## Current Active Milestone
 
@@ -22,32 +22,46 @@ POLICY DRAFT RECORDED / COMPLETED
 
 ## M12-TASK-003 Status
 
-OPEN / IMPLEMENTATION PLAN RECORDED
+PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
 
 ## Task Owner Flow
 
-Director → Builder only if implementation is explicitly approved → User Test / local verification → QA → Documentation → Director lock.
+Director → Local verification → QA only after evidence → Documentation → Director lock.
 
-## M12-TASK-003 Output
+## M12-TASK-003 Changed Files
 
-Platform repo planning document:
+Platform repo:
 
-- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
+- `apps/api/prisma/migrations/migration_lock.toml`
+- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
 
-Plan areas:
+## Evidence Status
 
-- Local-only target boundary
-- Allowed future files/areas
-- Required Builder preflight
-- Candidate commands after approval
-- Required evidence if implemented
-- QA requirement if implemented
-- Legal database boundary
+- Build/typecheck: NOT CONFIRMED
+- Prisma generate: NOT CONFIRMED
+- Local migration apply: NOT CONFIRMED
+- Local DB verification: NOT CONFIRMED
+
+Reason:
+
+- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
+
+## Required Next Action
+
+Run local verification before QA:
+
+```bash
+pnpm install
+docker compose up -d
+pnpm db:generate
+pnpm db:migrate
+pnpm --filter @tv-platform/api run typecheck
+```
 
 ## Guardrails
 
-- No production deployment without approval
-- No Prisma migration execution until a separate Builder task is approved
+- No production deployment
+- No production database mutation
 - No payment enforcement
 - No provider integration
 - No content hosting
@@ -58,8 +72,4 @@ Plan areas:
 - No rights-bypass behavior
 - No unapproved stream extraction behavior
 
-## Required Next Action
-
-Director must decide whether to approve Builder for local-only migration baseline implementation.
-
-Do not start code, Prisma migration, DB execution, API implementation, or Android bridge yet.
+QA cannot PASS until evidence is provided.
