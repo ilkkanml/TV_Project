@@ -29,15 +29,17 @@ Chat history is not the source of truth.
 - Product type: legal Core Media Player Ecosystem / Android TV + Fire TV first client
 - Platform center: `TV_Project_Platform`
 - Android client: `TV_Project`
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: `M12 Platform Database Baseline & Migration Foundation`
+- M12 status: OPEN / DIRECTOR SCOPING
+- Current active task: `M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition`
+- M12-TASK-001 status: OPEN / SCOPING
 - Last locked milestone: `M11 Platform Source-of-Truth Audit`
 - M11 status: LOCKED
 - M11-TASK-001 status: PASSED / COMPLETED
 - Previous locked milestone: `M10 Ecosystem Alignment & Client Integration Contract`
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
+- Required next action: Database Architect report for M12 baseline/migration foundation
 
 ## Lean Workflow Rule
 
@@ -62,6 +64,34 @@ Every department must start by reading:
 Departments report only. Director decides.
 
 If runtime docs conflict, stop and report `DOCUMENTATION_CONFLICT`.
+
+## M12 Open Summary
+
+M12 is opened as platform database baseline and migration foundation scoping milestone.
+
+Initial M12 scope:
+
+- Prisma migration baseline policy
+- Local database setup validation plan
+- Migration naming/versioning policy
+- Seed policy
+- Rollback policy
+- Data retention/deletion policy
+- Sensitive temporary profile-transfer data lifecycle
+- Audit-log baseline expectations
+- Database service/connection foundation plan
+
+M12 guardrails:
+
+- No backend implementation approved yet
+- No Prisma migration execution approved yet
+- No production database deployment approved
+- No Android bridge approved
+- No payment enforcement approved
+- No provider integration approved
+- No content hosting/channel selling approved
+- Protected systems preserved
+- Legal media player boundary preserved
 
 ## M11 Lock Summary
 
@@ -91,4 +121,4 @@ Guardrails preserved:
 
 ## Required Next Action
 
-Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`.
+Database Architect should report on M12 database baseline and migration foundation before any implementation decision.
