@@ -16,13 +16,49 @@ https://github.com/ilkkanml/TV_Project.git
 
 ## Product Type
 
-Premium subscription-based Android TV / Fire TV player application.
+Legal Core Media Player Ecosystem.
 
-## Core Rule
+- `TV_Project` = Android TV / Fire TV first client
+- `TV_Project_Platform` = Core Account / Device / License / Admin / Remote Config / App Version / Profile Transfer center
 
-Nexora TV is a legal player platform.
+## Current Runtime Truth
 
-It must not bundle pirated channels, illegal streams, unauthorized playlists, DRM bypass logic, token/cookie theft, credential bypass, or unauthorized scraping.
+- Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
+- Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
+- M10 status: ACTIVE
+- M10-TASK-001 status: READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
+- Last locked milestone: M9 Startup Flow & Session Entry Polish
+- M9 status: LOCKED
+- M10 is not PASSED
+- M10 is not LOCKED
+- Required next action: Ecosystem Integration / Systems Architect
+
+Runtime truth priority:
+
+1. `docs/MILESTONE_STATUS.md`
+2. `docs/NEXT_TASK.md`
+3. `docs/HANDOFF.md`
+4. `docs/PROJECT_MEMORY.md`
+5. `docs/START_HERE.md`
+6. Agent files
+
+## Core Legal Rule
+
+Nexora is a legal player/client platform.
+
+It must not include or enable:
+
+- Pirated IPTV playlists
+- Illegal streams
+- Content hosting
+- Broadcasting
+- Channel selling
+- Bundled streams
+- DRM bypass
+- Token/cookie theft
+- Credential bypass or credential sharing
+- Unauthorized scraping
+- Illegal restreaming
 
 Allowed development sources:
 
@@ -32,23 +68,41 @@ Allowed development sources:
 - User-owned licensed streams
 - Legal provider/API integrations
 
-## App / Backend Integration Direction
+## M10 Ecosystem Direction
 
-Approved direction document:
+M10 exists to align Android client and Platform backend before database/API/backend bridge work begins.
 
-- `docs/APP_BACKEND_INTEGRATION.md`
+M10 contract docs:
 
-Core decisions:
+- `docs/ECOSYSTEM_CONTRACT.md`
+- `docs/CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/DEVICE_IDENTITY_POLICY.md`
+- `docs/LEGAL_PUBLIC_LANGUAGE.md`
+- `docs/PLATFORM_ANDROID_ROADMAP.md`
+- `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
 
-- Backend owns user account, subscription status, device activation, payment status, reseller system, version check, force update, remote config, maintenance mode, and feature flags.
-- App owns device identity creation, backend registration, license/subscription check, playlist/profile management, encrypted local playlist profile storage, and player access when license is valid.
-- MAC address is not the primary device ID.
-- Primary ID is `app_generated_device_id`.
-- Default playlist source of truth is device local encrypted storage.
-- Backend is not the default source of truth for user playlist profiles.
-- Web panel may optionally transfer a playlist/profile to a selected device.
-- Longer cloud sync requires explicit user consent.
-- App should support multi-profile playlist management
+Core M10 rules:
+
+- Platform backend is source of truth for account/device/license/config/app version.
+- Android app is the first client.
+- Real hardware MAC address is not the primary device ID.
+- Use app-generated device/install GUID and backend-assigned `platform_device_id`.
+- First app remains free until final release level.
+- Payment/subscription enforcement is inactive during early/free launch.
+- Contract comes before database/API/Android bridge implementation.
+
+## Department Boot Protocol
+
+Department boot docs:
+
+- `docs/DEPARTMENT_BOOT_PROTOCOL.md`
+- `docs/DEPARTMENT_ROLE_CARDS.md`
+
+Every department must read boot protocol, role cards, runtime docs, protected systems, Safe Code Engine, and its own agent file before reporting.
+
+Departments report only. Director decides.
+
+Ecosystem Integration owns cross-repo alignment.
 
 ## Safe Code Engine
 
@@ -65,119 +119,44 @@ Rule:
 - Documentation Memory must record build/runtime evidence state.
 - Missing evidence keeps the task BLOCKED.
 
-## Current Milestone Truth
+## Locked Milestones
 
-### M1 Foundation
+- M1 Foundation: LOCKED
+- M2 Playback Expansion: LOCKED
+- M3 Premium UI Expansion: LOCKED
+- M4 Auth & Device Activation Foundation: LOCKED
+- M5 Content Library & Navigation Expansion: LOCKED
+- M6 Playlist Profile & Legal Source Input Foundation: LOCKED
+- M7 Local Profile Persistence Foundation: LOCKED
+- M8 TV Navigation & Access Polish: LOCKED
+- M9 Startup Flow & Session Entry Polish: LOCKED
 
-Status: LOCKED
+M9 lock evidence:
 
-### M2 Playback Expansion
-
-Status: LOCKED
-
-### M3 Premium UI Expansion
-
-Status: LOCKED
-
-### M4 Auth & Device Activation Foundation
-
-Status: LOCKED
-
-### M5 Content Library & Navigation Expansion
-
-Status: LOCKED
-
-### M6 Playlist Profile & Legal Source Input Foundation
-
-Status: LOCKED
-
-### M7 Local Profile Persistence Foundation
-
-Status: LOCKED
-
-### M8 TV Navigation & Access Polish
-
-Status: LOCKED
-
-Task:
-
-`M8-TASK-001 Profile Access, Backstack & Login Field Safety Polish`
-
-Status: PASSED / COMPLETED
-
-Lock evidence:
-
-- PR #10 merged to main
-- Merge commit: `303008e3f38cf9ba94ab7f4e16dd4bbcc3190e81`
-- Build Evidence: Android Build Verification #109 success
+- PR #11 merged to main
+- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
+- Changed file: `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
+- Build Evidence: Android Build Verification #144 success
 - Runtime Evidence: accepted
 - QA Result: PASS
 - Documentation Memory: PASSED
 - Director LOCKED: YES
-- Splash cleanup excluded from delivered scope
 - Protected systems clear
 - Legal/compliance clear
-
-### M9 Startup Flow & Session Entry Polish
-
-Status: ACTIVE
-
-Current task:
-
-`M9-TASK-001 Splash Backstack Cleanup & Startup Entry Safety Polish`
-
-Status: QA PASSED
-
-Evidence:
-
-- PR #11 exists
-- PR #11 merge status: NOT MERGED / awaiting Director decision
-- Changed files:
-  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #135 success
-- Runtime Evidence: Developer runtime evidence accepted
-- QA Result: PASS
-- Blockers: none
-- Regression risk: none
-- Protected systems clear
-- Legal/compliance clear
-
-Current next action:
-
-Return to Director for PR #11 merge / M9 lock decision.
-
-M9 is not Documentation Memory PASSED.
-
-M9 is not LOCKED.
-
-Director LOCKED is not recorded for M9.
 
 ## Current Code Reality
 
 - Local profile repo and screens preserved
 - Existing navigation patterns reused
-- M9 changed file: `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Minimal additive startup/navigation entry polish
+- M9 changed only Splash startup/backstack behavior
 - No playback/provider/backend/storage systems touched by M9
-- Safe Code Engine required and evidence accepted for M9-TASK-001
-
-## Minimal Agent Workflow
-
-Use only:
-
-1. DIRECTOR
-2. DEVELOPER
-3. QA_TESTER
-4. DOCUMENTATION_MEMORY
-
-Safe Code Engine applies to every code task.
-
-No large department structure unless explicitly requested.
+- M10 is documentation/contract alignment; app code must remain unchanged unless a future task explicitly allows implementation
 
 ## User Preference
 
+- Turkish responses
 - Minimal explanations
 - Direct instructions
 - Continuous progress
 - Keep docs updated so new chats can continue
-- Notify the user when it is safe to switch to a new chat window after milestone lock
+- Do not say PASSED/LOCKED without required evidence
