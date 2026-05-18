@@ -40,6 +40,18 @@ Chat history is not the source of truth.
 - M10 is not PASSED
 - M10 is not LOCKED
 
+## Lean Workflow Rule
+
+Use the shortest safe workflow.
+
+- Department report only when useful
+- Director decides
+- Builder only when implementation is approved
+- QA only for code/runtime/release risk
+- Documentation only for runtime truth, milestone status, major decision, source-of-truth contract, or milestone finalization
+- Minor reviews do not require CHANGELOG/DECISION_LOG updates
+- Director may handle simple documentation updates in the main Director thread
+
 ## Department Boot Rule
 
 Every department must start by reading:
