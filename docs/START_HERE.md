@@ -29,14 +29,14 @@ Chat history is not the source of truth.
 - Product type: legal Core Media Player Ecosystem / Android TV + Fire TV first client
 - Platform center: `TV_Project_Platform`
 - Android client: `TV_Project`
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: `M11 Platform Source-of-Truth Audit`
+- Current active task: `M11-TASK-001 Platform Repository Source-of-Truth Audit`
+- M11 status: ACTIVE
+- M11-TASK-001 status: READY
 - Last locked milestone: `M10 Ecosystem Alignment & Client Integration Contract`
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Previous locked milestone: `M9 Startup Flow & Session Entry Polish`
-- M9 status: LOCKED
-- Required next action: Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
+- Required next action: Audit `TV_Project_Platform` repository source of truth
 
 ## Lean Workflow Rule
 
@@ -62,21 +62,30 @@ Departments report only. Director decides.
 
 If runtime docs conflict, stop and report `DOCUMENTATION_CONFLICT`.
 
+## M11 Guardrails
+
+M11 is audit-only.
+
+Not approved:
+
+- Backend implementation
+- Database implementation
+- Android bridge implementation
+- Payment enforcement
+- Provider integration
+- Content hosting
+- Channel selling
+- Bundled streams
+- Rights-protection bypass or equivalent circumvention
+- Unauthorized scraping
+- Credential sharing
+- Protected-system rewrite
+
 ## M10 Lock Summary
 
 M10 locked as documentation/contract milestone.
 
-Completed scope:
-
-- Ecosystem alignment
-- Client integration contract
-- Contract hardening
-- Security & Privacy review
-- Legal Compliance review
-- Backend/Database feasibility review
-- Final documentation consistency check
-
-Guardrails:
+Guardrails preserved:
 
 - App code unchanged
 - Backend code unchanged
@@ -86,22 +95,6 @@ Guardrails:
 - Protected systems preserved
 - Legal/compliance boundary preserved
 
-## M9 Lock Evidence
-
-- PR #11 merged to main
-- Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
-- Changed file:
-  - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
-- Build Evidence: Android Build Verification #144 success
-- Runtime Evidence: accepted
-- QA Result: PASS
-- Documentation Memory: PASSED
-- Director LOCKED: YES
-- Blockers: none
-- Regression risk: none
-- Protected systems clear
-- Legal/compliance clear
-
 ## Required Next Action
 
-Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
+Audit `TV_Project_Platform` repository source of truth.
