@@ -6,36 +6,57 @@ This repository is the source of truth.
 
 Chat history is not the source of truth.
 
-Read first:
+## Read First
 
 1. `docs/START_HERE.md`
 2. `docs/PROJECT_MEMORY.md`
-3. `docs/STUDIO_BIBLE.md`
-4. `docs/MILESTONE_STATUS.md`
-5. `docs/NEXT_TASK.md`
-6. `docs/PROTECTED_SYSTEMS.md`
-7. `docs/HANDOFF.md`
-8. `docs/APP_BACKEND_INTEGRATION.md`
-9. `docs/DECISION_LOG.md`
+3. `docs/MILESTONE_STATUS.md`
+4. `docs/NEXT_TASK.md`
+5. `docs/HANDOFF.md`
+6. `docs/DEPARTMENT_BOOT_PROTOCOL.md`
+7. `docs/DEPARTMENT_ROLE_CARDS.md`
+8. `docs/STUDIO_BIBLE.md`
+9. `docs/PROTECTED_SYSTEMS.md`
 10. `docs/SAFE_CODE_ENGINE.md`
-11. Relevant agent file from `docs/agents/`
+11. `docs/APP_BACKEND_INTEGRATION.md`
+12. `docs/DECISION_LOG.md`
+13. Relevant agent file from `docs/agents/`
 
 ## Current Truth
 
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
-- Product type: legal Android TV / Fire TV player/client platform
+- Product type: legal Core Media Player Ecosystem / Android TV + Fire TV first client
+- Platform center: `TV_Project_Platform`
+- Android client: `TV_Project`
 - Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
 - Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
-- Last locked milestone: `M9 Startup Flow & Session Entry Polish`
 - M10 status: ACTIVE
 - M10-TASK-001 status: READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
+- Last locked milestone: `M9 Startup Flow & Session Entry Polish`
 - M9 status: LOCKED
 - M9-TASK-001 status: PASSED / COMPLETED
 - Required next action: Ecosystem Integration / Systems Architect
+- M10 is not PASSED
+- M10 is not LOCKED
+
+## Department Boot Rule
+
+Every department must start by reading:
+
+- `docs/DEPARTMENT_BOOT_PROTOCOL.md`
+- `docs/DEPARTMENT_ROLE_CARDS.md`
+- Its own file in `docs/agents/`
+
+Departments report only. Director decides.
+
+If runtime docs conflict, stop and report `DOCUMENTATION_CONFLICT`.
+
+## M9 Lock Evidence
+
 - PR #11 merged to main
 - Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
-- Changed files:
+- Changed file:
   - `app/src/main/java/com/nexora/tv/ui/screens/SplashScreen.kt`
 - Build Evidence: Android Build Verification #144 success
 - Runtime Evidence: accepted
@@ -46,8 +67,6 @@ Read first:
 - Regression risk: none
 - Protected systems clear
 - Legal/compliance clear
-- Previous locked milestone: `M8 TV Navigation & Access Polish`
-- M8 status: LOCKED
 
 ## M9 Scope Summary
 
