@@ -2,25 +2,29 @@
 
 ## Current Handoff
 
-Platform Source-of-Truth Audit
+Director
 
 ## Current Task
 
-M11-TASK-001 Platform Repository Source-of-Truth Audit
+None
 
 ## Current Active Milestone
 
-M11 Platform Source-of-Truth Audit
+None
+
+## Last Locked Milestone
+
+`M11 Platform Source-of-Truth Audit`
 
 ## M11 Status
 
-ACTIVE
+LOCKED
 
-## Task Status
+## M11-TASK-001 Status
 
-READY
+PASSED / COMPLETED
 
-## Last Locked Milestone
+## Previous Locked Milestone
 
 `M10 Ecosystem Alignment & Client Integration Contract`
 
@@ -34,7 +38,7 @@ PASSED / COMPLETED
 
 ## Required Next Action
 
-Audit `TV_Project_Platform` repository source of truth.
+Director may open next milestone candidate: `M12 Platform Database Baseline & Migration Foundation`
 
 ## Department Boot Requirement
 
@@ -53,26 +57,30 @@ Departments report only. Director decides.
 
 If runtime docs conflict, return `DOCUMENTATION_CONFLICT` before continuing.
 
-## M11 Guardrails
+## M11 Lock Summary
 
-- Audit only
-- No backend implementation
-- No database implementation
-- No Android bridge implementation
-- No payment enforcement
-- No provider integration
-- Legal media player boundary preserved
+M11 locked as Platform source-of-truth audit/documentation milestone.
+
+Completed scope:
+
+- Platform repository audit
+- Platform repo structure review
+- API/database/security/legal gap review
+- M11 audit report
+- Platform README
+- Platform START_HERE
+- Platform source-of-truth docs
+- API contract alignment doc
+- Database baseline doc
+- Security/session policy doc
+- Legal boundary doc
+
+Guardrails:
+
+- No backend implementation approved
+- No database migration approved
+- No Android bridge approved
+- No payment enforcement approved
+- No provider integration approved
 - Protected systems preserved
-
-## M11 Audit Targets
-
-- `TV_Project_Platform` repository existence/status
-- Repo structure
-- README/docs status
-- Backend/API status
-- Database/schema status
-- Account/auth/device/license/config/profile-transfer readiness
-- Environment/deployment status
-- Security/privacy gaps
-- Legal/compliance gaps
-- M12 readiness recommendation
+- Legal media player boundary preserved
