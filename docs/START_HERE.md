@@ -25,11 +25,14 @@ Read first:
 - Project: Nexora TV
 - Repository: `https://github.com/ilkkanml/TV_Project.git`
 - Product type: legal Android TV / Fire TV player/client platform
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
+- Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
 - Last locked milestone: `M9 Startup Flow & Session Entry Polish`
+- M10 status: ACTIVE
+- M10-TASK-001 status: READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
 - M9 status: LOCKED
 - M9-TASK-001 status: PASSED / COMPLETED
+- Required next action: Ecosystem Integration / Systems Architect
 - PR #11 merged to main
 - Merge commit: `3ebb0e2d7426c5695af86547c7f195a734c28c6a`
 - Changed files:
@@ -54,6 +57,4 @@ M9 did not approve real auth/session implementation, backend integration, provid
 
 ## Required Next Action
 
-No active task.
-
-Do not open M10 unless Director receives explicit user instruction.
+Ecosystem Integration / Systems Architect
