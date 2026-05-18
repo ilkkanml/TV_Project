@@ -10,11 +10,11 @@ Director
 
 ## Current Task
 
-`M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft`
+`M12-TASK-003 Local-only Migration Baseline Implementation Plan`
 
 ## M12 Status
 
-OPEN / POLICY DRAFTING
+OPEN / IMPLEMENTATION PLANNING
 
 ## M12-TASK-001 Status
 
@@ -22,7 +22,11 @@ REPORT RECORDED / COMPLETED
 
 ## M12-TASK-002 Status
 
-OPEN / POLICY DRAFT RECORDED
+POLICY DRAFT RECORDED / COMPLETED
+
+## M12-TASK-003 Status
+
+OPEN / IMPLEMENTATION PLAN RECORDED
 
 ## Last Locked Milestone
 
@@ -50,11 +54,9 @@ PASSED / COMPLETED
 
 ## Current Director Decision
 
-M12 remains planning and policy-only.
+M12 remains planning-only until Director separately approves Builder implementation.
 
-M12-TASK-001 Database Architect report is recorded.
-
-M12-TASK-002 database migration / seed / rollback / retention policy draft is recorded in the platform repo.
+M12-TASK-003 local-only migration baseline implementation plan is recorded in the platform repo.
 
 No code, database migration, production database action, API implementation, Android bridge, payment enforcement, provider integration, content hosting, or channel selling is approved by this handoff.
 
@@ -65,6 +67,9 @@ Platform repo:
 - `docs/M12_DATABASE_BASELINE_SCOPE.md`
 - `docs/M12_DATABASE_ARCHITECT_REPORT.md`
 - `docs/M12_DATABASE_POLICY_DRAFT.md`
+- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
+- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
+- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
 
 ## M12 Guardrails
 
@@ -82,7 +87,7 @@ Platform repo:
 
 ## Required Next Action
 
-Director should review the M12 policy draft and decide whether Systems Architect / Security Privacy review is needed before any implementation task.
+Director must decide whether to approve Builder for local-only migration baseline implementation.
 
 ## Department Boot Requirement
 
