@@ -24,17 +24,18 @@ Legal Core Media Player Ecosystem.
 ## Current Runtime Truth
 
 - Current active milestone: M12 Platform Database Baseline & Migration Foundation
-- M12 status: OPEN / POLICY DRAFTING
-- Current active task: M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft
+- M12 status: OPEN / IMPLEMENTATION PLANNING
+- Current active task: M12-TASK-003 Local-only Migration Baseline Implementation Plan
 - M12-TASK-001 status: REPORT RECORDED / COMPLETED
-- M12-TASK-002 status: OPEN / POLICY DRAFT RECORDED
+- M12-TASK-002 status: POLICY DRAFT RECORDED / COMPLETED
+- M12-TASK-003 status: OPEN / IMPLEMENTATION PLAN RECORDED
 - Last locked milestone: M11 Platform Source-of-Truth Audit
 - M11 status: LOCKED
 - M11-TASK-001 status: PASSED / COMPLETED
 - Previous locked milestone: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Director should review M12 policy draft and decide if Systems Architect / Security Privacy review is needed
+- Required next action: Director must decide whether to approve Builder for local-only migration baseline implementation
 
 Runtime truth priority:
 
@@ -80,13 +81,16 @@ Allowed development sources:
 
 ## M12 Current Scope
 
-M12 Platform Database Baseline & Migration Foundation is OPEN / POLICY DRAFTING.
+M12 Platform Database Baseline & Migration Foundation is OPEN / IMPLEMENTATION PLANNING.
 
 Current platform docs:
 
 - `docs/M12_DATABASE_BASELINE_SCOPE.md`
 - `docs/M12_DATABASE_ARCHITECT_REPORT.md`
 - `docs/M12_DATABASE_POLICY_DRAFT.md`
+- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
+- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
+- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
 
 M12 may define:
 
@@ -103,7 +107,7 @@ M12 may define:
 M12 must not approve:
 
 - Production database deployment
-- Prisma migration execution
+- Prisma migration execution without separate Director implementation approval
 - Payment enforcement
 - Provider integration
 - Content hosting
@@ -115,7 +119,7 @@ M12 must not approve:
 
 Required next action:
 
-- Director should review the M12 policy draft and decide whether Systems Architect / Security Privacy review is needed before any implementation task.
+- Director must decide whether to approve Builder for local-only migration baseline implementation.
 
 ## M11 Lock Summary
 
@@ -205,8 +209,8 @@ Rule:
 
 - Android client code unchanged by M11
 - Platform M12 docs added/updated
-- M12 is currently documentation/policy only
-- M12 has not approved backend/API/database implementation
+- M12 is currently implementation planning only
+- M12 has not approved backend/API/database implementation yet
 
 ## User Preference
 
