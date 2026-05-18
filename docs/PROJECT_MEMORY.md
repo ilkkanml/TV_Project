@@ -23,15 +23,14 @@ Legal Core Media Player Ecosystem.
 
 ## Current Runtime Truth
 
-- Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
-- Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
-- M10 status: ACTIVE
-- M10-TASK-001 status: READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
-- Last locked milestone: M9 Startup Flow & Session Entry Polish
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: M10 Ecosystem Alignment & Client Integration Contract
+- M10 status: LOCKED
+- M10-TASK-001 status: PASSED / COMPLETED
+- Previous locked milestone: M9 Startup Flow & Session Entry Polish
 - M9 status: LOCKED
-- M10 is not PASSED
-- M10 is not LOCKED
-- Required next action: Ecosystem Integration / Systems Architect
+- Required next action: Director may open next milestone candidate: M11 Platform Source-of-Truth Audit
 
 Runtime truth priority:
 
@@ -75,9 +74,19 @@ Allowed development sources:
 - User-owned licensed streams
 - Legal provider/API integrations
 
-## M10 Ecosystem Direction
+## M10 Lock Summary
 
-M10 exists to align Android client and Platform backend before database/API/backend bridge work begins.
+M10 Ecosystem Alignment & Client Integration Contract is LOCKED.
+
+Completed scope:
+
+- Ecosystem alignment
+- Client integration contract
+- Contract hardening
+- Security & Privacy review
+- Legal Compliance review
+- Backend/Database feasibility review
+- Final documentation consistency check
 
 M10 contract docs:
 
@@ -87,44 +96,28 @@ M10 contract docs:
 - `docs/LEGAL_PUBLIC_LANGUAGE.md`
 - `docs/PLATFORM_ANDROID_ROADMAP.md`
 - `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
+- `docs/reviews/M10_SECURITY_PRIVACY_REVIEW.md`
+- `docs/reviews/M10_LEGAL_COMPLIANCE_REVIEW.md`
 
-Core M10 rules:
+M10 guardrails preserved:
 
-- Platform backend is source of truth for account/device/license/config/app version.
-- Android app is the first client.
-- Real hardware MAC address is not the primary device ID.
-- Use app-generated device/install GUID and backend-assigned `platform_device_id`.
-- First app remains free until final release level.
-- Payment/subscription enforcement is inactive during early/free launch.
-- Contract comes before database/API/Android bridge implementation.
+- App code unchanged
+- Backend code unchanged
+- Database implementation not approved
+- Payment enforcement not approved
+- Provider integration not approved
+- Protected systems preserved
+- Legal/compliance boundary preserved
 
-## M10 Contract Hardening Record
+## M11 Candidate
 
-`docs/CLIENT_INTEGRATION_CONTRACT.md` has been hardened for M10 with:
+Next candidate milestone:
 
-- Android ↔ Platform responsibility table
-- Endpoint contract draft
-- Request/response examples
-- Error state matrix
-- Session/token behavior placeholders
-- Remote config schema boundary
-- Profile transfer MVP flow
-- Free early launch behavior
-- Legal media player boundary
+`M11 Platform Source-of-Truth Audit`
 
-This is documentation-only.
+M11 should audit the Platform repo before implementation.
 
-No app code, backend code, database implementation, payment enforcement, provider integration, or protected-system change is approved by this record.
-
-M10 remains ACTIVE.
-
-M10 is not PASSED.
-
-M10 is not LOCKED.
-
-Next recommended review:
-
-- Backend Engineer / Database Architect feasibility report only
+M11 should not start database/API/client implementation until Director opens the milestone and task explicitly.
 
 ## Department Boot Protocol
 
@@ -165,6 +158,7 @@ Rule:
 - M7 Local Profile Persistence Foundation: LOCKED
 - M8 TV Navigation & Access Polish: LOCKED
 - M9 Startup Flow & Session Entry Polish: LOCKED
+- M10 Ecosystem Alignment & Client Integration Contract: LOCKED
 
 M9 lock evidence:
 
@@ -185,7 +179,8 @@ M9 lock evidence:
 - Existing navigation patterns reused
 - M9 changed only Splash startup/backstack behavior
 - No playback/provider/backend/storage systems touched by M9
-- M10 is documentation/contract alignment; app code must remain unchanged unless a future task explicitly allows implementation
+- M10 was documentation/contract alignment only
+- M10 did not change app code
 
 ## User Preference
 
