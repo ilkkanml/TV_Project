@@ -14,7 +14,7 @@ Director
 
 ## M12 Status
 
-OPEN / IMPLEMENTATION PLANNING
+OPEN / IMPLEMENTATION PARTIAL
 
 ## M12-TASK-001 Status
 
@@ -26,7 +26,7 @@ POLICY DRAFT RECORDED / COMPLETED
 
 ## M12-TASK-003 Status
 
-OPEN / IMPLEMENTATION PLAN RECORDED
+PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
 
 ## Last Locked Milestone
 
@@ -54,11 +54,29 @@ PASSED / COMPLETED
 
 ## Current Director Decision
 
-M12 remains planning-only until Director separately approves Builder implementation.
+M12-TASK-003 local-only baseline migration files were added in the platform repo.
 
-M12-TASK-003 local-only migration baseline implementation plan is recorded in the platform repo.
+This is not QA-ready because build/runtime evidence is missing.
 
-No code, database migration, production database action, API implementation, Android bridge, payment enforcement, provider integration, content hosting, or channel selling is approved by this handoff.
+No production database action, API implementation, Android bridge, payment enforcement, provider integration, content hosting, or channel selling is approved by this handoff.
+
+## M12-TASK-003 Changed Files
+
+Platform repo:
+
+- `apps/api/prisma/migrations/migration_lock.toml`
+- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
+
+## Evidence Status
+
+- Build/typecheck: NOT CONFIRMED
+- Prisma generate: NOT CONFIRMED
+- Local migration apply: NOT CONFIRMED
+- Local DB verification: NOT CONFIRMED
+
+Reason:
+
+- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
 
 ## Current M12 Docs
 
@@ -87,7 +105,17 @@ Platform repo:
 
 ## Required Next Action
 
-Director must decide whether to approve Builder for local-only migration baseline implementation.
+Run local verification before QA:
+
+```bash
+pnpm install
+docker compose up -d
+pnpm db:generate
+pnpm db:migrate
+pnpm --filter @tv-platform/api run typecheck
+```
+
+QA cannot PASS until evidence is provided.
 
 ## Department Boot Requirement
 
