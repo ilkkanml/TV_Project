@@ -11,8 +11,36 @@
 - M7 Local Profile Persistence Foundation: LOCKED
 - M8 TV Navigation & Access Polish: LOCKED
 - M9 Startup Flow & Session Entry Polish: LOCKED
+- M10 Ecosystem Alignment & Client Integration Contract: LOCKED
 
 ## Last Locked Milestone
+
+### M10 Ecosystem Alignment & Client Integration Contract
+
+Status: LOCKED
+
+Completed scope:
+
+- Ecosystem alignment
+- Client integration contract
+- Contract hardening
+- Security & Privacy review
+- Legal Compliance review
+- Backend/Database feasibility review
+- Final documentation consistency check
+
+Guardrails:
+
+- Documentation/contract milestone only
+- No app code changed
+- No backend code changed
+- No database implementation approved
+- No payment enforcement approved
+- No provider integration approved
+- Protected systems preserved
+- Legal/compliance boundary preserved
+
+## Previous Locked Milestone
 
 ### M9 Startup Flow & Session Entry Polish
 
@@ -32,27 +60,23 @@ Evidence:
 - Protected systems clear
 - Legal/compliance clear
 
-## Active Milestone
+## Current Active Milestone
 
-### M10 Ecosystem Alignment & Client Integration Contract
+None
 
-Status: ACTIVE
+## Current Active Task
 
-Current task:
+None
 
-`M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment`
+## Next Candidate
 
-Task status:
+`M11 Platform Source-of-Truth Audit`
 
-READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
-
-M10 is not PASSED.
-
-M10 is not LOCKED.
+Director must explicitly open M11 before any new milestone/task begins.
 
 ## M10 Documentation / Contract Files
 
-Created:
+Created / updated:
 
 - `docs/milestones/M10_ECOSYSTEM_ALIGNMENT_CLIENT_INTEGRATION_CONTRACT.md`
 - `docs/ECOSYSTEM_CONTRACT.md`
@@ -60,36 +84,8 @@ Created:
 - `docs/DEVICE_IDENTITY_POLICY.md`
 - `docs/LEGAL_PUBLIC_LANGUAGE.md`
 - `docs/PLATFORM_ANDROID_ROADMAP.md`
-
-Hardened:
-
-- `docs/CLIENT_INTEGRATION_CONTRACT.md`
-
-Hardening scope:
-
-- Android ↔ Platform responsibility table
-- Endpoint contract draft
-- Request/response examples
-- Error state matrix
-- Session/token behavior placeholders
-- Remote config schema boundary
-- Profile transfer MVP flow
-- Free early launch behavior
-- Legal media player boundary
-
-Hardening guardrails:
-
-- Documentation only
-- No app code changed
-- No backend code changed
-- No database implementation approved
-- No payment enforcement approved
-- No provider integration approved
-- Protected systems preserved
-- Legal/compliance boundary preserved
-- M10 remains ACTIVE
-- M10 is not PASSED
-- M10 is not LOCKED
+- `docs/reviews/M10_SECURITY_PRIVACY_REVIEW.md`
+- `docs/reviews/M10_LEGAL_COMPLIANCE_REVIEW.md`
 
 ## Department Boot Rollout
 
@@ -121,7 +117,8 @@ Purpose:
 - Ecosystem Integration owns cross-repo alignment
 - Runtime docs override chat memory and stale role files
 - Legal/compliance and protected-system boundaries remain mandatory
+- Lean workflow avoids unnecessary procedure
 
 ## Current Required Next Action
 
-Security & Privacy review and Legal Compliance review for M10 contract hardening.
+Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
