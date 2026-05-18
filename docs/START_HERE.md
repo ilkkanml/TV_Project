@@ -29,16 +29,14 @@ Chat history is not the source of truth.
 - Product type: legal Core Media Player Ecosystem / Android TV + Fire TV first client
 - Platform center: `TV_Project_Platform`
 - Android client: `TV_Project`
-- Current active milestone: M10 Ecosystem Alignment & Client Integration Contract
-- Current active task: M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
-- M10 status: ACTIVE
-- M10-TASK-001 status: READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
-- Last locked milestone: `M9 Startup Flow & Session Entry Polish`
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: `M10 Ecosystem Alignment & Client Integration Contract`
+- M10 status: LOCKED
+- M10-TASK-001 status: PASSED / COMPLETED
+- Previous locked milestone: `M9 Startup Flow & Session Entry Polish`
 - M9 status: LOCKED
-- M9-TASK-001 status: PASSED / COMPLETED
-- Required next action: Ecosystem Integration / Systems Architect
-- M10 is not PASSED
-- M10 is not LOCKED
+- Required next action: Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
 
 ## Lean Workflow Rule
 
@@ -64,6 +62,30 @@ Departments report only. Director decides.
 
 If runtime docs conflict, stop and report `DOCUMENTATION_CONFLICT`.
 
+## M10 Lock Summary
+
+M10 locked as documentation/contract milestone.
+
+Completed scope:
+
+- Ecosystem alignment
+- Client integration contract
+- Contract hardening
+- Security & Privacy review
+- Legal Compliance review
+- Backend/Database feasibility review
+- Final documentation consistency check
+
+Guardrails:
+
+- App code unchanged
+- Backend code unchanged
+- Database implementation not approved
+- Payment enforcement not approved
+- Provider integration not approved
+- Protected systems preserved
+- Legal/compliance boundary preserved
+
 ## M9 Lock Evidence
 
 - PR #11 merged to main
@@ -80,12 +102,6 @@ If runtime docs conflict, stop and report `DOCUMENTATION_CONFLICT`.
 - Protected systems clear
 - Legal/compliance clear
 
-## M9 Scope Summary
-
-M9 cleaned startup/navigation entry behavior after M8, especially the previously excluded Splash cleanup, while keeping auth/session behavior mock-safe and additive.
-
-M9 did not approve real auth/session implementation, backend integration, provider connection, playlist fetching/parsing, playback changes, payment/subscription work, protected system rewrite, or UI redesign.
-
 ## Required Next Action
 
-Ecosystem Integration / Systems Architect
+Director may open next milestone candidate: `M11 Platform Source-of-Truth Audit`
