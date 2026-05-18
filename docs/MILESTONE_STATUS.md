@@ -2,23 +2,27 @@
 
 ## Current Active Milestone
 
-M10 Ecosystem Alignment & Client Integration Contract
+None
 
 ## Current Active Task
 
-M10-TASK-001 Core Ecosystem Contract & Cross-Repo Roadmap Alignment
+None
 
 ## Last Locked Milestone
 
-`M9 Startup Flow & Session Entry Polish`
+`M10 Ecosystem Alignment & Client Integration Contract`
 
 ## M10 Status
 
-ACTIVE
+LOCKED
 
 ## M10-TASK-001 Status
 
-READY FOR ECOSYSTEM INTEGRATION / SYSTEMS ARCHITECT
+PASSED / COMPLETED
+
+## Previous Locked Milestone
+
+`M9 Startup Flow & Session Entry Polish`
 
 ## M9 Status
 
@@ -26,4 +30,4 @@ LOCKED
 
 ## Required Next Action
 
-Ecosystem Integration / Systems Architect
+Director decision for next milestone candidate: `M11 Platform Source-of-Truth Audit`
