@@ -23,15 +23,17 @@ Legal Core Media Player Ecosystem.
 
 ## Current Runtime Truth
 
-- Current active milestone: None
-- Current active task: None
+- Current active milestone: M12 Platform Database Baseline & Migration Foundation
+- M12 status: OPEN / DIRECTOR SCOPING
+- Current active task: M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition
+- M12-TASK-001 status: OPEN / SCOPING
 - Last locked milestone: M11 Platform Source-of-Truth Audit
 - M11 status: LOCKED
 - M11-TASK-001 status: PASSED / COMPLETED
 - Previous locked milestone: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Director may open next milestone candidate: M12 Platform Database Baseline & Migration Foundation
+- Required next action: Database Architect report for M12 baseline/migration foundation
 
 Runtime truth priority:
 
@@ -75,6 +77,39 @@ Allowed development sources:
 - User-owned licensed streams
 - Legal provider/API integrations with explicit future approval
 
+## M12 Current Scope
+
+M12 Platform Database Baseline & Migration Foundation is OPEN / DIRECTOR SCOPING.
+
+M12 may define:
+
+- Prisma migration baseline policy
+- Local database setup validation plan
+- Migration naming/versioning policy
+- Seed policy
+- Rollback policy
+- Data retention/deletion policy
+- Sensitive temporary profile-transfer data lifecycle
+- Audit-log baseline expectations
+- Database service/connection foundation plan
+
+M12 must not approve:
+
+- Production database deployment
+- Prisma migration execution
+- Payment enforcement
+- Provider integration
+- Content hosting
+- Channel selling
+- Platform-owned stream catalog
+- Android bridge implementation
+- Auth/session/token implementation unless separately scoped
+- Legal media player boundary changes
+
+Required next action:
+
+- Database Architect report for M12 baseline/migration foundation before Builder implementation.
+
 ## M11 Lock Summary
 
 M11 Platform Source-of-Truth Audit is LOCKED.
@@ -112,23 +147,6 @@ M11 guardrails preserved:
 - No provider integration approved
 - Protected systems preserved
 - Legal media player boundary preserved
-
-## M12 Candidate
-
-Next candidate milestone:
-
-`M12 Platform Database Baseline & Migration Foundation`
-
-M12 should address:
-
-- Prisma migration baseline
-- database setup validation
-- seed policy
-- migration/rollback policy
-- data retention/deletion policy
-- database connection/service foundation planning
-
-M12 must not approve payment enforcement, provider integration, content hosting, or Android bridge unless explicitly scoped by Director.
 
 ## M10 Lock Summary
 
@@ -180,7 +198,8 @@ Rule:
 
 - Android client code unchanged by M11
 - Platform source-of-truth docs added by M11
-- M11 did not approve backend/API/database implementation
+- M12 is currently documentation/scoping only
+- M12 has not approved backend/API/database implementation
 
 ## User Preference
 
