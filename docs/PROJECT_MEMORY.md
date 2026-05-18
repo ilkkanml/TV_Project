@@ -24,16 +24,17 @@ Legal Core Media Player Ecosystem.
 ## Current Runtime Truth
 
 - Current active milestone: M12 Platform Database Baseline & Migration Foundation
-- M12 status: OPEN / DIRECTOR SCOPING
-- Current active task: M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition
-- M12-TASK-001 status: OPEN / SCOPING
+- M12 status: OPEN / POLICY DRAFTING
+- Current active task: M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft
+- M12-TASK-001 status: REPORT RECORDED / COMPLETED
+- M12-TASK-002 status: OPEN / POLICY DRAFT RECORDED
 - Last locked milestone: M11 Platform Source-of-Truth Audit
 - M11 status: LOCKED
 - M11-TASK-001 status: PASSED / COMPLETED
 - Previous locked milestone: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Database Architect report for M12 baseline/migration foundation
+- Required next action: Director should review M12 policy draft and decide if Systems Architect / Security Privacy review is needed
 
 Runtime truth priority:
 
@@ -53,7 +54,7 @@ Use the shortest safe workflow:
 1. Department report when useful
 2. Director decision
 3. Builder only if implementation is approved
-4. QA only for code/runtime/release risk
+4. QA only if code/runtime/release risk exists
 5. Documentation only when runtime truth, milestone status, source-of-truth contract, or major decision changes
 6. Milestone final docs can be batched
 
@@ -79,7 +80,13 @@ Allowed development sources:
 
 ## M12 Current Scope
 
-M12 Platform Database Baseline & Migration Foundation is OPEN / DIRECTOR SCOPING.
+M12 Platform Database Baseline & Migration Foundation is OPEN / POLICY DRAFTING.
+
+Current platform docs:
+
+- `docs/M12_DATABASE_BASELINE_SCOPE.md`
+- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
+- `docs/M12_DATABASE_POLICY_DRAFT.md`
 
 M12 may define:
 
@@ -108,7 +115,7 @@ M12 must not approve:
 
 Required next action:
 
-- Database Architect report for M12 baseline/migration foundation before Builder implementation.
+- Director should review the M12 policy draft and decide whether Systems Architect / Security Privacy review is needed before any implementation task.
 
 ## M11 Lock Summary
 
@@ -197,8 +204,8 @@ Rule:
 ## Current Code Reality
 
 - Android client code unchanged by M11
-- Platform source-of-truth docs added by M11
-- M12 is currently documentation/scoping only
+- Platform M12 docs added/updated
+- M12 is currently documentation/policy only
 - M12 has not approved backend/API/database implementation
 
 ## User Preference
