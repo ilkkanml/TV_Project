@@ -23,14 +23,15 @@ Legal Core Media Player Ecosystem.
 
 ## Current Runtime Truth
 
-- Current active milestone: M11 Platform Source-of-Truth Audit
-- Current active task: M11-TASK-001 Platform Repository Source-of-Truth Audit
-- M11 status: ACTIVE
-- M11-TASK-001 status: READY
-- Last locked milestone: M10 Ecosystem Alignment & Client Integration Contract
+- Current active milestone: None
+- Current active task: None
+- Last locked milestone: M11 Platform Source-of-Truth Audit
+- M11 status: LOCKED
+- M11-TASK-001 status: PASSED / COMPLETED
+- Previous locked milestone: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
 - M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: Audit `TV_Project_Platform` repository source of truth
+- Required next action: Director may open next milestone candidate: M12 Platform Database Baseline & Migration Foundation
 
 Runtime truth priority:
 
@@ -72,54 +73,68 @@ Allowed development sources:
 - Test streams with permission
 - Public demo streams
 - User-owned licensed streams
-- Legal provider/API integrations
+- Legal provider/API integrations with explicit future approval
 
-## M11 Platform Source-of-Truth Audit
+## M11 Lock Summary
 
-M11 audits `TV_Project_Platform` before database/API/backend bridge implementation begins.
+M11 Platform Source-of-Truth Audit is LOCKED.
 
-Audit targets:
+Completed scope:
 
-- Repository structure
-- README/docs status
-- Framework/runtime setup
-- Backend/API status
-- Database/schema status
-- Account/auth/device/license/config/profile-transfer readiness
-- Environment/deployment status
-- Security/privacy gaps
-- Legal/compliance gaps
-- M12 readiness recommendation
+- Platform repository audit
+- Platform repo structure review
+- API/database/security/legal gap review
+- M11 audit report
+- Platform README
+- Platform START_HERE
+- Platform source-of-truth docs
+- API contract alignment doc
+- Database baseline doc
+- Security/session policy doc
+- Legal boundary doc
 
-M11 is audit-only.
+Platform docs added in `TV_Project_Platform`:
 
-Not approved:
+- `README.md`
+- `docs/START_HERE.md`
+- `docs/PLATFORM_SOURCE_OF_TRUTH.md`
+- `docs/API_CONTRACT_ALIGNMENT.md`
+- `docs/DATABASE_BASELINE.md`
+- `docs/SECURITY_SESSION_POLICY.md`
+- `docs/LEGAL_BOUNDARY.md`
 
-- Backend implementation
-- Database implementation
-- Android bridge implementation
-- Payment enforcement
-- Provider integration
-- Content hosting
-- Channel selling
-- Bundled streams
-- Unauthorized source extraction
-- Credential sharing
-- Protected-system rewrite
+M11 guardrails preserved:
+
+- No backend implementation approved
+- No database migration approved
+- No Android bridge approved
+- No payment enforcement approved
+- No provider integration approved
+- Protected systems preserved
+- Legal media player boundary preserved
+
+## M12 Candidate
+
+Next candidate milestone:
+
+`M12 Platform Database Baseline & Migration Foundation`
+
+M12 should address:
+
+- Prisma migration baseline
+- database setup validation
+- seed policy
+- migration/rollback policy
+- data retention/deletion policy
+- database connection/service foundation planning
+
+M12 must not approve payment enforcement, provider integration, content hosting, or Android bridge unless explicitly scoped by Director.
 
 ## M10 Lock Summary
 
 M10 Ecosystem Alignment & Client Integration Contract is LOCKED.
 
-M10 guardrails preserved:
-
-- App code unchanged
-- Backend code unchanged
-- Database implementation not approved
-- Payment enforcement not approved
-- Provider integration not approved
-- Protected systems preserved
-- Legal/compliance boundary preserved
+M10 was documentation/contract alignment only.
 
 ## Department Boot Protocol
 
@@ -159,14 +174,13 @@ Rule:
 - M8 TV Navigation & Access Polish: LOCKED
 - M9 Startup Flow & Session Entry Polish: LOCKED
 - M10 Ecosystem Alignment & Client Integration Contract: LOCKED
+- M11 Platform Source-of-Truth Audit: LOCKED
 
 ## Current Code Reality
 
-- Local profile repo and screens preserved
-- Existing navigation patterns reused
-- M10 was documentation/contract alignment only
-- M11 is Platform repo audit only
-- M11 does not change app/backend/database code
+- Android client code unchanged by M11
+- Platform source-of-truth docs added by M11
+- M11 did not approve backend/API/database implementation
 
 ## User Preference
 
