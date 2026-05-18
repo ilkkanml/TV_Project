@@ -42,23 +42,30 @@ Runtime truth priority:
 5. `docs/START_HERE.md`
 6. Agent files
 
+## Lean Workflow Rule
+
+Avoid unnecessary procedure.
+
+Use the shortest safe workflow:
+
+1. Department report when useful
+2. Director decision
+3. Builder only if implementation is approved
+4. QA only for code/runtime/release risk
+5. Documentation only when runtime truth, milestone status, source-of-truth contract, or major decision changes
+6. Milestone final docs can be batched
+
+Do not run Documentation Memory for every minor review.
+
+Do not update CHANGELOG or DECISION_LOG after every small department report.
+
+Director may handle simple documentation updates directly in the main Director thread.
+
 ## Core Legal Rule
 
 Nexora is a legal player/client platform.
 
-It must not include or enable:
-
-- Pirated IPTV playlists
-- Illegal streams
-- Content hosting
-- Broadcasting
-- Channel selling
-- Bundled streams
-- DRM bypass
-- Token/cookie theft
-- Credential bypass or credential sharing
-- Unauthorized scraping
-- Illegal restreaming
+It does not provide content, channels, broadcasts, bundled media, circumvention tools, unauthorized source access, credential sharing support, or restreaming behavior.
 
 Allowed development sources:
 
@@ -117,8 +124,6 @@ M10 is not LOCKED.
 
 Next recommended review:
 
-- Security & Privacy review
-- Legal Compliance review
 - Backend Engineer / Database Architect feasibility report only
 
 ## Department Boot Protocol
@@ -190,3 +195,4 @@ M9 lock evidence:
 - Continuous progress
 - Keep docs updated so new chats can continue
 - Do not say PASSED/LOCKED without required evidence
+- Avoid unnecessary procedure and repeated documentation loops
