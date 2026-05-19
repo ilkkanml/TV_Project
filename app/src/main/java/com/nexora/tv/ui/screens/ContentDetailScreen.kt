@@ -3,6 +3,7 @@ package com.nexora.tv.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +16,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,6 +28,11 @@ import androidx.navigation.NavController
 import com.nexora.tv.data.content.MockContentLibrary
 import com.nexora.tv.data.content.NexoraContentItem
 import com.nexora.tv.navigation.AppDestinations
+import com.nexora.tv.ui.components.NexoraCinematicBackdrop
+
+private val NexoraViolet = Color(0xFF7C3AED)
+private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val PanelDark = Color(0xCC090B12)
 
 @Composable
 fun ContentDetailScreen(
@@ -37,138 +46,212 @@ fun ContentDetailScreen(
         return
     }
 
-    val accent = Color(content.accentColor)
+    NexoraCinematicBackdrop {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 58.dp, vertical = 44.dp),
+            horizontalArrangement = Arrangement.spacedBy(38.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DetailPoster(content)
+            DetailInfo(navController, content)
+        }
+    }
+}
 
-    Row(
+@Composable
+private fun DetailPoster(content: NexoraContentItem) {
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF06111D))
-            .padding(horizontal = 56.dp, vertical = 44.dp),
-        horizontalArrangement = Arrangement.spacedBy(34.dp)
+            .width(370.dp)
+            .height(520.dp)
+            .shadow(
+                elevation = 26.dp,
+                shape = RoundedCornerShape(34.dp),
+                ambientColor = NexoraViolet,
+                spotColor = NexoraViolet
+            )
+            .background(PanelDark, RoundedCornerShape(34.dp))
+            .border(2.dp, NexoraViolet.copy(alpha = 0.72f), RoundedCornerShape(34.dp))
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            NexoraViolet.copy(alpha = 0.28f),
+                            Color.Black.copy(alpha = 0.24f),
+                            Color.Black.copy(alpha = 0.82f)
+                        )
+                    ),
+                    RoundedCornerShape(34.dp)
+                )
+        )
+
         Column(
             modifier = Modifier
-                .width(360.dp)
-                .height(520.dp)
-                .background(accent.copy(alpha = 0.24f), RoundedCornerShape(30.dp))
-                .border(2.dp, accent, RoundedCornerShape(30.dp))
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Bottom
+                .align(Alignment.BottomStart)
+                .padding(26.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
                 text = content.badge,
-                color = accent,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+                color = NexoraVioletSoft,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.5.sp
             )
             Text(
                 text = content.title,
                 color = Color.White,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Black
+                fontSize = 31.sp,
+                fontWeight = FontWeight.Black,
+                lineHeight = 34.sp
             )
             Text(
                 text = content.subtitle,
-                color = Color.LightGray,
+                color = Color.White.copy(alpha = 0.62f),
                 fontSize = 14.sp
             )
         }
+    }
+}
 
-        Column(
-            modifier = Modifier.width(690.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = content.type.label,
-                color = accent,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = content.title,
-                color = Color.White,
-                fontSize = 44.sp,
-                fontWeight = FontWeight.Black
-            )
-            Text(
-                text = content.description,
-                color = Color.LightGray,
-                fontSize = 17.sp
-            )
-            Text(
-                text = "Category: ${content.category}",
-                color = Color.White,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium
-            )
-            Text(
-                text = "Mock/local metadata only. No provider, backend, token, payment, or illegal stream integration.",
-                color = Color(0xFF9EA8B8),
-                fontSize = 13.sp
-            )
+@Composable
+private fun DetailInfo(navController: NavController, content: NexoraContentItem) {
+    Column(
+        modifier = Modifier
+            .width(720.dp)
+            .background(PanelDark, RoundedCornerShape(34.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp))
+            .padding(32.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        Text(
+            text = content.type.label.uppercase(),
+            color = NexoraVioletSoft,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Black,
+            letterSpacing = 2.sp
+        )
+        Text(
+            text = content.title,
+            color = Color.White,
+            fontSize = 48.sp,
+            fontWeight = FontWeight.Black,
+            lineHeight = 52.sp
+        )
+        Text(
+            text = content.description,
+            color = Color.White.copy(alpha = 0.72f),
+            fontSize = 17.sp,
+            lineHeight = 24.sp
+        )
 
-            Spacer(modifier = Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            DetailPill(content.category)
+            DetailPill("Licensed")
+            DetailPill("Mock Metadata")
+        }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                Button(
-                    onClick = {
-                        navController.navigate(AppDestinations.Player.route) {
-                            launchSingleTop = true
-                        }
-                    },
-                    enabled = content.isPlayable,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = accent,
-                        contentColor = Color.White,
-                        disabledContainerColor = Color(0xFF26303D),
-                        disabledContentColor = Color.LightGray
-                    )
-                ) {
-                    Text(if (content.isPlayable) "Play Mock" else "Not Playable")
-                }
+        Text(
+            text = "No provider, backend, token, payment, scraping, or unauthorized stream integration is included.",
+            color = Color.White.copy(alpha = 0.52f),
+            fontSize = 13.sp,
+            lineHeight = 19.sp
+        )
 
-                Button(
-                    onClick = { navController.popBackStack() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF141821),
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text("Back")
-                }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Button(
+                onClick = {
+                    navController.navigate(AppDestinations.Player.route) {
+                        launchSingleTop = true
+                    }
+                },
+                enabled = content.isPlayable,
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(54.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = NexoraViolet,
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.White.copy(alpha = 0.08f),
+                    disabledContentColor = Color.White.copy(alpha = 0.44f)
+                )
+            ) {
+                Text(if (content.isPlayable) "Play Mock" else "Not Playable", fontWeight = FontWeight.Black)
+            }
+
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .width(112.dp)
+                    .height(54.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White.copy(alpha = 0.08f),
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Back", fontWeight = FontWeight.Bold)
             }
         }
     }
 }
 
 @Composable
-private fun MissingContentDetail(navController: NavController) {
-    Column(
+private fun DetailPill(text: String) {
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF06111D))
-            .padding(56.dp),
-        verticalArrangement = Arrangement.spacedBy(18.dp)
+            .height(38.dp)
+            .background(NexoraViolet.copy(alpha = 0.18f), RoundedCornerShape(14.dp))
+            .border(1.dp, NexoraViolet.copy(alpha = 0.44f), RoundedCornerShape(14.dp))
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Content not found",
+            text = text,
             color = Color.White,
-            fontSize = 34.sp,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Black
         )
-        Text(
-            text = "This placeholder protects the route if a mock content id is missing.",
-            color = Color.LightGray,
-            fontSize = 16.sp
-        )
-        Button(
-            onClick = { navController.popBackStack() },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF123A46),
-                contentColor = Color.White
-            )
+    }
+}
+
+@Composable
+private fun MissingContentDetail(navController: NavController) {
+    NexoraCinematicBackdrop {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(58.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
-            Text("Back")
+            Text(
+                text = "Content not found",
+                color = Color.White,
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Black
+            )
+            Text(
+                text = "This placeholder protects the route if a mock content id is missing.",
+                color = Color.White.copy(alpha = 0.68f),
+                fontSize = 16.sp
+            )
+            Button(
+                onClick = { navController.popBackStack() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = NexoraViolet,
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Back")
+            }
         }
     }
 }
