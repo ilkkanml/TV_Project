@@ -6,7 +6,7 @@
 
 ## M12 Status
 
-OPEN / IMPLEMENTATION PARTIAL
+OPEN / QA REVIEW READY
 
 ## Current Active Task
 
@@ -22,7 +22,7 @@ POLICY DRAFT RECORDED / COMPLETED
 
 ## M12-TASK-003 Status
 
-PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
+LOCAL EVIDENCE RECORDED / QA REVIEW REQUIRED
 
 ## Last Locked Milestone
 
@@ -79,16 +79,25 @@ Platform repo migration files were added:
 - `apps/api/prisma/migrations/migration_lock.toml`
 - `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
 
+Support fixes applied during local verification:
+
+- `apps/api/package.json` pinned API Prisma dependencies to `6.19.3`
+- `apps/api/tsconfig.json` removed invalid TypeScript `ignoreDeprecations` setting
+
 Evidence status:
 
-- Build/typecheck: NOT CONFIRMED
-- Prisma generate: NOT CONFIRMED
-- Local migration apply: NOT CONFIRMED
-- Local DB verification: NOT CONFIRMED
+- Dependency install: CONFIRMED
+- Docker Desktop local infra: CONFIRMED
+- PostgreSQL container health: CONFIRMED
+- Redis container health: CONFIRMED
+- Prisma generate: CONFIRMED
+- Local migration apply: CONFIRMED
+- API typecheck: CONFIRMED FROM USER-PROVIDED TERMINAL OUTPUT
+- Local DB verification: CONFIRMED BY PRISMA MIGRATE OUTPUT
 
-Reason:
+Evidence document:
 
-- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
+- `TV_Project_Platform/docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
 
 ## M12 Out of Scope
 
@@ -115,15 +124,12 @@ Platform repo:
 - `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
 - `docs/M12_SECURITY_PRIVACY_REVIEW.md`
 - `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
+- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
 
 ## Required Next Action
 
-Run local verification before QA:
+Send M12-TASK-003 to QA review.
 
-- `pnpm install`
-- `docker compose up -d`
-- `pnpm db:generate`
-- `pnpm db:migrate`
-- `pnpm --filter @tv-platform/api run typecheck`
+QA must review local evidence before any PASSED status.
 
-QA cannot PASS until evidence is provided.
+Director lock is not allowed until QA and documentation flow are complete.
