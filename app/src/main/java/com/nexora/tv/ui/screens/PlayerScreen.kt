@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private const val MOCK_PLAYER_STREAM_URL = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
@@ -32,7 +36,7 @@ private val NexoraBlue = Color(0xFF4CC9FF)
 private val PanelDark = Color(0xCC090B12)
 
 @Composable
-fun PlayerScreen() {
+fun PlayerScreen(navController: NavController) {
     NexoraCinematicBackdrop {
         Box(
             modifier = Modifier
@@ -68,16 +72,16 @@ fun PlayerScreen() {
                         )
                 )
 
-                TopOverlay()
+                TopOverlay(navController)
                 CenterPlayerState()
-                BottomOverlay()
+                BottomOverlay(navController)
             }
         }
     }
 }
 
 @Composable
-private fun TopOverlay() {
+private fun TopOverlay(navController: NavController) {
     Row(
         modifier = Modifier
             .width(1120.dp)
@@ -104,11 +108,21 @@ private fun TopOverlay() {
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             PlayerChip("4K")
             PlayerChip("HDR")
             PlayerChip("Mock Shell")
+            PlayerNavButton("Back") {
+                navController.popBackStack()
+            }
+            PlayerNavButton("Home") {
+                navController.navigate(AppDestinations.Home.route) {
+                    popUpTo(AppDestinations.Home.route) { inclusive = false }
+                    launchSingleTop = true
+                }
+            }
         }
     }
 }
@@ -132,6 +146,30 @@ private fun PlayerChip(text: String) {
         Text(
             text = text,
             color = Color.White,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Black
+        )
+    }
+}
+
+@Composable
+private fun PlayerNavButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .width(86.dp)
+            .height(40.dp),
+        shape = RoundedCornerShape(14.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White.copy(alpha = 0.08f),
+            contentColor = Color.White
+        )
+    ) {
+        Text(
+            text = text,
             fontSize = 12.sp,
             fontWeight = FontWeight.Black
         )
@@ -188,7 +226,7 @@ private fun CenterPlayerState() {
 }
 
 @Composable
-private fun BoxScope.BottomOverlay() {
+private fun BoxScope.BottomOverlay(navController: NavController) {
     Column(
         modifier = Modifier
             .align(Alignment.BottomStart)
@@ -206,12 +244,30 @@ private fun BoxScope.BottomOverlay() {
             .padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            text = "Player Overlay",
-            color = Color.White,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Black
-        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.width(896.dp)
+        ) {
+            Text(
+                text = "Player Overlay",
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Black
+            )
+
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                PlayerNavButton("Back") {
+                    navController.popBackStack()
+                }
+                PlayerNavButton("Home") {
+                    navController.navigate(AppDestinations.Home.route) {
+                        popUpTo(AppDestinations.Home.route) { inclusive = false }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(14.dp)
