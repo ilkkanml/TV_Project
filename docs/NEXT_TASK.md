@@ -2,7 +2,7 @@
 
 ## Current Status
 
-M12-TASK-003 local-only baseline migration files added, but verification evidence is missing.
+M12-TASK-003 local-only baseline migration evidence has passed QA review.
 
 ## Current Active Milestone
 
@@ -22,11 +22,11 @@ POLICY DRAFT RECORDED / COMPLETED
 
 ## M12-TASK-003 Status
 
-PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
+PASSED / QA VERIFIED
 
 ## Task Owner Flow
 
-Director → Local verification → QA only after evidence → Documentation → Director lock.
+Director → Documentation → Director lock evaluation.
 
 ## M12-TASK-003 Changed Files
 
@@ -34,29 +34,33 @@ Platform repo:
 
 - `apps/api/prisma/migrations/migration_lock.toml`
 - `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
+- `apps/api/package.json`
+- `apps/api/tsconfig.json`
+- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
+- `docs/M12_QA_REVIEW.md`
 
 ## Evidence Status
 
-- Build/typecheck: NOT CONFIRMED
-- Prisma generate: NOT CONFIRMED
-- Local migration apply: NOT CONFIRMED
-- Local DB verification: NOT CONFIRMED
+- Dependency install: CONFIRMED
+- Docker Desktop local infra: CONFIRMED
+- PostgreSQL container health: CONFIRMED
+- Redis container health: CONFIRMED
+- Prisma generate: CONFIRMED
+- Local migration apply: CONFIRMED
+- API typecheck: CONFIRMED
+- Local DB verification: CONFIRMED
+- QA review: PASS
 
-Reason:
+Evidence documents:
 
-- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
+- `TV_Project_Platform/docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
+- `TV_Project_Platform/docs/M12_QA_REVIEW.md`
 
 ## Required Next Action
 
-Run local verification before QA:
+Run documentation update for M12 runtime truth.
 
-```bash
-pnpm install
-docker compose up -d
-pnpm db:generate
-pnpm db:migrate
-pnpm --filter @tv-platform/api run typecheck
-```
+After documentation update, Director may evaluate M12 lock.
 
 ## Guardrails
 
@@ -72,4 +76,4 @@ pnpm --filter @tv-platform/api run typecheck
 - No rights-bypass behavior
 - No unapproved stream extraction behavior
 
-QA cannot PASS until evidence is provided.
+Director lock is not allowed until documentation flow is complete.
