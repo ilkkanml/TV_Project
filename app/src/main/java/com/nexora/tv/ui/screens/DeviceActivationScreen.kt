@@ -29,8 +29,7 @@ import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private const val MOCK_NEXORA_DEVICE_ID = "NX-TV-8F2K-44M9"
 private const val MOCK_ACTIVATION_KEY = "K7Q4-29XA"
-private const val MOCK_ACTIVATION_WEBSITE = "nexoratv.com/activate"
-private const val ACTIVATION_SCREEN_MARKER = "EA0-ACT-FIX-2"
+private const val ACTIVATION_SCREEN_MARKER = "EA0-ACT-FIX-3"
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
 private val PanelDark = Color(0xCC090B12)
@@ -49,33 +48,11 @@ fun DeviceActivationScreen(navController: NavController) {
                 modifier = Modifier.width(390.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
+                Text("NEXORA", color = Color.White, fontSize = 38.sp, fontWeight = FontWeight.Black, letterSpacing = 2.5.sp, maxLines = 1)
+                Text("Activate this TV", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(ACTIVATION_SCREEN_MARKER, color = Color.White.copy(alpha = 0.42f), fontSize = 11.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
-                    text = "NEXORA",
-                    color = Color.White,
-                    fontSize = 38.sp,
-                    fontWeight = FontWeight.Black,
-                    letterSpacing = 2.5.sp,
-                    maxLines = 1
-                )
-
-                Text(
-                    text = "Activate this TV",
-                    color = NexoraVioletSoft,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
-
-                Text(
-                    text = ACTIVATION_SCREEN_MARKER,
-                    color = Color.White.copy(alpha = 0.42f),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Black,
-                    maxLines = 1
-                )
-
-                Text(
-                    text = "Early access device screen. Continue to setup after activation check.",
+                    text = "Early access device accepted. Next step: add your own IPTV access.",
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 13.sp,
                     lineHeight = 18.sp,
@@ -88,43 +65,20 @@ fun DeviceActivationScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                        navController.navigate(AppDestinations.Home.route) {
+                        navController.navigate(AppDestinations.PlaylistProfile.route) {
                             launchSingleTop = true
                         }
                     },
                     modifier = Modifier
                         .width(340.dp)
                         .height(70.dp)
-                        .shadow(
-                            elevation = 16.dp,
-                            shape = RoundedCornerShape(24.dp),
-                            ambientColor = NexoraViolet,
-                            spotColor = NexoraViolet
-                        ),
+                        .shadow(16.dp, RoundedCornerShape(24.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
                     shape = RoundedCornerShape(24.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = NexoraViolet,
-                        contentColor = Color.White
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "CONTINUE TO HOME",
-                            fontWeight = FontWeight.Black,
-                            fontSize = 16.sp,
-                            letterSpacing = 1.1.sp,
-                            maxLines = 1
-                        )
-                        Text(
-                            text = "Open Nexora TV",
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 11.sp,
-                            color = Color.White.copy(alpha = 0.78f),
-                            maxLines = 1
-                        )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Text("CONTINUE SETUP", fontWeight = FontWeight.Black, fontSize = 16.sp, letterSpacing = 1.1.sp, maxLines = 1)
+                        Text("Add IPTV access", fontWeight = FontWeight.Medium, fontSize = 11.sp, color = Color.White.copy(alpha = 0.78f), maxLines = 1)
                     }
                 }
             }
@@ -137,13 +91,13 @@ fun DeviceActivationScreen(navController: NavController) {
                     .padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(11.dp)
             ) {
-                Text("Website Activation", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                Text(MOCK_ACTIVATION_WEBSITE, color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text("Device Ready", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text("Next: IPTV Access", color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
 
-                ActivationStep("1", "Open the activation website on your phone or computer.")
-                ActivationStep("2", "Enter the Nexora Device ID shown on this TV.")
-                ActivationStep("3", "Enter the Activation Key for this demo screen.")
-                ActivationStep("4", "Press CONTINUE TO HOME on this TV.")
+                ActivationStep("1", "Device screen is accepted for early access.")
+                ActivationStep("2", "Press CONTINUE SETUP.")
+                ActivationStep("3", "Enter your own IPTV account or playlist information.")
+                ActivationStep("4", "Load channels, then open Home or play a stream.")
 
                 Box(
                     modifier = Modifier
@@ -153,7 +107,7 @@ fun DeviceActivationScreen(navController: NavController) {
                         .padding(15.dp)
                 ) {
                     Text(
-                        text = "Temporary early access screen. Backend device bootstrap will replace this mock screen later.",
+                        text = "The app does not provide channels. Use only IPTV access you are legally allowed to use.",
                         color = Color.White.copy(alpha = 0.72f),
                         fontSize = 12.sp,
                         lineHeight = 17.sp,
