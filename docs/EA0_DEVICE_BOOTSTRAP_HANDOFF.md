@@ -344,3 +344,19 @@ TV_Project implementation is aligned when:
 - App never sends media/source/provider data to bootstrap/license endpoints.
 - Free launch access is not blocked by missing payment.
 - Future paid licensing can work through the same Device ID + Activation Key record.
+
+## 16. Merge Verification
+
+This handoff is synchronized with the platform EA0 direction.
+
+Verified platform-aligned items:
+
+- Backend-generated Device ID.
+- Backend-generated Activation Key.
+- Database stores `activationKeyHash` only.
+- App stores Device ID + Activation Key locally.
+- License check uses Device ID + Activation Key.
+- Reinstall recovery is best-effort through `platformDeviceHash`.
+- EA0 records can continue into future paid licensing.
+- No customer email/name requirement for EA0.
+- No media/provider/source data is sent to platform identity/license endpoints.
