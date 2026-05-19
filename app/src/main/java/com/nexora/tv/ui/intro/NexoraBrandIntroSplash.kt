@@ -30,7 +30,7 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-private const val INTRO_DURATION = 9.75f
+private const val INTRO_DURATION = 7.95f
 
 @Composable
 fun NexoraBrandIntroSplash(
@@ -64,28 +64,28 @@ fun NexoraBrandIntroSplash(
                     sfx.playCenterLineGrow()
                 }
 
-                if (lastTime < 1.72f && now >= 1.72f) {
+                if (lastTime < 1.42f && now >= 1.42f) {
                     sfx.playLineSplit()
                 }
 
-                if (lastTime < 2.72f && now >= 2.72f) {
+                if (lastTime < 2.18f && now >= 2.18f) {
                     sfx.playNeonIgnition()
                     sfx.playNeonBreathPad()
                 }
 
-                if (lastTime < 5.85f && now >= 5.85f) {
+                if (lastTime < 4.62f && now >= 4.62f) {
                     sfx.playLineMerge()
                 }
 
-                if (lastTime < 6.85f && now >= 6.85f) {
+                if (lastTime < 5.55f && now >= 5.55f) {
                     sfx.playMountainSweep()
                 }
 
-                if (lastTime < 8.82f && now >= 8.82f) {
+                if (lastTime < 7.02f && now >= 7.02f) {
                     sfx.playPowerDown()
                 }
 
-                if (lastTime < 9.45f && now >= 9.45f) {
+                if (lastTime < 7.55f && now >= 7.55f) {
                     sfx.playFinalTing()
                 }
 
@@ -94,7 +94,7 @@ fun NexoraBrandIntroSplash(
             }
         }
 
-        delay(220)
+        delay(180)
         onFinished()
     }
 
@@ -111,203 +111,104 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
     val w = size.width
     val h = size.height
     val cx = w / 2f
+    val cy = h / 2f
 
-    val logoTextSize = min(w * 0.102f, h * 0.148f)
+    val logoTextSize = min(w * 0.112f, h * 0.155f)
     val logoWidth = measureNexoraLogoWidth(logoTextSize)
-    val baseLogoCenterY = h * 0.405f
+    val logoCenterY = h * 0.455f
+    val xCenter = calculateNexoraXCenter(cx, logoTextSize)
 
-    val lineGrow = easeOutCubic(segment(t, 0.78f, 1.72f))
+    val logoReveal = easeOutCubic(segment(t, 2.08f, 3.02f))
+    val logoSettle = easeOutCubic(segment(t, 3.05f, 4.15f))
+    val finalClose = easeInOutCubic(segment(t, 7.05f, 7.72f))
+    val logoAlpha = (logoReveal * (1f - finalClose)).coerceIn(0f, 1f)
+    val logoY = logoCenterY + (1f - logoSettle) * logoTextSize * 0.055f
 
-    val splitAmount = when {
-        t < 1.72f -> 0f
-        t < 2.72f -> easeInOutCubic(segment(t, 1.72f, 2.72f))
-        t < 5.85f -> 1f
-        t < 6.85f -> 1f - easeInOutCubic(segment(t, 5.85f, 6.85f))
-        else -> 0f
-    }
+    drawCinematicSpaceBackground(t)
 
-    val sideLoopProgress = easeInOutCubic(segment(t, 6.85f, 7.55f))
-
-    val logoLift = when {
-        t < 1.72f -> 0f
-        t < 6.85f -> splitAmount * logoTextSize * 0.10f
-        t < 7.55f -> lerp(
-            logoTextSize * 0.10f,
-            logoTextSize * 0.20f,
-            sideLoopProgress
-        )
-        else -> logoTextSize * 0.20f
-    }
-
-    val logoCenterY = baseLogoCenterY - logoLift
-
-    val baseLineY = logoCenterY + logoTextSize * 0.90f
-    val splitGap = logoTextSize * 0.38f
-
-    val topLineY = baseLineY - splitGap * splitAmount
-    val bottomLineY = baseLineY + splitGap * splitAmount
-
-    val mountainPhase = easeOutQuint(segment(t, 7.55f, 8.85f))
-    val extinguish = easeInOutCubic(segment(t, 8.82f, 9.55f))
-    val logoAppear = easeOutCubic(segment(t, 0.15f, 0.95f))
-
-    drawCinematicBackground(t)
-
-    drawNexoraLogo(
-        center = Offset(cx, logoCenterY),
-        textSize = logoTextSize,
-        alpha = logoAppear,
-        shimmer = segment(t, 0.55f, 1.55f)
+    drawPurpleHorizonBirth(
+        center = Offset(cx, h * 0.655f),
+        progress = segment(t, 0.05f, 1.22f),
+        alpha = 1f - segment(t, 2.25f, 3.25f)
     )
 
-    val halfLine = logoWidth * 0.57f * lineGrow
+    drawConvergingLightStreaks(
+        center = Offset(cx, h * 0.335f),
+        progress = segment(t, 0.95f, 2.20f),
+        alpha = (1f - segment(t, 2.55f, 3.40f)).coerceIn(0f, 1f),
+        time = t
+    )
 
-    if (lineGrow > 0.001f && t < 6.85f) {
-        if (splitAmount < 0.025f) {
-            drawNeonLine(
-                start = Offset(cx - halfLine, baseLineY),
-                end = Offset(cx + halfLine, baseLineY),
-                stroke = h * 0.0048f,
-                alpha = 0.95f,
-                time = t
-            )
-        } else {
-            drawNeonLine(
-                start = Offset(cx - halfLine, topLineY),
-                end = Offset(cx + halfLine, topLineY),
-                stroke = h * 0.0046f,
-                alpha = 0.95f,
-                time = t + 0.15f
-            )
+    drawIconicXReveal(
+        center = Offset(cx, h * 0.335f),
+        size = logoTextSize * 2.22f,
+        progress = segment(t, 1.25f, 2.42f),
+        alpha = (1f - segment(t, 2.65f, 3.35f)).coerceIn(0f, 1f),
+        time = t
+    )
 
-            drawNeonLine(
-                start = Offset(cx - halfLine, bottomLineY),
-                end = Offset(cx + halfLine, bottomLineY),
-                stroke = h * 0.0046f,
-                alpha = 0.95f,
-                time = t + 0.35f
-            )
-        }
-    }
+    drawLogoEnergyTrails(
+        center = Offset(cx, logoY),
+        logoWidth = logoWidth,
+        textSize = logoTextSize,
+        progress = segment(t, 2.35f, 3.35f),
+        alpha = (1f - segment(t, 4.85f, 5.60f)).coerceIn(0f, 1f),
+        time = t
+    )
 
-    val playerTextAlpha =
-        easeOutCubic(segment(t, 2.55f, 3.25f)) *
-            (1f - easeInOutCubic(segment(t, 5.55f, 6.05f)))
-
-    if (playerTextAlpha > 0.01f) {
-        drawPlayerEcosystemsText(
-            center = Offset(cx, (topLineY + bottomLineY) / 2f),
-            textSize = min(w * 0.036f, h * 0.062f),
-            alpha = playerTextAlpha,
-            breath = 0.72f + 0.28f * sin(t * PI.toFloat() * 1.72f).coerceIn(-1f, 1f),
-            time = t
-        )
-    }
-
-    val mountainAlpha = (1f - extinguish).coerceIn(0f, 1f)
-
-    if (t >= 6.85f && mountainAlpha > 0.001f) {
-        drawSideLoopToMountain(
-            centerX = cx,
-            logoCenterY = logoCenterY,
-            logoWidth = logoWidth,
-            lineY = baseLineY,
+    if (logoAlpha > 0.001f) {
+        drawNexoraLogo(
+            center = Offset(cx, logoY),
             textSize = logoTextSize,
-            loopProgress = segment(t, 6.85f, 7.55f),
-            mountainProgress = mountainPhase,
-            visibleFraction = mountainAlpha,
-            stroke = h * 0.0046f,
+            alpha = logoAlpha,
+            shimmer = segment(t, 2.40f, 3.45f)
+        )
+    }
+
+    drawPremiumLockupGlow(
+        center = Offset(cx, logoY + logoTextSize * 0.82f),
+        width = logoWidth * 0.76f,
+        progress = segment(t, 3.10f, 3.92f),
+        alpha = ((1f - finalClose) * (0.25f + 0.75f * segment(t, 3.10f, 3.92f))).coerceIn(0f, 1f),
+        time = t
+    )
+
+    val breatheIn = easeOutCubic(segment(t, 5.58f, 5.95f))
+    val breatheOut = 1f - easeInOutCubic(segment(t, 7.10f, 7.72f))
+    val xBreatheAlpha = (breatheIn * breatheOut).coerceIn(0f, 1f)
+
+    if (xBreatheAlpha > 0.001f || finalClose > 0.001f) {
+        drawCenterXBreatheAndClose(
+            center = Offset(xCenter, logoY),
+            textSize = logoTextSize,
+            alpha = xBreatheAlpha,
+            close = finalClose,
             time = t
         )
     }
 
-    if (t > 9.28f) {
-        val finalFlash = 1f - segment(t, 9.28f, 9.7f)
-
+    if (finalClose > 0.001f) {
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(
-                    Color(0xFFD7FFF4).copy(alpha = 0.30f * finalFlash),
-                    Color(0xFF7C3AED).copy(alpha = 0.10f * finalFlash),
+                    Color(0xFFD8B4FE).copy(alpha = 0.24f * (1f - finalClose)),
+                    Color(0xFF60A5FA).copy(alpha = 0.12f * (1f - finalClose)),
                     Color.Transparent
                 ),
-                center = Offset(cx, logoCenterY - logoTextSize * 1.02f),
-                radius = logoTextSize * 0.95f
+                center = Offset(xCenter, logoY),
+                radius = logoTextSize * (0.65f + finalClose * 0.28f)
             ),
-            radius = logoTextSize * 0.95f,
-            center = Offset(cx, logoCenterY - logoTextSize * 1.02f)
+            radius = logoTextSize * (0.65f + finalClose * 0.28f),
+            center = Offset(xCenter, logoY)
+        )
+
+        drawRect(
+            color = Color.Black.copy(alpha = (finalClose * 0.92f).coerceIn(0f, 0.92f))
         )
     }
 }
 
-private fun DrawScope.drawSideLoopToMountain(
-    centerX: Float,
-    logoCenterY: Float,
-    logoWidth: Float,
-    lineY: Float,
-    textSize: Float,
-    loopProgress: Float,
-    mountainProgress: Float,
-    visibleFraction: Float,
-    stroke: Float,
-    time: Float
-) {
-    val loopEased = easeInOutCubic(loopProgress)
-
-    val lineRightX = centerX + logoWidth * 0.57f
-    val sideOutsideX = centerX + logoWidth * 0.83f
-
-    val silhouetteBaseY = logoCenterY - textSize * 0.92f
-    val peakY = silhouetteBaseY - textSize * 0.42f
-
-    /*
-     * İstenen hareket:
-     * Alt çizgi kapandıktan sonra sadece sağ taraftan dolanarak yukarı çıkar.
-     * Sağ-sol iki ayrı yarım daire yok.
-     * Tek ışık hattı sağ dıştan yukarı çıkar ve NEXORA üstünde silüete bağlanır.
-     */
-    if (loopEased > 0.001f) {
-        val loopPoints = cubicBezierPoints(
-            start = Offset(lineRightX, lineY),
-            control1 = Offset(sideOutsideX, lineY - textSize * 0.08f),
-            control2 = Offset(sideOutsideX, silhouetteBaseY - textSize * 0.24f),
-            end = Offset(centerX + logoWidth * 0.56f, silhouetteBaseY),
-            steps = 34
-        )
-
-        drawPartialGlowPolyline(
-            points = loopPoints,
-            visibleFraction = loopEased,
-            stroke = stroke,
-            time = time
-        )
-    }
-
-    /*
-     * Silüet sağdan sola doğru oluşur.
-     * Böylece yandan dolanan çizgi, logonun üstünde dağ formuna dönüşür.
-     */
-    if (mountainProgress > 0.001f) {
-        val points = listOf(
-            Offset(centerX + logoWidth * 0.56f, silhouetteBaseY),
-            Offset(centerX + logoWidth * 0.34f, silhouetteBaseY - textSize * 0.16f),
-            Offset(centerX + logoWidth * 0.18f, silhouetteBaseY - textSize * 0.08f),
-            Offset(centerX + logoWidth * 0.02f, peakY),
-            Offset(centerX - logoWidth * 0.14f, silhouetteBaseY - textSize * 0.10f),
-            Offset(centerX - logoWidth * 0.32f, silhouetteBaseY - textSize * 0.18f),
-            Offset(centerX - logoWidth * 0.56f, silhouetteBaseY)
-        )
-
-        drawPartialGlowPolyline(
-            points = points,
-            visibleFraction = (mountainProgress * visibleFraction).coerceIn(0f, 1f),
-            stroke = stroke,
-            time = time + 0.25f
-        )
-    }
-}
-
-private fun DrawScope.drawCinematicBackground(t: Float) {
+private fun DrawScope.drawCinematicSpaceBackground(t: Float) {
     val w = size.width
     val h = size.height
     val cx = w / 2f
@@ -316,41 +217,351 @@ private fun DrawScope.drawCinematicBackground(t: Float) {
     drawRect(
         brush = Brush.radialGradient(
             colors = listOf(
-                Color(0xFF111536),
+                Color(0xFF121638),
                 Color(0xFF050713),
-                Color(0xFF02030A)
+                Color(0xFF01020A)
             ),
-            center = Offset(cx, cy * 0.86f),
-            radius = w * 0.72f
+            center = Offset(cx, cy * 0.82f),
+            radius = w * 0.78f
         )
     )
 
-    val pulse = 0.55f + 0.45f * sin(t * 1.1f)
+    val pulse = 0.45f + 0.55f * abs(sin(t * 0.52f))
 
     drawCircle(
         brush = Brush.radialGradient(
             colors = listOf(
-                Color(0xFF7C3AED).copy(alpha = 0.22f * pulse),
-                Color(0xFF2563EB).copy(alpha = 0.08f * pulse),
+                Color(0xFF7C3AED).copy(alpha = 0.18f * pulse),
+                Color(0xFF2563EB).copy(alpha = 0.075f * pulse),
                 Color.Transparent
             ),
-            center = Offset(cx, h * 0.58f),
-            radius = w * 0.42f
+            center = Offset(cx, h * 0.57f),
+            radius = w * 0.46f
         ),
-        radius = w * 0.42f,
-        center = Offset(cx, h * 0.58f)
+        radius = w * 0.46f,
+        center = Offset(cx, h * 0.57f)
     )
 
-    for (i in 0 until 95) {
+    for (i in 0 until 120) {
         val px = pseudoRandom(i * 12.8f) * w
         val py = pseudoRandom(i * 43.2f) * h
-        val r = 0.7f + pseudoRandom(i * 4.6f) * 1.9f
-        val twinkle = 0.25f + 0.75f * abs(sin(t * 0.9f + i))
+        val r = 0.55f + pseudoRandom(i * 4.6f) * 1.75f
+        val twinkle = 0.20f + 0.80f * abs(sin(t * 0.68f + i * 0.31f))
 
         drawCircle(
-            color = Color(0xFFC4B5FD).copy(alpha = 0.05f * twinkle),
+            color = Color(0xFFC4B5FD).copy(alpha = 0.045f * twinkle),
             radius = r,
             center = Offset(px, py)
+        )
+    }
+}
+
+private fun DrawScope.drawPurpleHorizonBirth(
+    center: Offset,
+    progress: Float,
+    alpha: Float
+) {
+    val p = easeOutCubic(progress)
+    val a = (alpha * p).coerceIn(0f, 1f)
+    if (a <= 0f) return
+
+    val horizonWidth = size.width * (0.16f + 0.58f * p)
+
+    drawLine(
+        color = Color(0xFF8B5CF6).copy(alpha = 0.18f * a),
+        start = Offset(center.x - horizonWidth, center.y),
+        end = Offset(center.x + horizonWidth, center.y),
+        strokeWidth = size.height * 0.010f,
+        cap = StrokeCap.Round
+    )
+
+    drawLine(
+        brush = Brush.horizontalGradient(
+            colors = listOf(
+                Color.Transparent,
+                Color(0xFFA855F7).copy(alpha = 0.88f * a),
+                Color.White.copy(alpha = 0.55f * a),
+                Color(0xFF60A5FA).copy(alpha = 0.62f * a),
+                Color.Transparent
+            )
+        ),
+        start = Offset(center.x - horizonWidth, center.y),
+        end = Offset(center.x + horizonWidth, center.y),
+        strokeWidth = size.height * 0.0025f,
+        cap = StrokeCap.Round
+    )
+
+    drawCircle(
+        brush = Brush.radialGradient(
+            colors = listOf(
+                Color.White.copy(alpha = 0.36f * a),
+                Color(0xFFA855F7).copy(alpha = 0.24f * a),
+                Color.Transparent
+            ),
+            center = center,
+            radius = size.width * 0.10f * p
+        ),
+        radius = size.width * 0.10f * p,
+        center = center
+    )
+}
+
+private fun DrawScope.drawConvergingLightStreaks(
+    center: Offset,
+    progress: Float,
+    alpha: Float,
+    time: Float
+) {
+    val p = easeOutQuint(progress)
+    val a = (alpha * p).coerceIn(0f, 1f)
+    if (a <= 0f) return
+
+    val w = size.width
+    val h = size.height
+
+    for (i in 0 until 34) {
+        val side = if (i % 2 == 0) -1f else 1f
+        val y = pseudoRandom(i * 31.7f) * h * 0.78f + h * 0.08f
+        val startX = if (side < 0f) {
+            -w * 0.10f - pseudoRandom(i * 4.9f) * w * 0.20f
+        } else {
+            w * 1.10f + pseudoRandom(i * 5.1f) * w * 0.20f
+        }
+        val targetY = center.y + (y - center.y) * (0.08f + 0.12f * pseudoRandom(i * 2.4f))
+        val targetX = center.x + side * logoSafeRandomOffset(i, w) * (1f - p)
+        val tailProgress = (p - 0.18f).coerceIn(0f, 1f)
+        val head = Offset(lerp(startX, targetX, p), lerp(y, targetY, p))
+        val tail = Offset(lerp(startX, targetX, tailProgress), lerp(y, targetY, tailProgress))
+        val color = if (side < 0f) Color(0xFFA855F7) else Color(0xFF60A5FA)
+        val localAlpha = a * (0.20f + 0.80f * pseudoRandom(i * 8.6f))
+
+        drawColorGlowLine(
+            start = tail,
+            end = head,
+            stroke = h * (0.0015f + pseudoRandom(i * 9.1f) * 0.0022f),
+            color = color,
+            alpha = localAlpha * (0.72f + 0.28f * abs(sin(time + i)))
+        )
+    }
+}
+
+private fun DrawScope.drawIconicXReveal(
+    center: Offset,
+    size: Float,
+    progress: Float,
+    alpha: Float,
+    time: Float
+) {
+    val p = easeInOutCubic(progress)
+    val a = (alpha * p).coerceIn(0f, 1f)
+    if (a <= 0f) return
+
+    val half = size * 0.50f
+    val gap = size * 0.075f * (1f - p)
+    val stroke = size * 0.105f
+    val pulse = 0.78f + 0.22f * abs(sin(time * 2.1f))
+
+    drawColorGlowLine(
+        start = Offset(center.x - half, center.y - half * 0.64f),
+        end = Offset(center.x - gap, center.y),
+        stroke = stroke,
+        color = Color(0xFFA855F7),
+        alpha = a * pulse
+    )
+
+    drawColorGlowLine(
+        start = Offset(center.x - half, center.y + half * 0.64f),
+        end = Offset(center.x - gap, center.y),
+        stroke = stroke,
+        color = Color(0xFF7C3AED),
+        alpha = a * pulse
+    )
+
+    drawColorGlowLine(
+        start = Offset(center.x + half, center.y - half * 0.64f),
+        end = Offset(center.x + gap, center.y),
+        stroke = stroke,
+        color = Color(0xFF60A5FA),
+        alpha = a * pulse
+    )
+
+    drawColorGlowLine(
+        start = Offset(center.x + half, center.y + half * 0.64f),
+        end = Offset(center.x + gap, center.y),
+        stroke = stroke,
+        color = Color(0xFF2563EB),
+        alpha = a * pulse
+    )
+
+    drawCircle(
+        brush = Brush.radialGradient(
+            colors = listOf(
+                Color.White.copy(alpha = 0.30f * a),
+                Color(0xFF8B5CF6).copy(alpha = 0.25f * a),
+                Color.Transparent
+            ),
+            center = center,
+            radius = size * 0.33f
+        ),
+        radius = size * 0.33f,
+        center = center
+    )
+}
+
+private fun DrawScope.drawLogoEnergyTrails(
+    center: Offset,
+    logoWidth: Float,
+    textSize: Float,
+    progress: Float,
+    alpha: Float,
+    time: Float
+) {
+    val p = easeOutQuint(progress)
+    val a = (alpha * p).coerceIn(0f, 1f)
+    if (a <= 0f) return
+
+    val left = center.x - logoWidth * 0.74f
+    val right = center.x + logoWidth * 0.74f
+    val upperY = center.y - textSize * 0.33f
+    val lowerY = center.y + textSize * 0.48f
+
+    val upper = mutableListOf<Offset>()
+    val lower = mutableListOf<Offset>()
+
+    for (i in 0..46) {
+        val f = i / 46f
+        val x = lerp(left, right, f)
+        upper += Offset(
+            x = x,
+            y = upperY + sin(f * PI.toFloat() * 2.4f + time * 0.65f) * textSize * 0.18f
+        )
+        lower += Offset(
+            x = x,
+            y = lowerY + sin(f * PI.toFloat() * 2.1f + time * 0.72f + 1.8f) * textSize * 0.14f
+        )
+    }
+
+    drawPartialGlowPolyline(
+        points = upper,
+        visibleFraction = p,
+        stroke = size.height * 0.0035f,
+        time = time,
+        alphaMultiplier = a * 0.76f
+    )
+
+    drawPartialGlowPolyline(
+        points = lower,
+        visibleFraction = p,
+        stroke = size.height * 0.0032f,
+        time = time + 0.35f,
+        alphaMultiplier = a * 0.62f
+    )
+}
+
+private fun DrawScope.drawPremiumLockupGlow(
+    center: Offset,
+    width: Float,
+    progress: Float,
+    alpha: Float,
+    time: Float
+) {
+    val p = easeOutCubic(progress)
+    val a = (alpha * p).coerceIn(0f, 1f)
+    if (a <= 0f) return
+
+    val half = width * 0.50f * p
+    val breathe = 0.78f + 0.22f * abs(sin(time * 1.4f))
+
+    drawLine(
+        color = Color(0xFFA855F7).copy(alpha = 0.20f * a * breathe),
+        start = Offset(center.x - half, center.y),
+        end = Offset(center.x + half, center.y),
+        strokeWidth = size.height * 0.018f,
+        cap = StrokeCap.Round
+    )
+
+    drawLine(
+        brush = Brush.horizontalGradient(
+            colors = listOf(
+                Color.Transparent,
+                Color(0xFFA855F7).copy(alpha = 0.78f * a),
+                Color.White.copy(alpha = 0.55f * a),
+                Color(0xFF60A5FA).copy(alpha = 0.45f * a),
+                Color.Transparent
+            )
+        ),
+        start = Offset(center.x - half, center.y),
+        end = Offset(center.x + half, center.y),
+        strokeWidth = size.height * 0.0031f,
+        cap = StrokeCap.Round
+    )
+}
+
+private fun DrawScope.drawCenterXBreatheAndClose(
+    center: Offset,
+    textSize: Float,
+    alpha: Float,
+    close: Float,
+    time: Float
+) {
+    val breathing = 0.5f + 0.5f * sin(time * PI.toFloat() * 1.65f)
+    val scale = (1f + breathing * 0.085f) * lerp(1f, 0.20f, close)
+    val visible = (alpha * (1f - close * 0.65f)).coerceIn(0f, 1f)
+
+    if (visible > 0.001f) {
+        drawIntoCanvas { canvas ->
+            val native = canvas.nativeCanvas
+            val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
+                this.textSize = textSize * scale
+                textAlign = Paint.Align.CENTER
+            }
+
+            val baseline = center.y - (paint.ascent() + paint.descent()) / 2f
+            val gradient = LinearGradient(
+                center.x - textSize * 0.45f,
+                baseline - textSize,
+                center.x + textSize * 0.45f,
+                baseline,
+                intArrayOf(
+                    android.graphics.Color.rgb(236, 72, 153),
+                    android.graphics.Color.rgb(168, 85, 247),
+                    android.graphics.Color.rgb(96, 165, 250),
+                    android.graphics.Color.rgb(255, 255, 255)
+                ),
+                null,
+                Shader.TileMode.CLAMP
+            )
+
+            val glowPaint = Paint(paint).apply {
+                shader = gradient
+                maskFilter = BlurMaskFilter(textSize * (0.18f + breathing * 0.08f), BlurMaskFilter.Blur.NORMAL)
+                this.alpha = (210 * visible).toInt().coerceIn(0, 255)
+            }
+
+            native.drawText("X", center.x, baseline, glowPaint)
+
+            paint.shader = gradient
+            paint.maskFilter = null
+            paint.alpha = (255 * visible).toInt().coerceIn(0, 255)
+            native.drawText("X", center.x, baseline, paint)
+        }
+    }
+
+    if (close > 0.001f) {
+        val sparkAlpha = (close * (1f - close)).coerceIn(0f, 1f)
+        drawCircle(
+            brush = Brush.radialGradient(
+                colors = listOf(
+                    Color.White.copy(alpha = 0.48f * sparkAlpha),
+                    Color(0xFF60A5FA).copy(alpha = 0.26f * sparkAlpha),
+                    Color.Transparent
+                ),
+                center = center,
+                radius = textSize * (0.10f + 0.56f * close)
+            ),
+            radius = textSize * (0.10f + 0.56f * close),
+            center = center
         )
     }
 }
@@ -366,6 +577,11 @@ private fun DrawScope.drawNexoraLogo(
 
         val letters = "NEXORA"
         val spacing = textSize * 0.045f
+        val tvTextSize = textSize * 0.48f
+        val mainWidth = measureNexoraMainWidth(textSize)
+        val tvWidth = measureNexoraTvWidth(textSize)
+        val gap = textSize * 0.22f
+        val totalWidth = mainWidth + gap + tvWidth
 
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
@@ -373,19 +589,18 @@ private fun DrawScope.drawNexoraLogo(
             textAlign = Paint.Align.LEFT
         }
 
-        val totalWidth = measureNexoraLogoWidth(textSize)
         var x = center.x - totalWidth / 2f
         val baseline = center.y - (paint.ascent() + paint.descent()) / 2f
 
         val glowPaint = Paint(paint).apply {
             color = android.graphics.Color.argb(
-                (80 * alpha).toInt(),
+                (84 * alpha).toInt().coerceIn(0, 255),
                 147,
                 51,
                 234
             )
             maskFilter = BlurMaskFilter(
-                textSize * 0.10f,
+                textSize * 0.105f,
                 BlurMaskFilter.Blur.NORMAL
             )
         }
@@ -443,104 +658,84 @@ private fun DrawScope.drawNexoraLogo(
             native.drawText(charString, x, baseline, paint)
             x += charWidth + spacing
         }
-    }
-}
 
-private fun DrawScope.drawPlayerEcosystemsText(
-    center: Offset,
-    textSize: Float,
-    alpha: Float,
-    breath: Float,
-    time: Float
-) {
-    drawIntoCanvas { canvas ->
-        val native = canvas.nativeCanvas
-
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
-            this.textSize = textSize
+        val tvPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
+            this.textSize = tvTextSize
             textAlign = Paint.Align.LEFT
-        }
-
-        val part1 = "PLAYER "
-        val part2 = "ECO"
-        val part3 = "SYSTEMS"
-
-        val w1 = paint.measureText(part1)
-        val w2 = paint.measureText(part2)
-        val w3 = paint.measureText(part3)
-
-        val total = w1 + w2 + w3
-        val x = center.x - total / 2f
-        val baseline = center.y - (paint.ascent() + paint.descent()) / 2f
-
-        val glowRadius = textSize * (0.32f + 0.18f * breath)
-        val glowAlpha = (alpha * (0.65f + 0.35f * breath)).coerceIn(0f, 1f)
-
-        val gradient = LinearGradient(
-            x - total * 0.25f + time * 40f,
-            baseline,
-            x + total * 1.25f + time * 40f,
-            baseline,
-            intArrayOf(
-                android.graphics.Color.rgb(236, 72, 153),
-                android.graphics.Color.rgb(168, 85, 247),
-                android.graphics.Color.rgb(59, 130, 246),
-                android.graphics.Color.rgb(34, 211, 238),
-                android.graphics.Color.rgb(34, 197, 94),
-                android.graphics.Color.rgb(250, 204, 21),
-                android.graphics.Color.rgb(249, 115, 22)
-            ),
-            null,
-            Shader.TileMode.MIRROR
-        )
-
-        val glowPaint = Paint(paint).apply {
-            shader = gradient
-            maskFilter = BlurMaskFilter(glowRadius, BlurMaskFilter.Blur.NORMAL)
-            this.alpha = (180 * glowAlpha).toInt().coerceIn(0, 255)
-        }
-
-        native.drawText(part1 + part2 + part3, x, baseline, glowPaint)
-
-        paint.shader = gradient
-        paint.maskFilter = null
-        paint.alpha = (255 * alpha).toInt().coerceIn(0, 255)
-        native.drawText(part1, x, baseline, paint)
-
-        val ecoGlow = Paint(paint).apply {
-            shader = null
-            color = android.graphics.Color.argb(
-                (210 * glowAlpha).toInt().coerceIn(0, 255),
-                34,
-                255,
-                128
+            shader = LinearGradient(
+                x + gap,
+                baseline - tvTextSize,
+                x + gap + tvWidth,
+                baseline,
+                intArrayOf(
+                    android.graphics.Color.rgb(216, 180, 254),
+                    android.graphics.Color.rgb(96, 165, 250),
+                    android.graphics.Color.rgb(255, 255, 255)
+                ),
+                null,
+                Shader.TileMode.CLAMP
             )
-            maskFilter = BlurMaskFilter(
-                glowRadius * 0.75f,
-                BlurMaskFilter.Blur.NORMAL
-            )
+            alpha = (238 * alpha).toInt().coerceIn(0, 255)
         }
 
-        native.drawText(part2, x + w1, baseline, ecoGlow)
+        val tvGlow = Paint(tvPaint).apply {
+            maskFilter = BlurMaskFilter(textSize * 0.08f, BlurMaskFilter.Blur.NORMAL)
+            alpha = (112 * alpha).toInt().coerceIn(0, 255)
+        }
 
-        paint.shader = null
-        paint.color = android.graphics.Color.argb(
-            (255 * alpha).toInt().coerceIn(0, 255),
-            49,
-            255,
-            137
-        )
-        paint.maskFilter = null
+        val tvX = x + gap
+        val tvBaseline = baseline - textSize * 0.085f
 
-        native.drawText(part2, x + w1, baseline, paint)
-
-        paint.shader = gradient
-        paint.alpha = (255 * alpha).toInt().coerceIn(0, 255)
-
-        native.drawText(part3, x + w1 + w2, baseline, paint)
+        native.drawText("TV", tvX, tvBaseline, tvGlow)
+        native.drawText("TV", tvX, tvBaseline, tvPaint)
     }
 }
+
+private fun DrawScope.drawColorGlowLine(
+    start: Offset,
+    end: Offset,
+    stroke: Float,
+    color: Color,
+    alpha: Float
+) {
+    val a = alpha.coerceIn(0f, 1f)
+    if (a <= 0f) return
+
+    drawLine(
+        color = color.copy(alpha = 0.20f * a),
+        start = start,
+        end = end,
+        strokeWidth = stroke * 5.8f,
+        cap = StrokeCap.Round
+    )
+
+    drawLine(
+        color = color.copy(alpha = 0.14f * a),
+        start = start,
+        end = end,
+        strokeWidth = stroke * 10.5f,
+        cap = StrokeCap.Round
+    )
+
+    drawLine(
+        color = color.copy(alpha = 0.88f * a),
+        start = start,
+        end = end,
+        strokeWidth = stroke,
+        cap = StrokeCap.Round
+    )
+
+    drawLine(
+        color = Color.White.copy(alpha = 0.38f * a),
+        start = start,
+        end = end,
+        strokeWidth = stroke * 0.30f,
+        cap = StrokeCap.Round
+    )
+}
+
+private fun DrawNeonLineCompatibilityUnused() = Unit
 
 private fun DrawScope.drawNeonLine(
     start: Offset,
@@ -552,7 +747,7 @@ private fun DrawScope.drawNeonLine(
     val glowAlpha = alpha.coerceIn(0f, 1f)
 
     drawLine(
-        color = Color(0xFF7C3AED).copy(alpha = 0.24f * glowAlpha),
+        color = Color(0xFF7C3AED).copy(alpha = 0.22f * glowAlpha),
         start = start,
         end = end,
         strokeWidth = stroke * 7.2f,
@@ -560,7 +755,7 @@ private fun DrawScope.drawNeonLine(
     )
 
     drawLine(
-        color = Color(0xFF2563EB).copy(alpha = 0.16f * glowAlpha),
+        color = Color(0xFF2563EB).copy(alpha = 0.14f * glowAlpha),
         start = start,
         end = end,
         strokeWidth = stroke * 11f,
@@ -587,10 +782,10 @@ private fun DrawScope.drawNeonLine(
     )
 
     drawLine(
-        color = Color.White.copy(alpha = 0.72f * glowAlpha),
+        color = Color.White.copy(alpha = 0.62f * glowAlpha),
         start = start,
         end = end,
-        strokeWidth = stroke * 0.28f,
+        strokeWidth = stroke * 0.24f,
         cap = StrokeCap.Round
     )
 }
@@ -599,7 +794,8 @@ private fun DrawScope.drawPartialGlowPolyline(
     points: List<Offset>,
     visibleFraction: Float,
     stroke: Float,
-    time: Float
+    time: Float,
+    alphaMultiplier: Float = 1f
 ) {
     if (points.size < 2 || visibleFraction <= 0f) return
 
@@ -641,45 +837,31 @@ private fun DrawScope.drawPartialGlowPolyline(
             start = a,
             end = b,
             stroke = stroke,
-            alpha = fraction,
+            alpha = fraction * alphaMultiplier,
             time = time
         )
     }
 }
 
-private fun cubicBezierPoints(
-    start: Offset,
-    control1: Offset,
-    control2: Offset,
-    end: Offset,
-    steps: Int
-): List<Offset> {
-    val safeSteps = steps.coerceAtLeast(2)
-    val points = mutableListOf<Offset>()
-
-    for (i in 0..safeSteps) {
-        val t = i.toFloat() / safeSteps.toFloat()
-        val oneMinusT = 1f - t
-
-        val x =
-            oneMinusT.pow(3f) * start.x +
-                3f * oneMinusT.pow(2f) * t * control1.x +
-                3f * oneMinusT * t.pow(2f) * control2.x +
-                t.pow(3f) * end.x
-
-        val y =
-            oneMinusT.pow(3f) * start.y +
-                3f * oneMinusT.pow(2f) * t * control1.y +
-                3f * oneMinusT * t.pow(2f) * control2.y +
-                t.pow(3f) * end.y
-
-        points += Offset(x, y)
+private fun calculateNexoraXCenter(
+    logoCenterX: Float,
+    textSize: Float
+): Float {
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
+        this.textSize = textSize
     }
 
-    return points
+    val spacing = textSize * 0.045f
+    val totalWidth = measureNexoraLogoWidth(textSize)
+    val startX = logoCenterX - totalWidth / 2f
+    val prefixWidth = paint.measureText("N") + spacing + paint.measureText("E") + spacing
+    val xWidth = paint.measureText("X")
+
+    return startX + prefixWidth + xWidth / 2f
 }
 
-private fun measureNexoraLogoWidth(textSize: Float): Float {
+private fun measureNexoraMainWidth(textSize: Float): Float {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
         this.textSize = textSize
@@ -699,6 +881,23 @@ private fun measureNexoraLogoWidth(textSize: Float): Float {
     }
 
     return total
+}
+
+private fun measureNexoraTvWidth(textSize: Float): Float {
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
+        this.textSize = textSize * 0.48f
+    }
+
+    return paint.measureText("TV")
+}
+
+private fun measureNexoraLogoWidth(textSize: Float): Float {
+    return measureNexoraMainWidth(textSize) + textSize * 0.22f + measureNexoraTvWidth(textSize)
+}
+
+private fun logoSafeRandomOffset(index: Int, width: Float): Float {
+    return width * (0.02f + pseudoRandom(index * 17.2f) * 0.045f)
 }
 
 private fun segment(t: Float, start: Float, end: Float): Float {
