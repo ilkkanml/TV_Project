@@ -1,12 +1,14 @@
 package com.nexora.tv.ui.screens
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,253 +30,251 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nexora.tv.data.live.LiveChannel
+import com.nexora.tv.data.live.LivePlaybackSession
+import com.nexora.tv.data.live.RemoteListLoader
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val NexoraGreen = Color(0xFF39FF88)
 private val PanelDark = Color(0xCC090B12)
 private val PanelSoft = Color(0xAA11131C)
 
 @Composable
 fun PlaylistProfileScreen(navController: NavController) {
-    var profileName by remember { mutableStateOf("") }
-    var playlistName by remember { mutableStateOf("") }
-    var serverUrl by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var selectedType by remember { mutableStateOf("Portal / Xtream") }
+    var listAddress by remember { mutableStateOf("") }
+    var channels by remember { mutableStateOf<List<LiveChannel>>(emptyList()) }
+    var selectedGroup by remember { mutableStateOf("All") }
+    var isLoading by remember { mutableStateOf(false) }
+    var statusText by remember { mutableStateOf("Enter your own list address, then load channels.") }
+
+    val groups = remember(channels) {
+        listOf("All") + channels.map { it.group.ifBlank { "Live" } }.distinct().take(24)
+    }
+
+    val visibleChannels = remember(channels, selectedGroup) {
+        if (selectedGroup == "All") channels else channels.filter { it.group == selectedGroup }
+    }
 
     NexoraCinematicBackdrop {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 58.dp, vertical = 42.dp),
-            horizontalArrangement = Arrangement.spacedBy(34.dp),
+                .padding(horizontal = 34.dp, vertical = 28.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
-                    .width(500.dp)
+                    .width(430.dp)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(15.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
                     text = "NEXORA",
                     color = Color.White,
-                    fontSize = 42.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Black,
-                    letterSpacing = 3.sp
+                    letterSpacing = 2.4.sp,
+                    maxLines = 1
                 )
 
                 Text(
-                    text = "Playlist & Profile Setup",
+                    text = "Live List Setup",
                     color = NexoraVioletSoft,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Black
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Black,
+                    maxLines = 1
                 )
 
                 Text(
-                    text = "Add a local profile shell for playlist access you own, license, or are legally authorized to use.",
+                    text = "Use your own active list address. The app does not provide channels.",
                     color = Color.White.copy(alpha = 0.68f),
-                    fontSize = 15.sp,
-                    lineHeight = 21.sp
+                    fontSize = 12.sp,
+                    lineHeight = 17.sp
                 )
 
-                LegalPanel()
-
-                SetupField(
-                    label = "Profile Name",
-                    value = profileName,
-                    onChange = {
-                        profileName = it
-                    }
-                )
-
-                SetupField(
-                    label = "Playlist Name",
-                    value = playlistName,
-                    onChange = {
-                        playlistName = it
-                    }
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    TypeButton(
-                        text = "Portal / Xtream",
-                        selected = selectedType == "Portal / Xtream",
-                        onClick = {
-                            selectedType = "Portal / Xtream"
-                        }
+                OutlinedTextField(
+                    value = listAddress,
+                    onValueChange = { listAddress = it },
+                    label = { Text("List URL") },
+                    modifier = Modifier.width(430.dp),
+                    singleLine = true,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = NexoraViolet,
+                        unfocusedBorderColor = Color.White.copy(alpha = 0.15f),
+                        focusedLabelColor = NexoraVioletSoft,
+                        unfocusedLabelColor = Color.White.copy(alpha = 0.50f),
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        cursorColor = NexoraVioletSoft,
+                        focusedContainerColor = Color.White.copy(alpha = 0.03f),
+                        unfocusedContainerColor = Color.White.copy(alpha = 0.02f)
                     )
-
-                    TypeButton(
-                        text = "M3U URL",
-                        selected = selectedType == "M3U URL",
-                        onClick = {
-                            selectedType = "M3U URL"
-                        }
-                    )
-                }
-
-                SetupField(
-                    label = if (selectedType == "M3U URL") {
-                        "M3U URL Placeholder"
-                    } else {
-                        "Server / Portal URL"
-                    },
-                    value = serverUrl,
-                    onChange = {
-                        serverUrl = it
-                    }
                 )
 
-                SetupField(
-                    label = "Username Placeholder",
-                    value = username,
-                    onChange = {
-                        username = it
-                    }
-                )
-
-                SetupField(
-                    label = "Password Placeholder",
-                    value = password,
-                    isPassword = true,
-                    onChange = {
-                        password = it
-                    }
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
                         onClick = {
-                            navController.navigate(AppDestinations.Home.route) {
-                                launchSingleTop = true
-                            }
+                            if (isLoading) return@Button
+
+                            isLoading = true
+                            statusText = "Loading channels..."
+
+                            Thread {
+                                val result = runCatching {
+                                    RemoteListLoader.load(listAddress)
+                                }
+
+                                Handler(Looper.getMainLooper()).post {
+                                    isLoading = false
+                                    result
+                                        .onSuccess { loaded ->
+                                            channels = loaded
+                                            selectedGroup = "All"
+                                            statusText = if (loaded.isEmpty()) {
+                                                "No channels found."
+                                            } else {
+                                                "Loaded ${loaded.size} channels."
+                                            }
+                                        }
+                                        .onFailure { error ->
+                                            channels = emptyList()
+                                            statusText = error.message ?: "Could not load channels."
+                                        }
+                                }
+                            }.start()
                         },
-                        modifier = Modifier
-                            .width(200.dp)
-                            .height(54.dp),
-                        shape = RoundedCornerShape(18.dp),
+                        modifier = Modifier.width(174.dp).height(46.dp),
+                        shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = NexoraViolet,
                             contentColor = Color.White
                         )
                     ) {
                         Text(
-                            text = "Continue Home",
-                            fontWeight = FontWeight.Black
+                            text = if (isLoading) "Loading" else "Load Channels",
+                            fontWeight = FontWeight.Black,
+                            fontSize = 12.sp
                         )
                     }
 
                     Button(
                         onClick = {
-                            profileName = ""
-                            playlistName = ""
-                            serverUrl = ""
-                            username = ""
-                            password = ""
+                            listAddress = ""
+                            channels = emptyList()
+                            selectedGroup = "All"
+                            statusText = "Enter your own list address, then load channels."
                         },
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(54.dp),
-                        shape = RoundedCornerShape(18.dp),
+                        modifier = Modifier.width(110.dp).height(46.dp),
+                        shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White.copy(alpha = 0.08f),
-                            contentColor = Color.White.copy(alpha = 0.78f)
+                            contentColor = Color.White
                         )
                     ) {
-                        Text("Clear")
+                        Text("Clear", fontSize = 12.sp)
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .width(430.dp)
+                        .background(PanelSoft, RoundedCornerShape(20.dp))
+                        .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
+                        .padding(14.dp)
+                ) {
+                    Text(
+                        text = statusText,
+                        color = Color.White.copy(alpha = 0.76f),
+                        fontSize = 12.sp,
+                        lineHeight = 17.sp
+                    )
+                }
+
+                if (groups.isNotEmpty()) {
+                    Text(
+                        text = "Groups",
+                        color = NexoraVioletSoft,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Black
+                    )
+
+                    Row(
+                        modifier = Modifier.horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        groups.forEach { group ->
+                            GroupButton(
+                                text = group,
+                                selected = selectedGroup == group,
+                                onClick = { selectedGroup = group }
+                            )
+                        }
                     }
                 }
             }
 
             Column(
                 modifier = Modifier
-                    .width(650.dp)
-                    .background(
-                        color = PanelDark,
-                        shape = RoundedCornerShape(34.dp)
-                    )
-                    .border(
-                        width = 1.dp,
-                        color = Color.White.copy(alpha = 0.10f),
-                        shape = RoundedCornerShape(34.dp)
-                    )
-                    .padding(28.dp),
-                verticalArrangement = Arrangement.spacedBy(18.dp)
+                    .width(710.dp)
+                    .height(590.dp)
+                    .background(PanelDark, RoundedCornerShape(30.dp))
+                    .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
+                    .padding(22.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = "Local Setup Preview",
-                    color = Color.White,
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Black
-                )
-
-                Text(
-                    text = "No playlist is fetched here. No credentials are validated. This is only a premium UI shell for first-run setup.",
-                    color = Color.White.copy(alpha = 0.68f),
-                    fontSize = 15.sp,
-                    lineHeight = 21.sp
-                )
-
-                PreviewCard(
-                    title = "Source Type",
-                    body = selectedType
-                )
-
-                PreviewCard(
-                    title = "Profile",
-                    body = profileName.ifBlank { "Not set" }
-                )
-
-                PreviewCard(
-                    title = "Playlist",
-                    body = playlistName.ifBlank { "Not set" }
-                )
-
-                PreviewCard(
-                    title = "Endpoint",
-                    body = serverUrl.ifBlank { "Waiting for legal source" }
-                )
-
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                    modifier = Modifier.width(660.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    StatusPill("Licensed")
-                    StatusPill("Local Shell")
-                    StatusPill("No Backend")
+                    Column {
+                        Text(
+                            text = "Channels",
+                            color = Color.White,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Black
+                        )
+                        Text(
+                            text = "${visibleChannels.size} visible",
+                            color = Color.White.copy(alpha = 0.56f),
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    StatusPill(if (channels.isEmpty()) "EMPTY" else "READY")
                 }
 
-                Box(
+                Column(
                     modifier = Modifier
-                        .width(590.dp)
-                        .background(
-                            color = Color.White.copy(alpha = 0.06f),
-                            shape = RoundedCornerShape(22.dp)
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = NexoraViolet.copy(alpha = 0.36f),
-                            shape = RoundedCornerShape(22.dp)
-                        )
-                        .padding(18.dp)
+                        .width(660.dp)
+                        .height(500.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
-                        text = "Nexora does not provide channels, playlists, hidden sources, scraped streams, or unauthorized provider access.",
-                        color = Color.White.copy(alpha = 0.76f),
-                        fontSize = 13.sp,
-                        lineHeight = 19.sp
-                    )
+                    if (visibleChannels.isEmpty()) {
+                        EmptyListHint()
+                    } else {
+                        visibleChannels.forEach { channel ->
+                            ChannelRow(
+                                channel = channel,
+                                onClick = {
+                                    LivePlaybackSession.select(channel)
+                                    navController.navigate(AppDestinations.Player.route) {
+                                        launchSingleTop = true
+                                    }
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -282,138 +282,76 @@ fun PlaylistProfileScreen(navController: NavController) {
 }
 
 @Composable
-private fun SetupField(
-    label: String,
-    value: String,
-    isPassword: Boolean = false,
-    onChange: (String) -> Unit
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
-        label = {
-            Text(label)
-        },
-        modifier = Modifier.width(500.dp),
-        singleLine = true,
-        shape = RoundedCornerShape(18.dp),
-        visualTransformation = if (isPassword) {
-            PasswordVisualTransformation()
-        } else {
-            androidx.compose.ui.text.input.VisualTransformation.None
-        },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = NexoraViolet,
-            unfocusedBorderColor = Color.White.copy(alpha = 0.15f),
-            focusedLabelColor = NexoraVioletSoft,
-            unfocusedLabelColor = Color.White.copy(alpha = 0.50f),
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White,
-            cursorColor = NexoraVioletSoft,
-            focusedContainerColor = Color.White.copy(alpha = 0.03f),
-            unfocusedContainerColor = Color.White.copy(alpha = 0.02f)
-        )
-    )
-}
-
-@Composable
-private fun TypeButton(
+private fun GroupButton(
     text: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .width(244.dp)
-            .height(52.dp),
-        shape = RoundedCornerShape(18.dp),
+        modifier = Modifier.height(38.dp),
+        shape = RoundedCornerShape(14.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) {
-                NexoraViolet
-            } else {
-                Color.White.copy(alpha = 0.07f)
-            },
+            containerColor = if (selected) NexoraViolet else Color.White.copy(alpha = 0.08f),
             contentColor = Color.White
         )
     ) {
         Text(
             text = text,
-            fontWeight = if (selected) {
-                FontWeight.Black
-            } else {
-                FontWeight.Medium
-            }
+            fontSize = 11.sp,
+            fontWeight = if (selected) FontWeight.Black else FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
 
 @Composable
-private fun LegalPanel() {
-    Column(
-        modifier = Modifier
-            .width(500.dp)
-            .background(
-                color = PanelSoft,
-                shape = RoundedCornerShape(24.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = NexoraViolet.copy(alpha = 0.42f),
-                shape = RoundedCornerShape(24.dp)
-            )
-            .padding(18.dp),
-        verticalArrangement = Arrangement.spacedBy(7.dp)
-    ) {
-        Text(
-            text = "Licensed access only",
-            color = NexoraVioletSoft,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Black
-        )
-
-        Text(
-            text = "Use only legal playlists or provider credentials that you are authorized to access.",
-            color = Color.White.copy(alpha = 0.82f),
-            fontSize = 14.sp,
-            lineHeight = 20.sp
-        )
-    }
-}
-
-@Composable
-private fun PreviewCard(
-    title: String,
-    body: String
+private fun ChannelRow(
+    channel: LiveChannel,
+    onClick: () -> Unit
 ) {
-    Column(
+    Button(
+        onClick = onClick,
         modifier = Modifier
-            .width(590.dp)
-            .background(
-                color = Color.White.copy(alpha = 0.06f),
-                shape = RoundedCornerShape(22.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.10f),
-                shape = RoundedCornerShape(22.dp)
-            )
-            .padding(18.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+            .width(660.dp)
+            .height(62.dp),
+        shape = RoundedCornerShape(18.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White.copy(alpha = 0.06f),
+            contentColor = Color.White
+        )
     ) {
-        Text(
-            text = title,
-            color = NexoraVioletSoft,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Black
-        )
+        Row(
+            modifier = Modifier.width(620.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.width(470.dp)) {
+                Text(
+                    text = channel.name,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Black,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = channel.group,
+                    color = Color.White.copy(alpha = 0.52f),
+                    fontSize = 11.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
 
-        Text(
-            text = body,
-            color = Color.White,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
-        )
+            Text(
+                text = "Play",
+                color = NexoraGreen,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Black
+            )
+        }
     }
 }
 
@@ -421,24 +359,42 @@ private fun PreviewCard(
 private fun StatusPill(text: String) {
     Box(
         modifier = Modifier
-            .width(130.dp)
-            .height(44.dp)
-            .background(
-                color = NexoraViolet.copy(alpha = 0.20f),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = NexoraViolet.copy(alpha = 0.55f),
-                shape = RoundedCornerShape(16.dp)
-            ),
+            .width(86.dp)
+            .height(36.dp)
+            .background(NexoraViolet.copy(alpha = 0.18f), RoundedCornerShape(14.dp))
+            .border(1.dp, NexoraViolet.copy(alpha = 0.44f), RoundedCornerShape(14.dp)),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
             color = Color.White,
-            fontSize = 12.sp,
+            fontSize = 11.sp,
             fontWeight = FontWeight.Black
+        )
+    }
+}
+
+@Composable
+private fun EmptyListHint() {
+    Column(
+        modifier = Modifier
+            .width(660.dp)
+            .height(180.dp)
+            .background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(24.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.07f), RoundedCornerShape(24.dp))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "No channels loaded",
+            color = Color.White,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Black
+        )
+        Text(
+            text = "Load a list first, then select a channel to play.",
+            color = Color.White.copy(alpha = 0.62f),
+            fontSize = 13.sp
         )
     }
 }
