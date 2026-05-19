@@ -134,27 +134,22 @@ Important:
 - Factory reset may change platform identifiers.
 - Different Android user/profile may break recognition.
 - Signing key changes may break recognition.
-- Manual owner recovery must be possible later.
+- Manual owner recovery/reset can be added later.
 
 ## 8. Factory Reset Reality
 
 The app cannot guarantee silent automatic recognition after every factory reset.
 
-Commercial licensing must be based on:
+For EA0 free launch:
 
-```txt
-License-owned device slot system
-```
+- Automatic bootstrap can continue.
+- If the device cannot be recovered, backend may create a new DeviceAccessRecord.
 
-Meaning:
+For the future paid phase:
 
-- License/customer ownership is separate from device credentials.
-- Device ID + Activation Key represent a device slot credential.
-- If the device is reset and cannot be recognized automatically, recovery must happen through license/customer ownership later.
-
-For EA0 free launch, automatic bootstrap can continue.
-
-For paid phase, License Key / Customer Key recovery will be required.
+- Paid licensing should attach to the existing Device ID / Activation Key record when available.
+- Do not force all EA0 users to receive new Device IDs by default.
+- If credentials are lost and recovery fails, customer portal / owner support can reset or reconnect the device record later.
 
 ## 9. Required API Calls
 
@@ -215,7 +210,7 @@ Response:
 
 ## 10. Secure Local Storage Requirement
 
-The app must not store activation credentials in plain SharedPreferences.
+The app must not store activation credentials in plain SharedPreferences if avoidable.
 
 Use secure local storage appropriate to Android TV / Fire TV.
 
@@ -224,6 +219,7 @@ Minimum rule:
 - Store `deviceId` locally.
 - Store `activationKey` securely.
 - Never log `activationKey`.
+- Never include `activationKey` in crash/error logs.
 - Never display `activationKey` in normal UI unless a later support/recovery workflow explicitly allows it.
 
 ## 11. Forbidden App Behavior
@@ -238,6 +234,7 @@ The app must not:
 - Block free launch due to missing payment.
 - Redefine license states locally.
 - Redefine platform API field names locally.
+- Treat free launch as permanently free forever.
 
 ## 12. Shared State Values
 
@@ -281,14 +278,45 @@ forbidden
 
 The app should be built so paid licensing can be added later without rewriting identity.
 
-Future paid phase concept:
+Future paid phase rule:
 
 ```txt
-License Key / Customer Key owns the purchase
-Device ID + Activation Key owns the device slot
+The same Device ID + Activation Key record can become a paid license record.
 ```
 
-Factory reset recovery in the paid phase should use License Key / Customer Key ownership, not silent fingerprint-only recovery.
+When payment enforcement is enabled later, the app must react to:
+
+```txt
+allowed
+state
+freeLaunch
+paymentRequired
+message
+```
+
+Expected future unpaid response:
+
+```json
+{
+  "allowed": false,
+  "state": "expired",
+  "freeLaunch": false,
+  "paymentRequired": true,
+  "message": "Please activate your license."
+}
+```
+
+Expected future paid response:
+
+```json
+{
+  "allowed": true,
+  "state": "active",
+  "freeLaunch": false,
+  "paymentRequired": false,
+  "message": "License active."
+}
+```
 
 ## 14. No-Content Boundary
 
@@ -315,3 +343,4 @@ TV_Project implementation is aligned when:
 - App never hardcodes a shared activation key.
 - App never sends media/source/provider data to bootstrap/license endpoints.
 - Free launch access is not blocked by missing payment.
+- Future paid licensing can work through the same Device ID + Activation Key record.
