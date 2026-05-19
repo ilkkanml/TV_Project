@@ -23,19 +23,17 @@ Legal Core Media Player Ecosystem.
 
 ## Current Runtime Truth
 
-- Current active milestone: M12 Platform Database Baseline & Migration Foundation
-- M12 status: OPEN / IMPLEMENTATION PARTIAL
-- Current active task: M12-TASK-003 Local-only Migration Baseline Implementation Plan
-- M12-TASK-001 status: REPORT RECORDED / COMPLETED
-- M12-TASK-002 status: POLICY DRAFT RECORDED / COMPLETED
-- M12-TASK-003 status: PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
-- Last locked milestone: M11 Platform Source-of-Truth Audit
+- Current active milestone: none
+- Last locked milestone: M12 Platform Database Baseline & Migration Foundation
+- M12 status: LOCKED
+- M12-TASK-001 status: completed
+- M12-TASK-002 status: completed
+- M12-TASK-003 status: PASSED / QA VERIFIED
+- Previous locked milestone: M11 Platform Source-of-Truth Audit
 - M11 status: LOCKED
-- M11-TASK-001 status: PASSED / COMPLETED
-- Previous locked milestone: M10 Ecosystem Alignment & Client Integration Contract
+- Previous locked milestone before M11: M10 Ecosystem Alignment & Client Integration Contract
 - M10 status: LOCKED
-- M10-TASK-001 status: PASSED / COMPLETED
-- Required next action: run local verification before QA
+- Required next action: Director should scope the next milestone candidate
 
 Runtime truth priority:
 
@@ -79,70 +77,74 @@ Allowed development sources:
 - User-owned licensed streams
 - Legal provider/API integrations with explicit future approval
 
-## M12 Current Scope
+## M12 Lock Summary
 
-M12 Platform Database Baseline & Migration Foundation is OPEN / IMPLEMENTATION PARTIAL.
+M12 Platform Database Baseline & Migration Foundation is LOCKED.
 
-Current platform docs:
-
-- `docs/M12_DATABASE_BASELINE_SCOPE.md`
-- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
-- `docs/M12_DATABASE_POLICY_DRAFT.md`
-- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
-- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
-- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
-
-M12-TASK-003 changed platform files:
-
-- `apps/api/prisma/migrations/migration_lock.toml`
-- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
-
-Evidence status:
-
-- Build/typecheck: NOT CONFIRMED
-- Prisma generate: NOT CONFIRMED
-- Local migration apply: NOT CONFIRMED
-- Local DB verification: NOT CONFIRMED
-
-Reason:
-
-- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
-
-M12 may define:
+M12 completed:
 
 - Prisma migration baseline policy
 - Local database setup validation plan
 - Migration naming/versioning policy
 - Seed policy
 - Rollback policy
-- Data retention/deletion policy
-- Sensitive temporary profile-transfer data lifecycle
+- Data retention/deletion policy direction
+- Sensitive transfer-data lifecycle direction
 - Audit-log baseline expectations
-- Database service/connection foundation plan
+- Local-only baseline migration file creation
+- Local Docker PostgreSQL/Redis verification
+- Prisma generate verification
+- Prisma migrate verification
+- API typecheck verification
+- QA review
 
-M12 must not approve:
+M12 changed platform files:
 
-- Production database deployment
-- Production database mutation
-- Payment enforcement
-- Provider integration
-- Content hosting
-- Channel selling
-- Platform-owned stream catalog
-- Android bridge implementation
-- Auth/session/token implementation unless separately scoped
-- Legal media player boundary changes
+- `apps/api/prisma/migrations/migration_lock.toml`
+- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
+- `apps/api/package.json`
+- `apps/api/tsconfig.json`
+- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
+- `docs/M12_QA_REVIEW.md`
+- `docs/M12_LOCK_REPORT.md`
 
-Required next action:
+Evidence status:
 
-- Run local verification before QA:
-  - `pnpm install`
-  - `docker compose up -d`
-  - `pnpm db:generate`
-  - `pnpm db:migrate`
-  - `pnpm --filter @tv-platform/api run typecheck`
+- Dependency install: CONFIRMED
+- Docker Desktop local infra: CONFIRMED
+- PostgreSQL container health: CONFIRMED
+- Redis container health: CONFIRMED
+- Prisma generate: CONFIRMED
+- Local migration apply: CONFIRMED
+- API typecheck: CONFIRMED
+- Local DB verification: CONFIRMED
+- QA review: PASS
 
-QA cannot PASS until evidence is provided.
+M12 locked boundary:
+
+- No production database deployment
+- No production database mutation
+- No payment enforcement
+- No provider integration
+- No content hosting
+- No channel selling
+- No platform-owned stream catalog
+- No Android bridge implementation
+- No auth/session/token implementation unless separately scoped later
+- No legal media player boundary changes
+
+## Recommended Next Candidate
+
+`M13 Platform API Service Foundation & Environment Contract`
+
+Candidate focus:
+
+- API runtime environment baseline
+- Local `.env` / config contract
+- Database connection service foundation
+- Health/readiness endpoint verification
+- No auth/session implementation yet unless separately scoped
+- No production deployment
 
 ## M11 Lock Summary
 
@@ -227,13 +229,15 @@ Rule:
 - M9 Startup Flow & Session Entry Polish: LOCKED
 - M10 Ecosystem Alignment & Client Integration Contract: LOCKED
 - M11 Platform Source-of-Truth Audit: LOCKED
+- M12 Platform Database Baseline & Migration Foundation: LOCKED
 
 ## Current Code Reality
 
-- Android client code unchanged by M11
-- Platform migration baseline files added by M12-TASK-003
-- M12-TASK-003 is PARTIAL until local verification evidence exists
-- M12 has not approved production backend/API/database deployment
+- Android client code unchanged by M12
+- Platform local database baseline migration files are in place
+- Local platform database migration has been verified and QA-reviewed
+- No active milestone is currently open
+- Production backend/API/database deployment is not approved
 
 ## User Preference
 
