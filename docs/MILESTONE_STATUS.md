@@ -2,15 +2,15 @@
 
 ## Current Active Milestone
 
+None — next milestone pending Director scoping.
+
+## Last Locked Milestone
+
 `M12 Platform Database Baseline & Migration Foundation`
 
 ## M12 Status
 
-OPEN / QA REVIEW READY
-
-## Current Active Task
-
-`M12-TASK-003 Local-only Migration Baseline Implementation Plan`
+LOCKED
 
 ## M12-TASK-001 Status
 
@@ -22,9 +22,9 @@ POLICY DRAFT RECORDED / COMPLETED
 
 ## M12-TASK-003 Status
 
-LOCAL EVIDENCE RECORDED / QA REVIEW REQUIRED
+PASSED / QA VERIFIED
 
-## Last Locked Milestone
+## Previous Locked Milestone
 
 `M11 Platform Source-of-Truth Audit`
 
@@ -36,7 +36,7 @@ LOCKED
 
 PASSED / COMPLETED
 
-## Previous Locked Milestone
+## Previous Locked Milestone Before M11
 
 `M10 Ecosystem Alignment & Client Integration Contract`
 
@@ -48,29 +48,26 @@ LOCKED
 
 PASSED / COMPLETED
 
-## Previous Locked Milestone Before M10
+## M12 Lock Summary
 
-`M9 Startup Flow & Session Entry Polish`
+M12 established the local-only platform database baseline and migration foundation.
 
-## M9 Status
-
-LOCKED
-
-## M12 Scope Summary
-
-M12 opens the platform database baseline and migration foundation planning track.
-
-M12 may define:
+M12 completed:
 
 - Prisma migration baseline policy
 - Local database setup validation plan
 - Migration naming/versioning policy
 - Seed policy
 - Rollback policy
-- Data retention/deletion policy
-- Database connection/service foundation plan
-- Sensitive transfer-data lifecycle rules
+- Data retention/deletion policy direction
+- Sensitive transfer-data lifecycle direction
 - Audit-log baseline expectations
+- Local-only baseline migration file creation
+- Local Docker PostgreSQL/Redis verification
+- Prisma generate verification
+- Prisma migrate verification
+- API typecheck verification
+- QA review
 
 ## M12-TASK-003 Implementation Record
 
@@ -92,14 +89,17 @@ Evidence status:
 - Redis container health: CONFIRMED
 - Prisma generate: CONFIRMED
 - Local migration apply: CONFIRMED
-- API typecheck: CONFIRMED FROM USER-PROVIDED TERMINAL OUTPUT
-- Local DB verification: CONFIRMED BY PRISMA MIGRATE OUTPUT
+- API typecheck: CONFIRMED
+- Local DB verification: CONFIRMED
+- QA review: PASS
 
-Evidence document:
+Evidence and QA documents:
 
 - `TV_Project_Platform/docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
+- `TV_Project_Platform/docs/M12_QA_REVIEW.md`
+- `TV_Project_Platform/docs/M12_LOCK_REPORT.md`
 
-## M12 Out of Scope
+## M12 Locked Boundary
 
 M12 does not approve:
 
@@ -111,25 +111,11 @@ M12 does not approve:
 - Channel selling
 - Stream source storage as platform-owned catalog
 - Android bridge implementation
-- Auth/session/token implementation unless separately scoped
+- Auth/session/token implementation unless separately scoped later
 - Legal media player boundary changes
-
-## Current M12 Docs
-
-Platform repo:
-
-- `docs/M12_DATABASE_BASELINE_SCOPE.md`
-- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
-- `docs/M12_DATABASE_POLICY_DRAFT.md`
-- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
-- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
-- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
-- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
 
 ## Required Next Action
 
-Send M12-TASK-003 to QA review.
+Director should scope the next milestone candidate.
 
-QA must review local evidence before any PASSED status.
-
-Director lock is not allowed until QA and documentation flow are complete.
+No active milestone is open until Director explicitly opens it.
