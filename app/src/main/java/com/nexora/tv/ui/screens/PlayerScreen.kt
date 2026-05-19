@@ -115,36 +115,38 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
         }
     }
 
-    AndroidView(
-        modifier = Modifier.fillMaxSize(),
-        factory = { viewContext ->
-            PlayerView(viewContext).apply {
-                layoutParams = android.view.ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-                useController = true
-                this.player = player
-            }
-        },
-        update = { view -> view.player = player }
-    )
-
-    TopOverlay(
-        navController = navController,
-        channel = channel,
-        onSettingsClick = { showSettings = !showSettings }
-    )
-
-    BottomOverlay(
-        navController = navController,
-        channel = channel,
-        onSettingsClick = { showSettings = !showSettings }
-    )
-
-    if (showSettings) {
-        PlaybackSettingsPanel(
-            player = player,
-            catalog = trackCatalog,
-            onClose = { showSettings = false }
+    Box(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { viewContext ->
+                PlayerView(viewContext).apply {
+                    layoutParams = android.view.ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+                    useController = true
+                    this.player = player
+                }
+            },
+            update = { view -> view.player = player }
         )
+
+        TopOverlay(
+            navController = navController,
+            channel = channel,
+            onSettingsClick = { showSettings = !showSettings }
+        )
+
+        BottomOverlay(
+            navController = navController,
+            channel = channel,
+            onSettingsClick = { showSettings = !showSettings }
+        )
+
+        if (showSettings) {
+            PlaybackSettingsPanel(
+                player = player,
+                catalog = trackCatalog,
+                onClose = { showSettings = false }
+            )
+        }
     }
 }
 
