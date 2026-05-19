@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,12 +20,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,17 +37,23 @@ import com.nexora.tv.data.content.NexoraContentItem
 import com.nexora.tv.data.content.NexoraContentRow
 import com.nexora.tv.data.content.NexoraContentSection
 import com.nexora.tv.navigation.AppDestinations
+import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private const val PROFILE_ACCESS_SETTING_ID = "setting-account"
+private val NexoraViolet = Color(0xFF7C3AED)
+private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val PanelDark = Color(0xCC090B12)
+private val PanelSoft = Color(0xAA11131C)
 
 private enum class HomeMenu(
     val label: String,
     val section: NexoraContentSection
 ) {
     Home("Home", NexoraContentSection.Home),
-    Live("Live TV", NexoraContentSection.Live),
     Movies("Movies", NexoraContentSection.Movies),
     Series("Series", NexoraContentSection.Series),
+    Live("Live", NexoraContentSection.Live),
+    Search("Search", NexoraContentSection.Search),
     Settings("Settings", NexoraContentSection.Settings)
 }
 
@@ -60,72 +68,103 @@ fun HomeScreen(navController: NavController) {
     val selectedItem = MockContentLibrary.findContent(selectedItemId)
         ?: rows.firstOrNull()?.items?.firstOrNull()
 
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundFor(selectedItem?.accentColor))
-            .padding(42.dp),
-        horizontalArrangement = Arrangement.spacedBy(30.dp)
-    ) {
-        StaticMenu(
-            selectedMenu = selectedMenu,
-            onMenuSelected = {
-                selectedMenu = it
-                selectedItemId = MockContentLibrary.firstItemFor(it.section)?.id
-            }
-        )
-        StaticContent(
-            selectedMenu = selectedMenu,
-            rows = rows,
-            selectedItem = selectedItem,
-            onItemFocused = { selectedItemId = it.id },
-            onItemOpen = {
-                when {
-                    it.id == PROFILE_ACCESS_SETTING_ID -> {
-                        navController.navigate(AppDestinations.PlaylistProfile.route) {
-                            launchSingleTop = true
+    NexoraCinematicBackdrop {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 34.dp, top = 32.dp, end = 38.dp, bottom = 30.dp),
+            horizontalArrangement = Arrangement.spacedBy(32.dp)
+        ) {
+            Sidebar(
+                selectedMenu = selectedMenu,
+                onMenuSelected = {
+                    selectedMenu = it
+                    selectedItemId = MockContentLibrary.firstItemFor(it.section)?.id
+                }
+            )
+            ContentStage(
+                selectedMenu = selectedMenu,
+                rows = rows,
+                selectedItem = selectedItem,
+                onItemFocused = { selectedItemId = it.id },
+                onItemOpen = {
+                    when {
+                        it.id == PROFILE_ACCESS_SETTING_ID -> {
+                            navController.navigate(AppDestinations.PlaylistProfile.route) {
+                                launchSingleTop = true
+                            }
                         }
-                    }
 
-                    it.isPlayable -> {
-                        navController.navigate(AppDestinations.Detail.createRoute(it.id)) {
-                            launchSingleTop = true
+                        it.isPlayable -> {
+                            navController.navigate(AppDestinations.Detail.createRoute(it.id)) {
+                                launchSingleTop = true
+                            }
                         }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 }
 
 @Composable
-private fun StaticMenu(
+private fun Sidebar(
     selectedMenu: HomeMenu,
     onMenuSelected: (HomeMenu) -> Unit
 ) {
     Column(
-        modifier = Modifier.width(180.dp),
+        modifier = Modifier
+            .width(218.dp)
+            .fillMaxHeight()
+            .background(Color(0x9905060B), RoundedCornerShape(34.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(34.dp))
+            .padding(horizontal = 18.dp, vertical = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Text(
             text = "NEXORA",
             color = Color.White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Black
+            fontSize = 31.sp,
+            fontWeight = FontWeight.Black,
+            letterSpacing = 2.sp
         )
         Text(
-            text = "Premium TV",
-            color = Color.LightGray,
-            fontSize = 13.sp
+            text = "Licensed",
+            color = NexoraVioletSoft,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         HomeMenu.values().forEach { menu ->
             MenuButton(
                 title = menu.label,
                 selected = selectedMenu == menu,
                 onSelected = { onMenuSelected(menu) }
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Column(
+            modifier = Modifier
+                .width(180.dp)
+                .background(Color.White.copy(alpha = 0.06f), RoundedCornerShape(24.dp))
+                .border(1.dp, NexoraViolet.copy(alpha = 0.35f), RoundedCornerShape(24.dp))
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = "Internal Alpha",
+                color = Color.White,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Licensed-ready shell",
+                color = Color.White.copy(alpha = 0.62f),
+                fontSize = 11.sp
             )
         }
     }
@@ -140,24 +179,36 @@ private fun MenuButton(
     Button(
         onClick = onSelected,
         modifier = Modifier
-            .width(180.dp)
-            .height(50.dp),
+            .width(182.dp)
+            .height(52.dp)
+            .then(
+                if (selected) {
+                    Modifier.shadow(
+                        elevation = 18.dp,
+                        shape = RoundedCornerShape(18.dp),
+                        ambientColor = NexoraViolet,
+                        spotColor = NexoraViolet
+                    )
+                } else {
+                    Modifier
+                }
+            ),
         shape = RoundedCornerShape(18.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) Color(0xFF123A46) else Color(0xFF141821),
-            contentColor = if (selected) Color.White else Color.LightGray
+            containerColor = if (selected) NexoraViolet.copy(alpha = 0.95f) else Color.White.copy(alpha = 0.055f),
+            contentColor = Color.White
         )
     ) {
         Text(
             text = title,
             fontSize = 15.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
+            fontWeight = if (selected) FontWeight.Black else FontWeight.Medium
         )
     }
 }
 
 @Composable
-private fun StaticContent(
+private fun ContentStage(
     selectedMenu: HomeMenu,
     rows: List<NexoraContentRow>,
     selectedItem: NexoraContentItem?,
@@ -168,7 +219,7 @@ private fun StaticContent(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        StaticHeader(selectedMenu, selectedItem)
+        HeroPanel(selectedMenu, selectedItem, onItemOpen)
 
         rows.forEach { row ->
             ContentRow(
@@ -178,45 +229,97 @@ private fun StaticContent(
                 onItemOpen = onItemOpen
             )
         }
-
-        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            StaticStatusTile("Library", "Mock/local")
-            StaticStatusTile("Routes", "Detail ready")
-            StaticStatusTile("Streams", "No real source")
-        }
     }
 }
 
 @Composable
-private fun StaticHeader(selectedMenu: HomeMenu, selectedItem: NexoraContentItem?) {
-    val accent = Color(selectedItem?.accentColor ?: 0xFF00E5FF)
-
-    Column(
+private fun HeroPanel(
+    selectedMenu: HomeMenu,
+    selectedItem: NexoraContentItem?,
+    onItemOpen: (NexoraContentItem) -> Unit
+) {
+    Box(
         modifier = Modifier
-            .width(850.dp)
-            .height(164.dp)
-            .background(Color(0xFF111722), RoundedCornerShape(28.dp))
-            .border(1.dp, accent, RoundedCornerShape(28.dp))
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .width(940.dp)
+            .height(250.dp)
+            .background(PanelDark, RoundedCornerShape(34.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp))
     ) {
-        Text(
-            text = selectedMenu.label,
-            color = accent,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            Color.Black.copy(alpha = 0.74f),
+                            NexoraViolet.copy(alpha = 0.20f),
+                            Color.Transparent
+                        )
+                    ),
+                    RoundedCornerShape(34.dp)
+                )
         )
-        Text(
-            text = selectedItem?.title ?: "Content Library",
-            color = Color.White,
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Black
-        )
-        Text(
-            text = selectedItem?.description ?: "Safe mock content library foundation.",
-            color = Color.LightGray,
-            fontSize = 15.sp
-        )
+
+        Column(
+            modifier = Modifier
+                .width(560.dp)
+                .padding(30.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = selectedMenu.label.uppercase(),
+                color = NexoraVioletSoft,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 2.sp
+            )
+            Text(
+                text = selectedItem?.title ?: "Nexora Library",
+                color = Color.White,
+                fontSize = 38.sp,
+                fontWeight = FontWeight.Black,
+                lineHeight = 42.sp
+            )
+            Text(
+                text = selectedItem?.description ?: "A calm, licensed-ready TV library shell for live, movies and series.",
+                color = Color.White.copy(alpha = 0.72f),
+                fontSize = 15.sp,
+                lineHeight = 21.sp
+            )
+
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                if (selectedItem?.isPlayable == true) {
+                    Button(
+                        onClick = { onItemOpen(selectedItem) },
+                        modifier = Modifier
+                            .width(136.dp)
+                            .height(48.dp),
+                        shape = RoundedCornerShape(18.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = NexoraViolet,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Open", fontWeight = FontWeight.Bold)
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .width(116.dp)
+                        .height(48.dp)
+                        .background(Color.White.copy(alpha = 0.08f), RoundedCornerShape(18.dp))
+                        .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(18.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Licensed",
+                        color = Color.White.copy(alpha = 0.86f),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -227,22 +330,28 @@ private fun ContentRow(
     onItemFocused: (NexoraContentItem) -> Unit,
     onItemOpen: (NexoraContentItem) -> Unit
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            text = row.title,
-            color = Color.White,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = row.subtitle,
-            color = Color.LightGray,
-            fontSize = 12.sp
-        )
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            modifier = Modifier.width(940.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = row.title,
+                color = Color.White,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Black
+            )
+            Text(
+                text = row.subtitle,
+                color = Color.White.copy(alpha = 0.48f),
+                fontSize = 12.sp
+            )
+        }
 
         Row(
             modifier = Modifier
-                .width(890.dp)
+                .width(940.dp)
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(18.dp)
         ) {
@@ -266,16 +375,26 @@ private fun ContentCard(
     selected: Boolean,
     onSelected: () -> Unit
 ) {
-    val accent = Color(item.accentColor)
-
     Button(
         onClick = onSelected,
         modifier = Modifier
-            .width(220.dp)
-            .height(292.dp),
+            .width(216.dp)
+            .height(142.dp)
+            .then(
+                if (selected) {
+                    Modifier.shadow(
+                        elevation = 18.dp,
+                        shape = RoundedCornerShape(24.dp),
+                        ambientColor = NexoraViolet,
+                        spotColor = NexoraViolet
+                    )
+                } else {
+                    Modifier
+                }
+            ),
         shape = RoundedCornerShape(24.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) accent.copy(alpha = 0.34f) else Color(0xFF151A24),
+            containerColor = if (selected) NexoraViolet.copy(alpha = 0.34f) else PanelSoft,
             contentColor = Color.White
         )
     ) {
@@ -283,66 +402,43 @@ private fun ContentCard(
             modifier = Modifier
                 .fillMaxSize()
                 .border(
-                    2.dp,
-                    if (selected) accent else Color(0x22FFFFFF),
+                    width = if (selected) 2.dp else 1.dp,
+                    color = if (selected) NexoraVioletSoft else Color.White.copy(alpha = 0.08f),
+                    shape = RoundedCornerShape(24.dp)
+                )
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.White.copy(alpha = 0.06f),
+                            Color.Black.copy(alpha = 0.22f)
+                        )
+                    ),
                     RoundedCornerShape(24.dp)
                 )
-                .padding(18.dp),
+                .padding(16.dp),
             contentAlignment = Alignment.BottomStart
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
                     text = item.badge,
-                    color = accent,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold
+                    color = NexoraVioletSoft,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = 1.sp
                 )
                 Text(
                     text = item.title,
                     color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Black,
+                    lineHeight = 20.sp
                 )
                 Text(
                     text = item.subtitle,
-                    color = Color.LightGray,
-                    fontSize = 13.sp
+                    color = Color.White.copy(alpha = 0.58f),
+                    fontSize = 12.sp
                 )
             }
         }
     }
-}
-
-@Composable
-private fun StaticStatusTile(title: String, body: String) {
-    Column(
-        modifier = Modifier
-            .width(210.dp)
-            .height(74.dp)
-            .background(Color(0xFF111722), RoundedCornerShape(20.dp))
-            .border(1.dp, Color(0x22FFFFFF), RoundedCornerShape(20.dp))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            text = title,
-            color = Color.White,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = body,
-            color = Color.LightGray,
-            fontSize = 12.sp
-        )
-    }
-}
-
-private fun backgroundFor(accentColor: Long?): Color = when (accentColor) {
-    0xFF00E5FF -> Color(0xFF061A22)
-    0xFF2962FF -> Color(0xFF071226)
-    0xFF7C4DFF -> Color(0xFF130D2A)
-    0xFF00BFA5 -> Color(0xFF06211D)
-    0xFFFF6D00 -> Color(0xFF241206)
-    else -> Color(0xFF06111D)
 }
