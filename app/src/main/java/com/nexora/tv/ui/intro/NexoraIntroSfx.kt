@@ -159,6 +159,7 @@ class NexoraIntroSfx {
             val env = attack * release
 
             val n = (Random.nextFloat() * 2f - 1f) * noise
+
             val value =
                 sin(phase).toFloat() * 0.82f +
                     sin(phase * 2.01).toFloat() * 0.12f +
@@ -186,6 +187,7 @@ class NexoraIntroSfx {
             val p = i.toFloat() / count.toFloat()
 
             val baseFreq = baseHz * (1f - p * 0.55f)
+
             basePhase += 2.0 * PI * baseFreq / sampleRate
             shimmerPhase += 2.0 * PI * shimmerHz / sampleRate
 
@@ -297,8 +299,13 @@ class NexoraIntroSfx {
 
     private fun toPcm(value: Float): Short {
         val clamped = value.coerceIn(-1f, 1f)
-        return (clamped * Short.MAX_VALUE).roundToInt()
-            .coerceIn(Short.MIN_VALUE.toInt(), Short.MAX_VALUE.toInt())
+
+        return (clamped * Short.MAX_VALUE)
+            .roundToInt()
+            .coerceIn(
+                Short.MIN_VALUE.toInt(),
+                Short.MAX_VALUE.toInt()
+            )
             .toShort()
     }
 }

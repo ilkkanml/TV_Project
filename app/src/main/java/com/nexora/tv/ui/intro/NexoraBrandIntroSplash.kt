@@ -117,6 +117,7 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
     val baseLogoCenterY = h * 0.405f
 
     val lineGrow = easeOutCubic(segment(t, 0.78f, 1.72f))
+
     val splitAmount = when {
         t < 1.72f -> 0f
         t < 2.72f -> easeInOutCubic(segment(t, 1.72f, 2.72f))
@@ -125,16 +126,28 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
         else -> 0f
     }
 
-    val logoLift = splitAmount * logoTextSize * 0.22f
+    val sideLoopProgress = easeInOutCubic(segment(t, 6.85f, 7.55f))
+
+    val logoLift = when {
+        t < 1.72f -> 0f
+        t < 6.85f -> splitAmount * logoTextSize * 0.10f
+        t < 7.55f -> lerp(
+            logoTextSize * 0.10f,
+            logoTextSize * 0.20f,
+            sideLoopProgress
+        )
+        else -> logoTextSize * 0.20f
+    }
+
     val logoCenterY = baseLogoCenterY - logoLift
 
-    val baseLineY = logoCenterY + logoTextSize * 0.62f
-    val splitGap = logoTextSize * 0.82f
+    val baseLineY = logoCenterY + logoTextSize * 0.90f
+    val splitGap = logoTextSize * 0.38f
 
     val topLineY = baseLineY - splitGap * splitAmount
     val bottomLineY = baseLineY + splitGap * splitAmount
 
-    val mountainPhase = easeOutQuint(segment(t, 6.85f, 8.85f))
+    val mountainPhase = easeOutQuint(segment(t, 7.55f, 8.85f))
     val extinguish = easeInOutCubic(segment(t, 8.82f, 9.55f))
     val logoAppear = easeOutCubic(segment(t, 0.15f, 0.95f))
 
@@ -147,9 +160,9 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
         shimmer = segment(t, 0.55f, 1.55f)
     )
 
-    val halfLine = logoWidth * 0.535f * lineGrow
+    val halfLine = logoWidth * 0.57f * lineGrow
 
-    if (lineGrow > 0.001f && mountainPhase <= 0.01f) {
+    if (lineGrow > 0.001f && t < 6.85f) {
         if (splitAmount < 0.025f) {
             drawNeonLine(
                 start = Offset(cx - halfLine, baseLineY),
@@ -179,7 +192,7 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
 
     val playerTextAlpha =
         easeOutCubic(segment(t, 2.55f, 3.25f)) *
-            (1f - easeInOutCubic(segment(t, 5.55f, 6.15f)))
+            (1f - easeInOutCubic(segment(t, 5.55f, 6.05f)))
 
     if (playerTextAlpha > 0.01f) {
         drawPlayerEcosystemsText(
@@ -191,16 +204,17 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
         )
     }
 
-    if (mountainPhase > 0.001f) {
-        val mountainAlpha = (1f - extinguish).coerceIn(0f, 1f)
+    val mountainAlpha = (1f - extinguish).coerceIn(0f, 1f)
 
-        drawMountainMorph(
+    if (t >= 6.85f && mountainAlpha > 0.001f) {
+        drawSideLoopToMountain(
             centerX = cx,
-            fromY = baseLineY,
-            targetBaseY = logoCenterY - logoTextSize * 0.74f,
-            width = logoWidth * 1.10f,
-            height = logoTextSize * 0.45f,
-            morph = mountainPhase,
+            logoCenterY = logoCenterY,
+            logoWidth = logoWidth,
+            lineY = baseLineY,
+            textSize = logoTextSize,
+            loopProgress = segment(t, 6.85f, 7.55f),
+            mountainProgress = mountainPhase,
             visibleFraction = mountainAlpha,
             stroke = h * 0.0046f,
             time = t
@@ -209,6 +223,7 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
 
     if (t > 9.28f) {
         val finalFlash = 1f - segment(t, 9.28f, 9.7f)
+
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(
@@ -216,11 +231,78 @@ private fun DrawScope.drawNexoraIntroFrame(t: Float) {
                     Color(0xFF7C3AED).copy(alpha = 0.10f * finalFlash),
                     Color.Transparent
                 ),
-                center = Offset(cx, logoCenterY - logoTextSize * 0.88f),
+                center = Offset(cx, logoCenterY - logoTextSize * 1.02f),
                 radius = logoTextSize * 0.95f
             ),
             radius = logoTextSize * 0.95f,
-            center = Offset(cx, logoCenterY - logoTextSize * 0.88f)
+            center = Offset(cx, logoCenterY - logoTextSize * 1.02f)
+        )
+    }
+}
+
+private fun DrawScope.drawSideLoopToMountain(
+    centerX: Float,
+    logoCenterY: Float,
+    logoWidth: Float,
+    lineY: Float,
+    textSize: Float,
+    loopProgress: Float,
+    mountainProgress: Float,
+    visibleFraction: Float,
+    stroke: Float,
+    time: Float
+) {
+    val loopEased = easeInOutCubic(loopProgress)
+
+    val lineRightX = centerX + logoWidth * 0.57f
+    val sideOutsideX = centerX + logoWidth * 0.83f
+
+    val silhouetteBaseY = logoCenterY - textSize * 0.92f
+    val peakY = silhouetteBaseY - textSize * 0.42f
+
+    /*
+     * İstenen hareket:
+     * Alt çizgi kapandıktan sonra sadece sağ taraftan dolanarak yukarı çıkar.
+     * Sağ-sol iki ayrı yarım daire yok.
+     * Tek ışık hattı sağ dıştan yukarı çıkar ve NEXORA üstünde silüete bağlanır.
+     */
+    if (loopEased > 0.001f) {
+        val loopPoints = cubicBezierPoints(
+            start = Offset(lineRightX, lineY),
+            control1 = Offset(sideOutsideX, lineY - textSize * 0.08f),
+            control2 = Offset(sideOutsideX, silhouetteBaseY - textSize * 0.24f),
+            end = Offset(centerX + logoWidth * 0.56f, silhouetteBaseY),
+            steps = 34
+        )
+
+        drawPartialGlowPolyline(
+            points = loopPoints,
+            visibleFraction = loopEased,
+            stroke = stroke,
+            time = time
+        )
+    }
+
+    /*
+     * Silüet sağdan sola doğru oluşur.
+     * Böylece yandan dolanan çizgi, logonun üstünde dağ formuna dönüşür.
+     */
+    if (mountainProgress > 0.001f) {
+        val points = listOf(
+            Offset(centerX + logoWidth * 0.56f, silhouetteBaseY),
+            Offset(centerX + logoWidth * 0.34f, silhouetteBaseY - textSize * 0.16f),
+            Offset(centerX + logoWidth * 0.18f, silhouetteBaseY - textSize * 0.08f),
+            Offset(centerX + logoWidth * 0.02f, peakY),
+            Offset(centerX - logoWidth * 0.14f, silhouetteBaseY - textSize * 0.10f),
+            Offset(centerX - logoWidth * 0.32f, silhouetteBaseY - textSize * 0.18f),
+            Offset(centerX - logoWidth * 0.56f, silhouetteBaseY)
+        )
+
+        drawPartialGlowPolyline(
+            points = points,
+            visibleFraction = (mountainProgress * visibleFraction).coerceIn(0f, 1f),
+            stroke = stroke,
+            time = time + 0.25f
         )
     }
 }
@@ -264,6 +346,7 @@ private fun DrawScope.drawCinematicBackground(t: Float) {
         val py = pseudoRandom(i * 43.2f) * h
         val r = 0.7f + pseudoRandom(i * 4.6f) * 1.9f
         val twinkle = 0.25f + 0.75f * abs(sin(t * 0.9f + i))
+
         drawCircle(
             color = Color(0xFFC4B5FD).copy(alpha = 0.05f * twinkle),
             radius = r,
@@ -295,8 +378,16 @@ private fun DrawScope.drawNexoraLogo(
         val baseline = center.y - (paint.ascent() + paint.descent()) / 2f
 
         val glowPaint = Paint(paint).apply {
-            color = android.graphics.Color.argb((80 * alpha).toInt(), 147, 51, 234)
-            maskFilter = BlurMaskFilter(textSize * 0.10f, BlurMaskFilter.Blur.NORMAL)
+            color = android.graphics.Color.argb(
+                (80 * alpha).toInt(),
+                147,
+                51,
+                234
+            )
+            maskFilter = BlurMaskFilter(
+                textSize * 0.10f,
+                BlurMaskFilter.Blur.NORMAL
+            )
         }
 
         native.drawText(letters, x, baseline, glowPaint)
@@ -304,7 +395,6 @@ private fun DrawScope.drawNexoraLogo(
         letters.forEachIndexed { index, char ->
             val charString = char.toString()
             val charWidth = paint.measureText(charString)
-
             val localAlpha = (255 * alpha).toInt().coerceIn(0, 255)
 
             paint.maskFilter = null
@@ -323,12 +413,20 @@ private fun DrawScope.drawNexoraLogo(
                     null,
                     Shader.TileMode.CLAMP
                 )
-                paint.color = android.graphics.Color.argb(localAlpha, 255, 255, 255)
+                paint.color = android.graphics.Color.argb(
+                    localAlpha,
+                    255,
+                    255,
+                    255
+                )
             } else {
                 paint.shader = null
+
                 val brightness = if (shimmer > 0f) {
-                    val sweep = ((index / 5f) - shimmer).let { 1f - abs(it * 2.2f) }
+                    val sweep = ((index / 5f) - shimmer)
+                        .let { 1f - abs(it * 2.2f) }
                         .coerceIn(0f, 1f)
+
                     (220 + 35 * sweep).toInt()
                 } else {
                     235
@@ -358,10 +456,8 @@ private fun DrawScope.drawPlayerEcosystemsText(
     drawIntoCanvas { canvas ->
         val native = canvas.nativeCanvas
 
-        val font = Typeface.create("sans-serif-medium", Typeface.NORMAL)
-
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            typeface = font
+            typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
             this.textSize = textSize
             textAlign = Paint.Align.LEFT
         }
@@ -373,13 +469,13 @@ private fun DrawScope.drawPlayerEcosystemsText(
         val w1 = paint.measureText(part1)
         val w2 = paint.measureText(part2)
         val w3 = paint.measureText(part3)
-        val total = w1 + w2 + w3
 
+        val total = w1 + w2 + w3
         val x = center.x - total / 2f
         val baseline = center.y - (paint.ascent() + paint.descent()) / 2f
 
         val glowRadius = textSize * (0.32f + 0.18f * breath)
-        val a = (alpha * (0.65f + 0.35f * breath)).coerceIn(0f, 1f)
+        val glowAlpha = (alpha * (0.65f + 0.35f * breath)).coerceIn(0f, 1f)
 
         val gradient = LinearGradient(
             x - total * 0.25f + time * 40f,
@@ -402,7 +498,7 @@ private fun DrawScope.drawPlayerEcosystemsText(
         val glowPaint = Paint(paint).apply {
             shader = gradient
             maskFilter = BlurMaskFilter(glowRadius, BlurMaskFilter.Blur.NORMAL)
-            this.alpha = (180 * a).toInt().coerceIn(0, 255)
+            this.alpha = (180 * glowAlpha).toInt().coerceIn(0, 255)
         }
 
         native.drawText(part1 + part2 + part3, x, baseline, glowPaint)
@@ -415,12 +511,15 @@ private fun DrawScope.drawPlayerEcosystemsText(
         val ecoGlow = Paint(paint).apply {
             shader = null
             color = android.graphics.Color.argb(
-                (210 * a).toInt().coerceIn(0, 255),
+                (210 * glowAlpha).toInt().coerceIn(0, 255),
                 34,
                 255,
                 128
             )
-            maskFilter = BlurMaskFilter(glowRadius * 0.75f, BlurMaskFilter.Blur.NORMAL)
+            maskFilter = BlurMaskFilter(
+                glowRadius * 0.75f,
+                BlurMaskFilter.Blur.NORMAL
+            )
         }
 
         native.drawText(part2, x + w1, baseline, ecoGlow)
@@ -433,10 +532,12 @@ private fun DrawScope.drawPlayerEcosystemsText(
             137
         )
         paint.maskFilter = null
+
         native.drawText(part2, x + w1, baseline, paint)
 
         paint.shader = gradient
         paint.alpha = (255 * alpha).toInt().coerceIn(0, 255)
+
         native.drawText(part3, x + w1 + w2, baseline, paint)
     }
 }
@@ -494,45 +595,6 @@ private fun DrawScope.drawNeonLine(
     )
 }
 
-private fun DrawScope.drawMountainMorph(
-    centerX: Float,
-    fromY: Float,
-    targetBaseY: Float,
-    width: Float,
-    height: Float,
-    morph: Float,
-    visibleFraction: Float,
-    stroke: Float,
-    time: Float
-) {
-    val left = centerX - width / 2f
-    val right = centerX + width / 2f
-
-    val shape = easeInOutCubic(segment(morph, 0.18f, 0.92f))
-    val move = easeOutQuint(morph)
-
-    fun y(base: Float, mountain: Float): Float {
-        val movedBase = lerp(fromY, base, move)
-        return lerp(movedBase, mountain, shape)
-    }
-
-    val points = listOf(
-        Offset(left, y(targetBaseY, targetBaseY)),
-        Offset(centerX - width * 0.34f, y(targetBaseY, targetBaseY - height * 0.38f)),
-        Offset(centerX - width * 0.14f, y(targetBaseY, targetBaseY - height * 0.18f)),
-        Offset(centerX + width * 0.08f, y(targetBaseY, targetBaseY - height * 0.74f)),
-        Offset(centerX + width * 0.24f, y(targetBaseY, targetBaseY - height * 0.28f)),
-        Offset(right, y(targetBaseY, targetBaseY))
-    )
-
-    drawPartialGlowPolyline(
-        points = points,
-        visibleFraction = visibleFraction,
-        stroke = stroke,
-        time = time
-    )
-}
-
 private fun DrawScope.drawPartialGlowPolyline(
     points: List<Offset>,
     visibleFraction: Float,
@@ -541,12 +603,14 @@ private fun DrawScope.drawPartialGlowPolyline(
 ) {
     if (points.size < 2 || visibleFraction <= 0f) return
 
+    val fraction = visibleFraction.coerceIn(0f, 1f)
+
     val lengths = points.zipWithNext().map { (a, b) ->
         distance(a, b)
     }
 
     val total = lengths.sum()
-    var remaining = total * visibleFraction.coerceIn(0f, 1f)
+    var remaining = total * fraction
 
     val visibleSegments = mutableListOf<Pair<Offset, Offset>>()
 
@@ -562,10 +626,12 @@ private fun DrawScope.drawPartialGlowPolyline(
             remaining -= len
         } else {
             val p = remaining / len
+
             visibleSegments += a to Offset(
                 x = lerp(a.x, b.x, p),
                 y = lerp(a.y, b.y, p)
             )
+
             remaining = 0f
         }
     }
@@ -575,10 +641,42 @@ private fun DrawScope.drawPartialGlowPolyline(
             start = a,
             end = b,
             stroke = stroke,
-            alpha = visibleFraction,
+            alpha = fraction,
             time = time
         )
     }
+}
+
+private fun cubicBezierPoints(
+    start: Offset,
+    control1: Offset,
+    control2: Offset,
+    end: Offset,
+    steps: Int
+): List<Offset> {
+    val safeSteps = steps.coerceAtLeast(2)
+    val points = mutableListOf<Offset>()
+
+    for (i in 0..safeSteps) {
+        val t = i.toFloat() / safeSteps.toFloat()
+        val oneMinusT = 1f - t
+
+        val x =
+            oneMinusT.pow(3f) * start.x +
+                3f * oneMinusT.pow(2f) * t * control1.x +
+                3f * oneMinusT * t.pow(2f) * control2.x +
+                t.pow(3f) * end.x
+
+        val y =
+            oneMinusT.pow(3f) * start.y +
+                3f * oneMinusT.pow(2f) * t * control1.y +
+                3f * oneMinusT * t.pow(2f) * control2.y +
+                t.pow(3f) * end.y
+
+        points += Offset(x, y)
+    }
+
+    return points
 }
 
 private fun measureNexoraLogoWidth(textSize: Float): Float {
@@ -591,9 +689,13 @@ private fun measureNexoraLogoWidth(textSize: Float): Float {
     val text = "NEXORA"
 
     var total = 0f
+
     text.forEachIndexed { index, c ->
         total += paint.measureText(c.toString())
-        if (index != text.lastIndex) total += spacing
+
+        if (index != text.lastIndex) {
+            total += spacing
+        }
     }
 
     return total
@@ -626,10 +728,12 @@ private fun lerp(a: Float, b: Float, t: Float): Float {
 private fun distance(a: Offset, b: Offset): Float {
     val dx = b.x - a.x
     val dy = b.y - a.y
+
     return sqrt(dx * dx + dy * dy)
 }
 
 private fun pseudoRandom(seed: Float): Float {
     val x = sin(seed * 12.9898f) * 43758.5453f
+
     return x - floor(x)
 }

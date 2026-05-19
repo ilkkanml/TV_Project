@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,7 +59,7 @@ fun PlaylistProfileScreen(navController: NavController) {
         ) {
             Column(
                 modifier = Modifier
-                    .width(490.dp)
+                    .width(500.dp)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(15.dp)
             ) {
@@ -69,12 +70,14 @@ fun PlaylistProfileScreen(navController: NavController) {
                     fontWeight = FontWeight.Black,
                     letterSpacing = 3.sp
                 )
+
                 Text(
                     text = "Playlist & Profile Setup",
                     color = NexoraVioletSoft,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Black
                 )
+
                 Text(
                     text = "Add a local profile shell for playlist access you own, license, or are legally authorized to use.",
                     color = Color.White.copy(alpha = 0.68f),
@@ -84,31 +87,74 @@ fun PlaylistProfileScreen(navController: NavController) {
 
                 LegalPanel()
 
-                SetupField("Profile Name", profileName) { profileName = it }
-                SetupField("Playlist Name", playlistName) { playlistName = it }
+                SetupField(
+                    label = "Profile Name",
+                    value = profileName,
+                    onChange = {
+                        profileName = it
+                    }
+                )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                SetupField(
+                    label = "Playlist Name",
+                    value = playlistName,
+                    onChange = {
+                        playlistName = it
+                    }
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     TypeButton(
                         text = "Portal / Xtream",
                         selected = selectedType == "Portal / Xtream",
-                        onClick = { selectedType = "Portal / Xtream" }
+                        onClick = {
+                            selectedType = "Portal / Xtream"
+                        }
                     )
+
                     TypeButton(
                         text = "M3U URL",
                         selected = selectedType == "M3U URL",
-                        onClick = { selectedType = "M3U URL" }
+                        onClick = {
+                            selectedType = "M3U URL"
+                        }
                     )
                 }
 
                 SetupField(
-                    label = if (selectedType == "M3U URL") "M3U URL Placeholder" else "Server / Portal URL",
+                    label = if (selectedType == "M3U URL") {
+                        "M3U URL Placeholder"
+                    } else {
+                        "Server / Portal URL"
+                    },
                     value = serverUrl,
-                    onChange = { serverUrl = it }
+                    onChange = {
+                        serverUrl = it
+                    }
                 )
-                SetupField("Username Placeholder", username) { username = it }
-                SetupField("Password Placeholder", password, isPassword = true) { password = it }
 
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                SetupField(
+                    label = "Username Placeholder",
+                    value = username,
+                    onChange = {
+                        username = it
+                    }
+                )
+
+                SetupField(
+                    label = "Password Placeholder",
+                    value = password,
+                    isPassword = true,
+                    onChange = {
+                        password = it
+                    }
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     Button(
                         onClick = {
                             navController.navigate(AppDestinations.Home.route) {
@@ -116,7 +162,7 @@ fun PlaylistProfileScreen(navController: NavController) {
                             }
                         },
                         modifier = Modifier
-                            .width(190.dp)
+                            .width(200.dp)
                             .height(54.dp),
                         shape = RoundedCornerShape(18.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -124,7 +170,10 @@ fun PlaylistProfileScreen(navController: NavController) {
                             contentColor = Color.White
                         )
                     ) {
-                        Text("Continue Home", fontWeight = FontWeight.Black)
+                        Text(
+                            text = "Continue Home",
+                            fontWeight = FontWeight.Black
+                        )
                     }
 
                     Button(
@@ -136,7 +185,7 @@ fun PlaylistProfileScreen(navController: NavController) {
                             password = ""
                         },
                         modifier = Modifier
-                            .width(110.dp)
+                            .width(120.dp)
                             .height(54.dp),
                         shape = RoundedCornerShape(18.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -152,8 +201,15 @@ fun PlaylistProfileScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .width(650.dp)
-                    .background(PanelDark, RoundedCornerShape(34.dp))
-                    .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp))
+                    .background(
+                        color = PanelDark,
+                        shape = RoundedCornerShape(34.dp)
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.White.copy(alpha = 0.10f),
+                        shape = RoundedCornerShape(34.dp)
+                    )
                     .padding(28.dp),
                 verticalArrangement = Arrangement.spacedBy(18.dp)
             ) {
@@ -163,19 +219,37 @@ fun PlaylistProfileScreen(navController: NavController) {
                     fontSize = 34.sp,
                     fontWeight = FontWeight.Black
                 )
+
                 Text(
-                    text = "No playlist is fetched here. No credentials are validated. This is only a safe UI shell for first-run setup.",
+                    text = "No playlist is fetched here. No credentials are validated. This is only a premium UI shell for first-run setup.",
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 15.sp,
                     lineHeight = 21.sp
                 )
 
-                PreviewCard("Source Type", selectedType)
-                PreviewCard("Profile", profileName.ifBlank { "Not set" })
-                PreviewCard("Playlist", playlistName.ifBlank { "Not set" })
-                PreviewCard("Endpoint", serverUrl.ifBlank { "Waiting for legal source" })
+                PreviewCard(
+                    title = "Source Type",
+                    body = selectedType
+                )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                PreviewCard(
+                    title = "Profile",
+                    body = profileName.ifBlank { "Not set" }
+                )
+
+                PreviewCard(
+                    title = "Playlist",
+                    body = playlistName.ifBlank { "Not set" }
+                )
+
+                PreviewCard(
+                    title = "Endpoint",
+                    body = serverUrl.ifBlank { "Waiting for legal source" }
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
                     StatusPill("Licensed")
                     StatusPill("Local Shell")
                     StatusPill("No Backend")
@@ -184,8 +258,15 @@ fun PlaylistProfileScreen(navController: NavController) {
                 Box(
                     modifier = Modifier
                         .width(590.dp)
-                        .background(Color.White.copy(alpha = 0.06f), RoundedCornerShape(22.dp))
-                        .border(1.dp, NexoraViolet.copy(alpha = 0.36f), RoundedCornerShape(22.dp))
+                        .background(
+                            color = Color.White.copy(alpha = 0.06f),
+                            shape = RoundedCornerShape(22.dp)
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = NexoraViolet.copy(alpha = 0.36f),
+                            shape = RoundedCornerShape(22.dp)
+                        )
                         .padding(18.dp)
                 ) {
                     Text(
@@ -210,27 +291,60 @@ private fun SetupField(
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
-        label = { Text(label) },
-        modifier = Modifier.width(490.dp),
+        label = {
+            Text(label)
+        },
+        modifier = Modifier.width(500.dp),
         singleLine = true,
-        visualTransformation = if (isPassword) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None
+        shape = RoundedCornerShape(18.dp),
+        visualTransformation = if (isPassword) {
+            PasswordVisualTransformation()
+        } else {
+            androidx.compose.ui.text.input.VisualTransformation.None
+        },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = NexoraViolet,
+            unfocusedBorderColor = Color.White.copy(alpha = 0.15f),
+            focusedLabelColor = NexoraVioletSoft,
+            unfocusedLabelColor = Color.White.copy(alpha = 0.50f),
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            cursorColor = NexoraVioletSoft,
+            focusedContainerColor = Color.White.copy(alpha = 0.03f),
+            unfocusedContainerColor = Color.White.copy(alpha = 0.02f)
+        )
     )
 }
 
 @Composable
-private fun TypeButton(text: String, selected: Boolean, onClick: () -> Unit) {
+private fun TypeButton(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
     Button(
         onClick = onClick,
         modifier = Modifier
-            .width(238.dp)
+            .width(244.dp)
             .height(52.dp),
         shape = RoundedCornerShape(18.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) NexoraViolet else Color.White.copy(alpha = 0.07f),
+            containerColor = if (selected) {
+                NexoraViolet
+            } else {
+                Color.White.copy(alpha = 0.07f)
+            },
             contentColor = Color.White
         )
     ) {
-        Text(text, fontWeight = if (selected) FontWeight.Black else FontWeight.Medium)
+        Text(
+            text = text,
+            fontWeight = if (selected) {
+                FontWeight.Black
+            } else {
+                FontWeight.Medium
+            }
+        )
     }
 }
 
@@ -238,9 +352,16 @@ private fun TypeButton(text: String, selected: Boolean, onClick: () -> Unit) {
 private fun LegalPanel() {
     Column(
         modifier = Modifier
-            .width(490.dp)
-            .background(PanelSoft, RoundedCornerShape(24.dp))
-            .border(1.dp, NexoraViolet.copy(alpha = 0.42f), RoundedCornerShape(24.dp))
+            .width(500.dp)
+            .background(
+                color = PanelSoft,
+                shape = RoundedCornerShape(24.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = NexoraViolet.copy(alpha = 0.42f),
+                shape = RoundedCornerShape(24.dp)
+            )
             .padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp)
     ) {
@@ -250,6 +371,7 @@ private fun LegalPanel() {
             fontSize = 13.sp,
             fontWeight = FontWeight.Black
         )
+
         Text(
             text = "Use only legal playlists or provider credentials that you are authorized to access.",
             color = Color.White.copy(alpha = 0.82f),
@@ -260,12 +382,22 @@ private fun LegalPanel() {
 }
 
 @Composable
-private fun PreviewCard(title: String, body: String) {
+private fun PreviewCard(
+    title: String,
+    body: String
+) {
     Column(
         modifier = Modifier
             .width(590.dp)
-            .background(Color.White.copy(alpha = 0.06f), RoundedCornerShape(22.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp))
+            .background(
+                color = Color.White.copy(alpha = 0.06f),
+                shape = RoundedCornerShape(22.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.10f),
+                shape = RoundedCornerShape(22.dp)
+            )
             .padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -275,6 +407,7 @@ private fun PreviewCard(title: String, body: String) {
             fontSize = 12.sp,
             fontWeight = FontWeight.Black
         )
+
         Text(
             text = body,
             color = Color.White,
@@ -290,8 +423,15 @@ private fun StatusPill(text: String) {
         modifier = Modifier
             .width(130.dp)
             .height(44.dp)
-            .background(NexoraViolet.copy(alpha = 0.20f), RoundedCornerShape(16.dp))
-            .border(1.dp, NexoraViolet.copy(alpha = 0.55f), RoundedCornerShape(16.dp)),
+            .background(
+                color = NexoraViolet.copy(alpha = 0.20f),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = NexoraViolet.copy(alpha = 0.55f),
+                shape = RoundedCornerShape(16.dp)
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text(

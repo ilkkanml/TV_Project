@@ -25,8 +25,10 @@ import androidx.compose.ui.unit.sp
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private const val MOCK_PLAYER_STREAM_URL = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val NexoraBlue = Color(0xFF4CC9FF)
 private val PanelDark = Color(0xCC090B12)
 
 @Composable
@@ -35,27 +37,34 @@ fun PlayerScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.34f))
+                .background(Color.Black.copy(alpha = 0.30f))
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(42.dp)
-                    .background(Color.Black.copy(alpha = 0.44f), RoundedCornerShape(34.dp))
-                    .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp))
+                    .background(
+                        color = Color.Black.copy(alpha = 0.46f),
+                        shape = RoundedCornerShape(34.dp)
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.White.copy(alpha = 0.10f),
+                        shape = RoundedCornerShape(34.dp)
+                    )
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
-                            Brush.verticalGradient(
+                            brush = Brush.verticalGradient(
                                 colors = listOf(
-                                    Color.Transparent,
-                                    Color.Black.copy(alpha = 0.42f),
-                                    Color.Black.copy(alpha = 0.78f)
+                                    Color(0x33151A2A),
+                                    Color.Black.copy(alpha = 0.46f),
+                                    Color.Black.copy(alpha = 0.82f)
                                 )
                             ),
-                            RoundedCornerShape(34.dp)
+                            shape = RoundedCornerShape(34.dp)
                         )
                 )
 
@@ -76,7 +85,9 @@ private fun TopOverlay() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
             Text(
                 text = "NEXORA PLAYER",
                 color = Color.White,
@@ -84,27 +95,46 @@ private fun TopOverlay() {
                 fontWeight = FontWeight.Black,
                 letterSpacing = 1.5.sp
             )
+
             Text(
-                text = "Licensed-ready mock playback shell",
+                text = "Immersive playback shell",
                 color = Color.White.copy(alpha = 0.58f),
                 fontSize = 13.sp
             )
         }
 
-        Box(
-            modifier = Modifier
-                .background(NexoraViolet.copy(alpha = 0.20f), RoundedCornerShape(16.dp))
-                .border(1.dp, NexoraViolet.copy(alpha = 0.56f), RoundedCornerShape(16.dp))
-                .padding(horizontal = 18.dp, vertical = 10.dp),
-            contentAlignment = Alignment.Center
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(
-                text = "MOCK SHELL",
-                color = Color.White,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Black
-            )
+            PlayerChip("4K")
+            PlayerChip("HDR")
+            PlayerChip("Mock Shell")
         }
+    }
+}
+
+@Composable
+private fun PlayerChip(text: String) {
+    Box(
+        modifier = Modifier
+            .background(
+                color = NexoraViolet.copy(alpha = 0.18f),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = NexoraViolet.copy(alpha = 0.42f),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            color = Color.White,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Black
+        )
     }
 }
 
@@ -113,22 +143,29 @@ private fun CenterPlayerState() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 72.dp),
+            .padding(bottom = 82.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
-                .width(104.dp)
-                .height(104.dp)
-                .background(NexoraViolet.copy(alpha = 0.18f), RoundedCornerShape(52.dp))
-                .border(2.dp, NexoraVioletSoft.copy(alpha = 0.76f), RoundedCornerShape(52.dp)),
+                .width(112.dp)
+                .height(112.dp)
+                .background(
+                    color = NexoraViolet.copy(alpha = 0.18f),
+                    shape = RoundedCornerShape(56.dp)
+                )
+                .border(
+                    width = 2.dp,
+                    color = NexoraBlue.copy(alpha = 0.80f),
+                    shape = RoundedCornerShape(56.dp)
+                ),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "▶",
                 color = Color.White,
-                fontSize = 42.sp,
+                fontSize = 46.sp,
                 fontWeight = FontWeight.Black
             )
         }
@@ -136,13 +173,14 @@ private fun CenterPlayerState() {
         Spacer(modifier = Modifier.height(22.dp))
 
         Text(
-            text = "Playback not started",
+            text = "Playback shell ready",
             color = Color.White,
-            fontSize = 28.sp,
+            fontSize = 30.sp,
             fontWeight = FontWeight.Black
         )
+
         Text(
-            text = "Safe internal player route. No auto-play, no provider stream, no unauthorized source.",
+            text = "Safe internal route. No autoplay, no hidden provider, no unauthorized source.",
             color = Color.White.copy(alpha = 0.62f),
             fontSize = 14.sp
         )
@@ -155,27 +193,92 @@ private fun BoxScope.BottomOverlay() {
         modifier = Modifier
             .align(Alignment.BottomStart)
             .padding(32.dp)
-            .width(900.dp)
-            .background(PanelDark, RoundedCornerShape(26.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(26.dp))
+            .width(940.dp)
+            .background(
+                color = PanelDark,
+                shape = RoundedCornerShape(26.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.10f),
+                shape = RoundedCornerShape(26.dp)
+            )
             .padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Internal Alpha Player Shell",
+            text = "Player Overlay",
             color = Color.White,
             fontSize = 24.sp,
             fontWeight = FontWeight.Black
         )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            OverlayMetric(
+                title = "Title",
+                value = "Orbit Fall"
+            )
+
+            OverlayMetric(
+                title = "Time",
+                value = "01:12 / 02:06"
+            )
+
+            OverlayMetric(
+                title = "Audio",
+                value = "Spatial"
+            )
+        }
+
         Text(
-            text = "The route is ready for future controlled Media3 playback work. Current M15R scope is visual shell only.",
+            text = "Current route is a premium visual shell only. Media3 playback integration can be layered later without changing the design language.",
             color = Color.White.copy(alpha = 0.68f),
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            lineHeight = 20.sp
         )
+
         Text(
             text = "Mock test stream preserved for later QA: $MOCK_PLAYER_STREAM_URL",
             color = Color.White.copy(alpha = 0.38f),
             fontSize = 11.sp
+        )
+    }
+}
+
+@Composable
+private fun OverlayMetric(
+    title: String,
+    value: String
+) {
+    Column(
+        modifier = Modifier
+            .width(160.dp)
+            .background(
+                color = Color.White.copy(alpha = 0.05f),
+                shape = RoundedCornerShape(18.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(18.dp)
+            )
+            .padding(14.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            text = title,
+            color = NexoraVioletSoft,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Black
+        )
+
+        Text(
+            text = value,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }

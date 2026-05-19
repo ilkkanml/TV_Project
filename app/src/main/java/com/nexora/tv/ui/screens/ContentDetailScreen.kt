@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -32,7 +33,9 @@ import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val NexoraBlue = Color(0xFF4CC9FF)
 private val PanelDark = Color(0xCC090B12)
+private val PanelSoft = Color(0xB0111624)
 
 @Composable
 fun ContentDetailScreen(
@@ -51,44 +54,73 @@ fun ContentDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 58.dp, vertical = 44.dp),
-            horizontalArrangement = Arrangement.spacedBy(38.dp),
+            horizontalArrangement = Arrangement.spacedBy(30.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             DetailPoster(content)
-            DetailInfo(navController, content)
+            DetailInfo(
+                navController = navController,
+                content = content
+            )
         }
     }
 }
 
 @Composable
 private fun DetailPoster(content: NexoraContentItem) {
+    val accent = Color(content.accentColor)
+
     Box(
         modifier = Modifier
-            .width(370.dp)
-            .height(520.dp)
+            .width(390.dp)
+            .height(560.dp)
             .shadow(
                 elevation = 26.dp,
                 shape = RoundedCornerShape(34.dp),
-                ambientColor = NexoraViolet,
-                spotColor = NexoraViolet
+                ambientColor = accent,
+                spotColor = accent
             )
-            .background(PanelDark, RoundedCornerShape(34.dp))
-            .border(2.dp, NexoraViolet.copy(alpha = 0.72f), RoundedCornerShape(34.dp))
+            .background(
+                color = PanelDark,
+                shape = RoundedCornerShape(34.dp)
+            )
+            .border(
+                width = 2.dp,
+                color = accent.copy(alpha = 0.72f),
+                shape = RoundedCornerShape(34.dp)
+            )
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(
+                    brush = Brush.verticalGradient(
                         colors = listOf(
-                            NexoraViolet.copy(alpha = 0.28f),
-                            Color.Black.copy(alpha = 0.24f),
-                            Color.Black.copy(alpha = 0.82f)
+                            accent.copy(alpha = 0.34f),
+                            Color.Black.copy(alpha = 0.20f),
+                            Color.Black.copy(alpha = 0.84f)
                         )
                     ),
-                    RoundedCornerShape(34.dp)
+                    shape = RoundedCornerShape(34.dp)
                 )
         )
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            DetailPill(
+                text = content.badge,
+                color = accent
+            )
+
+            DetailPill(
+                text = content.category,
+                color = NexoraBlue
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -97,37 +129,48 @@ private fun DetailPoster(content: NexoraContentItem) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = content.badge,
-                color = NexoraVioletSoft,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 1.5.sp
-            )
-            Text(
                 text = content.title,
                 color = Color.White,
-                fontSize = 31.sp,
+                fontSize = 33.sp,
                 fontWeight = FontWeight.Black,
-                lineHeight = 34.sp
+                lineHeight = 36.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
+
             Text(
                 text = content.subtitle,
-                color = Color.White.copy(alpha = 0.62f),
-                fontSize = 14.sp
+                color = Color.White.copy(alpha = 0.68f),
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
 }
 
 @Composable
-private fun DetailInfo(navController: NavController, content: NexoraContentItem) {
+private fun DetailInfo(
+    navController: NavController,
+    content: NexoraContentItem
+) {
+    val accent = Color(content.accentColor)
+
     Column(
         modifier = Modifier
-            .width(720.dp)
-            .background(PanelDark, RoundedCornerShape(34.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp))
+            .width(730.dp)
+            .background(
+                color = PanelDark,
+                shape = RoundedCornerShape(34.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.10f),
+                shape = RoundedCornerShape(34.dp)
+            )
             .padding(32.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = content.type.label.uppercase(),
@@ -136,13 +179,15 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
             fontWeight = FontWeight.Black,
             letterSpacing = 2.sp
         )
+
         Text(
             text = content.title,
             color = Color.White,
-            fontSize = 48.sp,
+            fontSize = 50.sp,
             fontWeight = FontWeight.Black,
-            lineHeight = 52.sp
+            lineHeight = 54.sp
         )
+
         Text(
             text = content.description,
             color = Color.White.copy(alpha = 0.72f),
@@ -150,22 +195,71 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
             lineHeight = 24.sp
         )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailPill(content.category)
-            DetailPill("Licensed")
-            DetailPill("Mock Metadata")
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            DetailPill(
+                text = content.category,
+                color = accent
+            )
+
+            DetailPill(
+                text = "Licensed",
+                color = NexoraBlue
+            )
+
+            DetailPill(
+                text = "Mock Metadata",
+                color = NexoraViolet
+            )
         }
 
-        Text(
-            text = "No provider, backend, token, payment, scraping, or unauthorized stream integration is included.",
-            color = Color.White.copy(alpha = 0.52f),
-            fontSize = 13.sp,
-            lineHeight = 19.sp
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            MetricCard(
+                title = "Runtime",
+                body = "42 min"
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            MetricCard(
+                title = "Quality",
+                body = "4K shell"
+            )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            MetricCard(
+                title = "Audio",
+                body = "Spatial UI"
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .width(650.dp)
+                .background(
+                    color = PanelSoft,
+                    shape = RoundedCornerShape(24.dp)
+                )
+                .border(
+                    width = 1.dp,
+                    color = Color.White.copy(alpha = 0.08f),
+                    shape = RoundedCornerShape(24.dp)
+                )
+                .padding(18.dp)
+        ) {
+            Text(
+                text = "No provider, backend token, payment flow, scraping, hidden API, or unauthorized stream source is included in this route.",
+                color = Color.White.copy(alpha = 0.56f),
+                fontSize = 13.sp,
+                lineHeight = 19.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
             Button(
                 onClick = {
                     navController.navigate(AppDestinations.Player.route) {
@@ -174,43 +268,101 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
                 },
                 enabled = content.isPlayable,
                 modifier = Modifier
-                    .width(150.dp)
-                    .height(54.dp),
+                    .width(170.dp)
+                    .height(56.dp),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = NexoraViolet,
+                    containerColor = accent,
                     contentColor = Color.White,
                     disabledContainerColor = Color.White.copy(alpha = 0.08f),
                     disabledContentColor = Color.White.copy(alpha = 0.44f)
                 )
             ) {
-                Text(if (content.isPlayable) "Play Mock" else "Not Playable", fontWeight = FontWeight.Black)
+                Text(
+                    text = if (content.isPlayable) {
+                        "Play Mock"
+                    } else {
+                        "Not Playable"
+                    },
+                    fontWeight = FontWeight.Black
+                )
             }
 
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    navController.popBackStack()
+                },
                 modifier = Modifier
-                    .width(112.dp)
-                    .height(54.dp),
+                    .width(120.dp)
+                    .height(56.dp),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White.copy(alpha = 0.08f),
                     contentColor = Color.White
                 )
             ) {
-                Text("Back", fontWeight = FontWeight.Bold)
+                Text(
+                    text = "Back",
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DetailPill(text: String) {
+private fun MetricCard(
+    title: String,
+    body: String
+) {
+    Column(
+        modifier = Modifier
+            .width(170.dp)
+            .background(
+                color = Color.White.copy(alpha = 0.05f),
+                shape = RoundedCornerShape(20.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(20.dp)
+            )
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        Text(
+            text = title,
+            color = NexoraVioletSoft,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Black
+        )
+
+        Text(
+            text = body,
+            color = Color.White,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Black
+        )
+    }
+}
+
+@Composable
+private fun DetailPill(
+    text: String,
+    color: Color
+) {
     Box(
         modifier = Modifier
             .height(38.dp)
-            .background(NexoraViolet.copy(alpha = 0.18f), RoundedCornerShape(14.dp))
-            .border(1.dp, NexoraViolet.copy(alpha = 0.44f), RoundedCornerShape(14.dp))
+            .background(
+                color = color.copy(alpha = 0.18f),
+                shape = RoundedCornerShape(14.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = color.copy(alpha = 0.44f),
+                shape = RoundedCornerShape(14.dp)
+            )
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -238,13 +390,17 @@ private fun MissingContentDetail(navController: NavController) {
                 fontSize = 34.sp,
                 fontWeight = FontWeight.Black
             )
+
             Text(
                 text = "This placeholder protects the route if a mock content id is missing.",
                 color = Color.White.copy(alpha = 0.68f),
                 fontSize = 16.sp
             )
+
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    navController.popBackStack()
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = NexoraViolet,
                     contentColor = Color.White
