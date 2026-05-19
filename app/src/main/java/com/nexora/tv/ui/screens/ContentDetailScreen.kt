@@ -306,6 +306,28 @@ private fun DetailInfo(
                     fontWeight = FontWeight.Bold
                 )
             }
+
+            Button(
+                onClick = {
+                    navController.navigate(AppDestinations.Home.route) {
+                        popUpTo(AppDestinations.Home.route) { inclusive = false }
+                        launchSingleTop = true
+                    }
+                },
+                modifier = Modifier
+                    .width(120.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White.copy(alpha = 0.08f),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "Home",
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
@@ -397,16 +419,33 @@ private fun MissingContentDetail(navController: NavController) {
                 fontSize = 16.sp
             )
 
-            Button(
-                onClick = {
-                    navController.popBackStack()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = NexoraViolet,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Back")
+            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                Button(
+                    onClick = {
+                        navController.popBackStack()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = NexoraViolet,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Back")
+                }
+
+                Button(
+                    onClick = {
+                        navController.navigate(AppDestinations.Home.route) {
+                            popUpTo(AppDestinations.Home.route) { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White.copy(alpha = 0.08f),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Home")
+                }
             }
         }
     }
