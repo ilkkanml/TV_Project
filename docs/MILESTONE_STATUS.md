@@ -6,116 +6,125 @@ None — next milestone pending Director scoping.
 
 ## Last Locked Milestone
 
+`M13 Platform API Service Foundation & Environment Contract`
+
+## M13 Status
+
+LOCKED
+
+## M13 Result
+
+M13 established the local-only Platform API service foundation and environment contract in `TV_Project_Platform`.
+
+Completed scope:
+
+- Local-only API runtime/config baseline
+- `.env.example` `DATABASE_URL` aligned with docker-compose local PostgreSQL password
+- `/health` preserved as static liveness
+- `/ready` endpoint added
+- `PrismaService` added
+- `/ready` checks only `DATABASE_URL` presence and DB ping
+- No mutation
+- No seed
+- No migration auto-run
+- No auth/session/token implementation
+- No payment enforcement
+- No provider integration
+- No Android bridge
+- No content hosting/channel selling
+- User local evidence confirmed
+- QA passed with process warning
+- Documentation recorded
+- Director lock approved
+
+Evidence status:
+
+- `pnpm.cmd install`: CONFIRMED
+- `docker compose up -d`: CONFIRMED
+- `docker compose ps`: Postgres healthy / Redis healthy
+- `pnpm.cmd db:generate`: CONFIRMED
+- `pnpm.cmd --filter @tv-platform/api run typecheck`: CONFIRMED
+- `pnpm.cmd --filter @tv-platform/api run build`: CONFIRMED
+- `GET /health`: CONFIRMED
+- `GET /ready`: CONFIRMED
+
+M13 records in `TV_Project_Platform`:
+
+- `docs/M13_LOCAL_VERIFICATION_EVIDENCE.md`
+- `docs/M13_QA_REVIEW.md`
+- `docs/M13_LOCK_REPORT.md`
+
+## Previous Locked Milestone
+
 `M12 Platform Database Baseline & Migration Foundation`
 
 ## M12 Status
 
 LOCKED
 
-## M12-TASK-001 Status
+## Current Director Direction
 
-REPORT RECORDED / COMPLETED
+Move toward the first working internal release path.
 
-## M12-TASK-002 Status
+Working target:
 
-POLICY DRAFT RECORDED / COMPLETED
+`First Working Release / Internal Alpha`
 
-## M12-TASK-003 Status
+Meaning:
 
-PASSED / QA VERIFIED
+- App installs/opens without crash
+- Android TV / Fire TV runtime shell works
+- Home/navigation/player shell basics are testable
+- Platform API health/readiness foundation is available
+- Legal media-player boundary remains preserved
+- No production deploy yet
+- No payment enforcement yet
+- No provider integration yet
+- No content hosting/channel selling
 
-## Previous Locked Milestone
+## Recommended Next Milestone Candidate
 
-`M11 Platform Source-of-Truth Audit`
+`M14 First Working Release Scope & Release Gate Definition`
 
-## M11 Status
+Purpose:
 
-LOCKED
+- Define exactly what the first working internal release includes/excludes
+- Define release gate checklist
+- Define Android app smoke test expectations
+- Define platform API connection expectations
+- Keep production/store/payment/provider/content work out of scope
 
-## M11-TASK-001 Status
+## M13 Lock Boundary
 
-PASSED / COMPLETED
+M13 does not approve:
 
-## Previous Locked Milestone Before M11
-
-`M10 Ecosystem Alignment & Client Integration Contract`
-
-## M10 Status
-
-LOCKED
-
-## M10-TASK-001 Status
-
-PASSED / COMPLETED
-
-## M12 Lock Summary
-
-M12 established the local-only platform database baseline and migration foundation.
-
-M12 completed:
-
-- Prisma migration baseline policy
-- Local database setup validation plan
-- Migration naming/versioning policy
-- Seed policy
-- Rollback policy
-- Data retention/deletion policy direction
-- Sensitive transfer-data lifecycle direction
-- Audit-log baseline expectations
-- Local-only baseline migration file creation
-- Local Docker PostgreSQL/Redis verification
-- Prisma generate verification
-- Prisma migrate verification
-- API typecheck verification
-- QA review
-
-## M12-TASK-003 Implementation Record
-
-Platform repo migration files were added:
-
-- `apps/api/prisma/migrations/migration_lock.toml`
-- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
-
-Support fixes applied during local verification:
-
-- `apps/api/package.json` pinned API Prisma dependencies to `6.19.3`
-- `apps/api/tsconfig.json` removed invalid TypeScript `ignoreDeprecations` setting
-
-Evidence status:
-
-- Dependency install: CONFIRMED
-- Docker Desktop local infra: CONFIRMED
-- PostgreSQL container health: CONFIRMED
-- Redis container health: CONFIRMED
-- Prisma generate: CONFIRMED
-- Local migration apply: CONFIRMED
-- API typecheck: CONFIRMED
-- Local DB verification: CONFIRMED
-- QA review: PASS
-
-Evidence and QA documents:
-
-- `TV_Project_Platform/docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
-- `TV_Project_Platform/docs/M12_QA_REVIEW.md`
-- `TV_Project_Platform/docs/M12_LOCK_REPORT.md`
-
-## M12 Locked Boundary
-
-M12 does not approve:
-
-- Production database deployment
+- Production deployment
 - Production database mutation
 - Payment enforcement
 - Provider integration
 - Content hosting
 - Channel selling
-- Stream source storage as platform-owned catalog
+- Platform-owned stream catalog
 - Android bridge implementation
-- Auth/session/token implementation unless separately scoped later
-- Legal media player boundary changes
+- Auth/session/token implementation
+- Redis runtime/session system expansion
+- Migration auto-run
+- Seed execution
+- Legal media-player boundary changes
+
+## Process Warning
+
+QA reported documentation/path hygiene warning for missing canonical department/control docs by exact path in Platform repo.
+
+Classification:
+
+- Not a code blocker
+- Not a legal blocker
+- Not a protected-system rewrite
+- Future documentation hygiene cleanup recommended
 
 ## Required Next Action
 
-Director should scope the next milestone candidate.
+Director should scope M14 for First Working Release / Internal Alpha.
 
 No active milestone is open until Director explicitly opens it.
