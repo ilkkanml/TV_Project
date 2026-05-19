@@ -50,7 +50,7 @@ fun DeviceActivationScreen(navController: NavController) {
                 Text("NEXORA", color = Color.White, fontSize = 38.sp, fontWeight = FontWeight.Black, letterSpacing = 2.5.sp, maxLines = 1)
                 Text("Activate this TV", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                 Text(
-                    text = "Pair this internal alpha device, then continue to playlist setup.",
+                    text = "Pair this internal alpha device, then continue to the home shell.",
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 13.sp,
                     lineHeight = 18.sp,
@@ -63,7 +63,8 @@ fun DeviceActivationScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                        navController.navigate(AppDestinations.PlaylistProfile.route) {
+                        navController.navigate(AppDestinations.Home.route) {
+                            popUpTo(AppDestinations.Activation.route) { inclusive = true }
                             launchSingleTop = true
                         }
                     },
@@ -71,7 +72,7 @@ fun DeviceActivationScreen(navController: NavController) {
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
                 ) {
-                    Text("Continue Setup", fontWeight = FontWeight.Black, fontSize = 13.sp)
+                    Text("Continue Home", fontWeight = FontWeight.Black, fontSize = 13.sp)
                 }
             }
 
@@ -88,8 +89,8 @@ fun DeviceActivationScreen(navController: NavController) {
 
                 ActivationStep("1", "Open the activation website on your phone or computer.")
                 ActivationStep("2", "Enter the Nexora Device ID shown on this TV.")
-                ActivationStep("3", "Enter the Activation Key to pair this internal alpha device.")
-                ActivationStep("4", "Continue to playlist/profile setup on this TV.")
+                ActivationStep("3", "Enter the Activation Key for this demo screen.")
+                ActivationStep("4", "Continue to the home shell on this TV.")
 
                 Box(
                     modifier = Modifier
