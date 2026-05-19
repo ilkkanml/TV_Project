@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,12 +46,27 @@ fun DeviceActivationScreen(navController: NavController) {
         ) {
             Column(
                 modifier = Modifier.width(390.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                Text("NEXORA", color = Color.White, fontSize = 38.sp, fontWeight = FontWeight.Black, letterSpacing = 2.5.sp, maxLines = 1)
-                Text("Activate this TV", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                 Text(
-                    text = "Pair this internal alpha device, then continue to the home shell.",
+                    text = "NEXORA",
+                    color = Color.White,
+                    fontSize = 38.sp,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = 2.5.sp,
+                    maxLines = 1
+                )
+
+                Text(
+                    text = "Activate this TV",
+                    color = NexoraVioletSoft,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+
+                Text(
+                    text = "Early access device screen. Continue to setup after activation check.",
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 13.sp,
                     lineHeight = 18.sp,
@@ -64,15 +80,41 @@ fun DeviceActivationScreen(navController: NavController) {
                 Button(
                     onClick = {
                         navController.navigate(AppDestinations.Home.route) {
-                            popUpTo(AppDestinations.Activation.route) { inclusive = true }
                             launchSingleTop = true
                         }
                     },
-                    modifier = Modifier.width(260.dp).height(48.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
+                    modifier = Modifier
+                        .width(320.dp)
+                        .height(64.dp)
+                        .shadow(
+                            elevation = 14.dp,
+                            shape = RoundedCornerShape(22.dp),
+                            ambientColor = NexoraViolet,
+                            spotColor = NexoraViolet
+                        ),
+                    shape = RoundedCornerShape(22.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = NexoraViolet,
+                        contentColor = Color.White
+                    )
                 ) {
-                    Text("Continue Home", fontWeight = FontWeight.Black, fontSize = 13.sp)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "CONTINUE",
+                            fontWeight = FontWeight.Black,
+                            fontSize = 16.sp,
+                            letterSpacing = 1.2.sp
+                        )
+                        Text(
+                            text = "Open Nexora TV",
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 11.sp,
+                            color = Color.White.copy(alpha = 0.78f)
+                        )
+                    }
                 }
             }
 
@@ -90,7 +132,7 @@ fun DeviceActivationScreen(navController: NavController) {
                 ActivationStep("1", "Open the activation website on your phone or computer.")
                 ActivationStep("2", "Enter the Nexora Device ID shown on this TV.")
                 ActivationStep("3", "Enter the Activation Key for this demo screen.")
-                ActivationStep("4", "Continue to the home shell on this TV.")
+                ActivationStep("4", "Press CONTINUE on this TV.")
 
                 Box(
                     modifier = Modifier
@@ -100,7 +142,7 @@ fun DeviceActivationScreen(navController: NavController) {
                         .padding(15.dp)
                 ) {
                     Text(
-                        text = "Demo identity only. No real device pairing is performed in this prototype.",
+                        text = "Temporary early access screen. Backend device bootstrap will replace this mock screen later.",
                         color = Color.White.copy(alpha = 0.72f),
                         fontSize = 12.sp,
                         lineHeight = 17.sp,
