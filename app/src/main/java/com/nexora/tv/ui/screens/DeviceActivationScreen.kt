@@ -1,7 +1,9 @@
 package com.nexora.tv.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,21 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nexora.tv.navigation.AppDestinations
-import com.nexora.tv.ui.components.PremiumBackground
-import com.nexora.tv.ui.components.PremiumButton
-import com.nexora.tv.ui.components.PremiumPanel
-import com.nexora.tv.ui.theme.NexoraColors
+import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private const val MOCK_NEXORA_DEVICE_ID = "NX-TV-8F2K-44M9"
 private const val MOCK_ACTIVATION_KEY = "K7Q4-29XA"
 private const val MOCK_ACTIVATION_WEBSITE = "nexoratv.com/activate"
+private val NexoraViolet = Color(0xFF7C3AED)
+private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val PanelDark = Color(0xCC090B12)
 
 @Composable
 fun DeviceActivationScreen(navController: NavController) {
-    PremiumBackground(
-        accent = NexoraColors.Cyan,
-        contentAlignment = Alignment.Center
-    ) {
+    NexoraCinematicBackdrop {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -48,108 +49,115 @@ fun DeviceActivationScreen(navController: NavController) {
             ) {
                 Text(
                     text = "NEXORA",
-                    color = NexoraColors.TextPrimary,
-                    fontSize = 42.sp,
+                    color = Color.White,
+                    fontSize = 43.sp,
                     fontWeight = FontWeight.Black,
                     letterSpacing = 3.sp
                 )
                 Text(
                     text = "Activate this TV",
-                    color = NexoraColors.Cyan,
-                    fontSize = 25.sp,
+                    color = NexoraVioletSoft,
+                    fontSize = 26.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Use the website to pair this screen with a Nexora account when real activation is approved. This internal alpha keeps activation local and mock-only.",
-                    color = NexoraColors.TextSecondary,
+                    text = "Early access is free for a limited internal alpha period. Pair this screen on the website, then continue to playlist setup.",
+                    color = Color.White.copy(alpha = 0.68f),
                     fontSize = 15.sp,
                     lineHeight = 21.sp
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                ActivationCodePanel(
-                    title = "Nexora Device ID",
-                    value = MOCK_NEXORA_DEVICE_ID,
-                    accent = NexoraColors.Cyan
-                )
+                ActivationCodePanel("Nexora Device ID", MOCK_NEXORA_DEVICE_ID)
+                ActivationCodePanel("Activation Key", MOCK_ACTIVATION_KEY)
 
-                ActivationCodePanel(
-                    title = "Activation Key",
-                    value = MOCK_ACTIVATION_KEY,
-                    accent = Color(0xFF00BFA5)
-                )
-
-                PremiumButton(
-                    text = "Continue Internal Alpha",
+                Button(
                     onClick = {
-                        navController.navigate(AppDestinations.Home.route) {
+                        navController.navigate(AppDestinations.PlaylistProfile.route) {
                             launchSingleTop = true
                         }
                     },
-                    modifier = Modifier.width(270.dp),
-                    accent = Color(0xFF00BFA5),
-                    primary = true
-                )
+                    modifier = Modifier
+                        .width(286.dp)
+                        .height(54.dp),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = NexoraViolet,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Continue Setup", fontWeight = FontWeight.Black)
+                }
             }
 
-            PremiumPanel(
-                modifier = Modifier.width(650.dp),
-                accent = NexoraColors.Cyan,
-                cornerRadius = 32.dp
+            Column(
+                modifier = Modifier
+                    .width(650.dp)
+                    .background(PanelDark, RoundedCornerShape(34.dp))
+                    .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp))
+                    .padding(28.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 Text(
                     text = "Website Activation",
-                    color = NexoraColors.TextPrimary,
+                    color = Color.White,
                     fontSize = 34.sp,
                     fontWeight = FontWeight.Black
                 )
-                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = MOCK_ACTIVATION_WEBSITE,
-                    color = NexoraColors.Cyan,
+                    color = NexoraVioletSoft,
                     fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Black
                 )
-                Spacer(modifier = Modifier.height(22.dp))
+
                 ActivationStep("1", "Open the activation website on your phone or computer.")
                 ActivationStep("2", "Enter the Nexora Device ID shown on this TV.")
                 ActivationStep("3", "Enter the Activation Key to pair this internal alpha device.")
-                ActivationStep("4", "Return to this TV and continue to the app shell.")
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = "Privacy-safe mock identity: no MAC address, no hardware identifier collection, no real backend activation, no license enforcement.",
-                    color = NexoraColors.TextSecondary,
-                    fontSize = 13.sp,
-                    lineHeight = 19.sp
-                )
+                ActivationStep("4", "Continue to playlist/profile setup on this TV.")
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Box(
+                    modifier = Modifier
+                        .width(590.dp)
+                        .background(Color.White.copy(alpha = 0.06f), RoundedCornerShape(22.dp))
+                        .border(1.dp, NexoraViolet.copy(alpha = 0.36f), RoundedCornerShape(22.dp))
+                        .padding(18.dp)
+                ) {
+                    Text(
+                        text = "Privacy-safe mock identity: no MAC address, no hardware identifier collection, no real backend activation, no license enforcement.",
+                        color = Color.White.copy(alpha = 0.72f),
+                        fontSize = 13.sp,
+                        lineHeight = 19.sp
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ActivationCodePanel(
-    title: String,
-    value: String,
-    accent: Color
-) {
-    PremiumPanel(
-        modifier = Modifier.width(430.dp),
-        accent = accent,
-        cornerRadius = 24.dp
+private fun ActivationCodePanel(title: String, value: String) {
+    Column(
+        modifier = Modifier
+            .width(430.dp)
+            .background(PanelDark, RoundedCornerShape(24.dp))
+            .border(1.dp, NexoraViolet.copy(alpha = 0.56f), RoundedCornerShape(24.dp))
+            .padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
             text = title,
-            color = accent,
+            color = NexoraVioletSoft,
             fontSize = 13.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Black
         )
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = value,
-            color = NexoraColors.TextPrimary,
-            fontSize = 27.sp,
+            color = Color.White,
+            fontSize = 26.sp,
             fontWeight = FontWeight.Black,
             letterSpacing = 2.sp
         )
@@ -161,21 +169,26 @@ private fun ActivationStep(number: String, text: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 7.dp)
+        modifier = Modifier.padding(vertical = 5.dp)
     ) {
-        Text(
-            text = number,
-            color = NexoraColors.Cyan,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Black,
+        Box(
             modifier = Modifier
-                .width(34.dp)
-                .border(1.dp, NexoraColors.Cyan.copy(alpha = 0.55f), RoundedCornerShape(12.dp))
-                .padding(vertical = 5.dp),
-        )
+                .width(36.dp)
+                .height(36.dp)
+                .background(Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
+                .border(1.dp, NexoraViolet.copy(alpha = 0.62f), RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = number,
+                color = NexoraVioletSoft,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Black
+            )
+        }
         Text(
             text = text,
-            color = NexoraColors.TextPrimary,
+            color = Color.White.copy(alpha = 0.86f),
             fontSize = 16.sp,
             lineHeight = 22.sp
         )
