@@ -6,29 +6,23 @@ Director
 
 ## Current Active Milestone
 
+None — next milestone pending Director scoping.
+
+## Last Locked Milestone
+
 `M12 Platform Database Baseline & Migration Foundation`
-
-## Current Task
-
-`M12-TASK-003 Local-only Migration Baseline Implementation Plan`
 
 ## M12 Status
 
-OPEN / IMPLEMENTATION PARTIAL
+LOCKED
 
-## M12-TASK-001 Status
+## M12 Task Status
 
-REPORT RECORDED / COMPLETED
+- `M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition` — completed
+- `M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft` — completed
+- `M12-TASK-003 Local-only Migration Baseline Implementation Plan` — `PASSED / QA VERIFIED`
 
-## M12-TASK-002 Status
-
-POLICY DRAFT RECORDED / COMPLETED
-
-## M12-TASK-003 Status
-
-PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
-
-## Last Locked Milestone
+## Previous Locked Milestone
 
 `M11 Platform Source-of-Truth Audit`
 
@@ -36,11 +30,7 @@ PARTIAL / BUILD-RUNTIME EVIDENCE REQUIRED
 
 LOCKED
 
-## M11-TASK-001 Status
-
-PASSED / COMPLETED
-
-## Previous Locked Milestone
+## Previous Locked Milestone Before M11
 
 `M10 Ecosystem Alignment & Client Integration Contract`
 
@@ -48,37 +38,15 @@ PASSED / COMPLETED
 
 LOCKED
 
-## M10-TASK-001 Status
-
-PASSED / COMPLETED
-
 ## Current Director Decision
 
-M12-TASK-003 local-only baseline migration files were added in the platform repo.
+M12 is locked.
 
-This is not QA-ready because build/runtime evidence is missing.
+M12 completed local-only platform database baseline and migration foundation.
 
-No production database action, API implementation, Android bridge, payment enforcement, provider integration, content hosting, or channel selling is approved by this handoff.
+No active milestone is open until Director explicitly scopes one.
 
-## M12-TASK-003 Changed Files
-
-Platform repo:
-
-- `apps/api/prisma/migrations/migration_lock.toml`
-- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
-
-## Evidence Status
-
-- Build/typecheck: NOT CONFIRMED
-- Prisma generate: NOT CONFIRMED
-- Local migration apply: NOT CONFIRMED
-- Local DB verification: NOT CONFIRMED
-
-Reason:
-
-- Current execution environment could not clone/run repository commands because external GitHub DNS access failed.
-
-## Current M12 Docs
+## M12 Records
 
 Platform repo:
 
@@ -88,6 +56,28 @@ Platform repo:
 - `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
 - `docs/M12_SECURITY_PRIVACY_REVIEW.md`
 - `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
+- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
+- `docs/M12_QA_REVIEW.md`
+- `docs/M12_LOCK_REPORT.md`
+
+## M12 Changed Platform Files
+
+- `apps/api/prisma/migrations/migration_lock.toml`
+- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
+- `apps/api/package.json`
+- `apps/api/tsconfig.json`
+
+## Evidence Status
+
+- Dependency install: CONFIRMED
+- Docker Desktop local infra: CONFIRMED
+- PostgreSQL container health: CONFIRMED
+- Redis container health: CONFIRMED
+- Prisma generate: CONFIRMED
+- Local migration apply: CONFIRMED
+- API typecheck: CONFIRMED
+- Local DB verification: CONFIRMED
+- QA review: PASS
 
 ## M12 Guardrails
 
@@ -102,20 +92,18 @@ Platform repo:
 - No rights-bypass behavior
 - No unauthorized source extraction behavior
 - Protected systems preserved
+- No production database deployment
+- No production database mutation
 
 ## Required Next Action
 
-Run local verification before QA:
+Director should scope next milestone candidate.
 
-```bash
-pnpm install
-docker compose up -d
-pnpm db:generate
-pnpm db:migrate
-pnpm --filter @tv-platform/api run typecheck
-```
+Recommended next candidate:
 
-QA cannot PASS until evidence is provided.
+`M13 Platform API Service Foundation & Environment Contract`
+
+Candidate scope must remain local-only unless Director explicitly expands it.
 
 ## Department Boot Requirement
 
