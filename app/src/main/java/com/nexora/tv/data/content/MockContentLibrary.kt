@@ -2,9 +2,10 @@ package com.nexora.tv.data.content
 
 enum class NexoraContentSection {
     Home,
-    Live,
     Movies,
     Series,
+    Live,
+    Search,
     Settings
 }
 
@@ -43,7 +44,7 @@ object MockContentLibrary {
         description = "Mock live TV item for navigation testing. No real channel URL is included.",
         type = NexoraContentType.Live,
         badge = "LIVE",
-        accentColor = 0xFF00E5FF
+        accentColor = 0xFF7C3AED
     )
 
     private val liveSports = NexoraContentItem(
@@ -54,7 +55,7 @@ object MockContentLibrary {
         description = "Mock sports category item. Future legal provider integration can map here safely.",
         type = NexoraContentType.Live,
         badge = "LIVE",
-        accentColor = 0xFFFF6D00
+        accentColor = 0xFF7C3AED
     )
 
     private val liveCinema = NexoraContentItem(
@@ -65,7 +66,7 @@ object MockContentLibrary {
         description = "Mock linear TV item used only for local UI and route foundation.",
         type = NexoraContentType.Live,
         badge = "LIVE",
-        accentColor = 0xFF2962FF
+        accentColor = 0xFF7C3AED
     )
 
     private val liveDocumentary = NexoraContentItem(
@@ -76,7 +77,7 @@ object MockContentLibrary {
         description = "Mock documentary channel group for category row readability.",
         type = NexoraContentType.Live,
         badge = "LIVE",
-        accentColor = 0xFF00BFA5
+        accentColor = 0xFF7C3AED
     )
 
     private val movieOrbit = NexoraContentItem(
@@ -84,10 +85,10 @@ object MockContentLibrary {
         title = "Orbit Fall",
         subtitle = "Movie detail foundation",
         category = "Sci-Fi",
-        description = "Mock movie item prepared for detail-screen and selected-player route testing.",
+        description = "A cinematic mock movie used for detail-screen and selected-player route testing.",
         type = NexoraContentType.Movie,
         badge = "MOVIE",
-        accentColor = 0xFF7C4DFF
+        accentColor = 0xFF7C3AED
     )
 
     private val movieGlass = NexoraContentItem(
@@ -98,7 +99,7 @@ object MockContentLibrary {
         description = "Mock VOD item. Metadata is local and safe; no provider/API data is used.",
         type = NexoraContentType.Movie,
         badge = "MOVIE",
-        accentColor = 0xFF2962FF
+        accentColor = 0xFF7C3AED
     )
 
     private val movieCoast = NexoraContentItem(
@@ -109,7 +110,7 @@ object MockContentLibrary {
         description = "Mock watch-later movie card for Home and Movies rows.",
         type = NexoraContentType.Movie,
         badge = "MOVIE",
-        accentColor = 0xFF00BFA5
+        accentColor = 0xFF7C3AED
     )
 
     private val seriesMidnight = NexoraContentItem(
@@ -120,7 +121,7 @@ object MockContentLibrary {
         description = "Mock series item for detail routing and episode-aware row copy.",
         type = NexoraContentType.Series,
         badge = "SERIES",
-        accentColor = 0xFF00E5FF
+        accentColor = 0xFF7C3AED
     )
 
     private val seriesArchive = NexoraContentItem(
@@ -131,7 +132,7 @@ object MockContentLibrary {
         description = "Mock series library card. Future episode catalog can attach here.",
         type = NexoraContentType.Series,
         badge = "SERIES",
-        accentColor = 0xFF7C4DFF
+        accentColor = 0xFF7C3AED
     )
 
     private val seriesSignal = NexoraContentItem(
@@ -142,7 +143,19 @@ object MockContentLibrary {
         description = "Mock series row item for remote-readable navigation testing.",
         type = NexoraContentType.Series,
         badge = "SERIES",
-        accentColor = 0xFF2962FF
+        accentColor = 0xFF7C3AED
+    )
+
+    private val searchPlaceholder = NexoraContentItem(
+        id = "search-placeholder",
+        title = "Search Library",
+        subtitle = "Search shell placeholder",
+        category = "Search",
+        description = "Local search placeholder only. No provider search, scraping, or backend query is included.",
+        type = NexoraContentType.Setting,
+        badge = "LOCAL",
+        accentColor = 0xFF7C3AED,
+        isPlayable = false
     )
 
     private val settingAccount = NexoraContentItem(
@@ -153,7 +166,7 @@ object MockContentLibrary {
         description = "Local settings placeholder. Production auth and billing are not changed here.",
         type = NexoraContentType.Setting,
         badge = "LOCAL",
-        accentColor = 0xFF00E5FF,
+        accentColor = 0xFF7C3AED,
         isPlayable = false
     )
 
@@ -165,7 +178,7 @@ object MockContentLibrary {
         description = "Playback settings placeholder only. No ExoPlayer or Media3 rewrite is included.",
         type = NexoraContentType.Setting,
         badge = "LOCAL",
-        accentColor = 0xFF2962FF,
+        accentColor = 0xFF7C3AED,
         isPlayable = false
     )
 
@@ -177,7 +190,7 @@ object MockContentLibrary {
         description = "Support placeholder for future account-safe flows.",
         type = NexoraContentType.Setting,
         badge = "LOCAL",
-        accentColor = 0xFF00BFA5,
+        accentColor = 0xFF7C3AED,
         isPlayable = false
     )
 
@@ -192,6 +205,7 @@ object MockContentLibrary {
         seriesMidnight,
         seriesArchive,
         seriesSignal,
+        searchPlaceholder,
         settingAccount,
         settingPlayback,
         settingSupport
@@ -201,28 +215,20 @@ object MockContentLibrary {
         NexoraContentSection.Home -> listOf(
             NexoraContentRow(
                 title = "Continue Watching",
-                subtitle = "Resume-ready mock row",
+                subtitle = "Resume your latest mock items",
                 items = listOf(seriesMidnight, movieCoast, liveNews)
             ),
             NexoraContentRow(
                 title = "Featured Library",
-                subtitle = "Live, movies and series in one safe catalog",
+                subtitle = "Movies, series and live placeholders",
                 items = listOf(movieOrbit, liveCinema, seriesArchive, movieGlass)
-            )
-        )
-
-        NexoraContentSection.Live -> listOf(
-            NexoraContentRow(
-                title = "Live TV Categories",
-                subtitle = "Mock channel groups only",
-                items = listOf(liveNews, liveSports, liveCinema, liveDocumentary)
             )
         )
 
         NexoraContentSection.Movies -> listOf(
             NexoraContentRow(
                 title = "Movies",
-                subtitle = "Local VOD catalog shell",
+                subtitle = "Cinematic VOD shell",
                 items = listOf(movieOrbit, movieGlass, movieCoast)
             )
         )
@@ -230,8 +236,24 @@ object MockContentLibrary {
         NexoraContentSection.Series -> listOf(
             NexoraContentRow(
                 title = "Series",
-                subtitle = "Local series catalog shell",
+                subtitle = "Episode-aware series shell",
                 items = listOf(seriesMidnight, seriesArchive, seriesSignal)
+            )
+        )
+
+        NexoraContentSection.Live -> listOf(
+            NexoraContentRow(
+                title = "Live",
+                subtitle = "Mock channel groups only",
+                items = listOf(liveNews, liveSports, liveCinema, liveDocumentary)
+            )
+        )
+
+        NexoraContentSection.Search -> listOf(
+            NexoraContentRow(
+                title = "Search",
+                subtitle = "Local placeholder, no provider query",
+                items = listOf(searchPlaceholder, movieOrbit, seriesMidnight, liveCinema)
             )
         )
 
