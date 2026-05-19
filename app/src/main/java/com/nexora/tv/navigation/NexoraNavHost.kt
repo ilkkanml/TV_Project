@@ -14,14 +14,12 @@ import com.nexora.tv.ui.screens.SplashScreen
 
 @Composable
 fun NexoraNavHost() {
-
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = AppDestinations.Splash.route
     ) {
-
         composable(AppDestinations.Splash.route) {
             SplashScreen(navController)
         }
@@ -46,7 +44,7 @@ fun NexoraNavHost() {
         }
 
         composable(AppDestinations.Player.route) {
-            PlayerScreen()
+            PlayerScreen(navController)
         }
 
         composable(AppDestinations.PlaylistProfile.route) {
