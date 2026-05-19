@@ -2,44 +2,25 @@
 
 ## Current Status
 
-M12-TASK-003 local-only baseline migration evidence has passed QA review.
+M12 Platform Database Baseline & Migration Foundation is LOCKED.
 
-## Current Active Milestone
+No active milestone is open.
+
+## Last Locked Milestone
 
 `M12 Platform Database Baseline & Migration Foundation`
 
-## Current Active Task
+## M12 Status
 
-`M12-TASK-003 Local-only Migration Baseline Implementation Plan`
+LOCKED
 
-## M12-TASK-001 Status
+## M12 Task Status
 
-REPORT RECORDED / COMPLETED
+- `M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition` — completed
+- `M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft` — completed
+- `M12-TASK-003 Local-only Migration Baseline Implementation Plan` — `PASSED / QA VERIFIED`
 
-## M12-TASK-002 Status
-
-POLICY DRAFT RECORDED / COMPLETED
-
-## M12-TASK-003 Status
-
-PASSED / QA VERIFIED
-
-## Task Owner Flow
-
-Director → Documentation → Director lock evaluation.
-
-## M12-TASK-003 Changed Files
-
-Platform repo:
-
-- `apps/api/prisma/migrations/migration_lock.toml`
-- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
-- `apps/api/package.json`
-- `apps/api/tsconfig.json`
-- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
-- `docs/M12_QA_REVIEW.md`
-
-## Evidence Status
+## M12 Evidence Status
 
 - Dependency install: CONFIRMED
 - Docker Desktop local infra: CONFIRMED
@@ -51,29 +32,43 @@ Platform repo:
 - Local DB verification: CONFIRMED
 - QA review: PASS
 
-Evidence documents:
+## M12 Records
 
-- `TV_Project_Platform/docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
-- `TV_Project_Platform/docs/M12_QA_REVIEW.md`
+Platform repo:
+
+- `docs/M12_DATABASE_BASELINE_SCOPE.md`
+- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
+- `docs/M12_DATABASE_POLICY_DRAFT.md`
+- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
+- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
+- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
+- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
+- `docs/M12_QA_REVIEW.md`
+- `docs/M12_LOCK_REPORT.md`
 
 ## Required Next Action
 
-Run documentation update for M12 runtime truth.
+Director should scope the next milestone candidate.
 
-After documentation update, Director may evaluate M12 lock.
+Recommended next candidate:
+
+`M13 Platform API Service Foundation & Environment Contract`
+
+Candidate focus:
+
+- API runtime environment baseline
+- Local `.env` / config contract
+- Database connection service foundation
+- Health/readiness endpoint verification
+- No auth/session implementation yet unless separately scoped
+- No production deployment
 
 ## Guardrails
 
-- No production deployment
-- No production database mutation
+- Local-only unless Director explicitly expands scope
+- No production database work
 - No payment enforcement
 - No provider integration
-- No content hosting
-- No channel selling
-- Legal media player boundary preserved
+- No content hosting or channel selling
+- Legal media-player boundary preserved
 - Protected systems preserved
-- No unauthorized source handling
-- No rights-bypass behavior
-- No unapproved stream extraction behavior
-
-Director lock is not allowed until documentation flow is complete.
