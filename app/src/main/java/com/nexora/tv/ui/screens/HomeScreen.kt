@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -69,13 +68,11 @@ private enum class HomeMenu(
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedMenu by remember { mutableStateOf(HomeMenu.Home) }
-
     var selectedItemId by remember {
         mutableStateOf(MockContentLibrary.firstItemFor(NexoraContentSection.Home)?.id)
     }
 
     val rows = MockContentLibrary.rowsFor(selectedMenu.section)
-
     val selectedItem = MockContentLibrary.findContent(selectedItemId)
         ?: rows.firstOrNull()?.items?.firstOrNull()
 
@@ -83,46 +80,58 @@ fun HomeScreen(navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    start = 18.dp,
-                    top = 18.dp,
-                    end = 18.dp,
-                    bottom = 18.dp
-                ),
+                .padding(18.dp),
             horizontalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             Sidebar(
                 selectedMenu = selectedMenu,
-                onMenuSelected = {
-                    selectedMenu = it
-                    selectedItemId = MockContentLibrary.firstItemFor(it.section)?.id
+                onMenuSelected = { menu ->
+                    selectedMenu = menu
+                    selectedItemId = MockContentLibrary.firstItemFor(menu.section)?.id
                 }
             )
 
             MainStage(
-                modifier = Modifier.weight(1f),
                 selectedMenu = selectedMenu,
                 rows = rows,
                 selectedItem = selectedItem,
-                onItemFocused = {
-                    selectedItemId = it.id
-                },
-                onItemOpen = { item ->
-                    when {
-                        item.id == PROFILE_ACCESS_SETTING_ID -> {
-                            navController.navigate(AppDestinations.PlaylistProfile.route) {
-                                launchSingleTop = true
-                            }
-                        }
-
-                        item.isPlayable -> {
-                            navController.navigate(AppDestinations.Detail.createRoute(item.id)) {
-                                launchSingleTop = true
-                            }
-                        }
-                    }
-                }
+                onItemFocused = { item -> selectedItemId = item.id },
+                onItemPlay = { item -> openPlayerOrDetails(navController, item) },
+                onItemDetails = { item -> openDetails(navController, item) },
+                modifier = Modifier.weight(1f)
             )
+        }
+    }
+}
+
+private fun openDetails(navController: NavController, item: NexoraContentItem) {
+    if (item.id == PROFILE_ACCESS_SETTING_ID) {
+        navController.navigate(AppDestinations.PlaylistProfile.route) {
+            launchSingleTop = true
+        }
+        return
+    }
+
+    navController.navigate(AppDestinations.Detail.createRoute(item.id)) {
+        launchSingleTop = true
+    }
+}
+
+private fun openPlayerOrDetails(navController: NavController, item: NexoraContentItem) {
+    if (item.id == PROFILE_ACCESS_SETTING_ID) {
+        navController.navigate(AppDestinations.PlaylistProfile.route) {
+            launchSingleTop = true
+        }
+        return
+    }
+
+    if (item.isPlayable) {
+        navController.navigate(AppDestinations.Player.route) {
+            launchSingleTop = true
+        }
+    } else {
+        navController.navigate(AppDestinations.Detail.createRoute(item.id)) {
+            launchSingleTop = true
         }
     }
 }
@@ -136,37 +145,26 @@ private fun Sidebar(
         modifier = Modifier
             .width(198.dp)
             .fillMaxHeight()
-            .background(
-                Color(0xAA060810),
-                RoundedCornerShape(28.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(28.dp)
-            )
+            .background(Color(0xAA060810), RoundedCornerShape(28.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(28.dp))
             .padding(horizontal = 14.dp, vertical = 18.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(3.dp)
-        ) {
-            Text(
-                text = "NEXORA TV",
-                color = Color.White,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 1.2.sp
-            )
+        Text(
+            text = "NEXORA TV",
+            color = Color.White,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Black,
+            letterSpacing = 1.2.sp
+        )
 
-            Text(
-                text = "PLAYER ECOSYSTEMS",
-                color = NexoraVioletSoft,
-                fontSize = 9.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.1.sp
-            )
-        }
+        Text(
+            text = "PLAYER ECOSYSTEMS",
+            color = NexoraVioletSoft,
+            fontSize = 9.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.1.sp
+        )
 
         Spacer(modifier = Modifier.height(6.dp))
 
@@ -175,55 +173,23 @@ private fun Sidebar(
                 icon = menu.icon,
                 title = menu.label,
                 selected = selectedMenu == menu,
-                onSelected = {
-                    onMenuSelected(menu)
-                }
+                onSelected = { onMenuSelected(menu) }
             )
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Column(
+        Text(
+            text = "Use OK to open • Back to return",
+            color = Color.White.copy(alpha = 0.50f),
+            fontSize = 10.sp,
+            lineHeight = 14.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.White.copy(alpha = 0.07f),
-                            Color.White.copy(alpha = 0.035f)
-                        )
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .border(
-                    width = 1.dp,
-                    color = NexoraViolet.copy(alpha = 0.26f),
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                text = "Alex",
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Black
-            )
-
-            Text(
-                text = "Premium profile",
-                color = NexoraVioletSoft,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "TV-first layout",
-                color = Color.White.copy(alpha = 0.58f),
-                fontSize = 10.sp,
-                lineHeight = 14.sp
-            )
-        }
+                .background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(18.dp))
+                .border(1.dp, Color.White.copy(alpha = 0.06f), RoundedCornerShape(18.dp))
+                .padding(12.dp)
+        )
     }
 }
 
@@ -253,20 +219,13 @@ private fun MenuButton(
             ),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) {
-                Color(0xCC171C30)
-            } else {
-                Color.White.copy(alpha = 0.045f)
-            },
+            containerColor = if (selected) Color(0xCC171C30) else Color.White.copy(alpha = 0.045f),
             contentColor = Color.White
         )
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = 10.dp,
-                alignment = Alignment.Start
-            ),
+            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -274,22 +233,14 @@ private fun MenuButton(
                     .width(26.dp)
                     .height(26.dp)
                     .background(
-                        color = if (selected) {
-                            NexoraViolet.copy(alpha = 0.20f)
-                        } else {
-                            Color.White.copy(alpha = 0.06f)
-                        },
+                        color = if (selected) NexoraViolet.copy(alpha = 0.20f) else Color.White.copy(alpha = 0.06f),
                         shape = RoundedCornerShape(9.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = icon,
-                    color = if (selected) {
-                        NexoraBlue
-                    } else {
-                        Color.White.copy(alpha = 0.84f)
-                    },
+                    color = if (selected) NexoraBlue else Color.White.copy(alpha = 0.84f),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -298,11 +249,7 @@ private fun MenuButton(
             Text(
                 text = title,
                 fontSize = 13.sp,
-                fontWeight = if (selected) {
-                    FontWeight.Black
-                } else {
-                    FontWeight.Medium
-                }
+                fontWeight = if (selected) FontWeight.Black else FontWeight.Medium
             )
         }
     }
@@ -310,12 +257,13 @@ private fun MenuButton(
 
 @Composable
 private fun MainStage(
-    modifier: Modifier = Modifier,
     selectedMenu: HomeMenu,
     rows: List<NexoraContentRow>,
     selectedItem: NexoraContentItem?,
     onItemFocused: (NexoraContentItem) -> Unit,
-    onItemOpen: (NexoraContentItem) -> Unit
+    onItemPlay: (NexoraContentItem) -> Unit,
+    onItemDetails: (NexoraContentItem) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -325,31 +273,26 @@ private fun MainStage(
     ) {
         TopUtilityBar(selectedMenu)
 
-        when (selectedMenu) {
-            HomeMenu.Search -> {
-                SearchStage(
-                    rows = rows,
-                    onItemFocused = onItemFocused,
-                    onItemOpen = onItemOpen
-                )
-            }
+        if (selectedMenu != HomeMenu.Settings && selectedMenu != HomeMenu.Search) {
+            HeroPanel(
+                selectedMenu = selectedMenu,
+                selectedItem = selectedItem,
+                onItemPlay = onItemPlay,
+                onItemDetails = onItemDetails
+            )
+        }
 
-            HomeMenu.Settings -> {
-                SettingsStage(
-                    rows = rows,
-                    onItemOpen = onItemOpen
-                )
-            }
+        if (selectedMenu == HomeMenu.Search) {
+            SearchShell()
+        }
 
-            else -> {
-                LibraryStage(
-                    selectedMenu = selectedMenu,
-                    rows = rows,
-                    selectedItem = selectedItem,
-                    onItemFocused = onItemFocused,
-                    onItemOpen = onItemOpen
-                )
-            }
+        rows.forEach { row ->
+            ContentRow(
+                row = row,
+                selectedItemId = selectedItem?.id,
+                onItemFocused = onItemFocused,
+                onItemDetails = onItemDetails
+            )
         }
     }
 }
@@ -359,23 +302,13 @@ private fun TopUtilityBar(selectedMenu: HomeMenu) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                color = Color(0x66070A12),
-                shape = RoundedCornerShape(22.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(22.dp)
-            )
+            .background(Color(0x66070A12), RoundedCornerShape(22.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(22.dp))
             .padding(horizontal = 18.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = selectedMenu.label,
                 color = Color.White,
@@ -386,7 +319,7 @@ private fun TopUtilityBar(selectedMenu: HomeMenu) {
             )
 
             Text(
-                text = "Premium Android TV shell • remote-first navigation",
+                text = "Functional shell • OK opens focused items",
                 color = Color.White.copy(alpha = 0.62f),
                 fontSize = 11.sp,
                 maxLines = 1,
@@ -394,62 +327,9 @@ private fun TopUtilityBar(selectedMenu: HomeMenu) {
             )
         }
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            UtilityPill("4K")
-            UtilityPill("Dolby UI")
-            UtilityPill("10:45 PM")
-        }
-    }
-}
-
-@Composable
-private fun UtilityPill(text: String) {
-    Box(
-        modifier = Modifier
-            .background(
-                color = Color.White.copy(alpha = 0.055f),
-                shape = RoundedCornerShape(14.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.07f),
-                shape = RoundedCornerShape(14.dp)
-            )
-            .padding(horizontal = 11.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = Color.White.copy(alpha = 0.82f),
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-private fun LibraryStage(
-    selectedMenu: HomeMenu,
-    rows: List<NexoraContentRow>,
-    selectedItem: NexoraContentItem?,
-    onItemFocused: (NexoraContentItem) -> Unit,
-    onItemOpen: (NexoraContentItem) -> Unit
-) {
-    HeroPanel(
-        selectedMenu = selectedMenu,
-        selectedItem = selectedItem,
-        onItemOpen = onItemOpen
-    )
-
-    rows.forEach { row ->
-        ContentRow(
-            row = row,
-            selectedItemId = selectedItem?.id,
-            onItemFocused = onItemFocused,
-            onItemOpen = onItemOpen
-        )
+        UtilityPill("4K")
+        UtilityPill("Dolby UI")
+        UtilityPill("10:45 PM")
     }
 }
 
@@ -457,7 +337,8 @@ private fun LibraryStage(
 private fun HeroPanel(
     selectedMenu: HomeMenu,
     selectedItem: NexoraContentItem?,
-    onItemOpen: (NexoraContentItem) -> Unit
+    onItemPlay: (NexoraContentItem) -> Unit,
+    onItemDetails: (NexoraContentItem) -> Unit
 ) {
     val item = selectedItem ?: return
     val accent = Color(item.accentColor)
@@ -466,55 +347,28 @@ private fun HeroPanel(
         modifier = Modifier
             .fillMaxWidth()
             .height(264.dp)
-            .background(
-                color = PanelDark,
-                shape = RoundedCornerShape(30.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.10f),
-                shape = RoundedCornerShape(30.dp)
-            )
+            .background(PanelDark, RoundedCornerShape(30.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    brush = Brush.horizontalGradient(
+                    Brush.horizontalGradient(
                         colors = listOf(
                             Color.Black.copy(alpha = 0.78f),
                             accent.copy(alpha = 0.24f),
                             Color.Transparent
                         )
                     ),
-                    shape = RoundedCornerShape(30.dp)
-                )
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            accent.copy(alpha = 0.24f),
-                            Color.Transparent
-                        ),
-                        center = Offset(760f, 92f),
-                        radius = 360f
-                    )
+                    RoundedCornerShape(30.dp)
                 )
         )
 
         Column(
             modifier = Modifier
-                .padding(
-                    start = 28.dp,
-                    top = 24.dp,
-                    end = 28.dp,
-                    bottom = 22.dp
-                )
-                .width(390.dp),
+                .padding(start = 28.dp, top = 24.dp, bottom = 22.dp)
+                .width(420.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp)
         ) {
             Text(
@@ -536,15 +390,6 @@ private fun HeroPanel(
             )
 
             Text(
-                text = item.subtitle,
-                color = Color.White.copy(alpha = 0.70f),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Text(
                 text = item.description,
                 color = Color.White.copy(alpha = 0.64f),
                 fontSize = 13.sp,
@@ -553,23 +398,17 @@ private fun HeroPanel(
                 overflow = TextOverflow.Ellipsis
             )
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 GlassActionButton(
                     text = if (item.isPlayable) "Play Now" else "Open",
                     primary = true,
-                    onClick = {
-                        onItemOpen(item)
-                    }
+                    onClick = { onItemPlay(item) }
                 )
 
                 GlassActionButton(
                     text = "More Info",
                     primary = false,
-                    onClick = {
-                        onItemOpen(item)
-                    }
+                    onClick = { onItemDetails(item) }
                 )
             }
         }
@@ -589,22 +428,183 @@ private fun HeroPanel(
 }
 
 @Composable
-private fun HeroInfoCard(
-    title: String,
-    value: String
+private fun ContentRow(
+    row: NexoraContentRow,
+    selectedItemId: String?,
+    onItemFocused: (NexoraContentItem) -> Unit,
+    onItemDetails: (NexoraContentItem) -> Unit
 ) {
+    Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Text(
+                text = row.title,
+                color = Color.White,
+                fontSize = 21.sp,
+                fontWeight = FontWeight.Black
+            )
+
+            Text(
+                text = row.subtitle,
+                color = Color.White.copy(alpha = 0.56f),
+                fontSize = 11.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            row.items.forEach { item ->
+                LibraryCard(
+                    item = item,
+                    selected = selectedItemId == item.id,
+                    onClick = {
+                        onItemFocused(item)
+                        onItemDetails(item)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LibraryCard(
+    item: NexoraContentItem,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    val accent = Color(item.accentColor)
+
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .width(206.dp)
+            .height(128.dp)
+            .then(
+                if (selected) {
+                    Modifier.shadow(
+                        elevation = 13.dp,
+                        shape = RoundedCornerShape(22.dp),
+                        ambientColor = accent,
+                        spotColor = accent
+                    )
+                } else {
+                    Modifier
+                }
+            ),
+        shape = RoundedCornerShape(22.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = CardSoft,
+            contentColor = Color.White
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            accent.copy(alpha = 0.24f),
+                            Color.Black.copy(alpha = 0.08f),
+                            Color.Black.copy(alpha = 0.54f)
+                        )
+                    ),
+                    RoundedCornerShape(22.dp)
+                )
+                .border(
+                    width = if (selected) 2.dp else 1.dp,
+                    color = if (selected) accent.copy(alpha = 0.95f) else Color.White.copy(alpha = 0.08f),
+                    shape = RoundedCornerShape(22.dp)
+                )
+                .padding(14.dp)
+        ) {
+            Text(
+                text = item.badge,
+                color = if (item.badge == "LIVE") NexoraGreen else NexoraBlue,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black,
+                modifier = Modifier.align(Alignment.TopStart)
+            )
+
+            Text(
+                text = item.title,
+                color = Color.White,
+                fontSize = 19.sp,
+                fontWeight = FontWeight.Black,
+                lineHeight = 21.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.align(Alignment.CenterStart)
+            )
+
+            Text(
+                text = item.subtitle,
+                color = Color.White.copy(alpha = 0.62f),
+                fontSize = 11.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.align(Alignment.BottomStart)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchShell() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(PanelDark, RoundedCornerShape(30.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text = "Search shell",
+            color = Color.White,
+            fontSize = 29.sp,
+            fontWeight = FontWeight.Black
+        )
+
+        Text(
+            text = "Search input will be wired in a later milestone. Current results below are clickable.",
+            color = Color.White.copy(alpha = 0.66f),
+            fontSize = 13.sp,
+            lineHeight = 19.sp
+        )
+    }
+}
+
+@Composable
+private fun UtilityPill(text: String) {
+    Box(
+        modifier = Modifier
+            .background(Color.White.copy(alpha = 0.055f), RoundedCornerShape(14.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.07f), RoundedCornerShape(14.dp))
+            .padding(horizontal = 11.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            color = Color.White.copy(alpha = 0.82f),
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun HeroInfoCard(title: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                color = Color.White.copy(alpha = 0.045f),
-                shape = RoundedCornerShape(14.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.055f),
-                shape = RoundedCornerShape(14.dp)
-            )
+            .background(Color.White.copy(alpha = 0.045f), RoundedCornerShape(14.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.055f), RoundedCornerShape(14.dp))
             .padding(horizontal = 10.dp, vertical = 7.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -644,11 +644,7 @@ private fun GlassActionButton(
             .height(46.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (primary) {
-                NexoraViolet
-            } else {
-                Color.White.copy(alpha = 0.075f)
-            },
+            containerColor = if (primary) NexoraViolet else Color.White.copy(alpha = 0.075f),
             contentColor = Color.White
         )
     ) {
@@ -657,352 +653,5 @@ private fun GlassActionButton(
             fontWeight = FontWeight.Black,
             fontSize = 13.sp
         )
-    }
-}
-
-@Composable
-private fun ContentRow(
-    row: NexoraContentRow,
-    selectedItemId: String?,
-    onItemFocused: (NexoraContentItem) -> Unit,
-    onItemOpen: (NexoraContentItem) -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(9.dp)
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(3.dp)
-        ) {
-            Text(
-                text = row.title,
-                color = Color.White,
-                fontSize = 21.sp,
-                fontWeight = FontWeight.Black
-            )
-
-            Text(
-                text = row.subtitle,
-                color = Color.White.copy(alpha = 0.56f),
-                fontSize = 11.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            row.items.forEach { item ->
-                LibraryCard(
-                    item = item,
-                    selected = selectedItemId == item.id,
-                    onFocus = {
-                        onItemFocused(item)
-                    },
-                    onOpen = {
-                        onItemOpen(item)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun LibraryCard(
-    item: NexoraContentItem,
-    selected: Boolean,
-    onFocus: () -> Unit,
-    onOpen: () -> Unit
-) {
-    val accent = Color(item.accentColor)
-
-    Button(
-        onClick = {
-            onFocus()
-            onOpen()
-        },
-        modifier = Modifier
-            .width(206.dp)
-            .height(128.dp)
-            .then(
-                if (selected) {
-                    Modifier.shadow(
-                        elevation = 13.dp,
-                        shape = RoundedCornerShape(22.dp),
-                        ambientColor = accent,
-                        spotColor = accent
-                    )
-                } else {
-                    Modifier
-                }
-            ),
-        shape = RoundedCornerShape(22.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = CardSoft,
-            contentColor = Color.White
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            accent.copy(alpha = 0.24f),
-                            Color.Black.copy(alpha = 0.08f),
-                            Color.Black.copy(alpha = 0.54f)
-                        )
-                    ),
-                    shape = RoundedCornerShape(22.dp)
-                )
-                .border(
-                    width = if (selected) 2.dp else 1.dp,
-                    color = if (selected) {
-                        accent.copy(alpha = 0.95f)
-                    } else {
-                        Color.White.copy(alpha = 0.08f)
-                    },
-                    shape = RoundedCornerShape(22.dp)
-                )
-                .padding(14.dp)
-        ) {
-            Column(
-                modifier = Modifier.align(Alignment.TopStart),
-                verticalArrangement = Arrangement.spacedBy(5.dp)
-            ) {
-                Text(
-                    text = item.badge,
-                    color = if (item.badge == "LIVE") {
-                        NexoraGreen
-                    } else {
-                        NexoraBlue
-                    },
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Black
-                )
-
-                Text(
-                    text = item.title,
-                    color = Color.White,
-                    fontSize = 19.sp,
-                    fontWeight = FontWeight.Black,
-                    lineHeight = 21.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-            Text(
-                text = item.subtitle,
-                color = Color.White.copy(alpha = 0.62f),
-                fontSize = 11.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.align(Alignment.BottomStart)
-            )
-        }
-    }
-}
-
-@Composable
-private fun SearchStage(
-    rows: List<NexoraContentRow>,
-    onItemFocused: (NexoraContentItem) -> Unit,
-    onItemOpen: (NexoraContentItem) -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = PanelDark,
-                    shape = RoundedCornerShape(30.dp)
-                )
-                .border(
-                    width = 1.dp,
-                    color = Color.White.copy(alpha = 0.10f),
-                    shape = RoundedCornerShape(30.dp)
-                )
-                .padding(24.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Text(
-                    text = "Search your library",
-                    color = Color.White,
-                    fontSize = 29.sp,
-                    fontWeight = FontWeight.Black
-                )
-
-                Text(
-                    text = "Type search terms later. For now this is a polished search shell for Android TV remote flows.",
-                    color = Color.White.copy(alpha = 0.66f),
-                    fontSize = 13.sp,
-                    lineHeight = 19.sp
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    UtilityPill("Recently viewed")
-                    UtilityPill("Series")
-                    UtilityPill("Live")
-                    UtilityPill("Action")
-                }
-            }
-        }
-
-        rows.forEach { row ->
-            ContentRow(
-                row = row,
-                selectedItemId = null,
-                onItemFocused = onItemFocused,
-                onItemOpen = onItemOpen
-            )
-        }
-    }
-}
-
-@Composable
-private fun SettingsStage(
-    rows: List<NexoraContentRow>,
-    onItemOpen: (NexoraContentItem) -> Unit
-) {
-    val settings = rows.firstOrNull()?.items.orEmpty()
-
-    Column(
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            SettingsSummaryCard(
-                title = "Profile",
-                body = "Alex Premium • active device"
-            )
-
-            SettingsSummaryCard(
-                title = "Playback",
-                body = "Auto quality • UI shell"
-            )
-
-            SettingsSummaryCard(
-                title = "Security",
-                body = "No hidden APIs • legal boundary"
-            )
-        }
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            settings.forEach { item ->
-                SettingsOptionCard(
-                    item = item,
-                    onOpen = {
-                        onItemOpen(item)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SettingsSummaryCard(
-    title: String,
-    body: String
-) {
-    Column(
-        modifier = Modifier
-            .width(280.dp)
-            .background(
-                color = PanelSoft,
-                shape = RoundedCornerShape(24.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(24.dp)
-            )
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        Text(
-            text = title,
-            color = NexoraVioletSoft,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Black,
-            letterSpacing = 1.sp
-        )
-
-        Text(
-            text = body,
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Black,
-            lineHeight = 21.sp
-        )
-    }
-}
-
-@Composable
-private fun SettingsOptionCard(
-    item: NexoraContentItem,
-    onOpen: () -> Unit
-) {
-    Button(
-        onClick = onOpen,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(76.dp),
-        shape = RoundedCornerShape(22.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = PanelSoft,
-            contentColor = Color.White
-        )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(5.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = item.title,
-                    color = Color.White,
-                    fontSize = 19.sp,
-                    fontWeight = FontWeight.Black
-                )
-
-                Text(
-                    text = item.description,
-                    color = Color.White.copy(alpha = 0.60f),
-                    fontSize = 12.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-            Text(
-                text = "›",
-                color = NexoraVioletSoft,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Black
-            )
-        }
     }
 }
