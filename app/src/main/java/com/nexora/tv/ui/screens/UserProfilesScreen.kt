@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nexora.tv.data.app.AppLanguageStore
 import com.nexora.tv.data.profile.MediaProfile
 import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
@@ -36,7 +36,6 @@ import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
-private val NexoraBlue = Color(0xFF4CC9FF)
 private val NexoraGreen = Color(0xFF39FF88)
 private val PanelDark = Color(0xCC090B12)
 
@@ -49,27 +48,45 @@ fun UserProfilesScreen(navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 34.dp, vertical = 26.dp),
+                .padding(horizontal = 34.dp, vertical = 22.dp),
             horizontalArrangement = Arrangement.spacedBy(22.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
                     .width(370.dp)
-                    .height(620.dp)
+                    .height(635.dp)
                     .background(PanelDark, RoundedCornerShape(32.dp))
                     .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp))
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .padding(18.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text("NEXORA", color = Color.White, fontSize = 27.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp)
-                Text("User Profiles", color = NexoraVioletSoft, fontSize = 21.sp, fontWeight = FontWeight.Black)
-                Text("Select a user or add a new media profile.", color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp, lineHeight = 17.sp)
+                Text(AppLanguageStore.t("User Profiles", "Kullanıcı Profilleri"), color = NexoraVioletSoft, fontSize = 21.sp, fontWeight = FontWeight.Black)
+                Text(
+                    AppLanguageStore.t("Select a user or add a new media profile.", "Kullanıcı seç veya yeni medya profili ekle."),
+                    color = Color.White.copy(alpha = 0.62f),
+                    fontSize = 12.sp,
+                    lineHeight = 17.sp
+                )
+
+                Button(
+                    onClick = {
+                        MediaProfileStore.startAdd()
+                        navController.navigate(AppDestinations.PlaylistProfile.route) { launchSingleTop = true }
+                    },
+                    modifier = Modifier
+                        .width(334.dp)
+                        .height(58.dp)
+                        .shadow(12.dp, RoundedCornerShape(22.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
+                    shape = RoundedCornerShape(22.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
+                ) { Text(AppLanguageStore.t("ADD USER", "KULLANICI EKLE"), fontSize = 15.sp, fontWeight = FontWeight.Black) }
 
                 Column(
                     modifier = Modifier
-                        .width(330.dp)
-                        .height(405.dp)
+                        .width(334.dp)
+                        .height(430.dp)
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(9.dp)
                 ) {
@@ -80,26 +97,14 @@ fun UserProfilesScreen(navController: NavController) {
                             ProfileListButton(
                                 profile = profile,
                                 selected = selected?.id == profile.id,
-                                onClick = { MediaProfileStore.select(profile) }
+                                onClick = {
+                                    MediaProfileStore.select(profile)
+                                    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+                                }
                             )
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Button(
-                    onClick = {
-                        MediaProfileStore.startAdd()
-                        navController.navigate(AppDestinations.PlaylistProfile.route) { launchSingleTop = true }
-                    },
-                    modifier = Modifier
-                        .width(330.dp)
-                        .height(60.dp)
-                        .shadow(12.dp, RoundedCornerShape(22.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
-                    shape = RoundedCornerShape(22.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
-                ) { Text("ADD USER", fontSize = 15.sp, fontWeight = FontWeight.Black) }
             }
 
             ProfileInfoPanel(navController = navController, profile = selected)
@@ -112,15 +117,23 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
     Column(
         modifier = Modifier
             .width(760.dp)
-            .height(620.dp)
+            .height(635.dp)
             .background(PanelDark, RoundedCornerShape(32.dp))
             .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp))
             .padding(26.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         if (profile == null) {
-            Text("No user selected", color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Black)
-            Text("Create a user profile to connect a personal media source and view account/library status here.", color = Color.White.copy(alpha = 0.68f), fontSize = 15.sp, lineHeight = 22.sp)
+            Text(AppLanguageStore.t("No user selected", "Kullanıcı seçilmedi"), color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Black)
+            Text(
+                AppLanguageStore.t(
+                    "Create a user profile to connect a personal media source and view account/library status here.",
+                    "Kişisel medya kaynağını bağlamak ve hesap/kütüphane durumunu görmek için kullanıcı profili oluştur."
+                ),
+                color = Color.White.copy(alpha = 0.68f),
+                fontSize = 15.sp,
+                lineHeight = 22.sp
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -128,7 +141,15 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
                     .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(26.dp))
                     .padding(20.dp)
             ) {
-                Text("Nexora TV keeps the profile flow separate from the player so multiple users can manage their own media source setup cleanly.", color = Color.White.copy(alpha = 0.72f), fontSize = 14.sp, lineHeight = 21.sp)
+                Text(
+                    AppLanguageStore.t(
+                        "Profiles keep each user's media setup separate and make the player easier to manage on a shared TV.",
+                        "Profiller, her kullanıcının medya kurulumunu ayrı tutar ve ortak TV kullanımını daha düzenli hale getirir."
+                    ),
+                    color = Color.White.copy(alpha = 0.72f),
+                    fontSize = 14.sp,
+                    lineHeight = 21.sp
+                )
             }
             return@Column
         }
@@ -137,16 +158,16 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
         Text(profile.status, color = NexoraGreen, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            InfoCard("Source", profile.sourceType)
+            InfoCard(AppLanguageStore.t("Source", "Kaynak"), profile.sourceType)
             InfoCard("Live", profile.live.size.toString())
-            InfoCard("Movies", profile.movies.size.toString())
-            InfoCard("Series", profile.series.size.toString())
+            InfoCard(AppLanguageStore.t("Movies", "Filmler"), profile.movies.size.toString())
+            InfoCard(AppLanguageStore.t("Series", "Diziler"), profile.series.size.toString())
         }
 
-        InfoLine("Server", profile.serverAddress.ifBlank { "Not saved" })
-        InfoLine("User name", profile.accountName.ifBlank { "Not saved" })
-        InfoLine("Password", if (profile.accessKey.isBlank()) "Not saved" else "••••••••")
-        InfoLine("Selected profile", profile.profileName)
+        InfoLine(AppLanguageStore.t("Server", "Sunucu"), profile.serverAddress.ifBlank { AppLanguageStore.t("Not saved", "Kaydedilmedi") })
+        InfoLine(AppLanguageStore.t("User name", "Kullanıcı adı"), profile.accountName.ifBlank { AppLanguageStore.t("Not saved", "Kaydedilmedi") })
+        InfoLine(AppLanguageStore.t("Password", "Şifre"), if (profile.accessKey.isBlank()) AppLanguageStore.t("Not saved", "Kaydedilmedi") else "••••••••")
+        InfoLine(AppLanguageStore.t("Selected profile", "Seçili profil"), profile.profileName)
 
         Column(
             modifier = Modifier
@@ -156,10 +177,10 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
                 .padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text("Profile policy", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
-            Text("• This profile connects only to media access entered by the user.", color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
-            Text("• Nexora TV does not sell, host, retransmit, scrape, or provide media services.", color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
-            Text("• Usage must remain within the user's own legal access rights.", color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
+            Text(AppLanguageStore.t("Profile policy", "Profil politikası"), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
+            Text(AppLanguageStore.t("• This profile connects only to media access entered by the user.", "• Bu profil yalnızca kullanıcının girdiği medya erişimine bağlanır."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
+            Text(AppLanguageStore.t("• Nexora TV does not sell, host, retransmit, scrape, or provide media services.", "• Nexora TV medya servisi satmaz, barındırmaz, yeniden yayınlamaz, kazıma yapmaz veya sağlamaz."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
+            Text(AppLanguageStore.t("• Usage must remain within the user's own legal access rights.", "• Kullanım, kullanıcının kendi yasal erişim hakları içinde kalmalıdır."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -171,7 +192,7 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
                 modifier = Modifier.width(150.dp).height(54.dp),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
-            ) { Text("Edit", fontWeight = FontWeight.Black) }
+            ) { Text(AppLanguageStore.t("Edit", "Düzenle"), fontWeight = FontWeight.Black) }
 
             Button(
                 onClick = {
@@ -181,7 +202,7 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
                 modifier = Modifier.width(150.dp).height(54.dp),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-            ) { Text("Open Home", fontWeight = FontWeight.Black) }
+            ) { Text(AppLanguageStore.t("Open Home", "Home Aç"), fontWeight = FontWeight.Black) }
         }
     }
 }
@@ -190,7 +211,7 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
 private fun ProfileListButton(profile: MediaProfile, selected: Boolean, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.width(330.dp).height(72.dp),
+        modifier = Modifier.width(334.dp).height(72.dp),
         shape = RoundedCornerShape(22.dp),
         colors = ButtonDefaults.buttonColors(containerColor = if (selected) NexoraViolet.copy(alpha = 0.92f) else Color.White.copy(alpha = 0.07f), contentColor = Color.White)
     ) {
@@ -203,9 +224,9 @@ private fun ProfileListButton(profile: MediaProfile, selected: Boolean, onClick:
 
 @Composable
 private fun EmptyUserHint() {
-    Column(modifier = Modifier.width(330.dp).height(130.dp).background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(16.dp), verticalArrangement = Arrangement.Center) {
-        Text("No users yet", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
-        Text("Use Add User to create the first profile.", color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp)
+    Column(modifier = Modifier.width(334.dp).height(130.dp).background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(16.dp), verticalArrangement = Arrangement.Center) {
+        Text(AppLanguageStore.t("No users yet", "Henüz kullanıcı yok"), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
+        Text(AppLanguageStore.t("Use Add User to create the first profile.", "İlk profili oluşturmak için Kullanıcı Ekle'yi kullan."), color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp)
     }
 }
 
