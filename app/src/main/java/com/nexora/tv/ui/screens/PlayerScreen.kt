@@ -187,12 +187,7 @@ private fun TopOverlay(
         PlayerChip("LIVE")
         PlayerNavButton("Settings", width = 110, onClick = onSettingsClick)
         PlayerNavButton("Back") { navController.popBackStack() }
-        PlayerNavButton("Home") {
-            navController.navigate(AppDestinations.Home.route) {
-                popUpTo(AppDestinations.Home.route) { inclusive = false }
-                launchSingleTop = true
-            }
-        }
+        PlayerNavButton("Home") { goHome(navController) }
     }
 }
 
@@ -219,7 +214,6 @@ private fun BoxScope.BottomOverlay(
             fontWeight = FontWeight.Black,
             letterSpacing = 1.2.sp
         )
-
         Text(
             text = channel.name,
             color = Color.White,
@@ -232,12 +226,7 @@ private fun BoxScope.BottomOverlay(
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             PlayerNavButton("Settings", width = 110, onClick = onSettingsClick)
             PlayerNavButton("Back") { navController.popBackStack() }
-            PlayerNavButton("Home") {
-                navController.navigate(AppDestinations.Home.route) {
-                    popUpTo(AppDestinations.Home.route) { inclusive = false }
-                    launchSingleTop = true
-                }
-            }
+            PlayerNavButton("Home") { goHome(navController) }
         }
     }
 }
@@ -265,13 +254,7 @@ private fun BoxScope.PlaybackSettingsPanel(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Video Settings",
-                color = Color.White,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Black
-            )
-
+            Text("Video Settings", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black)
             PlayerNavButton("Close", width = 82, onClick = onClose)
         }
 
@@ -283,119 +266,66 @@ private fun BoxScope.PlaybackSettingsPanel(
         )
 
         SettingsSectionTitle("Quality")
-        SettingsOptionButton("Auto") {
-            clearTrackType(player, C.TRACK_TYPE_VIDEO)
-        }
+        SettingsOptionButton("Auto") { clearTrackType(player, C.TRACK_TYPE_VIDEO) }
         if (catalog.video.isEmpty()) {
             SettingsEmptyText("No manual quality option.")
         } else {
-            catalog.video.forEach { option ->
-                SettingsOptionButton(option.title) {
-                    applyTrack(player, option)
-                }
-            }
+            catalog.video.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
         }
 
         SettingsSectionTitle("Audio")
         if (catalog.audio.isEmpty()) {
             SettingsEmptyText("No language option.")
         } else {
-            catalog.audio.forEach { option ->
-                SettingsOptionButton(option.title) {
-                    applyTrack(player, option)
-                }
-            }
+            catalog.audio.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
         }
 
         SettingsSectionTitle("Subtitles")
-        SettingsOptionButton("Off") {
-            disableTextTrack(player)
-        }
+        SettingsOptionButton("Off") { disableTextTrack(player) }
         if (catalog.subtitles.isEmpty()) {
             SettingsEmptyText("No subtitle option.")
         } else {
-            catalog.subtitles.forEach { option ->
-                SettingsOptionButton(option.title) {
-                    applyTrack(player, option)
-                }
-            }
+            catalog.subtitles.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
         }
     }
 }
 
 @Composable
 private fun SettingsSectionTitle(text: String) {
-    Text(
-        text = text,
-        color = NexoraVioletSoft,
-        fontSize = 13.sp,
-        fontWeight = FontWeight.Black,
-        letterSpacing = 1.1.sp
-    )
+    Text(text = text, color = NexoraVioletSoft, fontSize = 13.sp, fontWeight = FontWeight.Black, letterSpacing = 1.1.sp)
 }
 
 @Composable
 private fun SettingsEmptyText(text: String) {
-    Text(
-        text = text,
-        color = Color.White.copy(alpha = 0.48f),
-        fontSize = 12.sp
-    )
+    Text(text = text, color = Color.White.copy(alpha = 0.48f), fontSize = 12.sp)
 }
 
 @Composable
 private fun SettingsOptionButton(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .width(340.dp)
-            .height(42.dp),
+        modifier = Modifier.width(340.dp).height(42.dp),
         shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = PanelSoft,
-            contentColor = Color.White
-        )
+        colors = ButtonDefaults.buttonColors(containerColor = PanelSoft, contentColor = Color.White)
     ) {
-        Text(
-            text = text,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+        Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
 @Composable
 private fun EmptyPlayerState(navController: NavController) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(48.dp),
+        modifier = Modifier.fillMaxSize().padding(48.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "No channel selected",
-            color = Color.White,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Black
-        )
+        Text("No channel selected", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black)
         Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = "Go back and select a channel.",
-            color = Color.White.copy(alpha = 0.68f),
-            fontSize = 14.sp
-        )
+        Text("Go back and select a channel.", color = Color.White.copy(alpha = 0.68f), fontSize = 14.sp)
         Spacer(modifier = Modifier.height(22.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             PlayerNavButton("Back") { navController.popBackStack() }
-            PlayerNavButton("Home") {
-                navController.navigate(AppDestinations.Home.route) {
-                    popUpTo(AppDestinations.Home.route) { inclusive = false }
-                    launchSingleTop = true
-                }
-            }
+            PlayerNavButton("Home") { goHome(navController) }
         }
     }
 }
@@ -414,23 +344,20 @@ private fun PlayerChip(text: String) {
 }
 
 @Composable
-private fun PlayerNavButton(
-    text: String,
-    width: Int = 86,
-    onClick: () -> Unit
-) {
+private fun PlayerNavButton(text: String, width: Int = 86, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .width(width.dp)
-            .height(40.dp),
+        modifier = Modifier.width(width.dp).height(40.dp),
         shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White.copy(alpha = 0.10f),
-            contentColor = Color.White
-        )
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.10f), contentColor = Color.White)
     ) {
         Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Black)
+    }
+}
+
+private fun goHome(navController: NavController) {
+    navController.navigate(AppDestinations.Home.route) {
+        launchSingleTop = true
     }
 }
 
@@ -442,7 +369,6 @@ private fun buildTrackCatalog(tracks: Tracks): TrackCatalog {
     tracks.groups.forEach { group ->
         for (index in 0 until group.length) {
             if (!group.isTrackSupported(index)) continue
-
             val format = group.getTrackFormat(index)
             val option = TrackOption(
                 title = when (group.type) {
@@ -455,7 +381,6 @@ private fun buildTrackCatalog(tracks: Tracks): TrackCatalog {
                 group = group.mediaTrackGroup,
                 index = index
             )
-
             when (group.type) {
                 C.TRACK_TYPE_VIDEO -> video.add(option)
                 C.TRACK_TYPE_AUDIO -> audio.add(option)
