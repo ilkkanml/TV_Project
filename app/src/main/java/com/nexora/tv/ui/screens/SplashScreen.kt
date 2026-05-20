@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.nexora.tv.data.app.AppLanguageStore
+import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.intro.NexoraBrandIntroSplash
 
@@ -11,13 +12,15 @@ import com.nexora.tv.ui.intro.NexoraBrandIntroSplash
 fun SplashScreen(navController: NavController) {
     val context = LocalContext.current
     AppLanguageStore.init(context)
+    MediaProfileStore.init(context)
 
     NexoraBrandIntroSplash(
         onFinished = {
-            val target = if (AppLanguageStore.hasChosenLanguage) {
-                AppDestinations.Activation.route
-            } else {
-                AppDestinations.Language.route
+            val target = when {
+                !AppLanguageStore.hasChosenLanguage -> AppDestinations.Language.route
+                MediaProfileStore.profiles.isEmpty() -> AppDestinations.Activation.route
+                MediaProfileStore.selectedProfile != null -> AppDestinations.Home.route
+                else -> AppDestinations.Profiles.route
             }
 
             navController.navigate(target) {
