@@ -1,6 +1,7 @@
 package com.nexora.tv.ui.screens
 
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -90,6 +91,10 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
     val context = LocalContext.current
     var showSettings by remember { mutableStateOf(false) }
     var trackCatalog by remember { mutableStateOf(TrackCatalog()) }
+
+    BackHandler(enabled = showSettings) {
+        showSettings = false
+    }
 
     val player = remember(channel.streamUrl) {
         ExoPlayer.Builder(context).build().apply {
