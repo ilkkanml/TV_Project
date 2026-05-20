@@ -21,7 +21,13 @@ data class MediaProfile(
     val live: List<LiveChannel>,
     val movies: List<LiveChannel>,
     val series: List<LiveChannel>,
-    val status: String
+    val status: String,
+    val mediaAccountExpiry: String = "Not available",
+    val mediaAccountStatus: String = "Unknown",
+    val activeConnections: String = "Not available",
+    val maxConnections: String = "Not available",
+    val trialStatus: String = "Not available",
+    val appValidity: String = "Early access active"
 )
 
 object MediaProfileStore {
@@ -93,7 +99,13 @@ object MediaProfileStore {
         movies: List<LiveChannel>,
         series: List<LiveChannel>,
         status: String,
-        context: Context? = null
+        context: Context? = null,
+        mediaAccountExpiry: String = "Not available",
+        mediaAccountStatus: String = "Unknown",
+        activeConnections: String = "Not available",
+        maxConnections: String = "Not available",
+        trialStatus: String = "Not available",
+        appValidity: String = "Early access active"
     ): MediaProfile {
         val existing = editingProfile
         val updated = MediaProfile(
@@ -106,15 +118,17 @@ object MediaProfileStore {
             live = live,
             movies = movies,
             series = series,
-            status = status
+            status = status,
+            mediaAccountExpiry = mediaAccountExpiry,
+            mediaAccountStatus = mediaAccountStatus,
+            activeConnections = activeConnections,
+            maxConnections = maxConnections,
+            trialStatus = trialStatus,
+            appValidity = appValidity
         )
 
         val index = profiles.indexOfFirst { it.id == updated.id }
-        if (index >= 0) {
-            profiles[index] = updated
-        } else {
-            profiles.add(updated)
-        }
+        if (index >= 0) profiles[index] = updated else profiles.add(updated)
 
         editingProfileId = null
         selectedProfileId = updated.id
@@ -145,6 +159,12 @@ object MediaProfileStore {
             .put("movies", movies.toJsonArray())
             .put("series", series.toJsonArray())
             .put("status", status)
+            .put("mediaAccountExpiry", mediaAccountExpiry)
+            .put("mediaAccountStatus", mediaAccountStatus)
+            .put("activeConnections", activeConnections)
+            .put("maxConnections", maxConnections)
+            .put("trialStatus", trialStatus)
+            .put("appValidity", appValidity)
     }
 
     private fun JSONObject.toProfile(): MediaProfile {
@@ -158,7 +178,13 @@ object MediaProfileStore {
             live = optJSONArray("live").toChannels(),
             movies = optJSONArray("movies").toChannels(),
             series = optJSONArray("series").toChannels(),
-            status = optString("status", "Ready")
+            status = optString("status", "Ready"),
+            mediaAccountExpiry = optString("mediaAccountExpiry", "Not available"),
+            mediaAccountStatus = optString("mediaAccountStatus", "Unknown"),
+            activeConnections = optString("activeConnections", "Not available"),
+            maxConnections = optString("maxConnections", "Not available"),
+            trialStatus = optString("trialStatus", "Not available"),
+            appValidity = optString("appValidity", "Early access active")
         )
     }
 
