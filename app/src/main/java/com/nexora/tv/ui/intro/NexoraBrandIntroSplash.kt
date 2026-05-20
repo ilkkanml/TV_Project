@@ -83,7 +83,6 @@ private fun DrawScope.drawIntroFrame(t: Float) {
     val subAlpha = easeOut(segment(t, 2.00f, 2.65f)) * (1f - easeInOut(segment(t, 3.30f, 3.80f))) * fade
     if (subAlpha > 0.02f) drawSubtitle(cx, lineY, logoSize * 0.33f, subAlpha)
 
-    // No side loop. No half-circle. The mountain appears directly after the center line closes.
     val mountain = easeOut(segment(t, 4.25f, 5.85f))
     if (mountain > 0.01f) {
         val baseY = logoY - logoSize * 0.95f
@@ -106,11 +105,14 @@ private fun DrawScope.drawLogo(cx: Float, cy: Float, size: Float, alpha: Float) 
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
             textSize = size
-            textAlign = Paint.Align.CENTER
-            color = android.graphics.Color.argb((255 * alpha).toInt().coerceIn(0, 255), 245, 245, 255)
+            textAlign = Paint.Align.LEFT
         }
         val baseline = cy - (paint.ascent() + paint.descent()) / 2f
-        canvas.nativeCanvas.drawText("NEXORA", cx, baseline, paint)
+        val totalWidth = paint.measureText("NEXORA")
+        var x = cx - totalWidth / 2f
+        x = drawSegment(canvas.nativeCanvas, paint, "NE", x, baseline, alpha, 245, 245, 255)
+        x = drawSegment(canvas.nativeCanvas, paint, "X", x, baseline, alpha, 124, 58, 237)
+        drawSegment(canvas.nativeCanvas, paint, "ORA", x, baseline, alpha, 245, 245, 255)
     }
 }
 
@@ -119,12 +121,32 @@ private fun DrawScope.drawSubtitle(cx: Float, cy: Float, size: Float, alpha: Flo
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             typeface = Typeface.create("sans-serif-medium", Typeface.BOLD)
             textSize = size
-            textAlign = Paint.Align.CENTER
-            color = android.graphics.Color.argb((190 * alpha).toInt().coerceIn(0, 255), 220, 255, 238)
+            textAlign = Paint.Align.LEFT
         }
         val baseline = cy - (paint.ascent() + paint.descent()) / 2f
-        canvas.nativeCanvas.drawText("PLAYER ECOSYSTEMS", cx, baseline, paint)
+        val totalWidth = paint.measureText("PLAYER ECOSYSTEM")
+        var x = cx - totalWidth / 2f
+        x = drawSegment(canvas.nativeCanvas, paint, "PLAYER ", x, baseline, alpha, 220, 232, 240, 190)
+        x = drawSegment(canvas.nativeCanvas, paint, "ECO", x, baseline, alpha, 57, 255, 136, 230)
+        drawSegment(canvas.nativeCanvas, paint, "SYSTEM", x, baseline, alpha, 220, 232, 240, 190)
     }
+}
+
+private fun drawSegment(
+    canvas: android.graphics.Canvas,
+    paint: Paint,
+    text: String,
+    x: Float,
+    baseline: Float,
+    alpha: Float,
+    red: Int,
+    green: Int,
+    blue: Int,
+    maxAlpha: Int = 255
+): Float {
+    paint.color = android.graphics.Color.argb((maxAlpha * alpha).toInt().coerceIn(0, 255), red, green, blue)
+    canvas.drawText(text, x, baseline, paint)
+    return x + paint.measureText(text)
 }
 
 private fun DrawScope.drawGlowLine(a: Offset, b: Offset, stroke: Float, alpha: Float) {
