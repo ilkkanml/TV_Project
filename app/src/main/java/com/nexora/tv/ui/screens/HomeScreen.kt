@@ -21,13 +21,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -125,7 +129,7 @@ private fun openPlayerOrDetails(navController: NavController, item: NexoraConten
     if (item.id == PROFILE_ACCESS_SETTING_ID) {
         navController.navigate(AppDestinations.PlaylistProfile.route) { launchSingleTop = true }
     } else if (item.isPlayable) {
-        navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+        openDetails(navController, item)
     } else {
         navController.navigate(AppDestinations.Detail.createRoute(item.id)) { launchSingleTop = true }
     }
@@ -133,6 +137,14 @@ private fun openPlayerOrDetails(navController: NavController, item: NexoraConten
 
 @Composable
 private fun Sidebar(selectedMenu: HomeMenu, onMenuSelected: (HomeMenu) -> Unit) {
+    val menuFocusRequesters = remember {
+        HomeMenu.values().associateWith { FocusRequester() }
+    }
+
+    LaunchedEffect(selectedMenu) {
+        menuFocusRequesters[selectedMenu]?.requestFocus()
+    }
+
     Column(
         modifier = Modifier
             .width(188.dp)
@@ -146,7 +158,13 @@ private fun Sidebar(selectedMenu: HomeMenu, onMenuSelected: (HomeMenu) -> Unit) 
         Text("PLAYER ECOSYSTEMS", color = NexoraVioletSoft, fontSize = 8.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
         Spacer(modifier = Modifier.height(4.dp))
         HomeMenu.values().forEach { menu ->
-            MenuButton(menu.icon, menu.label, selectedMenu == menu) { onMenuSelected(menu) }
+            MenuButton(
+                icon = menu.icon,
+                title = menu.label,
+                selected = selectedMenu == menu,
+                focusRequester = menuFocusRequesters.getValue(menu),
+                onSelected = { onMenuSelected(menu) }
+            )
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
@@ -160,12 +178,19 @@ private fun Sidebar(selectedMenu: HomeMenu, onMenuSelected: (HomeMenu) -> Unit) 
 }
 
 @Composable
-private fun MenuButton(icon: String, title: String, selected: Boolean, onSelected: () -> Unit) {
+private fun MenuButton(
+    icon: String,
+    title: String,
+    selected: Boolean,
+    focusRequester: FocusRequester,
+    onSelected: () -> Unit
+) {
     Button(
         onClick = onSelected,
         modifier = Modifier
             .fillMaxWidth()
             .height(44.dp)
+            .focusRequester(focusRequester)
             .onFocusChanged { focusState ->
                 if (focusState.isFocused) onSelected()
             }
