@@ -130,7 +130,8 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
             .height(635.dp)
             .background(PanelDark, RoundedCornerShape(32.dp))
             .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp))
-            .padding(26.dp),
+            .padding(26.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         if (profile == null) {
@@ -179,6 +180,14 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
         InfoLine(AppLanguageStore.t("Password", "Şifre"), if (profile.accessKey.isBlank()) AppLanguageStore.t("Not saved", "Kaydedilmedi") else "••••••••")
         InfoLine(AppLanguageStore.t("Selected profile", "Seçili profil"), profile.profileName)
 
+        Text(AppLanguageStore.t("Account status", "Hesap durumu"), color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Black)
+        InfoLine(AppLanguageStore.t("Media account expiry", "Yayın hesabı son geçerlilik"), profile.mediaAccountExpiry)
+        InfoLine(AppLanguageStore.t("Media account status", "Yayın hesabı durumu"), profile.mediaAccountStatus)
+        InfoLine(AppLanguageStore.t("App validity", "Uygulama geçerliliği"), AppLanguageStore.t(profile.appValidity, "Erken erişim aktif"))
+        InfoLine(AppLanguageStore.t("Active connections", "Aktif bağlantı"), profile.activeConnections)
+        InfoLine(AppLanguageStore.t("Max connections", "Maksimum bağlantı"), profile.maxConnections)
+        InfoLine(AppLanguageStore.t("Trial account", "Deneme hesabı"), profile.trialStatus)
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -189,8 +198,8 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
         ) {
             Text(AppLanguageStore.t("Profile policy", "Profil politikası"), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
             Text(AppLanguageStore.t("• This profile connects only to media access entered by the user.", "• Bu profil yalnızca kullanıcının girdiği medya erişimine bağlanır."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
-            Text(AppLanguageStore.t("• Nexora TV does not sell, host, retransmit, scrape, or provide media services.", "• Nexora TV medya servisi satmaz, barındırmaz, yeniden yayınlamaz, kazıma yapmaz veya sağlamaz."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
-            Text(AppLanguageStore.t("• Usage must remain within the user's own legal access rights.", "• Kullanım, kullanıcının kendi yasal erişim hakları içinde kalmalıdır."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
+            Text(AppLanguageStore.t("• We do not use MAC address as the main identity because it can expose device-level information and may change depending on system privacy rules.", "• MAC adresini ana kimlik olarak kullanmıyoruz; cihaz seviyesinde bilgi açığa çıkarabilir ve sistem gizlilik kurallarına göre değişebilir."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
+            Text(AppLanguageStore.t("• The app uses a safer device profile model instead.", "• Bunun yerine daha güvenli bir cihaz profili modeli kullanıyoruz."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
