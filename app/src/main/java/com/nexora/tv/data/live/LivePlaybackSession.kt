@@ -11,10 +11,16 @@ object LivePlaybackSession {
     var loadedChannels: List<LiveChannel> by mutableStateOf(emptyList())
         private set
 
-    var sourceTitle: String by mutableStateOf("No media source loaded")
+    var loadedMovies: List<LiveChannel> by mutableStateOf(emptyList())
         private set
 
-    var sourceStatus: String by mutableStateOf("Add a media source to load channels.")
+    var loadedSeries: List<LiveChannel> by mutableStateOf(emptyList())
+        private set
+
+    var sourceTitle: String by mutableStateOf("No source loaded")
+        private set
+
+    var sourceStatus: String by mutableStateOf("Add a source to load items.")
         private set
 
     val hasLoadedChannels: Boolean
@@ -24,23 +30,25 @@ object LivePlaybackSession {
         currentChannel = channel
     }
 
-    fun setCatalog(title: String, channels: List<LiveChannel>) {
-        loadedChannels = channels
-            .distinctBy { it.streamUrl }
-            .take(1500)
-
+    fun setCatalog(
+        title: String,
+        channels: List<LiveChannel>,
+        movies: List<LiveChannel> = emptyList(),
+        series: List<LiveChannel> = emptyList()
+    ) {
+        loadedChannels = channels.distinctBy { it.streamUrl.ifBlank { it.name + it.group } }.take(1500)
+        loadedMovies = movies.distinctBy { it.streamUrl.ifBlank { it.name + it.group } }.take(1500)
+        loadedSeries = series.distinctBy { it.streamUrl.ifBlank { it.name + it.group } }.take(1500)
         sourceTitle = title
-        sourceStatus = if (loadedChannels.isEmpty()) {
-            "No channels found."
-        } else {
-            "${loadedChannels.size} channels ready."
-        }
+        sourceStatus = "${loadedChannels.size} live / ${loadedMovies.size} movies / ${loadedSeries.size} series"
     }
 
     fun clearCatalog() {
         loadedChannels = emptyList()
-        sourceTitle = "No media source loaded"
-        sourceStatus = "Add a media source to load channels."
+        loadedMovies = emptyList()
+        loadedSeries = emptyList()
+        sourceTitle = "No source loaded"
+        sourceStatus = "Add a source to load items."
     }
 
     fun clearPlayer() {
