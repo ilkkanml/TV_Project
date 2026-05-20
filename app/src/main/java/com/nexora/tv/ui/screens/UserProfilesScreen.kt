@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,9 @@ private val PanelDark = Color(0xCC090B12)
 
 @Composable
 fun UserProfilesScreen(navController: NavController) {
+    val context = LocalContext.current
+    MediaProfileStore.init(context)
+
     val profiles = MediaProfileStore.profiles
     val selected = MediaProfileStore.selectedProfile
 
@@ -101,7 +105,7 @@ fun UserProfilesScreen(navController: NavController) {
                                 profile = profile,
                                 selected = selected?.id == profile.id,
                                 onClick = {
-                                    MediaProfileStore.select(profile)
+                                    MediaProfileStore.select(profile, context)
                                     navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                 }
                             )
@@ -110,13 +114,16 @@ fun UserProfilesScreen(navController: NavController) {
                 }
             }
 
-            ProfileInfoPanel(navController = navController, profile = selected)
+            ProfileInfoPanel(navController = navController, profile = selected, onSelect = { profile ->
+                MediaProfileStore.select(profile, context)
+                navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+            })
         }
     }
 }
 
 @Composable
-private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile?) {
+private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile?, onSelect: (MediaProfile) -> Unit) {
     Column(
         modifier = Modifier
             .width(760.dp)
@@ -198,10 +205,7 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
             ) { Text(AppLanguageStore.t("Edit", "Düzenle"), fontWeight = FontWeight.Black) }
 
             Button(
-                onClick = {
-                    MediaProfileStore.select(profile)
-                    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
-                },
+                onClick = { onSelect(profile) },
                 modifier = Modifier.width(150.dp).height(54.dp),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
