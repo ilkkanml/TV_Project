@@ -23,11 +23,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -61,8 +62,9 @@ private enum class HomeMenu(val label: String, val icon: String, val section: Ne
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    var selectedMenu by remember { mutableStateOf(HomeMenu.Home) }
-    var selectedItemId by remember { mutableStateOf(MockContentLibrary.firstItemFor(NexoraContentSection.Home)?.id) }
+    var selectedMenuName by rememberSaveable { mutableStateOf(HomeMenu.Home.name) }
+    val selectedMenu = runCatching { HomeMenu.valueOf(selectedMenuName) }.getOrDefault(HomeMenu.Home)
+    var selectedItemId by rememberSaveable { mutableStateOf(MockContentLibrary.firstItemFor(selectedMenu.section)?.id) }
     val rows = MockContentLibrary.rowsFor(selectedMenu.section)
     val selectedItem = MockContentLibrary.findContent(selectedItemId) ?: rows.firstOrNull()?.items?.firstOrNull()
 
@@ -74,8 +76,10 @@ fun HomeScreen(navController: NavController) {
             Sidebar(
                 selectedMenu = selectedMenu,
                 onMenuSelected = { menu ->
-                    selectedMenu = menu
-                    selectedItemId = MockContentLibrary.firstItemFor(menu.section)?.id
+                    if (selectedMenu != menu) {
+                        selectedMenuName = menu.name
+                        selectedItemId = MockContentLibrary.firstItemFor(menu.section)?.id
+                    }
                 }
             )
 
@@ -146,7 +150,7 @@ private fun Sidebar(selectedMenu: HomeMenu, onMenuSelected: (HomeMenu) -> Unit) 
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "OK opens • Back returns",
+            text = "Focus changes section • OK opens cards",
             color = Color.White.copy(alpha = 0.48f),
             fontSize = 9.sp,
             lineHeight = 12.sp,
@@ -159,9 +163,15 @@ private fun Sidebar(selectedMenu: HomeMenu, onMenuSelected: (HomeMenu) -> Unit) 
 private fun MenuButton(icon: String, title: String, selected: Boolean, onSelected: () -> Unit) {
     Button(
         onClick = onSelected,
-        modifier = Modifier.fillMaxWidth().height(44.dp).then(
-            if (selected) Modifier.shadow(9.dp, RoundedCornerShape(15.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet) else Modifier
-        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp)
+            .onFocusChanged { focusState ->
+                if (focusState.isFocused) onSelected()
+            }
+            .then(
+                if (selected) Modifier.shadow(9.dp, RoundedCornerShape(15.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet) else Modifier
+            ),
         shape = RoundedCornerShape(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = if (selected) Color(0xCC171C30) else Color.White.copy(alpha = 0.045f),
@@ -191,7 +201,7 @@ private fun TopUtilityBar(selectedMenu: HomeMenu) {
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(selectedMenu.label, color = Color.White, fontSize = 27.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text("Premium Android TV shell • remote-first navigation", color = Color.White.copy(alpha = 0.60f), fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text("Licensed Android TV shell • remote-first navigation", color = Color.White.copy(alpha = 0.60f), fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         UtilityPill("4K")
         UtilityPill("Dolby")
@@ -240,23 +250,29 @@ private fun ContentRow(row: NexoraContentRow, selectedItemId: String?, onItemFoc
         Text(row.subtitle, color = Color.White.copy(alpha = 0.56f), fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             row.items.forEach { item ->
-                LibraryCard(item, selectedItemId == item.id) {
-                    onItemFocused(item)
-                    onItemDetails(item)
-                }
+                LibraryCard(
+                    item = item,
+                    selected = selectedItemId == item.id,
+                    onFocus = { onItemFocused(item) },
+                    onClick = { onItemDetails(item) }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun LibraryCard(item: NexoraContentItem, selected: Boolean, onClick: () -> Unit) {
+private fun LibraryCard(item: NexoraContentItem, selected: Boolean, onFocus: () -> Unit, onClick: () -> Unit) {
     val accent = Color(item.accentColor)
     Button(
         onClick = onClick,
-        modifier = Modifier.width(186.dp).height(112.dp).then(
-            if (selected) Modifier.shadow(11.dp, RoundedCornerShape(20.dp), ambientColor = accent, spotColor = accent) else Modifier
-        ),
+        modifier = Modifier
+            .width(186.dp)
+            .height(112.dp)
+            .onFocusChanged { focusState -> if (focusState.isFocused) onFocus() }
+            .then(
+                if (selected) Modifier.shadow(11.dp, RoundedCornerShape(20.dp), ambientColor = accent, spotColor = accent) else Modifier
+            ),
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(containerColor = CardSoft, contentColor = Color.White)
     ) {
