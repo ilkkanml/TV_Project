@@ -1,0 +1,19 @@
+# Android / Gradle
+.gradle/
+build/
+app/build/
+
+# Local machine files
+local.properties
+.gradle/config.properties
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
