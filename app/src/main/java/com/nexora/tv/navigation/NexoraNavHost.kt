@@ -8,7 +8,6 @@ import com.nexora.tv.ui.screens.ContentDetailScreen
 import com.nexora.tv.ui.screens.DeviceActivationScreen
 import com.nexora.tv.ui.screens.HomeScreen
 import com.nexora.tv.ui.screens.LanguageSelectionScreen
-import com.nexora.tv.ui.screens.LoginScreen
 import com.nexora.tv.ui.screens.MediaSourceSetupScreen
 import com.nexora.tv.ui.screens.PlayerScreen
 import com.nexora.tv.ui.screens.SplashScreen
@@ -21,7 +20,6 @@ fun NexoraNavHost() {
     NavHost(navController = navController, startDestination = AppDestinations.Splash.route) {
         composable(AppDestinations.Splash.route) { SplashScreen(navController) }
         composable(AppDestinations.Language.route) { LanguageSelectionScreen(navController) }
-        composable(AppDestinations.Login.route) { LoginScreen(navController) }
         composable(AppDestinations.Activation.route) { DeviceActivationScreen(navController) }
         composable(AppDestinations.Profiles.route) { UserProfilesScreen(navController) }
         composable(AppDestinations.Home.route) { HomeScreen(navController) }
