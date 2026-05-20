@@ -9,18 +9,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +32,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -41,12 +48,14 @@ import com.nexora.tv.data.live.LivePlaybackSession
 import com.nexora.tv.data.live.M3uParser
 import com.nexora.tv.data.live.ProviderPortalLoader
 import com.nexora.tv.data.live.RemoteListLoader
+import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
 private val NexoraGreen = Color(0xFF39FF88)
+private val NexoraBlue = Color(0xFF4CC9FF)
 private val PanelDark = Color(0xCC090B12)
 private val PanelSoft = Color(0xAA11131C)
 
@@ -59,54 +68,78 @@ private enum class SetupMode(val label: String) {
 
 @Composable
 fun PlaylistProfileScreen(navController: NavController) {
+    val editingProfile = MediaProfileStore.editingProfile
+    val connectFocusRequester = remember { FocusRequester() }
+
     var mode by remember { mutableStateOf(SetupMode.ProviderApi) }
-    var serverAddress by remember { mutableStateOf("") }
-    var accountName by remember { mutableStateOf("") }
-    var accessKey by remember { mutableStateOf("") }
+    var profileName by remember { mutableStateOf(editingProfile?.profileName ?: "") }
+    var serverAddress by remember { mutableStateOf(editingProfile?.serverAddress ?: "") }
+    var accountName by remember { mutableStateOf(editingProfile?.accountName ?: "") }
+    var accessKey by remember { mutableStateOf(editingProfile?.accessKey ?: "") }
     var listAddress by remember { mutableStateOf("") }
     var localData by remember { mutableStateOf("") }
     var singleStreamUrl by remember { mutableStateOf("") }
-    var previewChannels by remember { mutableStateOf<List<LiveChannel>>(emptyList()) }
-    var selectedGroup by remember { mutableStateOf("All") }
     var isLoading by remember { mutableStateOf(false) }
-    var statusText by remember { mutableStateOf("Choose a media source and enter your own legal access.") }
+    var showClearConfirm by remember { mutableStateOf(false) }
+    var statusText by remember { mutableStateOf(editingProfile?.status ?: "Create a profile and connect a personal media source.") }
 
-    val groups = remember(previewChannels) {
-        listOf("All") + previewChannels.map { it.group.ifBlank { "Live" } }.distinct().take(24)
-    }
-
-    val visibleChannels = remember(previewChannels, selectedGroup) {
-        if (selectedGroup == "All") previewChannels else previewChannels.filter { it.group == selectedGroup }
+    if (showClearConfirm) {
+        AlertDialog(
+            onDismissRequest = { showClearConfirm = false },
+            title = { Text("Clear form?") },
+            text = { Text("This will clear the current form fields. Existing saved profiles will not be deleted.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    profileName = ""
+                    serverAddress = ""
+                    accountName = ""
+                    accessKey = ""
+                    listAddress = ""
+                    localData = ""
+                    singleStreamUrl = ""
+                    statusText = "Create a profile and connect a personal media source."
+                    showClearConfirm = false
+                }) { Text("Clear") }
+            },
+            dismissButton = { TextButton(onClick = { showClearConfirm = false }) { Text("Cancel") } }
+        )
     }
 
     NexoraCinematicBackdrop {
         Row(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 30.dp, vertical = 24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 30.dp, vertical = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(22.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier.width(455.dp).verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(11.dp)
+                modifier = Modifier
+                    .width(500.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(13.dp)
             ) {
                 Text("NEXORA", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black, letterSpacing = 2.3.sp, maxLines = 1)
-                Text("Media Source Setup", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text("Create Profile", color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
-                    text = "Enter your own legal media access. The app does not provide channels, accounts, playlists, or streams.",
-                    color = Color.White.copy(alpha = 0.68f),
+                    text = "Use OK/Enter to edit a field. Moving across fields will not open the keyboard.",
+                    color = Color.White.copy(alpha = 0.62f),
                     fontSize = 12.sp,
                     lineHeight = 17.sp
                 )
 
-                Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TvInputBox("Profile name", profileName, { profileName = it })
+
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     SetupMode.values().forEach { item ->
                         SetupModeButton(
                             text = item.label,
                             selected = mode == item,
                             onClick = {
                                 mode = item
-                                previewChannels = emptyList()
-                                selectedGroup = "All"
                                 statusText = when (item) {
                                     SetupMode.ProviderApi -> "Provider API selected. Enter server, user name and password."
                                     SetupMode.M3u -> "M3U URL selected. Paste your list URL."
@@ -120,44 +153,58 @@ fun PlaylistProfileScreen(navController: NavController) {
 
                 when (mode) {
                     SetupMode.ProviderApi -> {
-                        SetupTextField("Server URL", serverAddress, { serverAddress = it })
-                        SetupTextField("User name", accountName, { accountName = it })
-                        SetupTextField("Password", accessKey, { accessKey = it }, secret = true)
+                        TvInputBox("Server URL", serverAddress, { serverAddress = it })
+                        TvInputBox("User name", accountName, { accountName = it })
+                        TvInputBox(
+                            label = "Password",
+                            value = accessKey,
+                            onChange = { accessKey = it },
+                            secret = true,
+                            modifier = Modifier.focusProperties { down = connectFocusRequester }
+                        )
                     }
-                    SetupMode.M3u -> SetupTextField("M3U URL", listAddress, { listAddress = it })
-                    SetupMode.LocalData -> SetupTextField("Paste list data", localData, { localData = it }, singleLine = false, height = 118)
-                    SetupMode.SingleStream -> SetupTextField("Stream URL", singleStreamUrl, { singleStreamUrl = it })
+                    SetupMode.M3u -> TvInputBox("M3U URL", listAddress, { listAddress = it })
+                    SetupMode.LocalData -> TvInputBox("Paste list data", localData, { localData = it }, height = 82)
+                    SetupMode.SingleStream -> TvInputBox("Stream URL", singleStreamUrl, { singleStreamUrl = it })
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
                         onClick = {
                             if (isLoading) return@Button
+                            val safeProfileName = profileName.ifBlank { "UserProfile" }
+
                             when (mode) {
                                 SetupMode.ProviderApi -> {
                                     isLoading = true
                                     statusText = "Connecting..."
                                     Thread {
-                                        val result = runCatching {
-                                            ProviderPortalLoader.loadLive(serverAddress, accountName, accessKey)
-                                        }
+                                        val result = runCatching { ProviderPortalLoader.loadAll(serverAddress, accountName, accessKey) }
                                         Handler(Looper.getMainLooper()).post {
                                             isLoading = false
-                                            result.onSuccess { loaded ->
-                                                previewChannels = loaded
-                                                selectedGroup = "All"
-                                                LivePlaybackSession.setCatalog("Provider API", loaded)
-                                                statusText = if (loaded.isEmpty()) "No channels found." else "Loaded ${loaded.size} channels."
-                                                if (loaded.isNotEmpty()) {
+                                            result
+                                                .onSuccess { loaded ->
+                                                    val status = "${loaded.live.size} live • ${loaded.movies.size} movies • ${loaded.series.size} series"
+                                                    LivePlaybackSession.setCatalog(safeProfileName, loaded.live, loaded.movies, loaded.series)
+                                                    MediaProfileStore.upsert(
+                                                        profileName = safeProfileName,
+                                                        sourceType = "Provider API",
+                                                        serverAddress = serverAddress,
+                                                        accountName = accountName,
+                                                        accessKey = accessKey,
+                                                        live = loaded.live,
+                                                        movies = loaded.movies,
+                                                        series = loaded.series,
+                                                        status = status
+                                                    )
+                                                    statusText = status
                                                     navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                                 }
-                                            }.onFailure { error ->
-                                                previewChannels = emptyList()
-                                                statusText = error.message ?: "Could not connect."
-                                            }
+                                                .onFailure { error -> statusText = error.message ?: "Could not connect." }
                                         }
                                     }.start()
                                 }
+
                                 SetupMode.M3u -> {
                                     isLoading = true
                                     statusText = "Loading..."
@@ -165,35 +212,34 @@ fun PlaylistProfileScreen(navController: NavController) {
                                         val result = runCatching { RemoteListLoader.load(listAddress) }
                                         Handler(Looper.getMainLooper()).post {
                                             isLoading = false
-                                            result.onSuccess { loaded ->
-                                                previewChannels = loaded
-                                                selectedGroup = "All"
-                                                LivePlaybackSession.setCatalog("M3U URL", loaded)
-                                                statusText = if (loaded.isEmpty()) "No channels found." else "Loaded ${loaded.size} channels."
-                                                if (loaded.isNotEmpty()) {
-                                                    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+                                            result
+                                                .onSuccess { loaded ->
+                                                    val status = "${loaded.size} live • 0 movies • 0 series"
+                                                    LivePlaybackSession.setCatalog(safeProfileName, loaded)
+                                                    MediaProfileStore.upsert(safeProfileName, "M3U URL", listAddress, "", "", loaded, emptyList(), emptyList(), status)
+                                                    statusText = status
+                                                    if (loaded.isNotEmpty()) navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                                 }
-                                            }.onFailure { error ->
-                                                previewChannels = emptyList()
-                                                statusText = error.message ?: "Could not load."
-                                            }
+                                                .onFailure { error -> statusText = error.message ?: "Could not load." }
                                         }
                                     }.start()
                                 }
+
                                 SetupMode.LocalData -> {
                                     val parsed = M3uParser.parse(localData)
-                                    previewChannels = parsed
-                                    selectedGroup = "All"
-                                    LivePlaybackSession.setCatalog("Local data", parsed)
-                                    statusText = if (parsed.isEmpty()) "No channels found in local data." else "Loaded ${parsed.size} channels."
-                                    if (parsed.isNotEmpty()) {
-                                        navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
-                                    }
+                                    val status = "${parsed.size} live • 0 movies • 0 series"
+                                    LivePlaybackSession.setCatalog(safeProfileName, parsed)
+                                    MediaProfileStore.upsert(safeProfileName, "Local data", "Local", "", "", parsed, emptyList(), emptyList(), status)
+                                    statusText = status
+                                    if (parsed.isNotEmpty()) navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                 }
+
                                 SetupMode.SingleStream -> {
                                     val stream = singleStreamUrl.trim()
                                     if (stream.startsWith("http://") || stream.startsWith("https://")) {
-                                        LivePlaybackSession.select(LiveChannel(name = "Single Stream", streamUrl = stream, group = "Single Stream"))
+                                        val item = LiveChannel("Single Stream", stream, "Single Stream")
+                                        LivePlaybackSession.select(item)
+                                        MediaProfileStore.upsert(safeProfileName, "Single stream", stream, "", "", listOf(item), emptyList(), emptyList(), "1 stream ready")
                                         navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
                                     } else {
                                         statusText = "Stream URL must start with http or https."
@@ -201,157 +247,156 @@ fun PlaylistProfileScreen(navController: NavController) {
                                 }
                             }
                         },
-                        modifier = Modifier.width(174.dp).height(48.dp),
-                        shape = RoundedCornerShape(15.dp),
+                        modifier = Modifier
+                            .width(174.dp)
+                            .height(52.dp)
+                            .focusRequester(connectFocusRequester),
+                        shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
-                    ) {
-                        Text(
-                            text = if (isLoading) "Loading" else if (mode == SetupMode.SingleStream) "Play Stream" else "Connect",
-                            fontWeight = FontWeight.Black,
-                            fontSize = 12.sp
-                        )
-                    }
+                    ) { Text(if (isLoading) "Loading" else if (mode == SetupMode.SingleStream) "Play Stream" else "Connect", fontWeight = FontWeight.Black, fontSize = 13.sp) }
 
                     Button(
-                        onClick = {
-                            serverAddress = ""
-                            accountName = ""
-                            accessKey = ""
-                            listAddress = ""
-                            localData = ""
-                            singleStreamUrl = ""
-                            previewChannels = emptyList()
-                            selectedGroup = "All"
-                            LivePlaybackSession.clearCatalog()
-                            statusText = "Choose a media source and enter your own legal access."
-                        },
-                        modifier = Modifier.width(102.dp).height(48.dp),
-                        shape = RoundedCornerShape(15.dp),
+                        onClick = { showClearConfirm = true },
+                        modifier = Modifier.width(102.dp).height(52.dp),
+                        shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
                     ) { Text("Clear", fontSize = 12.sp) }
 
                     Button(
-                        onClick = { navController.navigate(AppDestinations.Home.route) { launchSingleTop = true } },
-                        modifier = Modifier.width(102.dp).height(48.dp),
-                        shape = RoundedCornerShape(15.dp),
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier.width(102.dp).height(52.dp),
+                        shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-                    ) { Text("Home", fontSize = 12.sp) }
+                    ) { Text("Back", fontSize = 12.sp) }
                 }
 
-                Box(
-                    modifier = Modifier.width(455.dp).background(PanelSoft, RoundedCornerShape(20.dp))
-                        .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
-                        .padding(14.dp)
-                ) {
-                    Text(statusText, color = Color.White.copy(alpha = 0.76f), fontSize = 12.sp, lineHeight = 17.sp)
-                }
-
-                if (groups.isNotEmpty()) {
-                    Text("Groups", color = NexoraVioletSoft, fontSize = 12.sp, fontWeight = FontWeight.Black)
-                    Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        groups.forEach { group ->
-                            GroupButton(text = group, selected = selectedGroup == group, onClick = { selectedGroup = group })
-                        }
-                    }
-                }
+                StatusBox(statusText)
             }
 
-            Column(
-                modifier = Modifier.width(690.dp).height(594.dp).background(PanelDark, RoundedCornerShape(30.dp))
-                    .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
-                    .padding(22.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Row(modifier = Modifier.width(640.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Column {
-                        Text("Channels", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black)
-                        Text("${visibleChannels.size} visible", color = Color.White.copy(alpha = 0.56f), fontSize = 12.sp)
-                    }
-                    StatusPill(if (previewChannels.isEmpty()) "EMPTY" else "READY")
-                }
+            EarlyAccessPanel()
+        }
+    }
+}
 
-                Column(
-                    modifier = Modifier.width(640.dp).height(500.dp).verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    if (visibleChannels.isEmpty()) {
-                        EmptyListHint()
-                    } else {
-                        visibleChannels.forEach { channel ->
-                            ChannelRow(channel = channel, onClick = {
-                                LivePlaybackSession.select(channel)
-                                navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
-                            })
-                        }
-                    }
-                }
-            }
+@Composable
+private fun TvInputBox(
+    label: String,
+    value: String,
+    onChange: (String) -> Unit,
+    secret: Boolean = false,
+    height: Int = 66,
+    modifier: Modifier = Modifier
+) {
+    var editing by remember { mutableStateOf(false) }
+    var draft by remember(value) { mutableStateOf(value) }
+    val displayValue = when {
+        value.isBlank() -> "Press OK to enter"
+        secret -> "•".repeat(value.length.coerceAtMost(12))
+        else -> value
+    }
+
+    if (editing) {
+        AlertDialog(
+            onDismissRequest = { editing = false },
+            title = { Text(label) },
+            text = {
+                OutlinedTextField(
+                    value = draft,
+                    onValueChange = { draft = it.filterNot { char -> char.isWhitespace() } },
+                    singleLine = true,
+                    visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
+                    colors = OutlinedTextFieldDefaults.colors()
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    onChange(draft.filterNot { it.isWhitespace() })
+                    editing = false
+                }) { Text("Save") }
+            },
+            dismissButton = { TextButton(onClick = { editing = false }) { Text("Cancel") } }
+        )
+    }
+
+    Button(
+        onClick = {
+            draft = value
+            editing = true
+        },
+        modifier = modifier
+            .width(500.dp)
+            .height(height.dp),
+        shape = RoundedCornerShape(18.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.055f), contentColor = Color.White)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center) {
+            Text(label, color = NexoraVioletSoft, fontSize = 11.sp, fontWeight = FontWeight.Black, maxLines = 1)
+            Text(displayValue, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
 
 @Composable
 private fun SetupModeButton(text: String, selected: Boolean, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.height(40.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = if (selected) NexoraViolet else Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
+    Button(onClick = onClick, modifier = Modifier.height(42.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = if (selected) NexoraViolet else Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
         Text(text, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Black else FontWeight.Medium, maxLines = 1)
     }
 }
 
 @Composable
-private fun SetupTextField(label: String, value: String, onChange: (String) -> Unit, secret: Boolean = false, singleLine: Boolean = true, height: Int = 56) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
-        label = { Text(label) },
-        modifier = Modifier.width(455.dp).height(height.dp),
-        singleLine = singleLine,
-        visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
-        shape = RoundedCornerShape(16.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = NexoraViolet,
-            unfocusedBorderColor = Color.White.copy(alpha = 0.15f),
-            focusedLabelColor = NexoraVioletSoft,
-            unfocusedLabelColor = Color.White.copy(alpha = 0.50f),
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White,
-            cursorColor = NexoraVioletSoft,
-            focusedContainerColor = Color.White.copy(alpha = 0.03f),
-            unfocusedContainerColor = Color.White.copy(alpha = 0.02f)
-        )
-    )
-}
-
-@Composable
-private fun GroupButton(text: String, selected: Boolean, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.height(38.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = if (selected) NexoraViolet else Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
-        Text(text, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Black else FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+private fun StatusBox(text: String) {
+    Box(modifier = Modifier.width(500.dp).background(PanelSoft, RoundedCornerShape(20.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp)).padding(14.dp)) {
+        Text(text, color = Color.White.copy(alpha = 0.76f), fontSize = 12.sp, lineHeight = 17.sp)
     }
 }
 
 @Composable
-private fun ChannelRow(channel: LiveChannel, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.width(640.dp).height(62.dp), shape = RoundedCornerShape(18.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.06f), contentColor = Color.White)) {
-        Row(modifier = Modifier.width(600.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = Modifier.width(450.dp)) {
-                Text(channel.name, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(channel.group, color = Color.White.copy(alpha = 0.52f), fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            Text("Play", color = NexoraGreen, fontSize = 12.sp, fontWeight = FontWeight.Black)
+private fun EarlyAccessPanel() {
+    Column(
+        modifier = Modifier
+            .width(650.dp)
+            .height(594.dp)
+            .background(PanelDark, RoundedCornerShape(30.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Text("Early Access Commitment", color = Color.White, fontSize = 31.sp, fontWeight = FontWeight.Black)
+        Text("Nexora TV is being built as a premium TV player ecosystem.", color = NexoraVioletSoft, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+
+        NoticeCard("Free during early access", "The application remains free while the complete ecosystem is being built and tested.")
+        NoticeCard("Player, not a provider", "Nexora TV does not sell channels, subscriptions, accounts, playlists, or media access.")
+        NoticeCard("Legal use only", "Users must enter only media access they are legally authorized to use.")
+        NoticeCard("No advertising sales", "The app does not sell ad inventory or place third-party advertising in this early access phase.")
+        NoticeCard("Privacy-first direction", "The setup flow is designed to keep media source details local to the user experience wherever possible.")
+
+        Spacer(modifier = Modifier.weight(1f))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            InfoPill("TV-friendly")
+            InfoPill("Remote-first")
+            InfoPill("Early access")
         }
     }
 }
 
 @Composable
-private fun StatusPill(text: String) {
-    Box(modifier = Modifier.width(86.dp).height(36.dp).background(NexoraViolet.copy(alpha = 0.18f), RoundedCornerShape(14.dp)).border(1.dp, NexoraViolet.copy(alpha = 0.44f), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
-        Text(text, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Black)
+private fun NoticeCard(title: String, body: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(20.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
+            .padding(15.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(title, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Black)
+        Text(body, color = Color.White.copy(alpha = 0.68f), fontSize = 12.sp, lineHeight = 17.sp)
     }
 }
 
 @Composable
-private fun EmptyListHint() {
-    Column(modifier = Modifier.width(640.dp).height(180.dp).background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.07f), RoundedCornerShape(24.dp)).padding(20.dp), verticalArrangement = Arrangement.Center) {
-        Text("No channels loaded", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black)
-        Text("Choose a media source, load channels, then select one to play.", color = Color.White.copy(alpha = 0.62f), fontSize = 13.sp)
+private fun InfoPill(text: String) {
+    Box(modifier = Modifier.background(NexoraBlue.copy(alpha = 0.14f), RoundedCornerShape(14.dp)).border(1.dp, NexoraBlue.copy(alpha = 0.35f), RoundedCornerShape(14.dp)).padding(horizontal = 12.dp, vertical = 8.dp), contentAlignment = Alignment.Center) {
+        Text(text, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Black)
     }
 }

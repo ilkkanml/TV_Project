@@ -21,7 +21,7 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-private const val INTRO_DURATION = 7.4f
+private const val INTRO_DURATION = 6.8f
 
 @Composable
 fun NexoraBrandIntroSplash(onFinished: () -> Unit) {
@@ -35,7 +35,7 @@ fun NexoraBrandIntroSplash(onFinished: () -> Unit) {
                 elapsed.floatValue = ((frame - startNanos) / 1_000_000_000f).coerceIn(0f, INTRO_DURATION)
             }
         }
-        delay(160)
+        delay(120)
         onFinished()
     }
 
@@ -54,22 +54,23 @@ private fun DrawScope.drawIntroFrame(t: Float) {
     val cx = w / 2f
     val logoSize = min(w * 0.105f, h * 0.15f)
     val logoWidth = logoSize * 4.15f
-    val logoY = h * 0.40f
+    val logoY = h * 0.405f
     val lineY = logoY + logoSize * 0.86f
+    val fade = 1f - easeInOut(segment(t, 6.25f, 6.70f))
+
+    drawCircle(Color(0xFF111536), radius = w * 0.55f, center = Offset(cx, h * 0.48f), alpha = 0.55f)
+    drawLogo(cx, logoY, logoSize, easeOut(segment(t, 0.10f, 0.75f)) * fade)
+
     val halfLine = logoWidth * 0.58f * easeOut(segment(t, 0.45f, 1.20f))
     val split = when {
         t < 1.20f -> 0f
         t < 2.00f -> easeInOut(segment(t, 1.20f, 2.00f))
-        t < 3.65f -> 1f
-        t < 4.45f -> 1f - easeInOut(segment(t, 3.65f, 4.45f))
+        t < 3.55f -> 1f
+        t < 4.25f -> 1f - easeInOut(segment(t, 3.55f, 4.25f))
         else -> 0f
     }
-    val fade = 1f - easeInOut(segment(t, 6.85f, 7.30f))
 
-    drawCircle(Color(0xFF111536), radius = w * 0.55f, center = Offset(cx, h * 0.48f), alpha = 0.55f)
-    drawLogo(cx, logoY - split * logoSize * 0.08f, logoSize, easeOut(segment(t, 0.10f, 0.75f)) * fade)
-
-    if (halfLine > 2f && t < 4.45f) {
+    if (halfLine > 2f && t < 4.25f) {
         val gap = logoSize * 0.36f * split
         if (split < 0.03f) {
             drawGlowLine(Offset(cx - halfLine, lineY), Offset(cx + halfLine, lineY), h * 0.0048f, fade)
@@ -79,22 +80,11 @@ private fun DrawScope.drawIntroFrame(t: Float) {
         }
     }
 
-    val subAlpha = easeOut(segment(t, 2.00f, 2.65f)) * (1f - easeInOut(segment(t, 3.40f, 3.85f))) * fade
+    val subAlpha = easeOut(segment(t, 2.00f, 2.65f)) * (1f - easeInOut(segment(t, 3.30f, 3.80f))) * fade
     if (subAlpha > 0.02f) drawSubtitle(cx, lineY, logoSize * 0.33f, subAlpha)
 
-    val sweep = easeInOut(segment(t, 4.45f, 5.35f))
-    if (sweep > 0.01f) {
-        val start = Offset(cx + logoWidth * 0.58f, lineY)
-        val points = quadraticPoints(
-            start,
-            Offset(cx + logoWidth * 0.86f, lineY - logoSize * 0.35f),
-            Offset(cx + logoWidth * 0.52f, logoY - logoSize * 0.95f),
-            28
-        )
-        drawPartialLine(points, sweep * fade, h * 0.0048f)
-    }
-
-    val mountain = easeOut(segment(t, 5.35f, 6.65f))
+    // No side loop. No half-circle. The mountain appears directly after the center line closes.
+    val mountain = easeOut(segment(t, 4.25f, 5.85f))
     if (mountain > 0.01f) {
         val baseY = logoY - logoSize * 0.95f
         val peakY = baseY - logoSize * 0.42f
@@ -130,7 +120,6 @@ private fun DrawScope.drawSubtitle(cx: Float, cy: Float, size: Float, alpha: Flo
             typeface = Typeface.create("sans-serif-medium", Typeface.BOLD)
             textSize = size
             textAlign = Paint.Align.CENTER
-            letterSpacing = 0.08f
             color = android.graphics.Color.argb((190 * alpha).toInt().coerceIn(0, 255), 220, 255, 238)
         }
         val baseline = cy - (paint.ascent() + paint.descent()) / 2f
@@ -162,17 +151,6 @@ private fun DrawScope.drawPartialLine(points: List<Offset>, fraction: Float, str
             drawGlowLine(a, Offset(lerp(a.x, b.x, p), lerp(a.y, b.y, p)), stroke, f)
             remaining = 0f
         }
-    }
-}
-
-private fun quadraticPoints(a: Offset, c: Offset, b: Offset, steps: Int): List<Offset> {
-    return (0..steps).map { i ->
-        val t = i.toFloat() / steps
-        val u = 1f - t
-        Offset(
-            u * u * a.x + 2f * u * t * c.x + t * t * b.x,
-            u * u * a.y + 2f * u * t * c.y + t * t * b.y
-        )
     }
 }
 
