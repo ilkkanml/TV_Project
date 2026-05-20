@@ -24,18 +24,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nexora.tv.data.app.AppLanguageStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private const val MOCK_NEXORA_DEVICE_ID = "NX-TV-8F2K-44M9"
 private const val MOCK_ACTIVATION_KEY = "K7Q4-29XA"
-private const val ACTIVATION_SCREEN_MARKER = "EA0-ACT-FIX-3"
+private const val ACTIVATION_SCREEN_MARKER = "EA0-ACT-FIX-5"
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
 private val PanelDark = Color(0xCC090B12)
 
 @Composable
 fun DeviceActivationScreen(navController: NavController) {
+    val title = AppLanguageStore.t("Activate this TV", "Bu TV'yi Etkinleştir")
+    val nextTitle = AppLanguageStore.t("Next: User Profiles", "Sonraki: Kullanıcı Profilleri")
+    val continueText = AppLanguageStore.t("CONTINUE", "DEVAM ET")
+    val continueSub = AppLanguageStore.t("Open user profiles", "Kullanıcı profillerini aç")
+
     NexoraCinematicBackdrop {
         Row(
             modifier = Modifier
@@ -49,10 +55,13 @@ fun DeviceActivationScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 Text("NEXORA", color = Color.White, fontSize = 38.sp, fontWeight = FontWeight.Black, letterSpacing = 2.5.sp, maxLines = 1)
-                Text("Activate this TV", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(title, color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                 Text(ACTIVATION_SCREEN_MARKER, color = Color.White.copy(alpha = 0.42f), fontSize = 11.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
-                    text = "Early access device accepted. Next step: add your own IPTV access.",
+                    text = AppLanguageStore.t(
+                        "Early access device accepted. Next step: choose or create a user profile.",
+                        "Erken erişim cihazı kabul edildi. Sonraki adım: kullanıcı profili seç veya oluştur."
+                    ),
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 13.sp,
                     lineHeight = 18.sp,
@@ -65,7 +74,7 @@ fun DeviceActivationScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                        navController.navigate(AppDestinations.PlaylistProfile.route) {
+                        navController.navigate(AppDestinations.Profiles.route) {
                             launchSingleTop = true
                         }
                     },
@@ -77,8 +86,8 @@ fun DeviceActivationScreen(navController: NavController) {
                     colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Text("CONTINUE SETUP", fontWeight = FontWeight.Black, fontSize = 16.sp, letterSpacing = 1.1.sp, maxLines = 1)
-                        Text("Add IPTV access", fontWeight = FontWeight.Medium, fontSize = 11.sp, color = Color.White.copy(alpha = 0.78f), maxLines = 1)
+                        Text(continueText, fontWeight = FontWeight.Black, fontSize = 16.sp, letterSpacing = 1.1.sp, maxLines = 1)
+                        Text(continueSub, fontWeight = FontWeight.Medium, fontSize = 11.sp, color = Color.White.copy(alpha = 0.78f), maxLines = 1)
                     }
                 }
             }
@@ -91,13 +100,13 @@ fun DeviceActivationScreen(navController: NavController) {
                     .padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(11.dp)
             ) {
-                Text("Device Ready", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                Text("Next: IPTV Access", color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text(AppLanguageStore.t("Device Ready", "Cihaz Hazır"), color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text(nextTitle, color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
 
-                ActivationStep("1", "Device screen is accepted for early access.")
-                ActivationStep("2", "Press CONTINUE SETUP.")
-                ActivationStep("3", "Enter your own IPTV account or playlist information.")
-                ActivationStep("4", "Load channels, then open Home or play a stream.")
+                ActivationStep("1", AppLanguageStore.t("Device screen is accepted for early access.", "Cihaz erken erişim için kabul edildi."))
+                ActivationStep("2", AppLanguageStore.t("Open user profiles.", "Kullanıcı profillerini aç."))
+                ActivationStep("3", AppLanguageStore.t("Create a profile and add your own media access.", "Profil oluştur ve kendi medya erişimini ekle."))
+                ActivationStep("4", AppLanguageStore.t("Load library data, then open Home or play a stream.", "Kütüphaneyi yükle, sonra Home'u aç veya oynat."))
 
                 Box(
                     modifier = Modifier
@@ -107,11 +116,14 @@ fun DeviceActivationScreen(navController: NavController) {
                         .padding(15.dp)
                 ) {
                     Text(
-                        text = "The app does not provide channels. Use only IPTV access you are legally allowed to use.",
+                        text = AppLanguageStore.t(
+                            "Nexora TV is a media player shell. It does not sell, provide, host, restream, or promote any media service.",
+                            "Nexora TV bir medya oynatıcı arayüzüdür. Yayın satmaz, sağlamaz, barındırmaz, yeniden yayınlamaz veya medya servisi sunmaz."
+                        ),
                         color = Color.White.copy(alpha = 0.72f),
                         fontSize = 12.sp,
                         lineHeight = 17.sp,
-                        maxLines = 2,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
