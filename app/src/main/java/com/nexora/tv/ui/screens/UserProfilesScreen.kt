@@ -33,6 +33,8 @@ import com.nexora.tv.data.profile.MediaProfile
 import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
+import com.nexora.tv.ui.components.NexoraWordmark
+import com.nexora.tv.ui.components.PlayerEcosystemWordmark
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
@@ -61,7 +63,8 @@ fun UserProfilesScreen(navController: NavController) {
                     .padding(18.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text("NEXORA", color = Color.White, fontSize = 27.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp)
+                NexoraWordmark(fontSize = 27.sp, letterSpacing = 2.sp)
+                PlayerEcosystemWordmark(fontSize = 9.sp, letterSpacing = 1.sp)
                 Text(AppLanguageStore.t("User Profiles", "Kullanıcı Profilleri"), color = NexoraVioletSoft, fontSize = 21.sp, fontWeight = FontWeight.Black)
                 Text(
                     AppLanguageStore.t("Select a user or add a new media profile.", "Kullanıcı seç veya yeni medya profili ekle."),
