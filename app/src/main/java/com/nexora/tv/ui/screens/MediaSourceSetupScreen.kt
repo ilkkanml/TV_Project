@@ -450,7 +450,13 @@ private fun StatusBox(text: String) {
 @Composable
 private fun SecurityPanel() {
     Column(
-        modifier = Modifier.width(650.dp).height(594.dp).background(PanelDark, RoundedCornerShape(30.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp)).padding(24.dp),
+        modifier = Modifier
+            .width(650.dp)
+            .height(594.dp)
+            .background(PanelDark, RoundedCornerShape(30.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
+            .verticalScroll(rememberScrollState())
+            .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(AppLanguageStore.t("Security & Early Access", "Güvenlik ve Erken Erişim"), color = Color.White, fontSize = 31.sp, fontWeight = FontWeight.Black)
@@ -458,11 +464,10 @@ private fun SecurityPanel() {
 
         NoticeCard(AppLanguageStore.t("Player, not a provider", "Oynatıcıdır, sağlayıcı değildir"), AppLanguageStore.t("Nexora TV does not sell channels, subscriptions, accounts, lists, or media access.", "Nexora TV kanal, abonelik, hesap, liste veya medya erişimi satmaz."))
         NoticeCard(AppLanguageStore.t("Legal use only", "Sadece yasal kullanım"), AppLanguageStore.t("Users must enter only media access they are legally authorized to use.", "Kullanıcı yalnızca yasal erişim hakkı olan medya kaynaklarını girmelidir."))
-        NoticeCard(AppLanguageStore.t("No MAC-based identity", "MAC tabanlı kimlik yok"), AppLanguageStore.t("We do not use MAC address as the main identity because it is sensitive, unreliable across devices, and not aligned with a privacy-first model.", "MAC adresini ana kimlik olarak kullanmıyoruz; hassas, cihazlar arasında güvenilir değil ve gizlilik odaklı modele uygun değil."))
-        NoticeCard(AppLanguageStore.t("Privacy-first direction", "Gizlilik öncelikli yaklaşım"), AppLanguageStore.t("The setup flow is designed to reduce unnecessary collection and keep access controlled by the user.", "Kurulum akışı gereksiz veri toplamayı azaltacak ve erişimi kullanıcı kontrolünde tutacak şekilde tasarlanır."))
+        NoticeCard(AppLanguageStore.t("No MAC-based identity", "MAC tabanlı kimlik yok"), AppLanguageStore.t("We do not use MAC as the device identity. It can reveal hardware-level details, may be blocked by privacy rules, and is not reliable across devices.", "MAC adresini cihaz kimliği olarak kullanmıyoruz. Donanım bilgisi açığa çıkarabilir, gizlilik kurallarıyla engellenebilir ve cihazlar arasında güvenilir değildir."))
+        NoticeCard(AppLanguageStore.t("Privacy-first direction", "Gizlilik öncelikli yaklaşım"), AppLanguageStore.t("The setup flow keeps access controlled by the user and avoids unnecessary device identifiers.", "Kurulum akışı erişimi kullanıcı kontrolünde tutar ve gereksiz cihaz kimliklerinden kaçınır."))
         NoticeCard(AppLanguageStore.t("Free during early access", "Erken erişimde ücretsiz"), AppLanguageStore.t("The app remains free while the full ecosystem is being completed and tested.", "Tüm ekosistem tamamlanıp test edilene kadar uygulama ücretsiz kalır."))
 
-        Spacer(modifier = Modifier.weight(1f))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             InfoPill("TV-friendly")
             InfoPill("Remote-first")
@@ -473,9 +478,16 @@ private fun SecurityPanel() {
 
 @Composable
 private fun NoticeCard(title: String, body: String) {
-    Column(modifier = Modifier.fillMaxWidth().background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(20.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp)).padding(15.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(20.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
+            .padding(15.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         Text(title, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Black)
-        Text(body, color = Color.White.copy(alpha = 0.68f), fontSize = 12.sp, lineHeight = 17.sp)
+        Text(body, color = Color.White.copy(alpha = 0.68f), fontSize = 12.sp, lineHeight = 18.sp)
     }
 }
 
