@@ -1,5 +1,6 @@
 package com.nexora.tv.ui.screens
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -268,6 +269,7 @@ fun MediaSourceSetupScreen(navController: NavController) {
                         if (!loading) {
                             activeFieldId = null
                             connectCurrentSource(
+                                context = context,
                                 mode = mode,
                                 profileName = profileName,
                                 server = server,
@@ -348,7 +350,6 @@ private fun SetupActionRow(
     }
 }
 
-@Composable
 private fun sourceModeMessage(mode: SourceMode): String {
     return when (mode) {
         SourceMode.Portal -> AppLanguageStore.t("Provider API selected. Enter server, user name and password.", "Provider API seçildi. Sunucu, kullanıcı adı ve şifre gir.")
@@ -358,8 +359,8 @@ private fun sourceModeMessage(mode: SourceMode): String {
     }
 }
 
-@Composable
 private fun connectCurrentSource(
+    context: Context,
     mode: SourceMode,
     profileName: String,
     server: String,
@@ -372,7 +373,6 @@ private fun connectCurrentSource(
     setLoading: (Boolean) -> Unit,
     setMessage: (String) -> Unit
 ) {
-    val context = LocalContext.current
     val safeName = profileName.ifBlank { AppLanguageStore.t("User Profile", "Kullanıcı Profili") }
 
     when (mode) {
