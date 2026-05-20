@@ -79,7 +79,12 @@ fun HomeScreen(navController: NavController) {
     var showBackHint by remember { mutableStateOf(false) }
 
     val loadedLiveChannels = LivePlaybackSession.loadedChannels
+    val loadedMovies = LivePlaybackSession.loadedMovies
+    val loadedSeries = LivePlaybackSession.loadedSeries
     val showLoadedLive = selectedMenu == HomeMenu.Live && loadedLiveChannels.isNotEmpty()
+    val showLoadedMovies = selectedMenu == HomeMenu.Movies && loadedMovies.isNotEmpty()
+    val showLoadedSeries = selectedMenu == HomeMenu.Series && loadedSeries.isNotEmpty()
+    val showLoadedCatalog = showLoadedLive || showLoadedMovies || showLoadedSeries
 
     BackHandler {
         if (showBackHint) {
@@ -114,7 +119,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     TopUtilityBar(selectedMenu)
 
-                    if (!showLoadedLive && selectedMenu != HomeMenu.Settings && selectedMenu != HomeMenu.Search) {
+                    if (!showLoadedCatalog && selectedMenu != HomeMenu.Settings && selectedMenu != HomeMenu.Search) {
                         HeroPanel(
                             selectedMenu = selectedMenu,
                             selectedItem = selectedItem,
@@ -125,10 +130,29 @@ fun HomeScreen(navController: NavController) {
 
                     if (selectedMenu == HomeMenu.Search) SearchShell()
 
-                    if (showLoadedLive) {
-                        LoadedLivePanel(navController = navController, channels = loadedLiveChannels)
-                    } else {
-                        rows.forEach { row ->
+                    when {
+                        showLoadedLive -> LoadedCatalogPanel(
+                            navController = navController,
+                            title = "Live TV",
+                            countLabel = "channels",
+                            items = loadedLiveChannels,
+                            fallbackGroup = "Live"
+                        )
+                        showLoadedMovies -> LoadedCatalogPanel(
+                            navController = navController,
+                            title = AppLanguageStore.t("Movies", "Filmler"),
+                            countLabel = AppLanguageStore.t("movies", "film"),
+                            items = loadedMovies,
+                            fallbackGroup = AppLanguageStore.t("Movies", "Filmler")
+                        )
+                        showLoadedSeries -> LoadedCatalogPanel(
+                            navController = navController,
+                            title = AppLanguageStore.t("Series", "Diziler"),
+                            countLabel = AppLanguageStore.t("series", "dizi"),
+                            items = loadedSeries,
+                            fallbackGroup = AppLanguageStore.t("Series", "Diziler")
+                        )
+                        else -> rows.forEach { row ->
                             ContentRow(
                                 row = row,
                                 selectedItemId = selectedItem?.id,
@@ -295,11 +319,11 @@ private fun LibraryCard(item: NexoraContentItem, selected: Boolean, onFocus: () 
 }
 
 @Composable
-private fun LoadedLivePanel(navController: NavController, channels: List<LiveChannel>) {
-    var selectedGroup by rememberSaveable(channels.size) { mutableStateOf("All") }
-    var showFilters by rememberSaveable { mutableStateOf(true) }
-    val groups = channels.map { it.group.ifBlank { "Live" } }.distinct().take(48)
-    val visibleChannels = if (selectedGroup == "All") channels else channels.filter { it.group == selectedGroup }
+private fun LoadedCatalogPanel(navController: NavController, title: String, countLabel: String, items: List<LiveChannel>, fallbackGroup: String) {
+    var selectedGroup by rememberSaveable(items.size, title) { mutableStateOf("All") }
+    var showFilters by rememberSaveable(title) { mutableStateOf(true) }
+    val groups = items.map { it.group.ifBlank { fallbackGroup } }.distinct().take(48)
+    val visibleItems = if (selectedGroup == "All") items else items.filter { it.group.ifBlank { fallbackGroup } == selectedGroup }
 
     Column(
         modifier = Modifier.fillMaxWidth().background(PanelDark, RoundedCornerShape(28.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(28.dp)).padding(22.dp),
@@ -307,10 +331,10 @@ private fun LoadedLivePanel(navController: NavController, channels: List<LiveCha
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Column {
-                Text("Live TV", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black)
+                Text(title, color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black)
                 Text(LivePlaybackSession.sourceStatus, color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            UtilityPill("${channels.size} channels")
+            UtilityPill("${items.size} $countLabel")
         }
 
         Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -324,13 +348,16 @@ private fun LoadedLivePanel(navController: NavController, channels: List<LiveCha
         }
 
         Column(modifier = Modifier.fillMaxWidth().height(470.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            visibleChannels.forEachIndexed { index, channel ->
-                LoadedLiveRow(
-                    channel = channel,
+            visibleItems.forEachIndexed { index, item ->
+                LoadedCatalogRow(
+                    item = item,
+                    fallbackGroup = fallbackGroup,
                     modifier = if (index == 0) Modifier.focusProperties { up = FocusRequester.Cancel } else Modifier,
                     onClick = {
-                        LivePlaybackSession.select(channel)
-                        navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+                        if (item.streamUrl.isNotBlank()) {
+                            LivePlaybackSession.select(item)
+                            navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+                        }
                     }
                 )
             }
@@ -351,19 +378,26 @@ private fun FilterButton(text: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-private fun LoadedLiveRow(channel: LiveChannel, modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun LoadedCatalogRow(item: LiveChannel, fallbackGroup: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val playable = item.streamUrl.isNotBlank()
     Button(
         onClick = onClick,
+        enabled = playable,
         modifier = modifier.fillMaxWidth().height(62.dp),
         shape = RoundedCornerShape(18.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.06f), contentColor = Color.White)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White.copy(alpha = 0.06f),
+            contentColor = Color.White,
+            disabledContainerColor = Color.White.copy(alpha = 0.035f),
+            disabledContentColor = Color.White.copy(alpha = 0.48f)
+        )
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.width(620.dp)) {
-                Text(channel.name, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(channel.group.ifBlank { "Live" }, color = Color.White.copy(alpha = 0.52f), fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(item.name, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(item.group.ifBlank { fallbackGroup }, color = Color.White.copy(alpha = 0.52f), fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            Text("PLAY", color = NexoraGreen, fontSize = 12.sp, fontWeight = FontWeight.Black)
+            Text(if (playable) "PLAY" else "CATALOG", color = if (playable) NexoraGreen else Color.White.copy(alpha = 0.45f), fontSize = 12.sp, fontWeight = FontWeight.Black)
         }
     }
 }
