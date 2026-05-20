@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -47,6 +49,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,6 +87,12 @@ fun MediaSourceSetupScreen(navController: NavController) {
     val editingProfile = MediaProfileStore.editingProfile
     val portalFocus = remember { FocusRequester() }
     val profileFocus = remember { FocusRequester() }
+    val serverFocus = remember { FocusRequester() }
+    val userFocus = remember { FocusRequester() }
+    val passFocus = remember { FocusRequester() }
+    val listFocus = remember { FocusRequester() }
+    val localFocus = remember { FocusRequester() }
+    val singleFocus = remember { FocusRequester() }
     val connectFocus = remember { FocusRequester() }
 
     var mode by remember { mutableStateOf(SourceMode.Portal) }
@@ -97,6 +106,13 @@ fun MediaSourceSetupScreen(navController: NavController) {
     var loading by remember { mutableStateOf(false) }
     var showClear by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf(editingProfile?.status ?: AppLanguageStore.t("Create a profile and connect a personal media source.", "Profil oluştur ve kişisel medya kaynağını bağla.")) }
+
+    val firstFieldFocus = when (mode) {
+        SourceMode.Portal -> serverFocus
+        SourceMode.ListUrl -> listFocus
+        SourceMode.LocalFile -> localFocus
+        SourceMode.Single -> singleFocus
+    }
 
     val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
@@ -154,8 +170,8 @@ fun MediaSourceSetupScreen(navController: NavController) {
                 Text(AppLanguageStore.t("Create Profile", "Profil Oluştur"), color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
                     AppLanguageStore.t(
-                        "Focus a field and press OK/Enter to edit. The keyboard will not open just by moving focus.",
-                        "Bir alana gel ve düzenlemek için OK/Enter'a bas. Sadece focus gelince klavye açılmaz."
+                        "Focus a field and press OK/Enter to edit. Press Enter again to move to the next field.",
+                        "Bir alana gel ve düzenlemek için OK/Enter'a bas. Sonraki kutuya geçmek için tekrar Enter'a bas."
                     ),
                     color = Color.White.copy(alpha = 0.62f),
                     fontSize = 12.sp,
@@ -188,9 +204,9 @@ fun MediaSourceSetupScreen(navController: NavController) {
                     label = AppLanguageStore.t("Profile name", "Profil adı"),
                     value = profileName,
                     onChange = { profileName = it },
-                    modifier = Modifier
-                        .focusRequester(profileFocus)
-                        .focusProperties { up = portalFocus }
+                    focusRequester = profileFocus,
+                    nextFocusRequester = firstFieldFocus,
+                    modifier = Modifier.focusProperties { up = portalFocus }
                 )
 
                 when (mode) {
@@ -199,25 +215,33 @@ fun MediaSourceSetupScreen(navController: NavController) {
                             label = AppLanguageStore.t("Server URL", "Sunucu URL"),
                             value = server,
                             onChange = { server = it.filterNot(Char::isWhitespace) },
+                            focusRequester = serverFocus,
+                            nextFocusRequester = userFocus,
                             modifier = Modifier.focusProperties { up = profileFocus }
                         )
                         TvEditField(
                             label = AppLanguageStore.t("User name", "Kullanıcı adı"),
                             value = user,
-                            onChange = { user = it.filterNot(Char::isWhitespace) }
+                            onChange = { user = it.filterNot(Char::isWhitespace) },
+                            focusRequester = userFocus,
+                            nextFocusRequester = passFocus
                         )
                         TvEditField(
                             label = AppLanguageStore.t("Password", "Şifre"),
                             value = pass,
                             onChange = { pass = it.filterNot(Char::isWhitespace) },
                             secret = true,
+                            focusRequester = passFocus,
+                            nextFocusRequester = connectFocus,
                             modifier = Modifier.focusProperties { down = connectFocus }
                         )
                     }
                     SourceMode.ListUrl -> TvEditField(
                         label = "M3U URL",
                         value = listUrl,
-                        onChange = { listUrl = it.filterNot(Char::isWhitespace) }
+                        onChange = { listUrl = it.filterNot(Char::isWhitespace) },
+                        focusRequester = listFocus,
+                        nextFocusRequester = connectFocus
                     )
                     SourceMode.LocalFile -> {
                         Button(
@@ -226,12 +250,22 @@ fun MediaSourceSetupScreen(navController: NavController) {
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
                         ) { Text(AppLanguageStore.t("Choose file from device", "Cihazdan dosya seç"), fontWeight = FontWeight.Black, fontSize = 13.sp) }
-                        TvEditField(AppLanguageStore.t("Paste list data", "Liste verisini yapıştır"), localText, { localText = it }, singleLine = false, height = 96)
+                        TvEditField(
+                            label = AppLanguageStore.t("Paste list data", "Liste verisini yapıştır"),
+                            value = localText,
+                            onChange = { localText = it },
+                            singleLine = false,
+                            height = 96,
+                            focusRequester = localFocus,
+                            nextFocusRequester = connectFocus
+                        )
                     }
                     SourceMode.Single -> TvEditField(
                         label = AppLanguageStore.t("Stream URL", "Yayın URL"),
                         value = singleUrl,
-                        onChange = { singleUrl = it.filterNot(Char::isWhitespace) }
+                        onChange = { singleUrl = it.filterNot(Char::isWhitespace) },
+                        focusRequester = singleFocus,
+                        nextFocusRequester = connectFocus
                     )
                 }
 
@@ -337,10 +371,18 @@ private fun TvEditField(
     secret: Boolean = false,
     singleLine: Boolean = true,
     height: Int = 66,
+    focusRequester: FocusRequester? = null,
+    nextFocusRequester: FocusRequester? = null,
     modifier: Modifier = Modifier
 ) {
     var active by remember { mutableStateOf(false) }
-    val requester = remember { FocusRequester() }
+    val internalRequester = remember { FocusRequester() }
+    val requester = focusRequester ?: internalRequester
+
+    fun moveNext() {
+        active = false
+        nextFocusRequester?.requestFocus()
+    }
 
     LaunchedEffect(active) {
         if (active) requester.requestFocus()
@@ -353,6 +395,11 @@ private fun TvEditField(
         readOnly = !active,
         singleLine = singleLine,
         visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
+        keyboardOptions = KeyboardOptions(imeAction = if (nextFocusRequester != null) ImeAction.Next else ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onNext = { moveNext() },
+            onDone = { moveNext() }
+        ),
         modifier = modifier
             .width(500.dp)
             .height(height.dp)
@@ -360,7 +407,7 @@ private fun TvEditField(
             .onFocusChanged { if (!it.isFocused) active = false }
             .onKeyEvent { event ->
                 if (event.type == KeyEventType.KeyUp && (event.key == Key.Enter || event.key == Key.NumPadEnter || event.key == Key.DirectionCenter)) {
-                    active = true
+                    if (active) moveNext() else active = true
                     true
                 } else false
             },
@@ -419,7 +466,7 @@ private fun SecurityPanel() {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             InfoPill("TV-friendly")
             InfoPill("Remote-first")
-            InfoPill("Early access")
+            InfoPill("early access")
         }
     }
 }
