@@ -39,6 +39,7 @@ import androidx.navigation.NavController
 import com.nexora.tv.data.live.LiveChannel
 import com.nexora.tv.data.live.LivePlaybackSession
 import com.nexora.tv.data.live.M3uParser
+import com.nexora.tv.data.live.ProviderPortalLoader
 import com.nexora.tv.data.live.RemoteListLoader
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
@@ -50,73 +51,66 @@ private val PanelDark = Color(0xCC090B12)
 private val PanelSoft = Color(0xAA11131C)
 
 private enum class SetupMode(val label: String) {
-    PlayerApi("Player API"),
-    M3u("M3U URL or file"),
+    ProviderApi("Provider API"),
+    M3u("M3U URL"),
     LocalData("Local data"),
     SingleStream("Play single stream")
 }
 
 @Composable
 fun PlaylistProfileScreen(navController: NavController) {
-    var mode by remember { mutableStateOf(SetupMode.PlayerApi) }
+    var mode by remember { mutableStateOf(SetupMode.ProviderApi) }
     var serverAddress by remember { mutableStateOf("") }
     var accountName by remember { mutableStateOf("") }
     var accessKey by remember { mutableStateOf("") }
     var listAddress by remember { mutableStateOf("") }
     var localData by remember { mutableStateOf("") }
     var singleStreamUrl by remember { mutableStateOf("") }
-    var channels by remember { mutableStateOf<List<LiveChannel>>(emptyList()) }
+    var previewChannels by remember { mutableStateOf<List<LiveChannel>>(emptyList()) }
     var selectedGroup by remember { mutableStateOf("All") }
     var isLoading by remember { mutableStateOf(false) }
-    var statusText by remember { mutableStateOf("Choose a setup mode and enter your own IPTV access.") }
+    var statusText by remember { mutableStateOf("Choose a media source and enter your own legal access.") }
 
-    val groups = remember(channels) {
-        listOf("All") + channels.map { it.group.ifBlank { "Live" } }.distinct().take(24)
+    val groups = remember(previewChannels) {
+        listOf("All") + previewChannels.map { it.group.ifBlank { "Live" } }.distinct().take(24)
     }
 
-    val visibleChannels = remember(channels, selectedGroup) {
-        if (selectedGroup == "All") channels else channels.filter { it.group == selectedGroup }
+    val visibleChannels = remember(previewChannels, selectedGroup) {
+        if (selectedGroup == "All") previewChannels else previewChannels.filter { it.group == selectedGroup }
     }
 
     NexoraCinematicBackdrop {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 30.dp, vertical = 24.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 30.dp, vertical = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(22.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier
-                    .width(455.dp)
-                    .verticalScroll(rememberScrollState()),
+                modifier = Modifier.width(455.dp).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(11.dp)
             ) {
                 Text("NEXORA", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black, letterSpacing = 2.3.sp, maxLines = 1)
-                Text("IPTV Access Setup", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text("Media Source Setup", color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
-                    text = "Enter your own legal IPTV access. The app does not provide channels, accounts, playlists, or streams.",
+                    text = "Enter your own legal media access. The app does not provide channels, accounts, playlists, or streams.",
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 12.sp,
                     lineHeight = 17.sp
                 )
 
-                Row(
-                    modifier = Modifier.horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     SetupMode.values().forEach { item ->
                         SetupModeButton(
                             text = item.label,
                             selected = mode == item,
                             onClick = {
                                 mode = item
-                                channels = emptyList()
+                                previewChannels = emptyList()
                                 selectedGroup = "All"
                                 statusText = when (item) {
-                                    SetupMode.PlayerApi -> "Player API selected. Enter provider details."
-                                    SetupMode.M3u -> "M3U selected. Paste your M3U URL."
-                                    SetupMode.LocalData -> "Local data selected. Paste M3U text data."
+                                    SetupMode.ProviderApi -> "Provider API selected. Enter server, user name and password."
+                                    SetupMode.M3u -> "M3U URL selected. Paste your list URL."
+                                    SetupMode.LocalData -> "Local data selected. Paste list text."
                                     SetupMode.SingleStream -> "Single stream selected. Paste one stream URL."
                                 }
                             }
@@ -125,30 +119,76 @@ fun PlaylistProfileScreen(navController: NavController) {
                 }
 
                 when (mode) {
-                    SetupMode.PlayerApi -> {
+                    SetupMode.ProviderApi -> {
                         SetupTextField("Server URL", serverAddress, { serverAddress = it })
                         SetupTextField("User name", accountName, { accountName = it })
                         SetupTextField("Password", accessKey, { accessKey = it }, secret = true)
                     }
-                    SetupMode.M3u -> {
-                        SetupTextField("M3U URL", listAddress, { listAddress = it })
-                    }
-                    SetupMode.LocalData -> {
-                        SetupTextField("Paste M3U data", localData, { localData = it }, singleLine = false, height = 118)
-                    }
-                    SetupMode.SingleStream -> {
-                        SetupTextField("Stream URL", singleStreamUrl, { singleStreamUrl = it })
-                    }
+                    SetupMode.M3u -> SetupTextField("M3U URL", listAddress, { listAddress = it })
+                    SetupMode.LocalData -> SetupTextField("Paste list data", localData, { localData = it }, singleLine = false, height = 118)
+                    SetupMode.SingleStream -> SetupTextField("Stream URL", singleStreamUrl, { singleStreamUrl = it })
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
                         onClick = {
                             if (isLoading) return@Button
-
                             when (mode) {
-                                SetupMode.PlayerApi -> {
-                                    statusText = "Player API fields saved for setup. Use M3U URL mode until provider API connector is finalized."
+                                SetupMode.ProviderApi -> {
+                                    isLoading = true
+                                    statusText = "Connecting..."
+                                    Thread {
+                                        val result = runCatching {
+                                            ProviderPortalLoader.loadLive(serverAddress, accountName, accessKey)
+                                        }
+                                        Handler(Looper.getMainLooper()).post {
+                                            isLoading = false
+                                            result.onSuccess { loaded ->
+                                                previewChannels = loaded
+                                                selectedGroup = "All"
+                                                LivePlaybackSession.setCatalog("Provider API", loaded)
+                                                statusText = if (loaded.isEmpty()) "No channels found." else "Loaded ${loaded.size} channels."
+                                                if (loaded.isNotEmpty()) {
+                                                    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+                                                }
+                                            }.onFailure { error ->
+                                                previewChannels = emptyList()
+                                                statusText = error.message ?: "Could not connect."
+                                            }
+                                        }
+                                    }.start()
+                                }
+                                SetupMode.M3u -> {
+                                    isLoading = true
+                                    statusText = "Loading..."
+                                    Thread {
+                                        val result = runCatching { RemoteListLoader.load(listAddress) }
+                                        Handler(Looper.getMainLooper()).post {
+                                            isLoading = false
+                                            result.onSuccess { loaded ->
+                                                previewChannels = loaded
+                                                selectedGroup = "All"
+                                                LivePlaybackSession.setCatalog("M3U URL", loaded)
+                                                statusText = if (loaded.isEmpty()) "No channels found." else "Loaded ${loaded.size} channels."
+                                                if (loaded.isNotEmpty()) {
+                                                    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+                                                }
+                                            }.onFailure { error ->
+                                                previewChannels = emptyList()
+                                                statusText = error.message ?: "Could not load."
+                                            }
+                                        }
+                                    }.start()
+                                }
+                                SetupMode.LocalData -> {
+                                    val parsed = M3uParser.parse(localData)
+                                    previewChannels = parsed
+                                    selectedGroup = "All"
+                                    LivePlaybackSession.setCatalog("Local data", parsed)
+                                    statusText = if (parsed.isEmpty()) "No channels found in local data." else "Loaded ${parsed.size} channels."
+                                    if (parsed.isNotEmpty()) {
+                                        navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+                                    }
                                 }
                                 SetupMode.SingleStream -> {
                                     val stream = singleStreamUrl.trim()
@@ -159,32 +199,6 @@ fun PlaylistProfileScreen(navController: NavController) {
                                         statusText = "Stream URL must start with http or https."
                                     }
                                 }
-                                SetupMode.LocalData -> {
-                                    val parsed = M3uParser.parse(localData)
-                                    channels = parsed
-                                    selectedGroup = "All"
-                                    statusText = if (parsed.isEmpty()) "No channels found in local data." else "Loaded ${parsed.size} channels from local data."
-                                }
-                                SetupMode.M3u -> {
-                                    isLoading = true
-                                    statusText = "Loading channels..."
-                                    Thread {
-                                        val result = runCatching { RemoteListLoader.load(listAddress) }
-                                        Handler(Looper.getMainLooper()).post {
-                                            isLoading = false
-                                            result
-                                                .onSuccess { loaded ->
-                                                    channels = loaded
-                                                    selectedGroup = "All"
-                                                    statusText = if (loaded.isEmpty()) "No channels found." else "Loaded ${loaded.size} channels."
-                                                }
-                                                .onFailure { error ->
-                                                    channels = emptyList()
-                                                    statusText = error.message ?: "Could not load channels."
-                                                }
-                                        }
-                                    }.start()
-                                }
                             }
                         },
                         modifier = Modifier.width(174.dp).height(48.dp),
@@ -192,7 +206,7 @@ fun PlaylistProfileScreen(navController: NavController) {
                         colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
                     ) {
                         Text(
-                            text = if (isLoading) "Loading" else if (mode == SetupMode.SingleStream) "Play Stream" else "Continue",
+                            text = if (isLoading) "Loading" else if (mode == SetupMode.SingleStream) "Play Stream" else "Connect",
                             fontWeight = FontWeight.Black,
                             fontSize = 12.sp
                         )
@@ -206,31 +220,26 @@ fun PlaylistProfileScreen(navController: NavController) {
                             listAddress = ""
                             localData = ""
                             singleStreamUrl = ""
-                            channels = emptyList()
+                            previewChannels = emptyList()
                             selectedGroup = "All"
-                            statusText = "Choose a setup mode and enter your own IPTV access."
+                            LivePlaybackSession.clearCatalog()
+                            statusText = "Choose a media source and enter your own legal access."
                         },
                         modifier = Modifier.width(102.dp).height(48.dp),
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-                    ) {
-                        Text("Clear", fontSize = 12.sp)
-                    }
+                    ) { Text("Clear", fontSize = 12.sp) }
 
                     Button(
                         onClick = { navController.navigate(AppDestinations.Home.route) { launchSingleTop = true } },
                         modifier = Modifier.width(102.dp).height(48.dp),
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-                    ) {
-                        Text("Home", fontSize = 12.sp)
-                    }
+                    ) { Text("Home", fontSize = 12.sp) }
                 }
 
                 Box(
-                    modifier = Modifier
-                        .width(455.dp)
-                        .background(PanelSoft, RoundedCornerShape(20.dp))
+                    modifier = Modifier.width(455.dp).background(PanelSoft, RoundedCornerShape(20.dp))
                         .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp))
                         .padding(14.dp)
                 ) {
@@ -240,16 +249,15 @@ fun PlaylistProfileScreen(navController: NavController) {
                 if (groups.isNotEmpty()) {
                     Text("Groups", color = NexoraVioletSoft, fontSize = 12.sp, fontWeight = FontWeight.Black)
                     Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        groups.forEach { group -> GroupButton(text = group, selected = selectedGroup == group, onClick = { selectedGroup = group }) }
+                        groups.forEach { group ->
+                            GroupButton(text = group, selected = selectedGroup == group, onClick = { selectedGroup = group })
+                        }
                     }
                 }
             }
 
             Column(
-                modifier = Modifier
-                    .width(690.dp)
-                    .height(594.dp)
-                    .background(PanelDark, RoundedCornerShape(30.dp))
+                modifier = Modifier.width(690.dp).height(594.dp).background(PanelDark, RoundedCornerShape(30.dp))
                     .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp))
                     .padding(22.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -259,27 +267,21 @@ fun PlaylistProfileScreen(navController: NavController) {
                         Text("Channels", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black)
                         Text("${visibleChannels.size} visible", color = Color.White.copy(alpha = 0.56f), fontSize = 12.sp)
                     }
-                    StatusPill(if (channels.isEmpty()) "EMPTY" else "READY")
+                    StatusPill(if (previewChannels.isEmpty()) "EMPTY" else "READY")
                 }
 
                 Column(
-                    modifier = Modifier
-                        .width(640.dp)
-                        .height(500.dp)
-                        .verticalScroll(rememberScrollState()),
+                    modifier = Modifier.width(640.dp).height(500.dp).verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     if (visibleChannels.isEmpty()) {
                         EmptyListHint()
                     } else {
                         visibleChannels.forEach { channel ->
-                            ChannelRow(
-                                channel = channel,
-                                onClick = {
-                                    LivePlaybackSession.select(channel)
-                                    navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
-                                }
-                            )
+                            ChannelRow(channel = channel, onClick = {
+                                LivePlaybackSession.select(channel)
+                                navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+                            })
                         }
                     }
                 }
@@ -350,6 +352,6 @@ private fun StatusPill(text: String) {
 private fun EmptyListHint() {
     Column(modifier = Modifier.width(640.dp).height(180.dp).background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.07f), RoundedCornerShape(24.dp)).padding(20.dp), verticalArrangement = Arrangement.Center) {
         Text("No channels loaded", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black)
-        Text("Choose a setup mode, load channels, then select a channel to play.", color = Color.White.copy(alpha = 0.62f), fontSize = 13.sp)
+        Text("Choose a media source, load channels, then select one to play.", color = Color.White.copy(alpha = 0.62f), fontSize = 13.sp)
     }
 }

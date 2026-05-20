@@ -6,6 +6,7 @@
         android:allowBackup="true"
         android:label="Nexora TV"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Nexora">
 
         <activity

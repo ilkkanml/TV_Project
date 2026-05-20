@@ -28,7 +28,7 @@ object M3uParser {
             }
         }
 
-        return result.distinctBy { it.streamUrl }.take(500)
+        return result.distinctBy { it.streamUrl }.take(1500)
     }
 
     private fun readAttribute(line: String, key: String): String {
