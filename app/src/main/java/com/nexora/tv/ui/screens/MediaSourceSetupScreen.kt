@@ -48,6 +48,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -170,8 +171,8 @@ fun MediaSourceSetupScreen(navController: NavController) {
                 Text(AppLanguageStore.t("Create Profile", "Profil Oluştur"), color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
                     AppLanguageStore.t(
-                        "Focus a field and press OK/Enter to edit. Press Enter again to move to the next field.",
-                        "Bir alana gel ve düzenlemek için OK/Enter'a bas. Sonraki kutuya geçmek için tekrar Enter'a bas."
+                        "Keyboard opens when a field is focused. Press OK/Enter/Next to continue to the next field.",
+                        "Kutuya gelince klavye açılır. Sonraki kutuya geçmek için OK/Enter/Next'e bas."
                     ),
                     color = Color.White.copy(alpha = 0.62f),
                     fontSize = 12.sp,
@@ -375,24 +376,19 @@ private fun TvEditField(
     nextFocusRequester: FocusRequester? = null,
     modifier: Modifier = Modifier
 ) {
-    var active by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
     val internalRequester = remember { FocusRequester() }
     val requester = focusRequester ?: internalRequester
 
     fun moveNext() {
-        active = false
         nextFocusRequester?.requestFocus()
-    }
-
-    LaunchedEffect(active) {
-        if (active) requester.requestFocus()
     }
 
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
         label = { Text(label) },
-        readOnly = !active,
+        readOnly = false,
         singleLine = singleLine,
         visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(imeAction = if (nextFocusRequester != null) ImeAction.Next else ImeAction.Done),
@@ -404,10 +400,14 @@ private fun TvEditField(
             .width(500.dp)
             .height(height.dp)
             .focusRequester(requester)
-            .onFocusChanged { if (!it.isFocused) active = false }
+            .onFocusChanged { state ->
+                if (state.isFocused) {
+                    keyboardController?.show()
+                }
+            }
             .onKeyEvent { event ->
                 if (event.type == KeyEventType.KeyUp && (event.key == Key.Enter || event.key == Key.NumPadEnter || event.key == Key.DirectionCenter)) {
-                    if (active) moveNext() else active = true
+                    moveNext()
                     true
                 } else false
             },
@@ -423,8 +423,12 @@ private fun TvEditField(
             focusedContainerColor = Color.White.copy(alpha = 0.035f),
             unfocusedContainerColor = Color.White.copy(alpha = 0.02f)
         ),
-        placeholder = { Text(AppLanguageStore.t("Press OK to edit", "Düzenlemek için OK"), color = Color.White.copy(alpha = 0.42f)) }
+        placeholder = { Text(AppLanguageStore.t("Enter text", "Metin gir"), color = Color.White.copy(alpha = 0.42f)) }
     )
+
+    LaunchedEffect(requester) {
+        // Keeps the field ready for direct typing when it receives focus from remote navigation.
+    }
 }
 
 @Composable
