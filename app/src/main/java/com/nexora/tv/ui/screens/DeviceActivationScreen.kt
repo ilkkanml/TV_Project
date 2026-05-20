@@ -27,12 +27,15 @@ import androidx.navigation.NavController
 import com.nexora.tv.data.app.AppLanguageStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
+import com.nexora.tv.ui.components.NexoraWordmark
+import com.nexora.tv.ui.components.PlayerEcosystemWordmark
 
 private const val MOCK_NEXORA_DEVICE_ID = "NX-TV-8F2K-44M9"
 private const val MOCK_ACTIVATION_KEY = "K7Q4-29XA"
-private const val ACTIVATION_SCREEN_MARKER = "EA0-ACT-FIX-5"
+private const val ACTIVATION_SCREEN_MARKER = "EA0-ACT-FIX-6"
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val NexoraGreen = Color(0xFF39FF88)
 private val PanelDark = Color(0xCC090B12)
 
 @Composable
@@ -52,9 +55,11 @@ fun DeviceActivationScreen(navController: NavController) {
         ) {
             Column(
                 modifier = Modifier.width(390.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text("NEXORA", color = Color.White, fontSize = 38.sp, fontWeight = FontWeight.Black, letterSpacing = 2.5.sp, maxLines = 1)
+                NexoraWordmark(fontSize = 38.sp, letterSpacing = 2.5.sp)
+                PlayerEcosystemWordmark(fontSize = 11.sp, letterSpacing = 1.2.sp)
+
                 Text(title, color = NexoraVioletSoft, fontSize = 22.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                 Text(ACTIVATION_SCREEN_MARKER, color = Color.White.copy(alpha = 0.42f), fontSize = 11.sp, fontWeight = FontWeight.Black, maxLines = 1)
                 Text(
@@ -101,6 +106,8 @@ fun DeviceActivationScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(11.dp)
             ) {
                 Text(AppLanguageStore.t("Device Ready", "Cihaz Hazır"), color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                PlayerEcosystemWordmark(fontSize = 12.sp, letterSpacing = 1.2.sp)
+                EarlyAccessLine()
                 Text(nextTitle, color = NexoraVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
 
                 ActivationStep("1", AppLanguageStore.t("Device screen is accepted for early access.", "Cihaz erken erişim için kabul edildi."))
@@ -129,6 +136,24 @@ fun DeviceActivationScreen(navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun EarlyAccessLine() {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = AppLanguageStore.t("Early Access", "Erken erişim"),
+            color = NexoraGreen,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Black
+        )
+        Text(
+            text = AppLanguageStore.t(" mode is active", " modu aktif"),
+            color = Color.White.copy(alpha = 0.70f),
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
