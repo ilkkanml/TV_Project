@@ -28,8 +28,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nexora.tv.data.content.MockContentLibrary
 import com.nexora.tv.data.content.NexoraContentItem
+import com.nexora.tv.data.live.LiveChannel
+import com.nexora.tv.data.live.LivePlaybackSession
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
+
+private const val DEMO_PREVIEW_STREAM_URL = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
@@ -183,7 +187,7 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
                 .padding(16.dp)
         ) {
             Text(
-                text = "This screen is a licensed-content UI shell. Playback uses only user-provided legal streams or local mock metadata.",
+                text = "Mock content uses a public demo preview stream for testing. Real playback comes from the user's own legal IPTV source.",
                 color = Color.White.copy(alpha = 0.58f),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
@@ -197,6 +201,13 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
             Button(
                 onClick = {
+                    LivePlaybackSession.select(
+                        LiveChannel(
+                            name = content.title,
+                            streamUrl = DEMO_PREVIEW_STREAM_URL,
+                            group = "Demo Preview"
+                        )
+                    )
                     navController.navigate(AppDestinations.Player.route) {
                         launchSingleTop = true
                     }
@@ -224,7 +235,7 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
                     )
                     if (content.isPlayable) {
                         Text(
-                            text = "Open player",
+                            text = "Open preview",
                             color = Color.White.copy(alpha = 0.78f),
                             fontWeight = FontWeight.Medium,
                             fontSize = 11.sp,
