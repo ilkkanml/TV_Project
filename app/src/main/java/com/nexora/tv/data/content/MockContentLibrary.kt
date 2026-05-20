@@ -25,7 +25,7 @@ data class NexoraContentItem(
     val type: NexoraContentType,
     val badge: String,
     val accentColor: Long,
-    val isPlayable: Boolean = true
+    val isPlayable: Boolean = false
 )
 
 data class NexoraContentRow(
@@ -304,29 +304,17 @@ object MockContentLibrary {
             NexoraContentRow(
                 title = "Settings",
                 subtitle = "Safe local placeholders",
-                items = listOf(
-                    settingAccount,
-                    settingPlayback,
-                    settingDisplay,
-                    settingSecurity,
-                    settingSupport
-                )
+                items = listOf(settingAccount, settingPlayback, settingDisplay, settingSecurity, settingSupport)
             )
         )
     }
 
     fun findContent(contentId: String?): NexoraContentItem? {
         if (contentId.isNullOrBlank()) return null
-
-        return allItems.firstOrNull {
-            it.id == contentId
-        }
+        return allItems.firstOrNull { it.id == contentId }
     }
 
     fun firstItemFor(section: NexoraContentSection): NexoraContentItem? {
-        return rowsFor(section)
-            .firstOrNull()
-            ?.items
-            ?.firstOrNull()
+        return rowsFor(section).firstOrNull()?.items?.firstOrNull()
     }
 }
