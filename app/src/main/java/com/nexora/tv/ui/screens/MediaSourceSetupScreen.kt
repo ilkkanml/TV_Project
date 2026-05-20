@@ -79,8 +79,11 @@ private enum class SourceMode(val label: String) {
 @Composable
 fun MediaSourceSetupScreen(navController: NavController) {
     val context = LocalContext.current
+    MediaProfileStore.init(context)
+
     val editingProfile = MediaProfileStore.editingProfile
     val portalFocus = remember { FocusRequester() }
+    val profileFocus = remember { FocusRequester() }
     val connectFocus = remember { FocusRequester() }
 
     var mode by remember { mutableStateOf(SourceMode.Portal) }
@@ -159,13 +162,6 @@ fun MediaSourceSetupScreen(navController: NavController) {
                     lineHeight = 17.sp
                 )
 
-                TvEditField(
-                    label = AppLanguageStore.t("Profile name", "Profil adı"),
-                    value = profileName,
-                    onChange = { profileName = it },
-                    modifier = Modifier.focusProperties { down = portalFocus }
-                )
-
                 Row(
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -188,24 +184,41 @@ fun MediaSourceSetupScreen(navController: NavController) {
                     }
                 }
 
+                TvEditField(
+                    label = AppLanguageStore.t("Profile name", "Profil adı"),
+                    value = profileName,
+                    onChange = { profileName = it },
+                    modifier = Modifier
+                        .focusRequester(profileFocus)
+                        .focusProperties { up = portalFocus }
+                )
+
                 when (mode) {
                     SourceMode.Portal -> {
                         TvEditField(
                             label = AppLanguageStore.t("Server URL", "Sunucu URL"),
                             value = server,
-                            onChange = { server = it },
-                            modifier = Modifier.focusProperties { up = portalFocus }
+                            onChange = { server = it.filterNot(Char::isWhitespace) },
+                            modifier = Modifier.focusProperties { up = profileFocus }
                         )
-                        TvEditField(AppLanguageStore.t("User name", "Kullanıcı adı"), user, { user = it })
+                        TvEditField(
+                            label = AppLanguageStore.t("User name", "Kullanıcı adı"),
+                            value = user,
+                            onChange = { user = it.filterNot(Char::isWhitespace) }
+                        )
                         TvEditField(
                             label = AppLanguageStore.t("Password", "Şifre"),
                             value = pass,
-                            onChange = { pass = it },
+                            onChange = { pass = it.filterNot(Char::isWhitespace) },
                             secret = true,
                             modifier = Modifier.focusProperties { down = connectFocus }
                         )
                     }
-                    SourceMode.ListUrl -> TvEditField("M3U URL", listUrl, { listUrl = it })
+                    SourceMode.ListUrl -> TvEditField(
+                        label = "M3U URL",
+                        value = listUrl,
+                        onChange = { listUrl = it.filterNot(Char::isWhitespace) }
+                    )
                     SourceMode.LocalFile -> {
                         Button(
                             onClick = { filePicker.launch("*/*") },
@@ -215,7 +228,11 @@ fun MediaSourceSetupScreen(navController: NavController) {
                         ) { Text(AppLanguageStore.t("Choose file from device", "Cihazdan dosya seç"), fontWeight = FontWeight.Black, fontSize = 13.sp) }
                         TvEditField(AppLanguageStore.t("Paste list data", "Liste verisini yapıştır"), localText, { localText = it }, singleLine = false, height = 96)
                     }
-                    SourceMode.Single -> TvEditField(AppLanguageStore.t("Stream URL", "Yayın URL"), singleUrl, { singleUrl = it })
+                    SourceMode.Single -> TvEditField(
+                        label = AppLanguageStore.t("Stream URL", "Yayın URL"),
+                        value = singleUrl,
+                        onChange = { singleUrl = it.filterNot(Char::isWhitespace) }
+                    )
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -235,7 +252,7 @@ fun MediaSourceSetupScreen(navController: NavController) {
                                             result.onSuccess { loaded ->
                                                 val status = "${loaded.live.size} live • ${loaded.movies.size} movies • ${loaded.series.size} series"
                                                 LivePlaybackSession.setCatalog(safeName, loaded.live, loaded.movies, loaded.series)
-                                                MediaProfileStore.upsert(safeName, "Provider API", server, user, pass, loaded.live, loaded.movies, loaded.series, status)
+                                                MediaProfileStore.upsert(safeName, "Provider API", server, user, pass, loaded.live, loaded.movies, loaded.series, status, context)
                                                 message = status
                                                 navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                             }.onFailure { error ->
@@ -254,7 +271,7 @@ fun MediaSourceSetupScreen(navController: NavController) {
                                             result.onSuccess { loaded ->
                                                 val status = "${loaded.size} live • 0 movies • 0 series"
                                                 LivePlaybackSession.setCatalog(safeName, loaded)
-                                                MediaProfileStore.upsert(safeName, "M3U URL", listUrl, "", "", loaded, emptyList(), emptyList(), status)
+                                                MediaProfileStore.upsert(safeName, "M3U URL", listUrl, "", "", loaded, emptyList(), emptyList(), status, context)
                                                 message = status
                                                 if (loaded.isNotEmpty()) navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                             }.onFailure { error ->
@@ -267,7 +284,7 @@ fun MediaSourceSetupScreen(navController: NavController) {
                                     val parsed = M3uParser.parse(localText)
                                     val status = "${parsed.size} live • 0 movies • 0 series"
                                     LivePlaybackSession.setCatalog(safeName, parsed)
-                                    MediaProfileStore.upsert(safeName, "Local data", "Local", "", "", parsed, emptyList(), emptyList(), status)
+                                    MediaProfileStore.upsert(safeName, "Local data", "Local", "", "", parsed, emptyList(), emptyList(), status, context)
                                     message = status
                                     if (parsed.isNotEmpty()) navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                                 }
@@ -276,7 +293,7 @@ fun MediaSourceSetupScreen(navController: NavController) {
                                     if (stream.startsWith("http://") || stream.startsWith("https://")) {
                                         val item = LiveChannel("Single Stream", stream, "Single Stream")
                                         LivePlaybackSession.select(item)
-                                        MediaProfileStore.upsert(safeName, "Single stream", stream, "", "", listOf(item), emptyList(), emptyList(), "1 stream ready")
+                                        MediaProfileStore.upsert(safeName, "Single stream", stream, "", "", listOf(item), emptyList(), emptyList(), "1 stream ready", context)
                                         navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
                                     } else {
                                         message = AppLanguageStore.t("Stream URL must start with http or https.", "Yayın URL http veya https ile başlamalı.")
