@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -52,49 +53,31 @@ fun UserProfilesScreen(navController: NavController) {
 
     NexoraCinematicBackdrop {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 34.dp, vertical = 22.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 34.dp, vertical = 22.dp),
             horizontalArrangement = Arrangement.spacedBy(22.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier
-                    .width(370.dp)
-                    .height(635.dp)
-                    .background(PanelDark, RoundedCornerShape(32.dp))
-                    .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp))
-                    .padding(18.dp),
+                modifier = Modifier.width(370.dp).height(635.dp).background(PanelDark, RoundedCornerShape(32.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp)).padding(18.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 NexoraWordmark(fontSize = 27.sp, letterSpacing = 2.sp)
                 PlayerEcosystemWordmark(fontSize = 9.sp, letterSpacing = 1.sp)
                 Text(AppLanguageStore.t("User Profiles", "Kullanıcı Profilleri"), color = NexoraVioletSoft, fontSize = 21.sp, fontWeight = FontWeight.Black)
-                Text(
-                    AppLanguageStore.t("Select a user or add a new media profile.", "Kullanıcı seç veya yeni medya profili ekle."),
-                    color = Color.White.copy(alpha = 0.62f),
-                    fontSize = 12.sp,
-                    lineHeight = 17.sp
-                )
+                Text(AppLanguageStore.t("Focus a user to preview details. Press OK to open Home.", "Detayları görmek için kullanıcıya gel. Home açmak için OK tuşuna bas."), color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp, lineHeight = 17.sp)
 
                 Button(
                     onClick = {
                         MediaProfileStore.startAdd()
                         navController.navigate(AppDestinations.PlaylistProfile.route) { launchSingleTop = true }
                     },
-                    modifier = Modifier
-                        .width(334.dp)
-                        .height(58.dp)
-                        .shadow(12.dp, RoundedCornerShape(22.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
+                    modifier = Modifier.width(334.dp).height(58.dp).shadow(12.dp, RoundedCornerShape(22.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
                     shape = RoundedCornerShape(22.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
                 ) { Text(AppLanguageStore.t("ADD USER", "KULLANICI EKLE"), fontSize = 15.sp, fontWeight = FontWeight.Black) }
 
                 Column(
-                    modifier = Modifier
-                        .width(334.dp)
-                        .height(430.dp)
-                        .verticalScroll(rememberScrollState()),
+                    modifier = Modifier.width(334.dp).height(430.dp).verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(9.dp)
                 ) {
                     if (profiles.isEmpty()) {
@@ -104,6 +87,7 @@ fun UserProfilesScreen(navController: NavController) {
                             ProfileListButton(
                                 profile = profile,
                                 selected = selected?.id == profile.id,
+                                onFocused = { MediaProfileStore.select(profile, context) },
                                 onClick = {
                                     MediaProfileStore.select(profile, context)
                                     navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
@@ -114,10 +98,14 @@ fun UserProfilesScreen(navController: NavController) {
                 }
             }
 
-            ProfileInfoPanel(navController = navController, profile = selected, onSelect = { profile ->
-                MediaProfileStore.select(profile, context)
-                navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
-            })
+            ProfileInfoPanel(
+                navController = navController,
+                profile = selected,
+                onSelect = { profile ->
+                    MediaProfileStore.select(profile, context)
+                    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
+                }
+            )
         }
     }
 }
@@ -125,42 +113,14 @@ fun UserProfilesScreen(navController: NavController) {
 @Composable
 private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile?, onSelect: (MediaProfile) -> Unit) {
     Column(
-        modifier = Modifier
-            .width(760.dp)
-            .height(635.dp)
-            .background(PanelDark, RoundedCornerShape(32.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp))
-            .padding(26.dp)
-            .verticalScroll(rememberScrollState()),
+        modifier = Modifier.width(760.dp).height(635.dp).background(PanelDark, RoundedCornerShape(32.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(32.dp)).padding(26.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         if (profile == null) {
             Text(AppLanguageStore.t("No user selected", "Kullanıcı seçilmedi"), color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Black)
-            Text(
-                AppLanguageStore.t(
-                    "Create a user profile to connect a personal media source and view account/library status here.",
-                    "Kişisel medya kaynağını bağlamak ve hesap/kütüphane durumunu görmek için kullanıcı profili oluştur."
-                ),
-                color = Color.White.copy(alpha = 0.68f),
-                fontSize = 15.sp,
-                lineHeight = 22.sp
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Brush.horizontalGradient(listOf(NexoraViolet.copy(alpha = 0.18f), Color.White.copy(alpha = 0.04f))), RoundedCornerShape(26.dp))
-                    .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(26.dp))
-                    .padding(20.dp)
-            ) {
-                Text(
-                    AppLanguageStore.t(
-                        "Profiles keep each user's media setup separate and make the player easier to manage on a shared TV.",
-                        "Profiller, her kullanıcının medya kurulumunu ayrı tutar ve ortak TV kullanımını daha düzenli hale getirir."
-                    ),
-                    color = Color.White.copy(alpha = 0.72f),
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp
-                )
+            Text(AppLanguageStore.t("Create a user profile to connect a personal media source and view account/library status here.", "Kişisel medya kaynağını bağlamak ve hesap/kütüphane durumunu görmek için kullanıcı profili oluştur."), color = Color.White.copy(alpha = 0.68f), fontSize = 15.sp, lineHeight = 22.sp)
+            Box(modifier = Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(NexoraViolet.copy(alpha = 0.18f), Color.White.copy(alpha = 0.04f))), RoundedCornerShape(26.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(26.dp)).padding(20.dp)) {
+                Text(AppLanguageStore.t("Profiles keep each user's media setup separate and make the player easier to manage on a shared TV.", "Profiller, her kullanıcının medya kurulumunu ayrı tutar ve ortak TV kullanımını daha düzenli hale getirir."), color = Color.White.copy(alpha = 0.72f), fontSize = 14.sp, lineHeight = 21.sp)
             }
             return@Column
         }
@@ -188,18 +148,10 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
         InfoLine(AppLanguageStore.t("Max connections", "Maksimum bağlantı"), profile.maxConnections)
         InfoLine(AppLanguageStore.t("Trial account", "Deneme hesabı"), profile.trialStatus)
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(24.dp))
-                .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp))
-                .padding(18.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
+        Column(modifier = Modifier.fillMaxWidth().background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(AppLanguageStore.t("Profile policy", "Profil politikası"), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
             Text(AppLanguageStore.t("• This profile connects only to media access entered by the user.", "• Bu profil yalnızca kullanıcının girdiği medya erişimine bağlanır."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
-            Text(AppLanguageStore.t("• We do not use MAC address as the main identity because it can expose device-level information and may change depending on system privacy rules.", "• MAC adresini ana kimlik olarak kullanmıyoruz; cihaz seviyesinde bilgi açığa çıkarabilir ve sistem gizlilik kurallarına göre değişebilir."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
-            Text(AppLanguageStore.t("• The app uses a safer device profile model instead.", "• Bunun yerine daha güvenli bir cihaz profili modeli kullanıyoruz."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
+            Text(AppLanguageStore.t("• We do not use MAC as the device identity. It can expose hardware details and is not reliable across devices.", "• MAC adresini cihaz kimliği olarak kullanmıyoruz. Donanım bilgisi açığa çıkarabilir ve cihazlar arasında güvenilir değildir."), color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp)
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -215,19 +167,19 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
 
             Button(
                 onClick = { onSelect(profile) },
-                modifier = Modifier.width(150.dp).height(54.dp),
+                modifier = Modifier.width(170.dp).height(54.dp),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-            ) { Text(AppLanguageStore.t("Open Home", "Home Aç"), fontWeight = FontWeight.Black) }
+            ) { Text(AppLanguageStore.t("Open Home", "Ana Sayfayı Aç"), fontWeight = FontWeight.Black) }
         }
     }
 }
 
 @Composable
-private fun ProfileListButton(profile: MediaProfile, selected: Boolean, onClick: () -> Unit) {
+private fun ProfileListButton(profile: MediaProfile, selected: Boolean, onFocused: () -> Unit, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.width(334.dp).height(72.dp),
+        modifier = Modifier.width(334.dp).height(72.dp).onFocusChanged { if (it.isFocused) onFocused() },
         shape = RoundedCornerShape(22.dp),
         colors = ButtonDefaults.buttonColors(containerColor = if (selected) NexoraViolet.copy(alpha = 0.92f) else Color.White.copy(alpha = 0.07f), contentColor = Color.White)
     ) {
