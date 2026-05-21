@@ -1,8 +1,5 @@
 package com.nexora.tv.ui.screens
 
-import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -11,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -49,11 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nexora.tv.data.app.AppLanguageStore
-import com.nexora.tv.data.live.LiveChannel
-import com.nexora.tv.data.live.LivePlaybackSession
-import com.nexora.tv.data.live.M3uParser
-import com.nexora.tv.data.live.ProviderPortalLoader
-import com.nexora.tv.data.live.RemoteListLoader
 import com.nexora.tv.data.profile.MediaProfile
 import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
@@ -66,7 +57,7 @@ private val SetupGreen = Color(0xFF39FF88)
 private val SetupPanel = Color(0xCC090B12)
 private val SetupField = Color(0xAA121624)
 
-private enum class SourceMode {
+internal enum class SourceMode {
     Portal,
     ListUrl,
     LocalFile,
@@ -441,114 +432,5 @@ private fun sourceModeMessage(mode: SourceMode): String {
         SourceMode.ListUrl -> AppLanguageStore.t("M3U URL selected. Enter the list URL.", "M3U URL seçildi. Liste adresini gir.")
         SourceMode.LocalFile -> AppLanguageStore.t("Local data selected. Choose a file or paste list text.", "Yerel veri seçildi. Dosya seç veya liste metni yapıştır.")
         SourceMode.Single -> AppLanguageStore.t("Single stream selected. Enter one stream URL.", "Tek yayın seçildi. Bir yayın adresi gir.")
-    }
-}
-
-private fun connectCurrentSource(
-    context: Context,
-    mode: SourceMode,
-    profileName: String,
-    server: String,
-    user: String,
-    pass: String,
-    listUrl: String,
-    localText: String,
-    singleUrl: String,
-    navController: NavController,
-    setLoading: (Boolean) -> Unit,
-    setMessage: (String) -> Unit
-) {
-    val safeName = profileName.ifBlank { AppLanguageStore.t("User Profile", "Kullanıcı Profili") }
-
-    when (mode) {
-        SourceMode.Portal -> {
-            if (server.isBlank() || user.isBlank() || pass.isBlank()) {
-                setMessage(AppLanguageStore.t("Server, user name and password are required.", "Sunucu, kullanıcı adı ve şifre zorunludur."))
-                return
-            }
-            setLoading(true)
-            setMessage(AppLanguageStore.t("Connecting...", "Bağlanıyor..."))
-            Thread {
-                val result = runCatching { ProviderPortalLoader.loadAll(server, user, pass) }
-                Handler(Looper.getMainLooper()).post {
-                    setLoading(false)
-                    result.onSuccess { loaded ->
-                        val status = "${loaded.live.size} live • ${loaded.movies.size} movies • ${loaded.series.size} series"
-                        val account = loaded.account
-                        LivePlaybackSession.setCatalog(safeName, loaded.live, loaded.movies, loaded.series)
-                        MediaProfileStore.upsert(
-                            profileName = safeName,
-                            sourceType = "Provider API",
-                            serverAddress = server,
-                            accountName = user,
-                            accessKey = pass,
-                            live = loaded.live,
-                            movies = loaded.movies,
-                            series = loaded.series,
-                            status = status,
-                            context = context,
-                            mediaAccountExpiry = account.expiryDate,
-                            mediaAccountStatus = account.status,
-                            activeConnections = account.activeConnections,
-                            maxConnections = account.maxConnections,
-                            trialStatus = account.trialStatus
-                        )
-                        setMessage(status)
-                        navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
-                    }.onFailure { error ->
-                        setMessage(error.message ?: AppLanguageStore.t("Could not connect.", "Bağlanılamadı."))
-                    }
-                }
-            }.start()
-        }
-
-        SourceMode.ListUrl -> {
-            if (listUrl.isBlank()) {
-                setMessage(AppLanguageStore.t("M3U URL is required.", "M3U URL zorunludur."))
-                return
-            }
-            setLoading(true)
-            setMessage(AppLanguageStore.t("Loading...", "Yükleniyor..."))
-            Thread {
-                val result = runCatching { RemoteListLoader.load(listUrl) }
-                Handler(Looper.getMainLooper()).post {
-                    setLoading(false)
-                    result.onSuccess { loaded ->
-                        val status = "${loaded.size} live • 0 movies • 0 series"
-                        LivePlaybackSession.setCatalog(safeName, loaded)
-                        MediaProfileStore.upsert(safeName, "M3U URL", listUrl, "", "", loaded, emptyList(), emptyList(), status, context)
-                        setMessage(status)
-                        if (loaded.isNotEmpty()) navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
-                    }.onFailure { error ->
-                        setMessage(error.message ?: AppLanguageStore.t("Could not load.", "Yüklenemedi."))
-                    }
-                }
-            }.start()
-        }
-
-        SourceMode.LocalFile -> {
-            if (localText.isBlank()) {
-                setMessage(AppLanguageStore.t("Local data is empty.", "Yerel veri boş."))
-                return
-            }
-            val parsed = M3uParser.parse(localText)
-            val status = "${parsed.size} live • 0 movies • 0 series"
-            LivePlaybackSession.setCatalog(safeName, parsed)
-            MediaProfileStore.upsert(safeName, "Local data", "Local", "", "", parsed, emptyList(), emptyList(), status, context)
-            setMessage(status)
-            if (parsed.isNotEmpty()) navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
-        }
-
-        SourceMode.Single -> {
-            val stream = singleUrl.trim()
-            if (!stream.startsWith("http://") && !stream.startsWith("https://")) {
-                setMessage(AppLanguageStore.t("Stream URL must start with http or https.", "Yayın URL http veya https ile başlamalı."))
-                return
-            }
-            val item = LiveChannel("Single Stream", stream, "Single Stream")
-            LivePlaybackSession.select(item)
-            MediaProfileStore.upsert(safeName, "Single stream", stream, "", "", listOf(item), emptyList(), emptyList(), "1 stream ready", context)
-            navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
-        }
     }
 }
