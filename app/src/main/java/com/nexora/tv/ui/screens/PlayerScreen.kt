@@ -44,6 +44,7 @@ import androidx.media3.common.Tracks
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
+import com.nexora.tv.data.app.AppLanguageStore
 import com.nexora.tv.data.live.LiveChannel
 import com.nexora.tv.data.live.LivePlaybackSession
 import com.nexora.tv.navigation.AppDestinations
@@ -54,34 +55,15 @@ private val NexoraVioletSoft = Color(0xFF9F67FF)
 private val PanelDark = Color(0xCC090B12)
 private val PanelSoft = Color(0xAA11131C)
 
-private data class TrackOption(
-    val title: String,
-    val type: Int,
-    val group: TrackGroup,
-    val index: Int
-)
-
-private data class TrackCatalog(
-    val video: List<TrackOption> = emptyList(),
-    val audio: List<TrackOption> = emptyList(),
-    val subtitles: List<TrackOption> = emptyList()
-)
+private data class TrackOption(val title: String, val type: Int, val group: TrackGroup, val index: Int)
+private data class TrackCatalog(val video: List<TrackOption> = emptyList(), val audio: List<TrackOption> = emptyList(), val subtitles: List<TrackOption> = emptyList())
 
 @Composable
 fun PlayerScreen(navController: NavController) {
     val channel = LivePlaybackSession.currentChannel
-
     NexoraCinematicBackdrop {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black)
-        ) {
-            if (channel != null) {
-                LivePlayerStage(navController, channel)
-            } else {
-                EmptyPlayerState(navController)
-            }
+        Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+            if (channel != null) LivePlayerStage(navController, channel) else EmptyPlayerState(navController)
         }
     }
 }
@@ -92,9 +74,7 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
     var showSettings by remember { mutableStateOf(false) }
     var trackCatalog by remember { mutableStateOf(TrackCatalog()) }
 
-    BackHandler(enabled = showSettings) {
-        showSettings = false
-    }
+    BackHandler(enabled = showSettings) { showSettings = false }
 
     val player = remember(channel.streamUrl) {
         ExoPlayer.Builder(context).build().apply {
@@ -110,10 +90,8 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
                 trackCatalog = buildTrackCatalog(tracks)
             }
         }
-
         player.addListener(listener)
         trackCatalog = buildTrackCatalog(player.currentTracks)
-
         onDispose {
             player.removeListener(listener)
             player.release()
@@ -133,165 +111,67 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
             update = { view -> view.player = player }
         )
 
-        TopOverlay(
-            navController = navController,
-            channel = channel,
-            onSettingsClick = { showSettings = !showSettings }
-        )
+        TopOverlay(channel = channel)
+        BottomOverlay(navController = navController, channel = channel, onSettingsClick = { showSettings = !showSettings })
 
-        BottomOverlay(
-            navController = navController,
-            channel = channel,
-            onSettingsClick = { showSettings = !showSettings }
-        )
-
-        if (showSettings) {
-            PlaybackSettingsPanel(
-                player = player,
-                catalog = trackCatalog,
-                onClose = { showSettings = false }
-            )
-        }
+        if (showSettings) PlaybackSettingsPanel(player = player, catalog = trackCatalog, onClose = { showSettings = false })
     }
 }
 
 @Composable
-private fun TopOverlay(
-    navController: NavController,
-    channel: LiveChannel,
-    onSettingsClick: () -> Unit
-) {
+private fun TopOverlay(channel: LiveChannel) {
     Row(
-        modifier = Modifier
-            .padding(24.dp)
-            .background(PanelDark, RoundedCornerShape(22.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp))
-            .padding(horizontal = 18.dp, vertical = 14.dp),
+        modifier = Modifier.padding(24.dp).background(PanelDark, RoundedCornerShape(22.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp)).padding(horizontal = 18.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.width(470.dp)) {
-            Text(
-                text = channel.name,
-                color = Color.White,
-                fontSize = 23.sp,
-                fontWeight = FontWeight.Black,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = channel.group,
-                color = NexoraVioletSoft,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Text(channel.name, color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(channel.group, color = NexoraVioletSoft, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-
         PlayerChip("LIVE")
-        PlayerNavButton("Settings", width = 110, onClick = onSettingsClick)
-        PlayerNavButton("Back") { navController.popBackStack() }
-        PlayerNavButton("Home") { goHome(navController) }
     }
 }
 
 @Composable
-private fun BoxScope.BottomOverlay(
-    navController: NavController,
-    channel: LiveChannel,
-    onSettingsClick: () -> Unit
-) {
+private fun BoxScope.BottomOverlay(navController: NavController, channel: LiveChannel, onSettingsClick: () -> Unit) {
     Column(
-        modifier = Modifier
-            .align(Alignment.BottomStart)
-            .padding(24.dp)
-            .width(570.dp)
-            .background(PanelDark, RoundedCornerShape(22.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp))
-            .padding(18.dp),
+        modifier = Modifier.align(Alignment.BottomStart).padding(24.dp).width(570.dp).background(PanelDark, RoundedCornerShape(22.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp)).padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(
-            text = "Now Playing",
-            color = NexoraVioletSoft,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Black,
-            letterSpacing = 1.2.sp
-        )
-        Text(
-            text = channel.name,
-            color = Color.White,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Black,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
+        Text(AppLanguageStore.ui("Now Playing"), color = NexoraVioletSoft, fontSize = 11.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+        Text(channel.name, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            PlayerNavButton("Settings", width = 110, onClick = onSettingsClick)
-            PlayerNavButton("Back") { navController.popBackStack() }
-            PlayerNavButton("Home") { goHome(navController) }
+            PlayerNavButton(AppLanguageStore.ui("Settings"), width = 110, onClick = onSettingsClick)
+            PlayerNavButton(AppLanguageStore.ui("Back")) { navController.popBackStack() }
+            PlayerNavButton(AppLanguageStore.ui("Home")) { goHome(navController) }
         }
     }
 }
 
 @Composable
-private fun BoxScope.PlaybackSettingsPanel(
-    player: ExoPlayer,
-    catalog: TrackCatalog,
-    onClose: () -> Unit
-) {
+private fun BoxScope.PlaybackSettingsPanel(player: ExoPlayer, catalog: TrackCatalog, onClose: () -> Unit) {
     Column(
-        modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .padding(end = 28.dp)
-            .width(390.dp)
-            .height(610.dp)
-            .background(PanelDark, RoundedCornerShape(26.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(26.dp))
-            .padding(18.dp)
-            .verticalScroll(rememberScrollState()),
+        modifier = Modifier.align(Alignment.CenterEnd).padding(end = 28.dp).width(390.dp).height(610.dp).background(PanelDark, RoundedCornerShape(26.dp)).border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(26.dp)).padding(18.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Row(
-            modifier = Modifier.width(350.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Video Settings", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black)
-            PlayerNavButton("Close", width = 82, onClick = onClose)
+        Row(modifier = Modifier.width(350.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Text(AppLanguageStore.ui("Video Settings"), color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black)
+            PlayerNavButton(AppLanguageStore.ui("Close"), width = 82, onClick = onClose)
         }
 
-        Text(
-            text = "Available options depend on the stream.",
-            color = Color.White.copy(alpha = 0.58f),
-            fontSize = 12.sp,
-            lineHeight = 17.sp
-        )
+        Text(AppLanguageStore.ui("Available options depend on the stream."), color = Color.White.copy(alpha = 0.58f), fontSize = 12.sp, lineHeight = 17.sp)
 
-        SettingsSectionTitle("Quality")
-        SettingsOptionButton("Auto") { clearTrackType(player, C.TRACK_TYPE_VIDEO) }
-        if (catalog.video.isEmpty()) {
-            SettingsEmptyText("No manual quality option.")
-        } else {
-            catalog.video.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
-        }
+        SettingsSectionTitle(AppLanguageStore.ui("Quality"))
+        SettingsOptionButton(AppLanguageStore.ui("Auto")) { clearTrackType(player, C.TRACK_TYPE_VIDEO) }
+        if (catalog.video.isEmpty()) SettingsEmptyText(AppLanguageStore.ui("No manual quality option.")) else catalog.video.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
 
-        SettingsSectionTitle("Audio")
-        if (catalog.audio.isEmpty()) {
-            SettingsEmptyText("No language option.")
-        } else {
-            catalog.audio.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
-        }
+        SettingsSectionTitle(AppLanguageStore.ui("Audio"))
+        if (catalog.audio.isEmpty()) SettingsEmptyText(AppLanguageStore.ui("No language option.")) else catalog.audio.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
 
-        SettingsSectionTitle("Subtitles")
-        SettingsOptionButton("Off") { disableTextTrack(player) }
-        if (catalog.subtitles.isEmpty()) {
-            SettingsEmptyText("No subtitle option.")
-        } else {
-            catalog.subtitles.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
-        }
+        SettingsSectionTitle(AppLanguageStore.ui("Subtitles"))
+        SettingsOptionButton(AppLanguageStore.ui("Off")) { disableTextTrack(player) }
+        if (catalog.subtitles.isEmpty()) SettingsEmptyText(AppLanguageStore.ui("No subtitle option.")) else catalog.subtitles.forEach { option -> SettingsOptionButton(option.title) { applyTrack(player, option) } }
     }
 }
 
@@ -307,63 +187,41 @@ private fun SettingsEmptyText(text: String) {
 
 @Composable
 private fun SettingsOptionButton(text: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.width(340.dp).height(42.dp),
-        shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PanelSoft, contentColor = Color.White)
-    ) {
+    Button(onClick = onClick, modifier = Modifier.width(340.dp).height(42.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = PanelSoft, contentColor = Color.White)) {
         Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
 @Composable
 private fun EmptyPlayerState(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(48.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("No channel selected", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black)
+    Column(modifier = Modifier.fillMaxSize().padding(48.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(AppLanguageStore.ui("No channel selected"), color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black)
         Spacer(modifier = Modifier.height(12.dp))
-        Text("Go back and select a channel.", color = Color.White.copy(alpha = 0.68f), fontSize = 14.sp)
+        Text(AppLanguageStore.ui("Go back and select a channel."), color = Color.White.copy(alpha = 0.68f), fontSize = 14.sp)
         Spacer(modifier = Modifier.height(22.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            PlayerNavButton("Back") { navController.popBackStack() }
-            PlayerNavButton("Home") { goHome(navController) }
+            PlayerNavButton(AppLanguageStore.ui("Back")) { navController.popBackStack() }
+            PlayerNavButton(AppLanguageStore.ui("Home")) { goHome(navController) }
         }
     }
 }
 
 @Composable
 private fun PlayerChip(text: String) {
-    Box(
-        modifier = Modifier
-            .background(NexoraViolet.copy(alpha = 0.20f), RoundedCornerShape(14.dp))
-            .border(1.dp, NexoraViolet.copy(alpha = 0.50f), RoundedCornerShape(14.dp))
-            .padding(horizontal = 14.dp, vertical = 9.dp),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = Modifier.background(NexoraViolet.copy(alpha = 0.20f), RoundedCornerShape(14.dp)).border(1.dp, NexoraViolet.copy(alpha = 0.50f), RoundedCornerShape(14.dp)).padding(horizontal = 14.dp, vertical = 9.dp), contentAlignment = Alignment.Center) {
         Text(text = text, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Black)
     }
 }
 
 @Composable
 private fun PlayerNavButton(text: String, width: Int = 86, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.width(width.dp).height(40.dp),
-        shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.10f), contentColor = Color.White)
-    ) {
-        Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Black)
+    Button(onClick = onClick, modifier = Modifier.width(width.dp).height(40.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.10f), contentColor = Color.White)) {
+        Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Black, maxLines = 1)
     }
 }
 
 private fun goHome(navController: NavController) {
-    navController.navigate(AppDestinations.Home.route) {
-        launchSingleTop = true
-    }
+    navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
 }
 
 private fun buildTrackCatalog(tracks: Tracks): TrackCatalog {
@@ -394,11 +252,7 @@ private fun buildTrackCatalog(tracks: Tracks): TrackCatalog {
         }
     }
 
-    return TrackCatalog(
-        video = video.distinctBy { it.title },
-        audio = audio.distinctBy { it.title },
-        subtitles = subtitles.distinctBy { it.title }
-    )
+    return TrackCatalog(video = video.distinctBy { it.title }, audio = audio.distinctBy { it.title }, subtitles = subtitles.distinctBy { it.title })
 }
 
 private fun buildVideoLabel(height: Int, bitrate: Int): String {
@@ -408,38 +262,20 @@ private fun buildVideoLabel(height: Int, bitrate: Int): String {
 }
 
 private fun buildLanguageLabel(label: String?, language: String?, fallback: String): String {
-    return label?.takeIf { it.isNotBlank() }
-        ?: language?.takeIf { it.isNotBlank() }?.uppercase()
-        ?: fallback
+    return label?.takeIf { it.isNotBlank() } ?: language?.takeIf { it.isNotBlank() }?.uppercase() ?: fallback
 }
 
 private fun applyTrack(player: ExoPlayer, option: TrackOption) {
-    val parameters = player.trackSelectionParameters
-        .buildUpon()
-        .setTrackTypeDisabled(option.type, false)
-        .clearOverridesOfType(option.type)
-        .setOverrideForType(TrackSelectionOverride(option.group, listOf(option.index)))
-        .build()
-
+    val parameters = player.trackSelectionParameters.buildUpon().setTrackTypeDisabled(option.type, false).clearOverridesOfType(option.type).setOverrideForType(TrackSelectionOverride(option.group, listOf(option.index))).build()
     player.trackSelectionParameters = parameters
 }
 
 private fun clearTrackType(player: ExoPlayer, type: Int) {
-    val parameters = player.trackSelectionParameters
-        .buildUpon()
-        .setTrackTypeDisabled(type, false)
-        .clearOverridesOfType(type)
-        .build()
-
+    val parameters = player.trackSelectionParameters.buildUpon().setTrackTypeDisabled(type, false).clearOverridesOfType(type).build()
     player.trackSelectionParameters = parameters
 }
 
 private fun disableTextTrack(player: ExoPlayer) {
-    val parameters = player.trackSelectionParameters
-        .buildUpon()
-        .clearOverridesOfType(C.TRACK_TYPE_TEXT)
-        .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true)
-        .build()
-
+    val parameters = player.trackSelectionParameters.buildUpon().clearOverridesOfType(C.TRACK_TYPE_TEXT).setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true).build()
     player.trackSelectionParameters = parameters
 }
