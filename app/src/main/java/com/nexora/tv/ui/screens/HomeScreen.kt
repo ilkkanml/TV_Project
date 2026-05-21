@@ -266,9 +266,10 @@ private fun LibraryCard(item: NexoraContentItem, selected: Boolean, onFocus: () 
 @Composable
 private fun LoadedCatalogPanel(navController: NavController, title: String, countLabel: String, items: List<LiveChannel>, fallbackGroup: String) {
     var selectedGroup by rememberSaveable(items.size, title) { mutableStateOf("All") }
-    var showFilters by rememberSaveable(title) { mutableStateOf(true) }
-    val groups = items.map { it.group.ifBlank { fallbackGroup } }.distinct().take(48)
+    var showFilters by rememberSaveable(title) { mutableStateOf(false) }
+    val groups = items.map { it.group.ifBlank { fallbackGroup } }.distinct().sortedBy { it.lowercase() }.take(48)
     val visibleItems = if (selectedGroup == "All") items else items.filter { it.group.ifBlank { fallbackGroup } == selectedGroup }
+    val countText = if (visibleItems.size == items.size) "${items.size} $countLabel" else "${visibleItems.size}/${items.size} $countLabel"
 
     Column(Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(28.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(28.dp)).padding(22.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -276,12 +277,28 @@ private fun LoadedCatalogPanel(navController: NavController, title: String, coun
                 Text(title, color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Black)
                 Text(LivePlaybackSession.sourceStatus, color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            UtilityPill("${items.size} $countLabel")
+            UtilityPill(countText)
         }
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            FilterButton(AppLanguageStore.ui("All"), selectedGroup == "All") { selectedGroup = "All" }
-            FilterButton(AppLanguageStore.ui("Filter"), showFilters) { showFilters = !showFilters }
-            if (showFilters) groups.forEach { group -> FilterButton(group, selectedGroup == group) { selectedGroup = group } }
+            FilterButton(AppLanguageStore.ui("All"), selectedGroup == "All") {
+                selectedGroup = "All"
+                showFilters = false
+            }
+            FilterButton(
+                if (showFilters) AppLanguageStore.t("Hide filters", "Filtreleri gizle") else AppLanguageStore.ui("Filter"),
+                showFilters
+            ) { showFilters = !showFilters }
+            if (selectedGroup != "All" && !showFilters) {
+                FilterButton(selectedGroup, true) { showFilters = true }
+            }
+            if (showFilters) {
+                groups.forEach { group ->
+                    FilterButton(group, selectedGroup == group) {
+                        selectedGroup = group
+                        showFilters = false
+                    }
+                }
+            }
         }
         LazyColumn(Modifier.fillMaxWidth().height(470.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (visibleItems.isEmpty()) {
