@@ -8,6 +8,9 @@ object LivePlaybackSession {
     var currentChannel: LiveChannel? by mutableStateOf(null)
         private set
 
+    var detailItem: LiveChannel? by mutableStateOf(null)
+        private set
+
     var loadedChannels: List<LiveChannel> by mutableStateOf(emptyList())
         private set
 
@@ -30,6 +33,14 @@ object LivePlaybackSession {
         currentChannel = channel
     }
 
+    fun selectDetail(item: LiveChannel) {
+        detailItem = item
+    }
+
+    fun clearDetail() {
+        detailItem = null
+    }
+
     fun setCatalog(
         title: String,
         channels: List<LiveChannel>,
@@ -47,6 +58,7 @@ object LivePlaybackSession {
         loadedChannels = emptyList()
         loadedMovies = emptyList()
         loadedSeries = emptyList()
+        detailItem = null
         sourceTitle = "No source loaded"
         sourceStatus = "Add a source to load items."
     }
