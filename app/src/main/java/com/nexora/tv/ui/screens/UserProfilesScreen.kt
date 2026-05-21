@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -54,10 +57,20 @@ fun UserProfilesScreen(navController: NavController) {
 
     val profiles = MediaProfileStore.profiles
     val selected = MediaProfileStore.selectedProfile
+    val addUserFocusRequester = remember { FocusRequester() }
+    val activeProfileFocusRequester = remember { FocusRequester() }
     var previewProfileId by remember(profiles.size, selected?.id) {
         mutableStateOf(selected?.id ?: profiles.firstOrNull()?.id)
     }
     val previewProfile = profiles.firstOrNull { it.id == previewProfileId }
+
+    LaunchedEffect(profiles.size, selected?.id) {
+        if (profiles.isEmpty()) {
+            addUserFocusRequester.requestFocus()
+        } else {
+            activeProfileFocusRequester.requestFocus()
+        }
+    }
 
     NexoraCinematicBackdrop {
         Row(
@@ -79,7 +92,7 @@ fun UserProfilesScreen(navController: NavController) {
                         MediaProfileStore.startAdd()
                         navController.navigate(AppDestinations.PlaylistProfile.route) { launchSingleTop = true }
                     },
-                    modifier = Modifier.width(334.dp).height(58.dp).shadow(12.dp, RoundedCornerShape(22.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
+                    modifier = Modifier.width(334.dp).height(58.dp).focusRequester(addUserFocusRequester).shadow(12.dp, RoundedCornerShape(22.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
                     shape = RoundedCornerShape(22.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
                 ) { Text(AppLanguageStore.t("ADD USER", "KULLANICI EKLE"), fontSize = 15.sp, fontWeight = FontWeight.Black) }
@@ -92,10 +105,12 @@ fun UserProfilesScreen(navController: NavController) {
                         EmptyUserHint()
                     } else {
                         profiles.forEach { profile ->
+                            val shouldReceiveDefaultFocus = profile.id == (selected?.id ?: profiles.firstOrNull()?.id)
                             ProfileListButton(
                                 profile = profile,
                                 highlighted = previewProfile?.id == profile.id,
                                 selected = selected?.id == profile.id,
+                                focusRequester = if (shouldReceiveDefaultFocus) activeProfileFocusRequester else null,
                                 onFocused = { previewProfileId = profile.id },
                                 onClick = {
                                     MediaProfileStore.select(profile, context)
@@ -185,10 +200,10 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
 }
 
 @Composable
-private fun ProfileListButton(profile: MediaProfile, highlighted: Boolean, selected: Boolean, onFocused: () -> Unit, onClick: () -> Unit) {
+private fun ProfileListButton(profile: MediaProfile, highlighted: Boolean, selected: Boolean, focusRequester: FocusRequester?, onFocused: () -> Unit, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.width(334.dp).height(72.dp).onFocusChanged { if (it.isFocused) onFocused() },
+        modifier = Modifier.width(334.dp).height(72.dp).then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier).onFocusChanged { if (it.isFocused) onFocused() },
         shape = RoundedCornerShape(22.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = when {
