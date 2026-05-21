@@ -15,9 +15,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -31,11 +39,18 @@ import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
+private val FocusBlue = Color(0xFF4CC9FF)
 private val PanelDark = Color(0xCC090B12)
+private val ButtonIdle = Color(0xAA121624)
 
 @Composable
 fun LanguageSelectionScreen(navController: NavController) {
     val context = LocalContext.current
+    val turkishFocusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        turkishFocusRequester.requestFocus()
+    }
 
     NexoraCinematicBackdrop {
         Column(
@@ -63,14 +78,15 @@ fun LanguageSelectionScreen(navController: NavController) {
                 )
 
                 Text(
-                    text = "Choose your language",
+                    text = "Dil seç / Choose language",
                     color = NexoraVioletSoft,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Black
+                    fontWeight = FontWeight.Black,
+                    textAlign = TextAlign.Center
                 )
 
                 Text(
-                    text = "Select the language for the full app experience. You can change this later from Settings.",
+                    text = "Uygulama dilini seç. Daha sonra Settings / Ayarlar ekranından değiştirebilirsin.",
                     color = Color.White.copy(alpha = 0.68f),
                     fontSize = 14.sp,
                     lineHeight = 20.sp,
@@ -78,10 +94,10 @@ fun LanguageSelectionScreen(navController: NavController) {
                     modifier = Modifier.width(560.dp)
                 )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                     LanguageButton(
                         title = "Türkçe",
-                        subtitle = "Uygulamayı Türkçe kullan",
+                        requester = turkishFocusRequester,
                         onClick = {
                             AppLanguageStore.setLanguage(context, AppLanguageStore.Language.TR)
                             navController.navigate(AppDestinations.Activation.route) {
@@ -93,7 +109,7 @@ fun LanguageSelectionScreen(navController: NavController) {
 
                     LanguageButton(
                         title = "English",
-                        subtitle = "Use the app in English",
+                        requester = null,
                         onClick = {
                             AppLanguageStore.setLanguage(context, AppLanguageStore.Language.EN)
                             navController.navigate(AppDestinations.Activation.route) {
@@ -106,14 +122,14 @@ fun LanguageSelectionScreen(navController: NavController) {
 
                 Box(
                     modifier = Modifier
-                        .width(620.dp)
-                        .background(Color.White.copy(alpha = 0.055f), RoundedCornerShape(22.dp))
-                        .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(22.dp))
-                        .padding(16.dp),
+                        .width(560.dp)
+                        .background(Color.White.copy(alpha = 0.055f), RoundedCornerShape(18.dp))
+                        .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(18.dp))
+                        .padding(13.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "This appears once on first launch. Language can be changed later in Settings.",
+                        text = "Kumandadan OK tuşu ile devam et.",
                         color = Color.White.copy(alpha = 0.62f),
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center
@@ -125,19 +141,34 @@ fun LanguageSelectionScreen(navController: NavController) {
 }
 
 @Composable
-private fun LanguageButton(title: String, subtitle: String, onClick: () -> Unit) {
+private fun LanguageButton(title: String, requester: FocusRequester?, onClick: () -> Unit) {
+    var focused by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(16.dp)
+
     Button(
         onClick = onClick,
         modifier = Modifier
-            .width(260.dp)
-            .height(116.dp)
-            .shadow(14.dp, RoundedCornerShape(26.dp), ambientColor = NexoraViolet, spotColor = NexoraViolet),
-        shape = RoundedCornerShape(26.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
+            .width(180.dp)
+            .height(54.dp)
+            .then(if (requester != null) Modifier.focusRequester(requester) else Modifier)
+            .onFocusChanged { focused = it.isFocused }
+            .shadow(
+                elevation = if (focused) 10.dp else 0.dp,
+                shape = shape,
+                ambientColor = FocusBlue,
+                spotColor = FocusBlue
+            )
+            .border(
+                width = if (focused) 2.dp else 1.dp,
+                color = if (focused) FocusBlue else Color.White.copy(alpha = 0.12f),
+                shape = shape
+            ),
+        shape = shape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (focused) NexoraViolet else ButtonIdle,
+            contentColor = Color.White
+        )
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(title, fontSize = 24.sp, fontWeight = FontWeight.Black)
-            Text(subtitle, fontSize = 12.sp, color = Color.White.copy(alpha = 0.78f), textAlign = TextAlign.Center)
-        }
+        Text(title, fontSize = 17.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
     }
 }
