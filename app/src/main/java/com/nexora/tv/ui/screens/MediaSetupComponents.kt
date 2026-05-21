@@ -152,7 +152,10 @@ internal fun SetupInputField(
             .height(height.dp)
             .focusRequester(focusRequester)
             .onFocusChanged { state ->
-                if (!state.isFocused && isActive && nextFieldId == null) onActiveFieldChange(null)
+                if (!state.isFocused && isActive) {
+                    onActiveFieldChange(null)
+                    keyboard?.hide()
+                }
             }
             .onKeyEvent { event ->
                 if (event.type == KeyEventType.KeyUp && (event.key == Key.Enter || event.key == Key.NumPadEnter || event.key == Key.DirectionCenter)) {
