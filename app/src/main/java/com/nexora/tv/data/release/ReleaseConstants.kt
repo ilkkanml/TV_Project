@@ -9,7 +9,7 @@ object ReleaseConstants {
     const val DEVICE_INSTALL_ENDPOINT = "https://www.thenightssecret.com/api/devices/install/index.php"
 
     val appVersionName: String
-        get() = BuildConfig.VERSION_NAME.ifBlank { "0.1.0" }
+        get() = BuildConfig.VERSION_NAME.ifBlank { "0.1.2" }
 
     val appVersionCode: Int
         get() = BuildConfig.VERSION_CODE
