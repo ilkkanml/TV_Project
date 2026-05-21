@@ -46,7 +46,7 @@ object AppLanguageStore {
 
     fun ui(text: String): String {
         if (!isTurkish) return text
-        return core[text] ?: text
+        return core[text] ?: extra[text] ?: text
     }
 
     private val core = mapOf(
@@ -121,5 +121,27 @@ object AppLanguageStore {
         "Privacy-first direction" to "Gizlilik öncelikli yaklaşım",
         "No MAC-based identity" to "MAC tabanlı kimlik yok",
         "Legal use only" to "Sadece yasal kullanım"
+    )
+
+    private val extra = mapOf(
+        "Account" to "Hesap",
+        "Language" to "Dil",
+        "Open Details" to "Detayları Aç",
+        "CATALOG" to "KATALOG",
+        "channels" to "kanal",
+        "movies" to "film",
+        "series" to "dizi",
+        "Continue Watching" to "İzlemeye Devam Et",
+        "Featured Library" to "Öne Çıkan Kütüphane",
+        "Trending Tonight" to "Bu Gece Öne Çıkanlar",
+        "Available app controls" to "Kullanılabilir uygulama kontrolleri",
+        "Profile & device access" to "Profil ve cihaz erişimi",
+        "Turkish / English" to "Türkçe / İngilizce",
+        "Resume your latest mock items" to "Son yerel örnek içeriklere devam et",
+        "Movies, series and live placeholders" to "Film, dizi ve canlı yayın yer tutucuları",
+        "High-energy premium row" to "Premium öne çıkan satır",
+        "Cinematic VOD shell" to "Sinematik VOD alanı",
+        "Episode-aware series shell" to "Bölüm odaklı dizi alanı",
+        "Mock channel groups only" to "Yalnızca yerel kanal grup örnekleri"
     )
 }
