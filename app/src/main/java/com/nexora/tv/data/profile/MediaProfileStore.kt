@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.nexora.tv.data.live.LiveChannel
 import com.nexora.tv.data.live.LivePlaybackSession
+import com.nexora.tv.data.live.MediaKind
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
@@ -185,9 +186,9 @@ object MediaProfileStore {
             serverAddress = optString("serverAddress", ""),
             accountName = optString("accountName", ""),
             accessKey = optString("accessKey", ""),
-            live = optJSONArray("live").toChannels(),
-            movies = optJSONArray("movies").toChannels(),
-            series = optJSONArray("series").toChannels(),
+            live = optJSONArray("live").toChannels(MediaKind.Live),
+            movies = optJSONArray("movies").toChannels(MediaKind.Movie),
+            series = optJSONArray("series").toChannels(MediaKind.Series),
             status = optString("status", "Ready"),
             mediaAccountExpiry = optString("mediaAccountExpiry", "Not available"),
             mediaAccountStatus = optString("mediaAccountStatus", "Unknown"),
@@ -207,22 +208,33 @@ object MediaProfileStore {
                     .put("streamUrl", channel.streamUrl)
                     .put("group", channel.group)
                     .put("logoUrl", channel.logoUrl)
+                    .put("mediaId", channel.mediaId)
+                    .put("mediaKind", channel.mediaKind.name)
+                    .put("description", channel.description)
+                    .put("seasonName", channel.seasonName)
+                    .put("episodeName", channel.episodeName)
             )
         }
         return array
     }
 
-    private fun JSONArray?.toChannels(): List<LiveChannel> {
+    private fun JSONArray?.toChannels(fallbackKind: MediaKind): List<LiveChannel> {
         if (this == null) return emptyList()
         val result = mutableListOf<LiveChannel>()
         for (i in 0 until length()) {
             val item = optJSONObject(i) ?: continue
+            val kind = runCatching { MediaKind.valueOf(item.optString("mediaKind")) }.getOrDefault(fallbackKind)
             result.add(
                 LiveChannel(
                     name = item.optString("name"),
                     streamUrl = item.optString("streamUrl"),
-                    group = item.optString("group", "Live"),
-                    logoUrl = item.optString("logoUrl", "")
+                    group = item.optString("group", fallbackKind.name),
+                    logoUrl = item.optString("logoUrl", ""),
+                    mediaId = item.optString("mediaId", ""),
+                    mediaKind = kind,
+                    description = item.optString("description", ""),
+                    seasonName = item.optString("seasonName", ""),
+                    episodeName = item.optString("episodeName", "")
                 )
             )
         }
