@@ -12,13 +12,46 @@ This handoff replaces the earlier full EA0 bootstrap requirement for the immedia
 Immediate goal:
 
 ```txt
-When the app is installed/opened on Android TV or Fire TV,
+When Nexora TV is installed/opened on Android TV or Fire TV,
 register that device install into the platform database.
 ```
 
 Nothing else is required for this urgent phase.
 
-## 2. Active Backend Endpoint
+## 2. App Identity
+
+Approved display name:
+
+```txt
+Nexora TV
+```
+
+Approved fixed APK filename:
+
+```txt
+nexoratv.apk
+```
+
+Fixed APK download URL:
+
+```txt
+https://www.thenightssecret.com/dl/nexoratv.apk
+```
+
+Recommended package name:
+
+```txt
+com.nexoratv.app
+```
+
+Critical update rules:
+
+- Keep package name unchanged after public release.
+- Keep signing key unchanged after public release.
+- Increase versionCode on every update.
+- Keep APK filename/path unchanged if Downloader code should remain unchanged.
+
+## 3. Active Backend Endpoint
 
 Use this endpoint:
 
@@ -28,7 +61,7 @@ POST https://www.thenightssecret.com/api/devices/install/index.php
 
 This is a cPanel/PHP endpoint backed by GoDaddy MySQL.
 
-## 3. Request Body
+## 4. Request Body
 
 The app should send JSON:
 
@@ -52,7 +85,7 @@ For Fire TV, use:
 }
 ```
 
-## 4. Response Body
+## 5. Response Body
 
 Expected success response:
 
@@ -90,7 +123,7 @@ If the same device/install is already recorded, expected response:
 }
 ```
 
-## 5. App Startup Behavior
+## 6. App Startup Behavior
 
 On app first launch:
 
@@ -110,7 +143,7 @@ On later launches:
 3. Backend updates lastSeenAt instead of creating duplicate row.
 ```
 
-## 6. Local Storage Requirement
+## 7. Local Storage Requirement
 
 The app must store:
 
@@ -130,7 +163,7 @@ Rules:
 - If app is uninstalled, local installId may be lost.
 - If platformDeviceHash remains stable, backend can still recognize the device install.
 
-## 7. Platform Device Hash Rule
+## 8. Platform Device Hash Rule
 
 `platformDeviceHash` should be:
 
@@ -141,7 +174,7 @@ Rules:
 
 If a stable hash is not available yet, the app may still call endpoint without it, but duplicate prevention becomes weaker.
 
-## 8. What Not To Implement Yet
+## 9. What Not To Implement Yet
 
 Do not implement for this urgent phase:
 
@@ -158,7 +191,7 @@ Stream/source URL upload
 Watch history tracking
 ```
 
-## 9. Error Handling
+## 10. Error Handling
 
 If endpoint fails:
 
@@ -174,10 +207,12 @@ Try once on app start.
 If failed, retry later with backoff.
 ```
 
-## 10. Acceptance Criteria
+## 11. Acceptance Criteria
 
 TV_Project is aligned when:
 
+- App display name is Nexora TV.
+- APK filename is nexoratv.apk for release upload.
 - App sends POST request to the provided endpoint on first startup.
 - App stores returned installId locally.
 - App sends installId again on later startup.
@@ -185,7 +220,7 @@ TV_Project is aligned when:
 - App does not send license/payment/provider/source data.
 - App can continue running even if install registration temporarily fails.
 
-## 11. Current Verified Backend Test
+## 12. Current Verified Backend Test
 
 Manual test result:
 
@@ -193,4 +228,6 @@ Manual test result:
 Endpoint accepted test-device-001.
 MySQL table created one DeviceInstallRecord.
 Duplicate row was not created on repeat test.
+A real installed app/device created a database record successfully.
+APK download URL worked.
 ```
