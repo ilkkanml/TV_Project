@@ -114,12 +114,14 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
                     layoutParams = android.view.ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                     useController = false
                     this.player = player
+                    keepScreenOn = true
                     configureRemoteKeys(player) { showSettings = !showSettings }
                 }
             },
             update = { view ->
                 view.useController = false
                 view.player = player
+                view.keepScreenOn = isPlaying
                 view.configureRemoteKeys(player) { showSettings = !showSettings }
             }
         )
@@ -275,6 +277,18 @@ private fun handlePlayerRemoteKey(event: AndroidKeyEvent, player: ExoPlayer, onS
         AndroidKeyEvent.KEYCODE_MEDIA_PAUSE,
         AndroidKeyEvent.KEYCODE_SPACE -> {
             togglePlayPause(player)
+            true
+        }
+
+        AndroidKeyEvent.KEYCODE_DPAD_LEFT,
+        AndroidKeyEvent.KEYCODE_MEDIA_REWIND -> {
+            player.seekBack()
+            true
+        }
+
+        AndroidKeyEvent.KEYCODE_DPAD_RIGHT,
+        AndroidKeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> {
+            player.seekForward()
             true
         }
 
