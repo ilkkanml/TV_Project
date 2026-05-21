@@ -1,14 +1,27 @@
 package com.nexora.tv.data.live
 
 import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+data class ProviderAccountMetadata(
+    val status: String = "Unknown",
+    val expiryDate: String = "Not available",
+    val activeConnections: String = "Not available",
+    val maxConnections: String = "Not available",
+    val trialStatus: String = "Not available"
+)
 
 data class ProviderPortalResult(
     val live: List<LiveChannel>,
     val movies: List<LiveChannel>,
-    val series: List<LiveChannel>
+    val series: List<LiveChannel>,
+    val account: ProviderAccountMetadata = ProviderAccountMetadata()
 )
 
 object ProviderPortalLoader {
@@ -28,6 +41,7 @@ object ProviderPortalLoader {
         val safeUser = URLEncoder.encode(cleanUser, "UTF-8")
         val safePass = URLEncoder.encode(cleanPass, "UTF-8")
 
+        val account = runCatching { loadAccount(base, safeUser, safePass) }.getOrDefault(ProviderAccountMetadata())
         val live = runCatching { loadLive(base, safeUser, safePass) }.getOrDefault(emptyList())
         val movies = runCatching { loadMovies(base, safeUser, safePass) }.getOrDefault(emptyList())
         val series = runCatching { loadSeries(base, safeUser, safePass) }.getOrDefault(emptyList())
@@ -36,12 +50,28 @@ object ProviderPortalLoader {
             error("No media data found. Check server, user name, password, or provider access.")
         }
 
-        return ProviderPortalResult(live = live, movies = movies, series = series)
+        return ProviderPortalResult(live = live, movies = movies, series = series, account = account)
+    }
+
+    private fun loadAccount(base: String, safeUser: String, safePass: String): ProviderAccountMetadata {
+        val text = readText(providerUrl(base, safeUser, safePass))
+        val info = JSONObject(text).optJSONObject("user_info") ?: JSONObject()
+        return ProviderAccountMetadata(
+            status = info.optString("status", "Unknown").ifBlank { "Unknown" },
+            expiryDate = formatExpiry(info.optString("exp_date", "")),
+            activeConnections = info.optString("active_cons", "Not available").ifBlank { "Not available" },
+            maxConnections = info.optString("max_connections", "Not available").ifBlank { "Not available" },
+            trialStatus = when (info.optString("is_trial", "")) {
+                "1" -> "Yes"
+                "0" -> "No"
+                else -> "Not available"
+            }
+        )
     }
 
     private fun loadLive(base: String, safeUser: String, safePass: String): List<LiveChannel> {
         val categoryMap = loadCategories(base, safeUser, safePass, "get_live_categories")
-        val text = readText("$base/player_api.php?username=$safeUser&password=$safePass&action=get_live_streams")
+        val text = readText(providerUrl(base, safeUser, safePass, "get_live_streams"))
         val array = JSONArray(text)
         val result = mutableListOf<LiveChannel>()
         for (i in 0 until array.length()) {
@@ -60,7 +90,7 @@ object ProviderPortalLoader {
 
     private fun loadMovies(base: String, safeUser: String, safePass: String): List<LiveChannel> {
         val categoryMap = loadCategories(base, safeUser, safePass, "get_vod_categories")
-        val text = readText("$base/player_api.php?username=$safeUser&password=$safePass&action=get_vod_streams")
+        val text = readText(providerUrl(base, safeUser, safePass, "get_vod_streams"))
         val array = JSONArray(text)
         val result = mutableListOf<LiveChannel>()
         for (i in 0 until array.length()) {
@@ -79,7 +109,7 @@ object ProviderPortalLoader {
 
     private fun loadSeries(base: String, safeUser: String, safePass: String): List<LiveChannel> {
         val categoryMap = loadCategories(base, safeUser, safePass, "get_series_categories")
-        val text = readText("$base/player_api.php?username=$safeUser&password=$safePass&action=get_series")
+        val text = readText(providerUrl(base, safeUser, safePass, "get_series"))
         val array = JSONArray(text)
         val result = mutableListOf<LiveChannel>()
         for (i in 0 until array.length()) {
@@ -96,7 +126,7 @@ object ProviderPortalLoader {
 
     private fun loadCategories(base: String, safeUser: String, safePass: String, action: String): Map<String, String> {
         return runCatching {
-            val text = readText("$base/player_api.php?username=$safeUser&password=$safePass&action=$action")
+            val text = readText(providerUrl(base, safeUser, safePass, action))
             val array = JSONArray(text)
             val map = mutableMapOf<String, String>()
             for (i in 0 until array.length()) {
@@ -107,6 +137,20 @@ object ProviderPortalLoader {
             }
             map
         }.getOrDefault(emptyMap())
+    }
+
+    private fun providerUrl(base: String, safeUser: String, safePass: String, action: String? = null): String {
+        val root = "$base/player_api.php?username=$safeUser&password=$safePass"
+        return if (action.isNullOrBlank()) root else "$root&action=$action"
+    }
+
+    private fun formatExpiry(raw: String): String {
+        val value = raw.trim()
+        if (value.isBlank() || value == "0" || value.equals("null", true)) return "Not available"
+        val seconds = value.toLongOrNull() ?: return value
+        return runCatching {
+            SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(seconds * 1000L))
+        }.getOrDefault("Not available")
     }
 
     private fun readText(address: String): String {
