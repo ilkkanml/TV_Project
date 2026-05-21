@@ -83,7 +83,7 @@ fun HomeScreen(navController: NavController) {
     val recentHomeItems = remember(LivePlaybackSession.loadedMovies, LivePlaybackSession.loadedSeries) {
         (LivePlaybackSession.loadedMovies + LivePlaybackSession.loadedSeries)
             .distinctBy { it.streamUrl.ifBlank { it.name + it.group } }
-            .take(80)
+            .take(120)
     }
 
     val loadedItems = when (selectedMenu) {
@@ -131,7 +131,8 @@ fun HomeScreen(navController: NavController) {
                             fallbackGroup = when (selectedMenu) {
                                 HomeMenu.Home -> AppLanguageStore.t("Movies & Series", "Film ve Diziler")
                                 else -> AppLanguageStore.ui(selectedMenu.key)
-                            }
+                            },
+                            posterMode = selectedMenu != HomeMenu.Live
                         )
                     } else {
                         if (selectedMenu != HomeMenu.Settings) {
@@ -153,6 +154,16 @@ private fun openTarget(navController: NavController, item: NexoraContentItem) {
         SETTING_ACCOUNT -> navController.navigate(AppDestinations.Profiles.route) { launchSingleTop = true }
         SETTING_LANGUAGE -> navController.navigate(AppDestinations.Language.route) { launchSingleTop = true }
         else -> navController.navigate(AppDestinations.Detail.createRoute(item.id)) { launchSingleTop = true }
+    }
+}
+
+private fun openLoadedItem(navController: NavController, item: LiveChannel, posterMode: Boolean) {
+    if (posterMode) {
+        LivePlaybackSession.selectDetail(item)
+        navController.navigate(AppDestinations.Detail.createRoute("provider-media")) { launchSingleTop = true }
+    } else if (item.streamUrl.isNotBlank()) {
+        LivePlaybackSession.select(item)
+        navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
     }
 }
 
@@ -264,7 +275,7 @@ private fun LibraryCard(item: NexoraContentItem, selected: Boolean, onFocus: () 
 }
 
 @Composable
-private fun LoadedCatalogPanel(navController: NavController, title: String, countLabel: String, items: List<LiveChannel>, fallbackGroup: String) {
+private fun LoadedCatalogPanel(navController: NavController, title: String, countLabel: String, items: List<LiveChannel>, fallbackGroup: String, posterMode: Boolean) {
     var selectedGroup by rememberSaveable(items.size, title) { mutableStateOf("All") }
     var showFilters by rememberSaveable(title) { mutableStateOf(false) }
     val groups = items.map { it.group.ifBlank { fallbackGroup } }.distinct().sortedBy { it.lowercase() }.take(48)
@@ -300,22 +311,72 @@ private fun LoadedCatalogPanel(navController: NavController, title: String, coun
                 }
             }
         }
-        LazyColumn(Modifier.fillMaxWidth().height(470.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (visibleItems.isEmpty()) {
-                item { EmptyCatalogMessage() }
-            } else {
-                itemsIndexed(
-                    visibleItems,
-                    key = { index, item -> item.streamUrl.ifBlank { item.name + item.group + index } }
-                ) { index, item ->
-                    ChannelRow(item, fallbackGroup, if (index == 0) Modifier.focusProperties { up = FocusRequester.Cancel } else Modifier) {
-                        if (item.streamUrl.isNotBlank()) {
-                            LivePlaybackSession.select(item)
-                            navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+
+        if (posterMode) {
+            PosterCatalogRows(navController = navController, items = visibleItems, fallbackGroup = fallbackGroup)
+        } else {
+            LinearCatalogList(navController = navController, items = visibleItems, fallbackGroup = fallbackGroup)
+        }
+    }
+}
+
+@Composable
+private fun PosterCatalogRows(navController: NavController, items: List<LiveChannel>, fallbackGroup: String) {
+    val grouped = items.groupBy { it.group.ifBlank { fallbackGroup } }
+    LazyColumn(Modifier.fillMaxWidth().height(500.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+        if (items.isEmpty()) {
+            item { EmptyCatalogMessage() }
+        } else {
+            grouped.entries.forEachIndexed { rowIndex, entry ->
+                item(key = entry.key) {
+                    Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
+                        Text(entry.key, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            entry.value.forEachIndexed { index, item ->
+                                PosterCard(
+                                    item = item,
+                                    modifier = if (rowIndex == 0 && index == 0) Modifier.focusProperties { up = FocusRequester.Cancel } else Modifier
+                                ) { openLoadedItem(navController, item, posterMode = true) }
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun LinearCatalogList(navController: NavController, items: List<LiveChannel>, fallbackGroup: String) {
+    LazyColumn(Modifier.fillMaxWidth().height(470.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (items.isEmpty()) {
+            item { EmptyCatalogMessage() }
+        } else {
+            itemsIndexed(
+                items,
+                key = { index, item -> item.streamUrl.ifBlank { item.name + item.group + index } }
+            ) { index, item ->
+                ChannelRow(item, fallbackGroup, if (index == 0) Modifier.focusProperties { up = FocusRequester.Cancel } else Modifier) {
+                    openLoadedItem(navController, item, posterMode = false)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PosterCard(item: LiveChannel, modifier: Modifier, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.width(154.dp).height(226.dp),
+        shape = RoundedCornerShape(22.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Card, contentColor = Color.White)
+    ) {
+        Box(
+            Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Purple.copy(alpha = 0.24f), Color.Black.copy(alpha = 0.12f), Color.Black.copy(alpha = 0.80f))), RoundedCornerShape(22.dp)).border(1.dp, Color.White.copy(alpha = 0.09f), RoundedCornerShape(22.dp)).padding(12.dp)
+        ) {
+            Text(item.group.ifBlank { AppLanguageStore.ui("Category") }, color = Blue, fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.align(Alignment.TopStart))
+            Text(item.name, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Black, lineHeight = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, modifier = Modifier.align(Alignment.BottomStart))
         }
     }
 }
