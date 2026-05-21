@@ -78,7 +78,17 @@ fun HomeScreen(navController: NavController) {
     val selectedItem = MockContentLibrary.findContent(selectedItemId) ?: rows.firstOrNull()?.items?.firstOrNull()
     var showBackHint by remember { mutableStateOf(false) }
 
+    val recentHomeItems = remember(
+        LivePlaybackSession.loadedMovies,
+        LivePlaybackSession.loadedSeries
+    ) {
+        (LivePlaybackSession.loadedMovies + LivePlaybackSession.loadedSeries)
+            .distinctBy { it.streamUrl.ifBlank { it.name + it.group } }
+            .take(80)
+    }
+
     val loadedItems = when (selectedMenu) {
+        HomeMenu.Home -> recentHomeItems
         HomeMenu.Live -> LivePlaybackSession.loadedChannels
         HomeMenu.Movies -> LivePlaybackSession.loadedMovies
         HomeMenu.Series -> LivePlaybackSession.loadedSeries
@@ -107,15 +117,22 @@ fun HomeScreen(navController: NavController) {
                     if (showingLoadedCatalog) {
                         LoadedCatalogPanel(
                             navController = navController,
-                            title = AppLanguageStore.ui(selectedMenu.key),
+                            title = when (selectedMenu) {
+                                HomeMenu.Home -> AppLanguageStore.t("Recently Added", "Son Eklenenler")
+                                else -> AppLanguageStore.ui(selectedMenu.key)
+                            },
                             countLabel = when (selectedMenu) {
+                                HomeMenu.Home -> AppLanguageStore.t("items", "içerik")
                                 HomeMenu.Live -> AppLanguageStore.t("channels", "kanal")
                                 HomeMenu.Movies -> AppLanguageStore.t("movies", "film")
                                 HomeMenu.Series -> AppLanguageStore.t("series", "dizi")
                                 else -> "items"
                             },
                             items = loadedItems,
-                            fallbackGroup = AppLanguageStore.ui(selectedMenu.key)
+                            fallbackGroup = when (selectedMenu) {
+                                HomeMenu.Home -> AppLanguageStore.t("Movies & Series", "Film ve Diziler")
+                                else -> AppLanguageStore.ui(selectedMenu.key)
+                            }
                         )
                     } else {
                         if (selectedMenu != HomeMenu.Settings) {
