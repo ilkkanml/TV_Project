@@ -1,74 +1,69 @@
 # Nexora TV — NEXT_TASK
 
-## Current Status
+Status: Runtime next-action entrypoint
+Updated: 2026-05-21
 
-M12 Platform Database Baseline & Migration Foundation is LOCKED.
+## Current Status
 
 No active milestone is open.
 
-## Last Locked Milestone
+Last locked implementation milestone:
 
-`M12 Platform Database Baseline & Migration Foundation`
+`M14 First Working Release / Internal Alpha Smoke Gate` — LOCKED
 
-## M12 Status
+## Current Required Work Before M15
 
-LOCKED
+Perform codebase and documentation cleanup before opening the next milestone.
 
-## M12 Task Status
+Reason:
 
-- `M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition` — completed
-- `M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft` — completed
-- `M12-TASK-003 Local-only Migration Baseline Implementation Plan` — `PASSED / QA VERIFIED`
+- Some client docs were stale and still referenced M12/M13 as current.
+- UI screen files have grown too large.
+- Some repeated UI tokens and repeated patterns exist across screens.
+- M15 UI/UX polish must not add visual code on top of bloated files.
 
-## M12 Evidence Status
+## Current Cleanup Scope
 
-- Dependency install: CONFIRMED
-- Docker Desktop local infra: CONFIRMED
-- PostgreSQL container health: CONFIRMED
-- Redis container health: CONFIRMED
-- Prisma generate: CONFIRMED
-- Local migration apply: CONFIRMED
-- API typecheck: CONFIRMED
-- Local DB verification: CONFIRMED
-- QA review: PASS
+Allowed:
 
-## M12 Records
+- Align root/docs source-of-truth files.
+- Standardize repo structure documentation.
+- Extract large UI files into smaller component files.
+- Remove duplicate or stale code after extraction.
+- Centralize repeated UI tokens/components when safe.
+- Keep behavior unchanged unless a bug is directly caused by the cleanup.
 
-Platform repo:
+Not allowed:
 
-- `docs/M12_DATABASE_BASELINE_SCOPE.md`
-- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
-- `docs/M12_DATABASE_POLICY_DRAFT.md`
-- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
-- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
-- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
-- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
-- `docs/M12_QA_REVIEW.md`
-- `docs/M12_LOCK_REPORT.md`
+- Production deploy
+- Store release
+- Payment enforcement
+- Provider integration expansion
+- Content hosting/channel selling
+- Backend-owned stream/channel catalog
+- DRM bypass
+- Unauthorized scraping
+- Heavy playback rewrite
+- Protected system rewrite
+- New feature flood
 
-## Required Next Action
+## Recommended Next Milestone Candidate
 
-Director should scope the next milestone candidate.
+`M15 Internal Alpha UI/UX Polish Direction & Handoff Readiness`
 
-Recommended next candidate:
+M15 should open only after cleanup does not leave obvious documentation conflict or bloated screen structure behind.
 
-`M13 Platform API Service Foundation & Environment Contract`
+## Immediate Work Order
 
-Candidate focus:
+1. Align client docs with M14/M15 truth.
+2. Add repo structure standard.
+3. Clean Home screen file split.
+4. Clean repeated UI helper patterns.
+5. Run/collect build evidence before calling cleanup passed.
+6. Then Director may scope M15.
 
-- API runtime environment baseline
-- Local `.env` / config contract
-- Database connection service foundation
-- Health/readiness endpoint verification
-- No auth/session implementation yet unless separately scoped
-- No production deployment
+## Current Operating Rule
 
-## Guardrails
+Do not claim PASSED until user test/build evidence exists.
 
-- Local-only unless Director explicitly expands scope
-- No production database work
-- No payment enforcement
-- No provider integration
-- No content hosting or channel selling
-- Legal media-player boundary preserved
-- Protected systems preserved
+Do not claim LOCKED without QA and Director approval.
