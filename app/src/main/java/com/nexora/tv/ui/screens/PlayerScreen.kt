@@ -47,6 +47,7 @@ import androidx.navigation.NavController
 import com.nexora.tv.data.app.AppLanguageStore
 import com.nexora.tv.data.live.LiveChannel
 import com.nexora.tv.data.live.LivePlaybackSession
+import com.nexora.tv.data.live.MediaKind
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
@@ -63,7 +64,7 @@ fun PlayerScreen(navController: NavController) {
     val channel = LivePlaybackSession.currentChannel
     NexoraCinematicBackdrop {
         Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
-            if (channel != null) LivePlayerStage(navController, channel) else EmptyPlayerState(navController)
+            if (channel != null && channel.streamUrl.isNotBlank()) LivePlayerStage(navController, channel) else EmptyPlayerState(navController)
         }
     }
 }
@@ -154,7 +155,7 @@ private fun TopOverlay(channel: LiveChannel) {
                 overflow = TextOverflow.Ellipsis
             )
         }
-        PlayerChip("LIVE")
+        PlayerChip(mediaChipLabel(channel))
     }
 }
 
@@ -250,6 +251,15 @@ private fun PlayerChip(text: String) {
 private fun PlayerNavButton(text: String, width: Int = 86, onClick: () -> Unit) {
     Button(onClick = onClick, modifier = Modifier.width(width.dp).height(40.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.10f), contentColor = Color.White)) {
         Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Black, maxLines = 1)
+    }
+}
+
+private fun mediaChipLabel(channel: LiveChannel): String {
+    return when (channel.mediaKind) {
+        MediaKind.Live -> "LIVE"
+        MediaKind.Movie -> "MOVIE"
+        MediaKind.Episode -> "EPISODE"
+        MediaKind.Series -> "SERIES"
     }
 }
 
