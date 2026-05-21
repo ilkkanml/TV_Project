@@ -1,123 +1,140 @@
 # Nexora TV — HANDOFF
 
-## Current Handoff
+Status: ACTIVE HANDOFF
+Updated: 2026-05-21
 
-Director
+## Current Checkpoint
 
-## Current Active Milestone
+`NEXORA_FRONTEND_FREEZE_01` — FREEZE CANDIDATE
 
-None — next milestone pending Director scoping.
+This is not LOCKED.
 
-## Last Locked Milestone
+No active milestone is open.
 
-`M12 Platform Database Baseline & Migration Foundation`
+## Current Target
 
-## M12 Status
+Primary target:
 
-LOCKED
+- Direct APK install
+- Downloader code distribution
+- Free early access preview
+- Android TV / Fire TV first
 
-## M12 Task Status
+Not current target:
 
-- `M12-TASK-001 Platform Database Baseline Scope & Guardrail Definition` — completed
-- `M12-TASK-002 Database Migration / Seed / Rollback / Retention Policy Draft` — completed
-- `M12-TASK-003 Local-only Migration Baseline Implementation Plan` — `PASSED / QA VERIFIED`
-
-## Previous Locked Milestone
-
-`M11 Platform Source-of-Truth Audit`
-
-## M11 Status
-
-LOCKED
-
-## Previous Locked Milestone Before M11
-
-`M10 Ecosystem Alignment & Client Integration Contract`
-
-## M10 Status
-
-LOCKED
+- Store release
+- Payment enforcement
+- Production backend release
 
 ## Current Director Decision
 
-M12 is locked.
+Freeze method is active.
 
-M12 completed local-only platform database baseline and migration foundation.
+Do not add new features until the first frontend smoke test is completed.
 
-No active milestone is open until Director explicitly scopes one.
+Do not open M15 yet.
 
-## M12 Records
+## Immediate Next Action
 
-Platform repo:
+User should pull latest `main` and run:
 
-- `docs/M12_DATABASE_BASELINE_SCOPE.md`
-- `docs/M12_DATABASE_ARCHITECT_REPORT.md`
-- `docs/M12_DATABASE_POLICY_DRAFT.md`
-- `docs/M12_SYSTEMS_ARCHITECT_REVIEW.md`
-- `docs/M12_SECURITY_PRIVACY_REVIEW.md`
-- `docs/M12_LOCAL_MIGRATION_BASELINE_IMPLEMENTATION_PLAN.md`
-- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
-- `docs/M12_QA_REVIEW.md`
-- `docs/M12_LOCK_REPORT.md`
+1. Sync Gradle.
+2. Clean Project.
+3. Rebuild Project.
+4. Run on Television emulator or Android TV / Fire TV device.
+5. Report the first blocking error if any.
 
-## M12 Changed Platform Files
+## Smoke Test Order
 
-- `apps/api/prisma/migrations/migration_lock.toml`
-- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
-- `apps/api/package.json`
-- `apps/api/tsconfig.json`
+```text
+Splash
+Language
+Activation
+Profiles
+Add User / Media Source Setup
+Home
+Movies
+Series
+Live
+Settings
+Detail
+Player
+Back navigation
+```
 
-## Evidence Status
+## Test Result Template
 
-- Dependency install: CONFIRMED
-- Docker Desktop local infra: CONFIRMED
-- PostgreSQL container health: CONFIRMED
-- Redis container health: CONFIRMED
-- Prisma generate: CONFIRMED
-- Local migration apply: CONFIRMED
-- API typecheck: CONFIRMED
-- Local DB verification: CONFIRMED
-- QA review: PASS
+```text
+Build: OK / FAIL
+Install: OK / FAIL
+Splash: OK / FAIL
+Language: OK / FAIL
+Activation: OK / FAIL
+Profiles: OK / FAIL
+Source Setup: OK / FAIL
+Home: OK / FAIL
+Detail: OK / FAIL
+Player: OK / FAIL
+Back: OK / FAIL
+Notes:
+```
 
-## M12 Guardrails
+## Allowed During Freeze
 
-- Legal media player boundary preserved
-- Platform does not become content provider
-- No bundled channels or streams
-- No payment enforcement
-- No provider integration
-- No content hosting
-- No channel selling
-- No platform-owned stream catalog
-- No rights-bypass behavior
-- No unauthorized source extraction behavior
-- Protected systems preserved
-- No production database deployment
-- No production database mutation
+- Build fix
+- Crash fix
+- Broken route fix
+- Broken focus fix
+- Manifest/resource fix
+- Icon/resource replacement
+- Small copy correction
+- Profile flow restoration
 
-## Required Next Action
+## Not Allowed During Freeze
 
-Director should scope next milestone candidate.
+- New feature work
+- Visual redesign
+- Large refactor
+- Backend expansion
+- Store release work
+- Playback rewrite
+- Component splitting unless required to fix build
 
-Recommended next candidate:
+## Recent Freeze Notes
 
-`M13 Platform API Service Foundation & Environment Contract`
+- `docs/NEXORA_FRONTEND_FREEZE_01.md` created.
+- `docs/NEXT_TASK.md` aligned to frontend freeze smoke test.
+- `docs/PROJECT_MEMORY.md` aligned to frontend freeze checkpoint.
+- `MediaSetupComponents.kt` neutralized as stale refactor leftover.
+- `MediaSourceSetupScreen.kt` restored with simple profile/source form.
+- Manifest simplified for direct APK distribution.
+- Player remote key behavior improved for TV input.
 
-Candidate scope must remain local-only unless Director explicitly expands it.
+## Icon Note
 
-## Department Boot Requirement
+Use the user-provided icon image.
 
-Before any department reports, it must read:
+Do not use the generated alternate icon.
 
-1. `docs/START_HERE.md`
-2. `docs/PROJECT_MEMORY.md`
-3. `docs/MILESTONE_STATUS.md`
-4. `docs/NEXT_TASK.md`
-5. `docs/HANDOFF.md`
-6. `docs/DEPARTMENT_BOOT_PROTOCOL.md`
-7. `docs/DEPARTMENT_ROLE_CARDS.md`
-8. Its own file in `docs/agents/`
+Prepared icon assets should be copied into `app/src/main/res` before re-enabling manifest icon references:
 
-Departments report only. Director decides.
+```text
+android:icon="@mipmap/ic_launcher"
+android:roundIcon="@mipmap/ic_launcher_round"
+```
 
-If runtime docs conflict, return `DOCUMENTATION_CONFLICT` before continuing.
+## Lock Rules
+
+Do not say PASSED until user test/build evidence exists.
+
+Do not say LOCKED without QA and Director approval.
+
+## Next Session Read Order
+
+1. `docs/NEXORA_FRONTEND_FREEZE_01.md`
+2. `docs/NEXT_TASK.md`
+3. `docs/PROJECT_MEMORY.md`
+4. `docs/HANDOFF.md`
+5. `docs/CODE_HYGIENE_DIRECTIVE.md`
+6. `docs/REPO_STRUCTURE_STANDARD.md`
+7. `docs/PROTECTED_SYSTEMS.md`
