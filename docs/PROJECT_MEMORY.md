@@ -1,10 +1,13 @@
 # Nexora TV — Project Memory
 
+Status: ACTIVE MEMORY
+Updated: 2026-05-21
+
 ## Purpose
 
-This document is the compact memory source for new ChatGPT windows.
+Compact memory source for continuing Nexora TV development without relying on chat history.
 
-Chat history is disposable. Repository docs are the source of truth.
+Repository docs are the source of truth.
 
 ## Project Name
 
@@ -16,228 +19,149 @@ https://github.com/ilkkanml/TV_Project.git
 
 ## Product Type
 
-Legal Core Media Player Ecosystem.
+Legal Android TV / Fire TV media player ecosystem.
 
-- `TV_Project` = Android TV / Fire TV first client
-- `TV_Project_Platform` = Core Account / Device / License / Admin / Remote Config / App Version / Profile Transfer center
+## Current Active Checkpoint
 
-## Current Runtime Truth
+`NEXORA_FRONTEND_FREEZE_01` — FREEZE CANDIDATE
 
-- Current active milestone: none
-- Last locked milestone: M12 Platform Database Baseline & Migration Foundation
-- M12 status: LOCKED
-- M12-TASK-001 status: completed
-- M12-TASK-002 status: completed
-- M12-TASK-003 status: PASSED / QA VERIFIED
-- Previous locked milestone: M11 Platform Source-of-Truth Audit
-- M11 status: LOCKED
-- Previous locked milestone before M11: M10 Ecosystem Alignment & Client Integration Contract
-- M10 status: LOCKED
-- Required next action: Director should scope the next milestone candidate
+This is not LOCKED.
 
-Runtime truth priority:
+## Current Distribution Target
 
-1. `docs/MILESTONE_STATUS.md`
-2. `docs/NEXT_TASK.md`
-3. `docs/HANDOFF.md`
-4. `docs/PROJECT_MEMORY.md`
-5. `docs/START_HERE.md`
-6. Agent files
+Primary target:
 
-## Lean Workflow Rule
+- Direct APK install
+- Downloader code distribution
+- Free early access preview
+- Android TV / Fire TV first
 
-Avoid unnecessary procedure.
+Not current target:
 
-Use the shortest safe workflow:
+- Google Play release
+- Store compliance polish
+- Payment enforcement
+- Production backend release
 
-1. Department report when useful
-2. Director decision
-3. Builder only if implementation is approved
-4. QA only if code/runtime/release risk exists
-5. Documentation only when runtime truth, milestone status, source-of-truth contract, or major decision changes
-6. Milestone final docs can be batched
+## Current Rule
 
-Do not run Documentation Memory for every minor review.
+Do not open M15 yet.
 
-Do not update CHANGELOG or DECISION_LOG after every small department report.
+Do not add new features until the first frontend smoke test is completed.
 
-Director may handle simple documentation updates directly in the main Director thread.
+Allowed only if required:
 
-## Core Legal Rule
+- Build fix
+- Crash fix
+- Broken route fix
+- Broken focus fix
+- Manifest/resource fix
+- Icon/resource replacement
+- Small copy correction
+- User data/profile flow restoration
 
-Nexora is a legal player/client platform.
+Not allowed during freeze:
 
-It does not provide content, channels, broadcasts, bundled media, circumvention tools, unauthorized source access, credential sharing support, or restreaming behavior.
+- New feature work
+- Visual redesign
+- Large refactor
+- Provider expansion
+- Backend expansion
+- Payment/subscription enforcement
+- Store release work
+- Playback rewrite
+- Component splitting unless required to fix build
 
-Allowed development sources:
+## Required Next Action
 
-- Mock data
-- Test streams with permission
-- Public demo streams
-- User-owned licensed streams
-- Legal provider/API integrations with explicit future approval
+User should pull latest `main` and run the frontend smoke test.
 
-## M12 Lock Summary
+Test order:
 
-M12 Platform Database Baseline & Migration Foundation is LOCKED.
+```text
+Splash
+Language
+Activation
+Profiles
+Add User / Media Source Setup
+Home
+Movies
+Series
+Live
+Settings
+Detail
+Player
+Back navigation
+```
 
-M12 completed:
+Report using:
 
-- Prisma migration baseline policy
-- Local database setup validation plan
-- Migration naming/versioning policy
-- Seed policy
-- Rollback policy
-- Data retention/deletion policy direction
-- Sensitive transfer-data lifecycle direction
-- Audit-log baseline expectations
-- Local-only baseline migration file creation
-- Local Docker PostgreSQL/Redis verification
-- Prisma generate verification
-- Prisma migrate verification
-- API typecheck verification
-- QA review
-
-M12 changed platform files:
-
-- `apps/api/prisma/migrations/migration_lock.toml`
-- `apps/api/prisma/migrations/20260518120000_m12_initial_platform_database_baseline/migration.sql`
-- `apps/api/package.json`
-- `apps/api/tsconfig.json`
-- `docs/M12_LOCAL_VERIFICATION_EVIDENCE.md`
-- `docs/M12_QA_REVIEW.md`
-- `docs/M12_LOCK_REPORT.md`
-
-Evidence status:
-
-- Dependency install: CONFIRMED
-- Docker Desktop local infra: CONFIRMED
-- PostgreSQL container health: CONFIRMED
-- Redis container health: CONFIRMED
-- Prisma generate: CONFIRMED
-- Local migration apply: CONFIRMED
-- API typecheck: CONFIRMED
-- Local DB verification: CONFIRMED
-- QA review: PASS
-
-M12 locked boundary:
-
-- No production database deployment
-- No production database mutation
-- No payment enforcement
-- No provider integration
-- No content hosting
-- No channel selling
-- No platform-owned stream catalog
-- No Android bridge implementation
-- No auth/session/token implementation unless separately scoped later
-- No legal media player boundary changes
-
-## Recommended Next Candidate
-
-`M13 Platform API Service Foundation & Environment Contract`
-
-Candidate focus:
-
-- API runtime environment baseline
-- Local `.env` / config contract
-- Database connection service foundation
-- Health/readiness endpoint verification
-- No auth/session implementation yet unless separately scoped
-- No production deployment
-
-## M11 Lock Summary
-
-M11 Platform Source-of-Truth Audit is LOCKED.
-
-Completed scope:
-
-- Platform repository audit
-- Platform repo structure review
-- API/database/security/legal gap review
-- M11 audit report
-- Platform README
-- Platform START_HERE
-- Platform source-of-truth docs
-- API contract alignment doc
-- Database baseline doc
-- Security/session policy doc
-- Legal boundary doc
-
-Platform docs added in `TV_Project_Platform`:
-
-- `README.md`
-- `docs/START_HERE.md`
-- `docs/PLATFORM_SOURCE_OF_TRUTH.md`
-- `docs/API_CONTRACT_ALIGNMENT.md`
-- `docs/DATABASE_BASELINE.md`
-- `docs/SECURITY_SESSION_POLICY.md`
-- `docs/LEGAL_BOUNDARY.md`
-
-M11 guardrails preserved:
-
-- No backend implementation approved
-- No database migration approved
-- No Android bridge approved
-- No payment enforcement approved
-- No provider integration approved
-- Protected systems preserved
-- Legal media player boundary preserved
-
-## M10 Lock Summary
-
-M10 Ecosystem Alignment & Client Integration Contract is LOCKED.
-
-M10 was documentation/contract alignment only.
-
-## Department Boot Protocol
-
-Department boot docs:
-
-- `docs/DEPARTMENT_BOOT_PROTOCOL.md`
-- `docs/DEPARTMENT_ROLE_CARDS.md`
-
-Every department must read boot protocol, role cards, runtime docs, protected systems, Safe Code Engine, and its own agent file before reporting.
-
-Departments report only. Director decides.
-
-## Safe Code Engine
-
-Status: ACTIVE
-
-Document:
-
-- `docs/SAFE_CODE_ENGINE.md`
-
-Rule:
-
-- Developer cannot send code work to QA without required build/runtime evidence.
-- QA cannot PASS without required evidence.
-- Documentation Memory must record build/runtime evidence state.
-- Missing evidence keeps the task BLOCKED.
-
-## Locked Milestones
-
-- M1 Foundation: LOCKED
-- M2 Playback Expansion: LOCKED
-- M3 Premium UI Expansion: LOCKED
-- M4 Auth & Device Activation Foundation: LOCKED
-- M5 Content Library & Navigation Expansion: LOCKED
-- M6 Playlist Profile & Legal Source Input Foundation: LOCKED
-- M7 Local Profile Persistence Foundation: LOCKED
-- M8 TV Navigation & Access Polish: LOCKED
-- M9 Startup Flow & Session Entry Polish: LOCKED
-- M10 Ecosystem Alignment & Client Integration Contract: LOCKED
-- M11 Platform Source-of-Truth Audit: LOCKED
-- M12 Platform Database Baseline & Migration Foundation: LOCKED
+```text
+Build: OK / FAIL
+Install: OK / FAIL
+Splash: OK / FAIL
+Language: OK / FAIL
+Activation: OK / FAIL
+Profiles: OK / FAIL
+Source Setup: OK / FAIL
+Home: OK / FAIL
+Detail: OK / FAIL
+Player: OK / FAIL
+Back: OK / FAIL
+Notes:
+```
 
 ## Current Code Reality
 
-- Android client code unchanged by M12
-- Platform local database baseline migration files are in place
-- Local platform database migration has been verified and QA-reviewed
-- No active milestone is currently open
-- Production backend/API/database deployment is not approved
+Recent freeze-related fixes:
+
+- `docs/NEXORA_FRONTEND_FREEZE_01.md` created.
+- `docs/NEXT_TASK.md` points to frontend freeze smoke test.
+- `MediaSetupComponents.kt` neutralized as stale refactor leftover.
+- `MediaSourceSetupScreen.kt` restored with a simple profile/source form.
+- Manifest simplified for direct APK distribution.
+- Player remote key behavior improved for TV input.
+
+Important:
+
+- User-provided app icon must be used.
+- Generated alternative icon must not replace the user-provided image.
+- Icon assets were prepared separately from the user's image and should be copied into `app/src/main/res` before re-enabling manifest icon references.
+
+## Legal Boundary
+
+Nexora TV is a legal media player platform.
+
+It must not provide, sell, host, relay, scrape, bypass, or bundle unauthorized content.
+
+Allowed:
+
+- Mock data
+- Permissioned test streams
+- Public demo streams
+- User-owned or legally authorized sources
+- Future legal provider/API integrations only with explicit approval
+
+## Protected Systems
+
+Do not rewrite impulsively:
+
+- Playback core / Media3 lifecycle
+- TV navigation system
+- Profile/source persistence
+- Loaded catalog session
+- Cinematic backdrop
+- Home menu structure
+
+## Source-of-Truth Read Order
+
+1. `docs/NEXORA_FRONTEND_FREEZE_01.md`
+2. `docs/NEXT_TASK.md`
+3. `docs/PROJECT_MEMORY.md`
+4. `docs/CODE_HYGIENE_DIRECTIVE.md`
+5. `docs/REPO_STRUCTURE_STANDARD.md`
+6. `docs/DEPARTMENT_MODEL_STANDARD.md`
+7. `docs/PROTECTED_SYSTEMS.md`
 
 ## User Preference
 
@@ -245,6 +169,6 @@ Rule:
 - Minimal explanations
 - Direct instructions
 - Continuous progress
-- Keep docs updated so new chats can continue
+- Freeze method during unstable build/test stage
+- No code bloat
 - Do not say PASSED/LOCKED without required evidence
-- Avoid unnecessary procedure and repeated documentation loops
