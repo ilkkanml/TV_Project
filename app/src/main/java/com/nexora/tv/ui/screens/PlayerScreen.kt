@@ -73,6 +73,7 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
     val context = LocalContext.current
     var showSettings by remember { mutableStateOf(false) }
     var trackCatalog by remember { mutableStateOf(TrackCatalog()) }
+    var isPlaying by remember { mutableStateOf(true) }
 
     BackHandler(enabled = showSettings) { showSettings = false }
 
@@ -89,9 +90,14 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
             override fun onTracksChanged(tracks: Tracks) {
                 trackCatalog = buildTrackCatalog(tracks)
             }
+
+            override fun onIsPlayingChanged(value: Boolean) {
+                isPlaying = value
+            }
         }
         player.addListener(listener)
         trackCatalog = buildTrackCatalog(player.currentTracks)
+        isPlaying = player.isPlaying || player.playWhenReady
         onDispose {
             player.removeListener(listener)
             player.release()
@@ -115,7 +121,15 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
         )
 
         TopOverlay(channel = channel)
-        BottomOverlay(navController = navController, channel = channel, onSettingsClick = { showSettings = !showSettings })
+        BottomOverlay(
+            navController = navController,
+            channel = channel,
+            isPlaying = isPlaying,
+            onPlayPauseClick = {
+                if (player.isPlaying) player.pause() else player.play()
+            },
+            onSettingsClick = { showSettings = !showSettings }
+        )
 
         if (showSettings) PlaybackSettingsPanel(player = player, catalog = trackCatalog, onClose = { showSettings = false })
     }
@@ -137,14 +151,21 @@ private fun TopOverlay(channel: LiveChannel) {
 }
 
 @Composable
-private fun BoxScope.BottomOverlay(navController: NavController, channel: LiveChannel, onSettingsClick: () -> Unit) {
+private fun BoxScope.BottomOverlay(
+    navController: NavController,
+    channel: LiveChannel,
+    isPlaying: Boolean,
+    onPlayPauseClick: () -> Unit,
+    onSettingsClick: () -> Unit
+) {
     Column(
-        modifier = Modifier.align(Alignment.BottomStart).padding(24.dp).width(570.dp).background(PanelDark, RoundedCornerShape(22.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp)).padding(18.dp),
+        modifier = Modifier.align(Alignment.BottomStart).padding(24.dp).width(690.dp).background(PanelDark, RoundedCornerShape(22.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(22.dp)).padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(AppLanguageStore.ui("Now Playing"), color = NexoraVioletSoft, fontSize = 11.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
         Text(channel.name, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            PlayerNavButton(if (isPlaying) AppLanguageStore.t("Pause", "Duraklat") else AppLanguageStore.t("Play", "Oynat"), width = 104, onClick = onPlayPauseClick)
             PlayerNavButton(AppLanguageStore.ui("Settings"), width = 110, onClick = onSettingsClick)
             PlayerNavButton(AppLanguageStore.ui("Back")) { navController.popBackStack() }
             PlayerNavButton(AppLanguageStore.ui("Home")) { goHome(navController) }
