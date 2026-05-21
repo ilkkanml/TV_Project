@@ -37,8 +37,8 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardOptions
@@ -297,7 +297,8 @@ private fun SetupInputField(
         onValueChange = onChange,
         label = { Text(label) },
         singleLine = singleLine,
-        enabled = isActive,
+        enabled = true,
+        readOnly = !isActive,
         visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         keyboardActions = androidx.compose.foundation.text.KeyboardActions(
@@ -315,7 +316,7 @@ private fun SetupInputField(
             .height(height.dp)
             .focusRequester(focusRequester)
             .onFocusChanged {
-                if (it.isFocused && activeFieldId == null) onActiveFieldChange(fieldId)
+                if (it.isFocused) onActiveFieldChange(fieldId)
             },
         shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
