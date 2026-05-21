@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -29,17 +31,27 @@ import androidx.navigation.NavController
 import com.nexora.tv.data.app.AppLanguageStore
 import com.nexora.tv.data.content.MockContentLibrary
 import com.nexora.tv.data.content.NexoraContentItem
+import com.nexora.tv.data.live.LiveChannel
+import com.nexora.tv.data.live.LivePlaybackSession
+import com.nexora.tv.data.live.MediaKind
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
 private val NexoraViolet = Color(0xFF7C3AED)
 private val NexoraVioletSoft = Color(0xFF9F67FF)
 private val NexoraBlue = Color(0xFF4CC9FF)
+private val NexoraGreen = Color(0xFF39FF88)
 private val PanelDark = Color(0xCC090B12)
 private val PanelSoft = Color(0xB0111624)
 
 @Composable
 fun ContentDetailScreen(navController: NavController, contentId: String?) {
+    val providerItem = LivePlaybackSession.detailItem
+    if (contentId == "provider-media" && providerItem != null) {
+        ProviderContentDetail(navController, providerItem)
+        return
+    }
+
     val content = MockContentLibrary.findContent(contentId)
 
     if (content == null) {
@@ -56,6 +68,132 @@ fun ContentDetailScreen(navController: NavController, contentId: String?) {
             DetailPoster(content)
             DetailInfo(navController, content)
         }
+    }
+}
+
+@Composable
+private fun ProviderContentDetail(navController: NavController, item: LiveChannel) {
+    NexoraCinematicBackdrop {
+        Row(
+            modifier = Modifier.fillMaxSize().padding(horizontal = 42.dp, vertical = 30.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProviderPoster(item)
+            ProviderInfo(navController, item)
+        }
+    }
+}
+
+@Composable
+private fun ProviderPoster(item: LiveChannel) {
+    val accent = if (item.mediaKind == MediaKind.Series) NexoraBlue else NexoraViolet
+    Box(
+        modifier = Modifier.width(360.dp).height(540.dp).shadow(24.dp, RoundedCornerShape(34.dp), ambientColor = accent, spotColor = accent).background(PanelDark, RoundedCornerShape(34.dp)).border(2.dp, accent.copy(alpha = 0.72f), RoundedCornerShape(34.dp))
+    ) {
+        Box(modifier = Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(accent.copy(alpha = 0.34f), Color.Black.copy(alpha = 0.18f), Color.Black.copy(alpha = 0.86f))), RoundedCornerShape(34.dp)))
+
+        Column(modifier = Modifier.align(Alignment.TopStart).padding(22.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            DetailPill(if (item.mediaKind == MediaKind.Series) AppLanguageStore.ui("Series") else AppLanguageStore.ui("Movies"), accent)
+            DetailPill(item.group.ifBlank { AppLanguageStore.ui("Category") }, NexoraBlue)
+        }
+
+        Column(modifier = Modifier.align(Alignment.BottomStart).padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(item.name, color = Color.White, fontSize = 31.sp, fontWeight = FontWeight.Black, lineHeight = 34.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+            Text(item.group.ifBlank { AppLanguageStore.ui("Category") }, color = Color.White.copy(alpha = 0.70f), fontSize = 13.sp, lineHeight = 18.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
+    }
+}
+
+@Composable
+private fun ProviderInfo(navController: NavController, item: LiveChannel) {
+    val accent = if (item.mediaKind == MediaKind.Series) NexoraBlue else NexoraViolet
+    Column(
+        modifier = Modifier.width(770.dp).background(PanelDark, RoundedCornerShape(34.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(34.dp)).padding(30.dp).verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        Text(if (item.mediaKind == MediaKind.Series) AppLanguageStore.ui("Series").uppercase() else AppLanguageStore.ui("Movies").uppercase(), color = NexoraVioletSoft, fontSize = 13.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp)
+        Text(item.name, color = Color.White, fontSize = 48.sp, fontWeight = FontWeight.Black, lineHeight = 52.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        Text(item.description.ifBlank { AppLanguageStore.t("No description is available for this title.", "Bu içerik için açıklama mevcut değil.") }, color = Color.White.copy(alpha = 0.72f), fontSize = 16.sp, lineHeight = 23.sp, maxLines = 5, overflow = TextOverflow.Ellipsis)
+
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            DetailPill(item.group.ifBlank { AppLanguageStore.ui("Category") }, accent)
+            DetailPill(AppLanguageStore.ui("Licensed"), NexoraBlue)
+            DetailPill(AppLanguageStore.t("Provider catalog", "Sağlayıcı kataloğu"), NexoraViolet)
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            MetricCard(AppLanguageStore.ui("Quality"), AppLanguageStore.t("Player selectable", "Player içinden seçilir"))
+            MetricCard(AppLanguageStore.ui("Audio"), AppLanguageStore.t("Stream based", "Yayına bağlı"))
+            MetricCard(AppLanguageStore.ui("Subtitles"), AppLanguageStore.t("If available", "Varsa"))
+        }
+
+        if (item.mediaKind == MediaKind.Series) {
+            SeriesEpisodePanel()
+        } else {
+            PlaybackInfoBox()
+        }
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+            if (item.mediaKind == MediaKind.Movie && item.streamUrl.isNotBlank()) {
+                Button(
+                    onClick = {
+                        LivePlaybackSession.select(item)
+                        navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+                    },
+                    modifier = Modifier.width(136.dp).height(56.dp),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = NexoraGreen, contentColor = Color.Black)
+                ) { Text(AppLanguageStore.ui("PLAY"), fontWeight = FontWeight.Black) }
+            }
+
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.width(128.dp).height(56.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = NexoraViolet, contentColor = Color.White)
+            ) { Text(AppLanguageStore.ui("Back"), fontWeight = FontWeight.Bold) }
+
+            Button(
+                onClick = { navController.navigate(AppDestinations.Home.route) { launchSingleTop = true } },
+                modifier = Modifier.width(128.dp).height(56.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
+            ) { Text(AppLanguageStore.ui("Home"), fontWeight = FontWeight.Bold) }
+        }
+    }
+}
+
+@Composable
+private fun PlaybackInfoBox() {
+    Box(modifier = Modifier.width(690.dp).background(PanelSoft, RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(16.dp)) {
+        Text(
+            text = AppLanguageStore.t(
+                "Audio, subtitle and picture quality options appear inside Player Settings when the stream provides them.",
+                "Ses, altyazı ve görüntü kalitesi seçenekleri yayın destekliyorsa Player Settings içinde görünür."
+            ),
+            color = Color.White.copy(alpha = 0.62f),
+            fontSize = 12.sp,
+            lineHeight = 18.sp
+        )
+    }
+}
+
+@Composable
+private fun SeriesEpisodePanel() {
+    Column(modifier = Modifier.width(690.dp).background(PanelSoft, RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(AppLanguageStore.t("Seasons & Episodes", "Sezonlar ve Bölümler"), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
+        Text(
+            AppLanguageStore.t(
+                "Episode selection will appear here when provider series episode data is available. Playback settings such as audio, subtitles and quality are selected inside the Player.",
+                "Sağlayıcıdan dizi bölüm verisi geldiğinde sezon ve bölüm seçimi burada görünecek. Ses, altyazı ve kalite seçenekleri Player içinde seçilir."
+            ),
+            color = Color.White.copy(alpha = 0.62f),
+            fontSize = 12.sp,
+            lineHeight = 18.sp
+        )
     }
 }
 
@@ -140,7 +278,7 @@ private fun DetailInfo(navController: NavController, content: NexoraContentItem)
 private fun MetricCard(title: String, body: String) {
     Column(modifier = Modifier.width(170.dp).background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(20.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp)).padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
         Text(title, color = NexoraVioletSoft, fontSize = 11.sp, fontWeight = FontWeight.Black)
-        Text(body, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
+        Text(body, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
