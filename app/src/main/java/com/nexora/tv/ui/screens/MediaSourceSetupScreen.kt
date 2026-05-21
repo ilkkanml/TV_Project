@@ -97,7 +97,9 @@ fun MediaSourceSetupScreen(navController: NavController) {
             }.onSuccess {
                 mode = SourceMode.LocalFile
                 localText = it
-                message = AppLanguageStore.t("Local file loaded. Press Connect to continue.", "Yerel dosya yüklendi. Devam etmek için Connect'e bas.")
+                activeFieldId = null
+                message = AppLanguageStore.t("Local file loaded. Press Connect to continue.", "Yerel dosya yüklendi. Devam etmek için Bağlan'a bas.")
+                connectFocus.requestFocus()
             }.onFailure {
                 message = AppLanguageStore.t("Could not read selected file.", "Seçilen dosya okunamadı.")
             }
@@ -124,16 +126,12 @@ fun MediaSourceSetupScreen(navController: NavController) {
 
     NexoraCinematicBackdrop {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 30.dp, vertical = 24.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 30.dp, vertical = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(22.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier
-                    .width(500.dp)
-                    .verticalScroll(rememberScrollState()),
+                modifier = Modifier.width(500.dp).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(13.dp)
             ) {
                 Text("NEXORA", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black, letterSpacing = 2.3.sp, maxLines = 1)
@@ -173,55 +171,13 @@ fun MediaSourceSetupScreen(navController: NavController) {
 
                 when (mode) {
                     SourceMode.Portal -> {
-                        SetupInputField(
-                            fieldId = "server",
-                            activeFieldId = activeFieldId,
-                            onActiveFieldChange = { activeFieldId = it },
-                            label = AppLanguageStore.t("Server URL", "Sunucu URL"),
-                            value = server,
-                            onChange = { server = it.filterNot(Char::isWhitespace) },
-                            focusRequester = serverFocus,
-                            nextFocusRequester = userFocus,
-                            nextFieldId = "user",
-                            modifier = Modifier.focusProperties { up = profileFocus }
-                        )
-                        SetupInputField(
-                            fieldId = "user",
-                            activeFieldId = activeFieldId,
-                            onActiveFieldChange = { activeFieldId = it },
-                            label = AppLanguageStore.t("User name", "Kullanıcı adı"),
-                            value = user,
-                            onChange = { user = it.filterNot(Char::isWhitespace) },
-                            focusRequester = userFocus,
-                            nextFocusRequester = passFocus,
-                            nextFieldId = "pass"
-                        )
-                        SetupInputField(
-                            fieldId = "pass",
-                            activeFieldId = activeFieldId,
-                            onActiveFieldChange = { activeFieldId = it },
-                            label = AppLanguageStore.t("Password", "Şifre"),
-                            value = pass,
-                            onChange = { pass = it.filterNot(Char::isWhitespace) },
-                            focusRequester = passFocus,
-                            nextFocusRequester = connectFocus,
-                            nextFieldId = null,
-                            secret = true,
-                            modifier = Modifier.focusProperties { down = connectFocus }
-                        )
+                        SetupInputField("server", activeFieldId, { activeFieldId = it }, AppLanguageStore.t("Server URL", "Sunucu URL"), server, { server = it.filterNot(Char::isWhitespace) }, serverFocus, userFocus, "user", modifier = Modifier.focusProperties { up = profileFocus })
+                        SetupInputField("user", activeFieldId, { activeFieldId = it }, AppLanguageStore.t("User name", "Kullanıcı adı"), user, { user = it.filterNot(Char::isWhitespace) }, userFocus, passFocus, "pass")
+                        SetupInputField("pass", activeFieldId, { activeFieldId = it }, AppLanguageStore.t("Password", "Şifre"), pass, { pass = it.filterNot(Char::isWhitespace) }, passFocus, connectFocus, null, secret = true, modifier = Modifier.focusProperties { down = connectFocus })
                     }
 
                     SourceMode.ListUrl -> {
-                        SetupInputField(
-                            fieldId = "list",
-                            activeFieldId = activeFieldId,
-                            onActiveFieldChange = { activeFieldId = it },
-                            label = "M3U URL",
-                            value = listUrl,
-                            onChange = { listUrl = it.filterNot(Char::isWhitespace) },
-                            focusRequester = listFocus,
-                            nextFocusRequester = connectFocus
-                        )
+                        SetupInputField("list", activeFieldId, { activeFieldId = it }, "M3U URL", listUrl, { listUrl = it.filterNot(Char::isWhitespace) }, listFocus, connectFocus)
                     }
 
                     SourceMode.LocalFile -> {
@@ -233,31 +189,11 @@ fun MediaSourceSetupScreen(navController: NavController) {
                         ) {
                             Text(AppLanguageStore.t("Choose file from device", "Cihazdan dosya seç"), fontWeight = FontWeight.Black, fontSize = 13.sp)
                         }
-                        SetupInputField(
-                            fieldId = "local",
-                            activeFieldId = activeFieldId,
-                            onActiveFieldChange = { activeFieldId = it },
-                            label = AppLanguageStore.t("Paste list data", "Liste verisini yapıştır"),
-                            value = localText,
-                            onChange = { localText = it },
-                            focusRequester = localFocus,
-                            nextFocusRequester = connectFocus,
-                            singleLine = false,
-                            height = 96
-                        )
+                        SetupInputField("local", activeFieldId, { activeFieldId = it }, AppLanguageStore.t("Paste list data", "Liste verisini yapıştır"), localText, { localText = it }, localFocus, connectFocus, singleLine = false, height = 96)
                     }
 
                     SourceMode.Single -> {
-                        SetupInputField(
-                            fieldId = "single",
-                            activeFieldId = activeFieldId,
-                            onActiveFieldChange = { activeFieldId = it },
-                            label = AppLanguageStore.t("Stream URL", "Yayın URL"),
-                            value = singleUrl,
-                            onChange = { singleUrl = it.filterNot(Char::isWhitespace) },
-                            focusRequester = singleFocus,
-                            nextFocusRequester = connectFocus
-                        )
+                        SetupInputField("single", activeFieldId, { activeFieldId = it }, AppLanguageStore.t("Stream URL", "Yayın URL"), singleUrl, { singleUrl = it.filterNot(Char::isWhitespace) }, singleFocus, connectFocus)
                     }
                 }
 
@@ -268,20 +204,7 @@ fun MediaSourceSetupScreen(navController: NavController) {
                     onConnect = {
                         if (!loading) {
                             activeFieldId = null
-                            connectCurrentSource(
-                                context = context,
-                                mode = mode,
-                                profileName = profileName,
-                                server = server,
-                                user = user,
-                                pass = pass,
-                                listUrl = listUrl,
-                                localText = localText,
-                                singleUrl = singleUrl,
-                                navController = navController,
-                                setLoading = { loading = it },
-                                setMessage = { message = it }
-                            )
+                            connectCurrentSource(context, mode, profileName, server, user, pass, listUrl, localText, singleUrl, navController, { loading = it }, { message = it })
                         }
                     },
                     onClear = { showClear = true },
@@ -302,24 +225,13 @@ private fun ClearFormDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
         onDismissRequest = onDismiss,
         title = { Text(AppLanguageStore.t("Clear form?", "Form temizlensin mi?")) },
         text = { Text(AppLanguageStore.t("Current form fields will be cleared. Saved profiles will not be deleted.", "Mevcut form alanları temizlenir. Kayıtlı profiller silinmez.")) },
-        confirmButton = {
-            TextButton(onClick = onConfirm) { Text(AppLanguageStore.t("Clear", "Temizle")) }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text(AppLanguageStore.t("Cancel", "İptal")) }
-        }
+        confirmButton = { TextButton(onClick = onConfirm) { Text(AppLanguageStore.t("Clear", "Temizle")) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(AppLanguageStore.t("Cancel", "İptal")) } }
     )
 }
 
 @Composable
-private fun SetupActionRow(
-    loading: Boolean,
-    mode: SourceMode,
-    connectFocus: FocusRequester,
-    onConnect: () -> Unit,
-    onClear: () -> Unit,
-    onBack: () -> Unit
-) {
+private fun SetupActionRow(loading: Boolean, mode: SourceMode, connectFocus: FocusRequester, onConnect: () -> Unit, onClear: () -> Unit, onBack: () -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         Button(
             onClick = onConnect,
@@ -328,25 +240,19 @@ private fun SetupActionRow(
             colors = ButtonDefaults.buttonColors(containerColor = SetupViolet, contentColor = Color.White)
         ) {
             Text(
-                text = if (loading) AppLanguageStore.t("Loading", "Yükleniyor") else if (mode == SourceMode.Single) AppLanguageStore.t("Play Stream", "Yayını Aç") else "Connect",
+                text = if (loading) AppLanguageStore.t("Loading", "Yükleniyor") else if (mode == SourceMode.Single) AppLanguageStore.t("Play Stream", "Yayını Aç") else AppLanguageStore.t("Connect", "Bağlan"),
                 fontWeight = FontWeight.Black,
                 fontSize = 13.sp
             )
         }
 
-        Button(
-            onClick = onClear,
-            modifier = Modifier.width(102.dp).height(52.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-        ) { Text(AppLanguageStore.t("Clear", "Temizle"), fontSize = 12.sp) }
+        Button(onClick = onClear, modifier = Modifier.width(102.dp).height(52.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
+            Text(AppLanguageStore.t("Clear", "Temizle"), fontSize = 12.sp)
+        }
 
-        Button(
-            onClick = onBack,
-            modifier = Modifier.width(102.dp).height(52.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)
-        ) { Text(AppLanguageStore.t("Back", "Geri"), fontSize = 12.sp) }
+        Button(onClick = onBack, modifier = Modifier.width(102.dp).height(52.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
+            Text(AppLanguageStore.t("Back", "Geri"), fontSize = 12.sp)
+        }
     }
 }
 
@@ -377,6 +283,10 @@ private fun connectCurrentSource(
 
     when (mode) {
         SourceMode.Portal -> {
+            if (server.isBlank() || user.isBlank() || pass.isBlank()) {
+                setMessage(AppLanguageStore.t("Server, user name and password are required.", "Sunucu, kullanıcı adı ve şifre zorunludur."))
+                return
+            }
             setLoading(true)
             setMessage(AppLanguageStore.t("Connecting...", "Bağlanıyor..."))
             Thread {
@@ -397,6 +307,10 @@ private fun connectCurrentSource(
         }
 
         SourceMode.ListUrl -> {
+            if (listUrl.isBlank()) {
+                setMessage(AppLanguageStore.t("M3U URL is required.", "M3U URL zorunludur."))
+                return
+            }
             setLoading(true)
             setMessage(AppLanguageStore.t("Loading...", "Yükleniyor..."))
             Thread {
@@ -417,6 +331,10 @@ private fun connectCurrentSource(
         }
 
         SourceMode.LocalFile -> {
+            if (localText.isBlank()) {
+                setMessage(AppLanguageStore.t("Local data is empty.", "Yerel veri boş."))
+                return
+            }
             val parsed = M3uParser.parse(localText)
             val status = "${parsed.size} live • 0 movies • 0 series"
             LivePlaybackSession.setCatalog(safeName, parsed)
@@ -427,14 +345,14 @@ private fun connectCurrentSource(
 
         SourceMode.Single -> {
             val stream = singleUrl.trim()
-            if (stream.startsWith("http://") || stream.startsWith("https://")) {
-                val item = LiveChannel("Single Stream", stream, "Single Stream")
-                LivePlaybackSession.select(item)
-                MediaProfileStore.upsert(safeName, "Single stream", stream, "", "", listOf(item), emptyList(), emptyList(), "1 stream ready", context)
-                navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
-            } else {
+            if (!stream.startsWith("http://") && !stream.startsWith("https://")) {
                 setMessage(AppLanguageStore.t("Stream URL must start with http or https.", "Yayın URL http veya https ile başlamalı."))
+                return
             }
+            val item = LiveChannel("Single Stream", stream, "Single Stream")
+            LivePlaybackSession.select(item)
+            MediaProfileStore.upsert(safeName, "Single stream", stream, "", "", listOf(item), emptyList(), emptyList(), "1 stream ready", context)
+            navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
         }
     }
 }
