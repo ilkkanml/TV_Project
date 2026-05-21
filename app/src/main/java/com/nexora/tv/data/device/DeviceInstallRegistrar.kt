@@ -3,6 +3,7 @@ package com.nexora.tv.data.device
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
+import com.nexora.tv.BuildConfig
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
@@ -13,7 +14,9 @@ object DeviceInstallRegistrar {
     private const val PREFS = "nexora_device_install"
     private const val KEY_INSTALL_ID = "install_id"
     private const val ENDPOINT = "https://www.thenightssecret.com/api/devices/install/index.php"
-    private const val APP_VERSION = "0.1.0"
+
+    private val appVersion: String
+        get() = BuildConfig.VERSION_NAME.ifBlank { "0.1.0" }
 
     fun registerAsync(context: Context) {
         val appContext = context.applicationContext
@@ -25,11 +28,12 @@ object DeviceInstallRegistrar {
     private fun register(context: Context) {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val currentInstallId = prefs.getString(KEY_INSTALL_ID, "").orEmpty()
+        val currentAppVersion = appVersion
         val response = postRegistration(
             installId = currentInstallId,
             platformDeviceHash = buildPlatformDeviceHash(context),
             platform = detectPlatform(),
-            appVersion = APP_VERSION
+            appVersion = currentAppVersion
         )
 
         val root = JSONObject(response)
@@ -60,7 +64,7 @@ object DeviceInstallRegistrar {
         connection.doOutput = true
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
         connection.setRequestProperty("Accept", "application/json")
-        connection.setRequestProperty("User-Agent", "NexoraTV/$APP_VERSION")
+        connection.setRequestProperty("User-Agent", "NexoraTV/$appVersion")
 
         try {
             OutputStreamWriter(connection.outputStream, Charsets.UTF_8).use { writer ->
