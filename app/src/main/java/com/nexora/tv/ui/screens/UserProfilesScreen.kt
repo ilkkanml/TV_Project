@@ -147,7 +147,7 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
         InfoLine(AppLanguageStore.t("Server", "Sunucu"), profile.serverAddress.ifBlank { AppLanguageStore.t("Not saved", "Kaydedilmedi") })
         InfoLine(AppLanguageStore.t("User name", "Kullanıcı adı"), profile.accountName.ifBlank { AppLanguageStore.t("Not saved", "Kaydedilmedi") })
         InfoLine(AppLanguageStore.t("Password", "Şifre"), if (profile.accessKey.isBlank()) AppLanguageStore.t("Not saved", "Kaydedilmedi") else "••••••••")
-        InfoLine(AppLanguageStore.t("Selected profile", "Seçili profil"), profile.profileName)
+        InfoLine(AppLanguageStore.t("Preview profile", "Önizlenen profil"), profile.profileName)
 
         Text(AppLanguageStore.t("Account status", "Hesap durumu"), color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Black)
         InfoLine(AppLanguageStore.t("Media account expiry", "Yayın hesabı son geçerlilik"), profile.mediaAccountExpiry)
