@@ -65,13 +65,13 @@ fun MediaSourceSetupScreen(navController: NavController) {
 
     var mode by remember(editingProfile?.id) { mutableStateOf(initialMode(editingProfile)) }
     var activeFieldId by remember { mutableStateOf<String?>(null) }
-    var profileName by remember(editingProfile?.id) { mutableStateOf(editingProfile?.profileName ?: "") }
-    var server by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Provider API") editingProfile.serverAddress else "") }
-    var user by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Provider API") editingProfile.accountName else "") }
-    var pass by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Provider API") editingProfile.accessKey else "") }
-    var listUrl by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "M3U URL") editingProfile.serverAddress else "") }
+    var profileName by remember(editingProfile?.id) { mutableStateOf(editingProfile?.profileName.orEmpty()) }
+    var server by remember(editingProfile?.id) { mutableStateOf(editingProfile.fieldFor("Provider API", FieldTarget.Server)) }
+    var user by remember(editingProfile?.id) { mutableStateOf(editingProfile.fieldFor("Provider API", FieldTarget.User)) }
+    var pass by remember(editingProfile?.id) { mutableStateOf(editingProfile.fieldFor("Provider API", FieldTarget.Secret)) }
+    var listUrl by remember(editingProfile?.id) { mutableStateOf(editingProfile.fieldFor("M3U URL", FieldTarget.Server)) }
     var localText by remember(editingProfile?.id) { mutableStateOf("") }
-    var singleUrl by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Single stream") editingProfile.serverAddress else "") }
+    var singleUrl by remember(editingProfile?.id) { mutableStateOf(editingProfile.fieldFor("Single stream", FieldTarget.Server)) }
     var loading by remember { mutableStateOf(false) }
     var showClear by remember { mutableStateOf(false) }
     var message by remember(editingProfile?.id) {
@@ -260,6 +260,17 @@ private fun SetupActionRow(loading: Boolean, mode: SourceMode, connectFocus: Foc
         Button(onClick = onBack, modifier = Modifier.width(102.dp).height(52.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
             Text(AppLanguageStore.t("Back", "Geri"), fontSize = 12.sp)
         }
+    }
+}
+
+private enum class FieldTarget { Server, User, Secret }
+
+private fun MediaProfile?.fieldFor(sourceType: String, target: FieldTarget): String {
+    val profile = this?.takeIf { it.sourceType == sourceType } ?: return ""
+    return when (target) {
+        FieldTarget.Server -> profile.serverAddress
+        FieldTarget.User -> profile.accountName
+        FieldTarget.Secret -> profile.accessKey
     }
 }
 
