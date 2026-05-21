@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -78,10 +80,7 @@ fun HomeScreen(navController: NavController) {
     val selectedItem = MockContentLibrary.findContent(selectedItemId) ?: rows.firstOrNull()?.items?.firstOrNull()
     var showBackHint by remember { mutableStateOf(false) }
 
-    val recentHomeItems = remember(
-        LivePlaybackSession.loadedMovies,
-        LivePlaybackSession.loadedSeries
-    ) {
+    val recentHomeItems = remember(LivePlaybackSession.loadedMovies, LivePlaybackSession.loadedSeries) {
         (LivePlaybackSession.loadedMovies + LivePlaybackSession.loadedSeries)
             .distinctBy { it.streamUrl.ifBlank { it.name + it.group } }
             .take(80)
@@ -284,16 +283,38 @@ private fun LoadedCatalogPanel(navController: NavController, title: String, coun
             FilterButton(AppLanguageStore.ui("Filter"), showFilters) { showFilters = !showFilters }
             if (showFilters) groups.forEach { group -> FilterButton(group, selectedGroup == group) { selectedGroup = group } }
         }
-        Column(Modifier.fillMaxWidth().height(470.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            visibleItems.forEachIndexed { index, item ->
-                ChannelRow(item, fallbackGroup, if (index == 0) Modifier.focusProperties { up = FocusRequester.Cancel } else Modifier) {
-                    if (item.streamUrl.isNotBlank()) {
-                        LivePlaybackSession.select(item)
-                        navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+        LazyColumn(Modifier.fillMaxWidth().height(470.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (visibleItems.isEmpty()) {
+                item { EmptyCatalogMessage() }
+            } else {
+                itemsIndexed(
+                    visibleItems,
+                    key = { index, item -> item.streamUrl.ifBlank { item.name + item.group + index } }
+                ) { index, item ->
+                    ChannelRow(item, fallbackGroup, if (index == 0) Modifier.focusProperties { up = FocusRequester.Cancel } else Modifier) {
+                        if (item.streamUrl.isNotBlank()) {
+                            LivePlaybackSession.select(item)
+                            navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun EmptyCatalogMessage() {
+    Box(
+        Modifier.fillMaxWidth().height(92.dp).background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(20.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp)).padding(18.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            AppLanguageStore.t("No content found for this filter.", "Bu filtre için içerik bulunamadı."),
+            color = Color.White.copy(alpha = 0.70f),
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
