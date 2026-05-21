@@ -104,11 +104,14 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
             factory = { viewContext ->
                 PlayerView(viewContext).apply {
                     layoutParams = android.view.ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-                    useController = true
+                    useController = false
                     this.player = player
                 }
             },
-            update = { view -> view.player = player }
+            update = { view ->
+                view.useController = false
+                view.player = player
+            }
         )
 
         TopOverlay(channel = channel)
