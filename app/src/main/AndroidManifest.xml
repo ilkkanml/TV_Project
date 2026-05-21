@@ -11,11 +11,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="Nexora TV"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Nexora">
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name="com.nexora.tv.MainActivity"
