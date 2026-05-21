@@ -48,6 +48,9 @@ object MediaProfileStore {
     val selectedProfile: MediaProfile?
         get() = profiles.firstOrNull { it.id == selectedProfileId } ?: profiles.firstOrNull()
 
+    val hasSavedSelection: Boolean
+        get() = selectedProfileId != null && profiles.any { it.id == selectedProfileId }
+
     val editingProfile: MediaProfile?
         get() = profiles.firstOrNull { it.id == editingProfileId }
 
@@ -67,7 +70,12 @@ object MediaProfileStore {
             }
         }
 
-        selectedProfile?.let { select(it, context) }
+        val saved = profiles.firstOrNull { it.id == selectedProfileId }
+        if (saved != null) {
+            LivePlaybackSession.setCatalog(saved.profileName, saved.live, saved.movies, saved.series)
+        } else {
+            selectedProfileId = null
+        }
     }
 
     fun select(profile: MediaProfile, context: Context? = null) {
