@@ -150,12 +150,12 @@ private fun ProfileInfoPanel(navController: NavController, profile: MediaProfile
         InfoLine(AppLanguageStore.t("Preview profile", "Önizlenen profil"), profile.profileName)
 
         Text(AppLanguageStore.t("Account status", "Hesap durumu"), color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Black)
-        InfoLine(AppLanguageStore.t("Media account expiry", "Yayın hesabı son geçerlilik"), profile.mediaAccountExpiry)
-        InfoLine(AppLanguageStore.t("Media account status", "Yayın hesabı durumu"), profile.mediaAccountStatus)
+        InfoLine(AppLanguageStore.t("Media account expiry", "Yayın hesabı son geçerlilik"), profileValue(profile.mediaAccountExpiry))
+        InfoLine(AppLanguageStore.t("Media account status", "Yayın hesabı durumu"), profileValue(profile.mediaAccountStatus))
         InfoLine(AppLanguageStore.t("App validity", "Uygulama geçerliliği"), AppLanguageStore.t(profile.appValidity, "Erken erişim aktif"))
-        InfoLine(AppLanguageStore.t("Active connections", "Aktif bağlantı"), profile.activeConnections)
-        InfoLine(AppLanguageStore.t("Max connections", "Maksimum bağlantı"), profile.maxConnections)
-        InfoLine(AppLanguageStore.t("Trial account", "Deneme hesabı"), profile.trialStatus)
+        InfoLine(AppLanguageStore.t("Active connections", "Aktif bağlantı"), profileValue(profile.activeConnections))
+        InfoLine(AppLanguageStore.t("Max connections", "Maksimum bağlantı"), profileValue(profile.maxConnections))
+        InfoLine(AppLanguageStore.t("Trial account", "Deneme hesabı"), profileValue(profile.trialStatus))
 
         Column(modifier = Modifier.fillMaxWidth().background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(AppLanguageStore.t("Profile policy", "Profil politikası"), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
@@ -211,6 +211,16 @@ private fun EmptyUserHint() {
     Column(modifier = Modifier.width(334.dp).height(130.dp).background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(16.dp), verticalArrangement = Arrangement.Center) {
         Text(AppLanguageStore.t("No users yet", "Henüz kullanıcı yok"), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
         Text(AppLanguageStore.t("Use Add User to create the first profile.", "İlk profili oluşturmak için Kullanıcı Ekle'yi kullan."), color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp)
+    }
+}
+
+private fun profileValue(value: String): String {
+    return when (value.trim()) {
+        "Not available" -> AppLanguageStore.t("Not available", "Mevcut değil")
+        "Unknown" -> AppLanguageStore.t("Unknown", "Bilinmiyor")
+        "Yes" -> AppLanguageStore.t("Yes", "Evet")
+        "No" -> AppLanguageStore.t("No", "Hayır")
+        else -> value
     }
 }
 
