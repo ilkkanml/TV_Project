@@ -51,11 +51,11 @@ internal val SetupBlue = Color(0xFF4CC9FF)
 internal val SetupPanelDark = Color(0xCC090B12)
 internal val SetupPanelSoft = Color(0xAA11131C)
 
-internal enum class SourceMode(val label: String) {
-    Portal("Provider API"),
-    ListUrl("M3U URL"),
-    LocalFile("Local data"),
-    Single("Play single stream")
+internal enum class SourceMode {
+    Portal,
+    ListUrl,
+    LocalFile,
+    Single
 }
 
 @Composable
@@ -82,13 +82,22 @@ internal fun SourceModeSelector(
                 )
             ) {
                 Text(
-                    text = item.label,
+                    text = sourceModeLabel(item),
                     fontSize = 11.sp,
                     fontWeight = if (selected == item) FontWeight.Black else FontWeight.Medium,
                     maxLines = 1
                 )
             }
         }
+    }
+}
+
+private fun sourceModeLabel(mode: SourceMode): String {
+    return when (mode) {
+        SourceMode.Portal -> "Provider API"
+        SourceMode.ListUrl -> "M3U URL"
+        SourceMode.LocalFile -> AppLanguageStore.t("Local data", "Yerel veri")
+        SourceMode.Single -> AppLanguageStore.t("Single stream", "Tek yayın")
     }
 }
 
@@ -229,9 +238,9 @@ internal fun MediaSetupSecurityPanel() {
         NoticeCard(AppLanguageStore.t("Free during early access", "Erken erişimde ücretsiz"), AppLanguageStore.t("The app remains free while the full ecosystem is being completed and tested.", "Tüm ekosistem tamamlanıp test edilene kadar uygulama ücretsiz kalır."))
 
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            InfoPill("TV-friendly")
-            InfoPill("Remote-first")
-            InfoPill("early access")
+            InfoPill(AppLanguageStore.t("TV-friendly", "TV uyumlu"))
+            InfoPill(AppLanguageStore.t("Remote-first", "Kumanda öncelikli"))
+            InfoPill(AppLanguageStore.t("early access", "erken erişim"))
         }
     }
 }
