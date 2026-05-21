@@ -1,130 +1,103 @@
 # Nexora TV — Milestone Status
 
+Status: Source-of-truth aligned
+Updated: 2026-05-21
+
 ## Current Active Milestone
 
 None — next milestone pending Director scoping.
 
 ## Last Locked Milestone
 
-`M13 Platform API Service Foundation & Environment Contract`
+`M14 First Working Release / Internal Alpha Smoke Gate`
 
-## M13 Status
+## M14 Status
 
 LOCKED
 
-## M13 Result
+## M14 Result
 
-M13 established the local-only Platform API service foundation and environment contract in `TV_Project_Platform`.
+M14 validated the first working internal alpha smoke readiness across the Android TV / Fire TV client and local Platform API health/readiness checks.
 
-Completed scope:
+Confirmed scope:
 
-- Local-only API runtime/config baseline
-- `.env.example` `DATABASE_URL` aligned with docker-compose local PostgreSQL password
-- `/health` preserved as static liveness
-- `/ready` endpoint added
-- `PrismaService` added
-- `/ready` checks only `DATABASE_URL` presence and DB ping
-- No mutation
-- No seed
-- No migration auto-run
-- No auth/session/token implementation
-- No payment enforcement
-- No provider integration
-- No Android bridge
-- No content hosting/channel selling
-- User local evidence confirmed
-- QA passed with process warning
+- APK generated: CONFIRMED
+- Android app run: CONFIRMED
+- Splash: CONFIRMED
+- Login: CONFIRMED
+- Activation `demo123`: CONFIRMED
+- Home shell: CONFIRMED
+- Focus/navigation: CONFIRMED
+- Detail screen: CONFIRMED
+- Player shell: CONFIRMED
+- Crash/error: NONE REPORTED
+- Platform `/health`: CONFIRMED
+- Platform `/ready`: CONFIRMED with `{ "ready": true }`
+- QA Result: PASS
 - Documentation recorded
 - Director lock approved
 
-Evidence status:
+M14 canonical records are maintained in `TV_Project_Platform`:
 
-- `pnpm.cmd install`: CONFIRMED
-- `docker compose up -d`: CONFIRMED
-- `docker compose ps`: Postgres healthy / Redis healthy
-- `pnpm.cmd db:generate`: CONFIRMED
-- `pnpm.cmd --filter @tv-platform/api run typecheck`: CONFIRMED
-- `pnpm.cmd --filter @tv-platform/api run build`: CONFIRMED
-- `GET /health`: CONFIRMED
-- `GET /ready`: CONFIRMED
-
-M13 records in `TV_Project_Platform`:
-
-- `docs/M13_LOCAL_VERIFICATION_EVIDENCE.md`
-- `docs/M13_QA_REVIEW.md`
-- `docs/M13_LOCK_REPORT.md`
+- `docs/M14_SCOPE.md`
+- `docs/M14_BUILDER_HANDOFF.md`
+- `docs/M14_LOCAL_SMOKE_EVIDENCE.md`
+- `docs/M14_QA_REVIEW.md`
+- `docs/M14_LOCK_REPORT.md`
 
 ## Previous Locked Milestone
 
-`M12 Platform Database Baseline & Migration Foundation`
-
-## M12 Status
-
-LOCKED
+`M13 Platform API Service Foundation & Environment Contract`
 
 ## Current Director Direction
 
-Move toward the first working internal release path.
+Move toward a cleaner internal alpha handoff only after documentation alignment.
 
 Working target:
 
-`First Working Release / Internal Alpha`
-
-Meaning:
-
-- App installs/opens without crash
-- Android TV / Fire TV runtime shell works
-- Home/navigation/player shell basics are testable
-- Platform API health/readiness foundation is available
-- Legal media-player boundary remains preserved
-- No production deploy yet
-- No payment enforcement yet
-- No provider integration yet
-- No content hosting/channel selling
-
-## Recommended Next Milestone Candidate
-
-`M14 First Working Release Scope & Release Gate Definition`
+`M15 Internal Alpha UI/UX Polish Direction & Handoff Readiness`
 
 Purpose:
 
-- Define exactly what the first working internal release includes/excludes
-- Define release gate checklist
-- Define Android app smoke test expectations
-- Define platform API connection expectations
+- Define minimal TV-first UI/UX polish direction
+- Preserve current M14 smoke-passed behavior
+- Prepare internal APK handoff/install guidance
+- Define repeatable smoke checklist
+- Record known limitations
 - Keep production/store/payment/provider/content work out of scope
 
-## M13 Lock Boundary
+## M14 Lock Boundary
 
-M13 does not approve:
+M14 does not approve:
 
-- Production deployment
-- Production database mutation
+- Production deploy
+- Store release
+- Live database setup
+- Hosting/domain/server work
 - Payment enforcement
 - Provider integration
-- Content hosting
-- Channel selling
-- Platform-owned stream catalog
+- Content hosting/channel selling
+- Backend-owned stream/channel catalog
 - Android bridge implementation
 - Auth/session/token implementation
-- Redis runtime/session system expansion
-- Migration auto-run
-- Seed execution
-- Legal media-player boundary changes
+- Heavy backend implementation
+- Heavy Android implementation
+- Protected system rewrite
+- Illegal IPTV/source behavior
+- DRM bypass or unauthorized scraping
 
-## Process Warning
+## Documentation Alignment Note
 
-QA reported documentation/path hygiene warning for missing canonical department/control docs by exact path in Platform repo.
+Older references to `v0.0`, `M2`, `M12`, or `M13 as next milestone` are legacy/outdated unless explicitly marked as historical context.
 
-Classification:
+Runtime truth priority now follows:
 
-- Not a code blocker
-- Not a legal blocker
-- Not a protected-system rewrite
-- Future documentation hygiene cleanup recommended
+1. `TV_Project_Platform/docs/MILESTONE_STATUS.md`
+2. `TV_Project_Platform/docs/NEXT_TASK.md`
+3. `TV_Project_Platform/docs/PROJECT_MEMORY.md`
+4. `TV_Project/docs/MILESTONE_STATUS.md`
+5. `TV_Project/docs/NEXT_TASK.md`
 
-## Required Next Action
+## Recommended Next Action
 
-Director should scope M14 for First Working Release / Internal Alpha.
-
-No active milestone is open until Director explicitly opens it.
+Director may scope M15 after this source-of-truth cleanup is confirmed.
