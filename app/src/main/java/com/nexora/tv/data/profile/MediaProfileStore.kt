@@ -152,10 +152,9 @@ object MediaProfileStore {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val array = JSONArray()
         profiles.forEach { array.put(it.toJson()) }
-        prefs.edit()
-            .putString(KEY_PROFILES, array.toString())
-            .putString(KEY_SELECTED, selectedProfileId)
-            .apply()
+        val editor = prefs.edit().putString(KEY_PROFILES, array.toString())
+        if (selectedProfileId == null) editor.remove(KEY_SELECTED) else editor.putString(KEY_SELECTED, selectedProfileId)
+        editor.apply()
     }
 
     private fun MediaProfile.toJson(): JSONObject {
