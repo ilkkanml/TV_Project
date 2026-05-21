@@ -30,8 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.nativeKeyEvent
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -108,17 +106,7 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .onPreviewKeyEvent { event ->
-                handlePlayerRemoteKey(
-                    event = event.nativeKeyEvent,
-                    player = player,
-                    onSettingsClick = { showSettings = !showSettings }
-                )
-            }
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { viewContext ->
@@ -126,11 +114,13 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
                     layoutParams = android.view.ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                     useController = false
                     this.player = player
+                    configureRemoteKeys(player) { showSettings = !showSettings }
                 }
             },
             update = { view ->
                 view.useController = false
                 view.player = player
+                view.configureRemoteKeys(player) { showSettings = !showSettings }
             }
         )
 
@@ -262,6 +252,15 @@ private fun PlayerChip(text: String) {
 private fun PlayerNavButton(text: String, width: Int = 86, onClick: () -> Unit) {
     Button(onClick = onClick, modifier = Modifier.width(width.dp).height(40.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.10f), contentColor = Color.White)) {
         Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Black, maxLines = 1)
+    }
+}
+
+private fun PlayerView.configureRemoteKeys(player: ExoPlayer, onSettingsClick: () -> Unit) {
+    isFocusable = true
+    isFocusableInTouchMode = true
+    requestFocus()
+    setOnKeyListener { _, _, event ->
+        handlePlayerRemoteKey(event, player, onSettingsClick)
     }
 }
 
