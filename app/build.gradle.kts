@@ -9,7 +9,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.nexora.tv"
+        applicationId = "com.nexoratv.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
