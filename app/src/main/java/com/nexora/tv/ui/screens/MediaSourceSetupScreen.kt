@@ -5,10 +5,13 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,6 +21,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -30,9 +35,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardOptions
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -46,6 +57,20 @@ import com.nexora.tv.data.profile.MediaProfile
 import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
+
+private val SetupViolet = Color(0xFF7C3AED)
+private val SetupVioletSoft = Color(0xFF9F67FF)
+private val SetupBlue = Color(0xFF4CC9FF)
+private val SetupGreen = Color(0xFF39FF88)
+private val SetupPanel = Color(0xCC090B12)
+private val SetupField = Color(0xAA121624)
+
+private enum class SourceMode {
+    Portal,
+    ListUrl,
+    LocalFile,
+    Single
+}
 
 @Composable
 fun MediaSourceSetupScreen(navController: NavController) {
@@ -227,13 +252,86 @@ fun MediaSourceSetupScreen(navController: NavController) {
 }
 
 @Composable
-private fun ClearFormDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(AppLanguageStore.t("Clear form?", "Form temizlensin mi?")) },
-        text = { Text(AppLanguageStore.t("Current form fields will be cleared. Saved profiles will not be deleted.", "Mevcut form alanları temizlenir. Kayıtlı profiller silinmez.")) },
-        confirmButton = { TextButton(onClick = onConfirm) { Text(AppLanguageStore.t("Clear", "Temizle")) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(AppLanguageStore.t("Cancel", "İptal")) } }
+private fun SourceModeSelector(selected: SourceMode, portalFocus: FocusRequester, onSelected: (SourceMode) -> Unit) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        SourceModeButton("Provider API", selected == SourceMode.Portal, Modifier.focusRequester(portalFocus)) { onSelected(SourceMode.Portal) }
+        SourceModeButton("M3U", selected == SourceMode.ListUrl) { onSelected(SourceMode.ListUrl) }
+        SourceModeButton("Local", selected == SourceMode.LocalFile) { onSelected(SourceMode.LocalFile) }
+        SourceModeButton("Single", selected == SourceMode.Single) { onSelected(SourceMode.Single) }
+    }
+}
+
+@Composable
+private fun SourceModeButton(text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.width(118.dp).height(44.dp),
+        shape = RoundedCornerShape(14.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = if (selected) SetupViolet else Color.White.copy(alpha = 0.08f), contentColor = Color.White)
+    ) {
+        Text(text, fontSize = 11.sp, fontWeight = FontWeight.Black, maxLines = 1)
+    }
+}
+
+@Composable
+private fun SetupInputField(
+    fieldId: String,
+    activeFieldId: String?,
+    onActiveFieldChange: (String?) -> Unit,
+    label: String,
+    value: String,
+    onChange: (String) -> Unit,
+    focusRequester: FocusRequester,
+    nextFocusRequester: FocusRequester,
+    nextFieldId: String? = null,
+    modifier: Modifier = Modifier,
+    secret: Boolean = false,
+    singleLine: Boolean = true,
+    height: Int = 56
+) {
+    val focusManager = LocalFocusManager.current
+    val isActive = activeFieldId == fieldId
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = onChange,
+        label = { Text(label) },
+        singleLine = singleLine,
+        enabled = isActive,
+        visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        keyboardActions = androidx.compose.foundation.text.KeyboardActions(
+            onNext = {
+                onActiveFieldChange(nextFieldId)
+                nextFocusRequester.requestFocus()
+            },
+            onDone = {
+                onActiveFieldChange(null)
+                focusManager.clearFocus()
+            }
+        ),
+        modifier = modifier
+            .width(500.dp)
+            .height(height.dp)
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                if (it.isFocused && activeFieldId == null) onActiveFieldChange(fieldId)
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            disabledTextColor = Color.White.copy(alpha = 0.86f),
+            focusedBorderColor = SetupBlue,
+            unfocusedBorderColor = Color.White.copy(alpha = 0.18f),
+            disabledBorderColor = Color.White.copy(alpha = 0.14f),
+            focusedLabelColor = SetupBlue,
+            unfocusedLabelColor = Color.White.copy(alpha = 0.56f),
+            disabledLabelColor = Color.White.copy(alpha = 0.48f),
+            focusedContainerColor = SetupField,
+            unfocusedContainerColor = SetupField,
+            disabledContainerColor = SetupField
+        )
     )
 }
 
@@ -261,6 +359,58 @@ private fun SetupActionRow(loading: Boolean, mode: SourceMode, connectFocus: Foc
             Text(AppLanguageStore.t("Back", "Geri"), fontSize = 12.sp)
         }
     }
+}
+
+@Composable
+private fun SetupStatusBox(message: String) {
+    Column(
+        modifier = Modifier.width(500.dp).background(SetupPanel, RoundedCornerShape(18.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(18.dp)).padding(14.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(AppLanguageStore.t("Status", "Durum"), color = SetupVioletSoft, fontSize = 11.sp, fontWeight = FontWeight.Black)
+        Text(message, color = Color.White.copy(alpha = 0.72f), fontSize = 12.sp, lineHeight = 17.sp)
+    }
+}
+
+@Composable
+private fun MediaSetupSecurityPanel() {
+    Column(
+        modifier = Modifier.width(520.dp).background(SetupPanel, RoundedCornerShape(30.dp)).border(1.dp, Color.White.copy(alpha = 0.10f), RoundedCornerShape(30.dp)).padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(AppLanguageStore.t("Security & Early Access", "Güvenlik ve Erken Erişim"), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Black)
+        Text(AppLanguageStore.t("Free during early access", "Erken erişimde ücretsiz"), color = SetupGreen, fontSize = 14.sp, fontWeight = FontWeight.Black)
+        Text(AppLanguageStore.t("Legal use only", "Sadece yasal kullanım"), color = Color.White.copy(alpha = 0.82f), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        Text(
+            AppLanguageStore.t(
+                "Add only licensed media sources or sources you have the legal right to access. Provider, playlist, stream URL, user name and password stay on the device and are not sent to the install database.",
+                "Yalnızca lisanslı veya yasal erişim hakkın olan medya kaynaklarını ekle. Provider, playlist, yayın URL, kullanıcı adı ve şifre cihazda kalır; install database'e gönderilmez."
+            ),
+            color = Color.White.copy(alpha = 0.68f),
+            fontSize = 13.sp,
+            lineHeight = 20.sp
+        )
+        Text(
+            AppLanguageStore.t(
+                "We do not use MAC as the primary device identity. Install registration uses a local installId and a stable platform hash only.",
+                "MAC adresini ana cihaz kimliği olarak kullanmıyoruz. Install kaydı yalnızca local installId ve sabit platform hash kullanır."
+            ),
+            color = Color.White.copy(alpha = 0.62f),
+            fontSize = 12.sp,
+            lineHeight = 18.sp
+        )
+    }
+}
+
+@Composable
+private fun ClearFormDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(AppLanguageStore.t("Clear form?", "Form temizlensin mi?")) },
+        text = { Text(AppLanguageStore.t("Current form fields will be cleared. Saved profiles will not be deleted.", "Mevcut form alanları temizlenir. Kayıtlı profiller silinmez.")) },
+        confirmButton = { TextButton(onClick = onConfirm) { Text(AppLanguageStore.t("Clear", "Temizle")) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(AppLanguageStore.t("Cancel", "İptal")) } }
+    )
 }
 
 private enum class FieldTarget { Server, User, Secret }
