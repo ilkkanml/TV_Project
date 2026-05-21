@@ -142,9 +142,17 @@ private fun TopOverlay(channel: LiveChannel) {
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(modifier = Modifier.width(470.dp)) {
+        Column(modifier = Modifier.width(520.dp)) {
             Text(channel.name, color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(channel.group, color = NexoraVioletSoft, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                AppLanguageStore.t("Source", "Kaynak") + ": " + LivePlaybackSession.sourceTitle,
+                color = Color.White.copy(alpha = 0.54f),
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
         PlayerChip("LIVE")
     }
@@ -164,6 +172,7 @@ private fun BoxScope.BottomOverlay(
     ) {
         Text(AppLanguageStore.ui("Now Playing"), color = NexoraVioletSoft, fontSize = 11.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
         Text(channel.name, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(LivePlaybackSession.sourceStatus, color = Color.White.copy(alpha = 0.46f), fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             PlayerNavButton(if (isPlaying) AppLanguageStore.t("Pause", "Duraklat") else AppLanguageStore.t("Play", "Oynat"), width = 104, onClick = onPlayPauseClick)
             PlayerNavButton(AppLanguageStore.ui("Settings"), width = 110, onClick = onSettingsClick)
