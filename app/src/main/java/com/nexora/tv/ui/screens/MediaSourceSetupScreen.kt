@@ -42,6 +42,7 @@ import com.nexora.tv.data.live.LivePlaybackSession
 import com.nexora.tv.data.live.M3uParser
 import com.nexora.tv.data.live.ProviderPortalLoader
 import com.nexora.tv.data.live.RemoteListLoader
+import com.nexora.tv.data.profile.MediaProfile
 import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
@@ -62,18 +63,18 @@ fun MediaSourceSetupScreen(navController: NavController) {
     val singleFocus = remember { FocusRequester() }
     val connectFocus = remember { FocusRequester() }
 
-    var mode by remember { mutableStateOf(SourceMode.Portal) }
+    var mode by remember(editingProfile?.id) { mutableStateOf(initialMode(editingProfile)) }
     var activeFieldId by remember { mutableStateOf<String?>(null) }
-    var profileName by remember { mutableStateOf(editingProfile?.profileName ?: "") }
-    var server by remember { mutableStateOf(editingProfile?.serverAddress ?: "") }
-    var user by remember { mutableStateOf(editingProfile?.accountName ?: "") }
-    var pass by remember { mutableStateOf(editingProfile?.accessKey ?: "") }
-    var listUrl by remember { mutableStateOf("") }
-    var localText by remember { mutableStateOf("") }
-    var singleUrl by remember { mutableStateOf("") }
+    var profileName by remember(editingProfile?.id) { mutableStateOf(editingProfile?.profileName ?: "") }
+    var server by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Provider API") editingProfile.serverAddress else "") }
+    var user by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Provider API") editingProfile.accountName else "") }
+    var pass by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Provider API") editingProfile.accessKey else "") }
+    var listUrl by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "M3U URL") editingProfile.serverAddress else "") }
+    var localText by remember(editingProfile?.id) { mutableStateOf("") }
+    var singleUrl by remember(editingProfile?.id) { mutableStateOf(if (editingProfile?.sourceType == "Single stream") editingProfile.serverAddress else "") }
     var loading by remember { mutableStateOf(false) }
     var showClear by remember { mutableStateOf(false) }
-    var message by remember {
+    var message by remember(editingProfile?.id) {
         mutableStateOf(editingProfile?.status ?: AppLanguageStore.t("Create a profile and connect a personal media source.", "Profil oluştur ve kişisel medya kaynağını bağla."))
     }
 
@@ -135,7 +136,13 @@ fun MediaSourceSetupScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(13.dp)
             ) {
                 Text("NEXORA", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Black, letterSpacing = 2.3.sp, maxLines = 1)
-                Text(AppLanguageStore.t("Create Profile", "Profil Oluştur"), color = SetupVioletSoft, fontSize = 24.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                Text(
+                    if (editingProfile == null) AppLanguageStore.t("Create Profile", "Profil Oluştur") else AppLanguageStore.t("Edit Profile", "Profili Düzenle"),
+                    color = SetupVioletSoft,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Black,
+                    maxLines = 1
+                )
                 Text(
                     AppLanguageStore.t(
                         "Focus selects a field. Press OK/Enter to edit. Use Next/Enter to continue.",
@@ -253,6 +260,15 @@ private fun SetupActionRow(loading: Boolean, mode: SourceMode, connectFocus: Foc
         Button(onClick = onBack, modifier = Modifier.width(102.dp).height(52.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
             Text(AppLanguageStore.t("Back", "Geri"), fontSize = 12.sp)
         }
+    }
+}
+
+private fun initialMode(profile: MediaProfile?): SourceMode {
+    return when (profile?.sourceType) {
+        "M3U URL" -> SourceMode.ListUrl
+        "Local data" -> SourceMode.LocalFile
+        "Single stream" -> SourceMode.Single
+        else -> SourceMode.Portal
     }
 }
 
