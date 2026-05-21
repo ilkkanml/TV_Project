@@ -23,6 +23,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -108,6 +110,7 @@ internal fun SetupInputField(
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
     val isActive = activeFieldId == fieldId
+    val movingByKeyboard = remember { mutableStateOf(false) }
 
     fun activate() {
         onActiveFieldChange(fieldId)
@@ -117,6 +120,7 @@ internal fun SetupInputField(
 
     fun moveNext() {
         if (nextFocusRequester != null) {
+            movingByKeyboard.value = true
             onActiveFieldChange(nextFieldId)
             nextFocusRequester.requestFocus()
             if (nextFieldId == null) keyboard?.hide() else keyboard?.show()
@@ -153,8 +157,12 @@ internal fun SetupInputField(
             .focusRequester(focusRequester)
             .onFocusChanged { state ->
                 if (!state.isFocused && isActive) {
-                    onActiveFieldChange(null)
-                    keyboard?.hide()
+                    if (movingByKeyboard.value) {
+                        movingByKeyboard.value = false
+                    } else {
+                        onActiveFieldChange(null)
+                        keyboard?.hide()
+                    }
                 }
             }
             .onKeyEvent { event ->
