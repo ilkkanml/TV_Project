@@ -46,7 +46,10 @@ object MediaProfileStore {
     private var initialized by mutableStateOf(false)
 
     val selectedProfile: MediaProfile?
-        get() = profiles.firstOrNull { it.id == selectedProfileId } ?: profiles.firstOrNull()
+        get() = profiles.firstOrNull { it.id == selectedProfileId }
+
+    val previewProfile: MediaProfile?
+        get() = selectedProfile ?: profiles.firstOrNull()
 
     val hasSavedSelection: Boolean
         get() = selectedProfileId != null && profiles.any { it.id == selectedProfileId }
