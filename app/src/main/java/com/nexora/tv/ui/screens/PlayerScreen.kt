@@ -1,5 +1,6 @@
 package com.nexora.tv.ui.screens
 
+import android.view.KeyEvent as AndroidKeyEvent
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -29,6 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.nativeKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -105,7 +108,17 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .onPreviewKeyEvent { event ->
+                handlePlayerRemoteKey(
+                    event = event.nativeKeyEvent,
+                    player = player,
+                    onSettingsClick = { showSettings = !showSettings }
+                )
+            }
+    ) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { viewContext ->
@@ -126,9 +139,7 @@ private fun LivePlayerStage(navController: NavController, channel: LiveChannel) 
             navController = navController,
             channel = channel,
             isPlaying = isPlaying,
-            onPlayPauseClick = {
-                if (player.isPlaying) player.pause() else player.play()
-            },
+            onPlayPauseClick = { togglePlayPause(player) },
             onSettingsClick = { showSettings = !showSettings }
         )
 
@@ -252,6 +263,34 @@ private fun PlayerNavButton(text: String, width: Int = 86, onClick: () -> Unit) 
     Button(onClick = onClick, modifier = Modifier.width(width.dp).height(40.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.10f), contentColor = Color.White)) {
         Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Black, maxLines = 1)
     }
+}
+
+private fun handlePlayerRemoteKey(event: AndroidKeyEvent, player: ExoPlayer, onSettingsClick: () -> Unit): Boolean {
+    if (event.action != AndroidKeyEvent.ACTION_UP) return false
+
+    return when (event.keyCode) {
+        AndroidKeyEvent.KEYCODE_DPAD_CENTER,
+        AndroidKeyEvent.KEYCODE_ENTER,
+        AndroidKeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+        AndroidKeyEvent.KEYCODE_MEDIA_PLAY,
+        AndroidKeyEvent.KEYCODE_MEDIA_PAUSE,
+        AndroidKeyEvent.KEYCODE_SPACE -> {
+            togglePlayPause(player)
+            true
+        }
+
+        AndroidKeyEvent.KEYCODE_MENU,
+        AndroidKeyEvent.KEYCODE_SETTINGS -> {
+            onSettingsClick()
+            true
+        }
+
+        else -> false
+    }
+}
+
+private fun togglePlayPause(player: ExoPlayer) {
+    if (player.isPlaying) player.pause() else player.play()
 }
 
 private fun mediaChipLabel(channel: LiveChannel): String {
