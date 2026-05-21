@@ -1,13 +1,17 @@
 package com.nexora.tv.ui.screens
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,11 +22,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -34,6 +44,8 @@ import com.nexora.tv.data.content.NexoraContentItem
 import com.nexora.tv.data.live.LiveChannel
 import com.nexora.tv.data.live.LivePlaybackSession
 import com.nexora.tv.data.live.MediaKind
+import com.nexora.tv.data.live.ProviderSeriesEpisodeLoader
+import com.nexora.tv.data.profile.MediaProfileStore
 import com.nexora.tv.navigation.AppDestinations
 import com.nexora.tv.ui.components.NexoraCinematicBackdrop
 
@@ -129,7 +141,7 @@ private fun ProviderInfo(navController: NavController, item: LiveChannel) {
         }
 
         if (item.mediaKind == MediaKind.Series) {
-            SeriesEpisodePanel()
+            SeriesEpisodePanel(navController = navController, series = item)
         } else {
             PlaybackInfoBox()
         }
@@ -182,18 +194,95 @@ private fun PlaybackInfoBox() {
 }
 
 @Composable
-private fun SeriesEpisodePanel() {
+private fun SeriesEpisodePanel(navController: NavController, series: LiveChannel) {
+    val context = LocalContext.current
+    MediaProfileStore.init(context)
+    val profile = MediaProfileStore.selectedProfile
+    var loading by remember(series.mediaId, profile?.id) { mutableStateOf(false) }
+    var episodes by remember(series.mediaId, profile?.id) { mutableStateOf<List<LiveChannel>>(emptyList()) }
+    var message by remember(series.mediaId, profile?.id) { mutableStateOf("") }
+    var selectedSeason by remember(series.mediaId, profile?.id) { mutableStateOf("") }
+
+    LaunchedEffect(series.mediaId, profile?.id) {
+        if (series.mediaId.isBlank()) {
+            message = AppLanguageStore.t("Series id is missing. Episode data cannot be loaded.", "Dizi kimliği eksik. Bölüm verisi yüklenemiyor.")
+            return@LaunchedEffect
+        }
+        if (profile == null || profile.sourceType != "Provider API") {
+            message = AppLanguageStore.t("Episode data requires a Provider API profile.", "Bölüm verisi için Provider API profili gerekir.")
+            return@LaunchedEffect
+        }
+        loading = true
+        message = AppLanguageStore.t("Loading episodes...", "Bölümler yükleniyor...")
+        Thread {
+            val result = runCatching {
+                ProviderSeriesEpisodeLoader.loadEpisodes(
+                    server = profile.serverAddress,
+                    user = profile.accountName,
+                    pass = profile.accessKey,
+                    seriesId = series.mediaId
+                )
+            }
+            Handler(Looper.getMainLooper()).post {
+                loading = false
+                result.onSuccess { loaded ->
+                    episodes = loaded
+                    selectedSeason = loaded.firstOrNull()?.seasonName.orEmpty()
+                    message = if (loaded.isEmpty()) {
+                        AppLanguageStore.t("No episodes were returned by the provider.", "Sağlayıcıdan bölüm verisi gelmedi.")
+                    } else {
+                        AppLanguageStore.t("Select a season and episode to play.", "Oynatmak için sezon ve bölüm seç.")
+                    }
+                }.onFailure { error ->
+                    message = error.message ?: AppLanguageStore.t("Episodes could not be loaded.", "Bölümler yüklenemedi.")
+                }
+            }
+        }.start()
+    }
+
+    val seasons = episodes.map { it.seasonName.ifBlank { AppLanguageStore.t("Season", "Sezon") } }.distinct()
+    val activeSeason = selectedSeason.ifBlank { seasons.firstOrNull().orEmpty() }
+    val visibleEpisodes = if (activeSeason.isBlank()) emptyList() else episodes.filter { it.seasonName == activeSeason }
+
     Column(modifier = Modifier.width(690.dp).background(PanelSoft, RoundedCornerShape(24.dp)).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(AppLanguageStore.t("Seasons & Episodes", "Sezonlar ve Bölümler"), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
-        Text(
-            AppLanguageStore.t(
-                "Episode selection will appear here when provider series episode data is available. Playback settings such as audio, subtitles and quality are selected inside the Player.",
-                "Sağlayıcıdan dizi bölüm verisi geldiğinde sezon ve bölüm seçimi burada görünecek. Ses, altyazı ve kalite seçenekleri Player içinde seçilir."
-            ),
-            color = Color.White.copy(alpha = 0.62f),
-            fontSize = 12.sp,
-            lineHeight = 18.sp
-        )
+        Text(message, color = Color.White.copy(alpha = 0.62f), fontSize = 12.sp, lineHeight = 18.sp)
+
+        if (loading) {
+            Text(AppLanguageStore.t("Please wait...", "Lütfen bekle..."), color = NexoraVioletSoft, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        }
+
+        if (seasons.isNotEmpty()) {
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                seasons.forEach { season ->
+                    DetailSmallButton(text = season, selected = season == activeSeason) { selectedSeason = season }
+                }
+            }
+        }
+
+        visibleEpisodes.take(80).forEach { episode ->
+            Button(
+                onClick = {
+                    LivePlaybackSession.select(episode)
+                    navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+                },
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.07f), contentColor = Color.White)
+            ) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    Text(episode.episodeName.ifBlank { episode.name }, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.width(520.dp))
+                    Text(AppLanguageStore.ui("PLAY"), color = NexoraGreen, fontSize = 11.sp, fontWeight = FontWeight.Black)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DetailSmallButton(text: String, selected: Boolean, onClick: () -> Unit) {
+    Button(onClick = onClick, modifier = Modifier.height(38.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = if (selected) NexoraViolet else Color.White.copy(alpha = 0.08f), contentColor = Color.White)) {
+        Text(text, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Black else FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
