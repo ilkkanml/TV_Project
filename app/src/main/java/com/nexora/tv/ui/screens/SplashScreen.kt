@@ -19,7 +19,7 @@ fun SplashScreen(navController: NavController) {
             val target = when {
                 !AppLanguageStore.hasChosenLanguage -> AppDestinations.Language.route
                 MediaProfileStore.profiles.isEmpty() -> AppDestinations.Activation.route
-                MediaProfileStore.selectedProfile != null -> AppDestinations.Home.route
+                MediaProfileStore.hasSavedSelection -> AppDestinations.Home.route
                 else -> AppDestinations.Profiles.route
             }
 
