@@ -83,7 +83,7 @@ object ProviderPortalLoader {
             val extension = item.optString("container_extension", "ts").ifBlank { "ts" }
             if (streamId.isBlank() || name.isBlank()) continue
             val group = categoryMap[categoryId] ?: item.optString("category_name", "Live").ifBlank { "Live" }
-            result.add(LiveChannel(name = name, streamUrl = "$base/live/$safeUser/$safePass/$streamId.$extension", group = group, logoUrl = logo))
+            result.add(LiveChannel(name = name, streamUrl = "$base/live/$safeUser/$safePass/$streamId.$extension", group = group, logoUrl = logo, mediaId = streamId, mediaKind = MediaKind.Live))
         }
         return result.distinctBy { it.streamUrl }.take(1500)
     }
@@ -102,7 +102,7 @@ object ProviderPortalLoader {
             val extension = item.optString("container_extension", "mp4").ifBlank { "mp4" }
             if (streamId.isBlank() || name.isBlank()) continue
             val group = categoryMap[categoryId] ?: item.optString("category_name", "Movies").ifBlank { "Movies" }
-            result.add(LiveChannel(name = name, streamUrl = "$base/movie/$safeUser/$safePass/$streamId.$extension", group = group, logoUrl = logo))
+            result.add(LiveChannel(name = name, streamUrl = "$base/movie/$safeUser/$safePass/$streamId.$extension", group = group, logoUrl = logo, mediaId = streamId, mediaKind = MediaKind.Movie, description = item.optString("plot", "")))
         }
         return result.distinctBy { it.streamUrl }.take(1500)
     }
@@ -114,14 +114,15 @@ object ProviderPortalLoader {
         val result = mutableListOf<LiveChannel>()
         for (i in 0 until array.length()) {
             val item = array.getJSONObject(i)
+            val seriesId = item.optString("series_id")
             val name = item.optString("name", "Series")
             val categoryId = item.optString("category_id")
             val logo = item.optString("cover", item.optString("stream_icon", ""))
-            if (name.isBlank()) continue
+            if (seriesId.isBlank() || name.isBlank()) continue
             val group = categoryMap[categoryId] ?: item.optString("category_name", "Series").ifBlank { "Series" }
-            result.add(LiveChannel(name = name, streamUrl = "", group = group, logoUrl = logo))
+            result.add(LiveChannel(name = name, streamUrl = "", group = group, logoUrl = logo, mediaId = seriesId, mediaKind = MediaKind.Series, description = item.optString("plot", "")))
         }
-        return result.distinctBy { it.name + it.group }.take(1500)
+        return result.distinctBy { it.mediaId.ifBlank { it.name + it.group } }.take(1500)
     }
 
     private fun loadCategories(base: String, safeUser: String, safePass: String, action: String): Map<String, String> {
