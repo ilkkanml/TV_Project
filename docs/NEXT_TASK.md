@@ -5,65 +5,122 @@ Updated: 2026-05-21
 
 ## Current Status
 
-No active milestone is open.
+Current active checkpoint:
 
-Last locked implementation milestone:
+`NEXORA_FRONTEND_FREEZE_01` — FREEZE CANDIDATE
 
-`M14 First Working Release / Internal Alpha Smoke Gate` — LOCKED
+This is not LOCKED.
 
-## Current Required Work Before M15
+No new milestone is open.
 
-Perform codebase and documentation cleanup before opening the next milestone.
+## Current Distribution Target
 
-Reason:
+Primary target:
 
-- Some client docs were stale and still referenced M12/M13 as current.
-- UI screen files have grown too large.
-- Some repeated UI tokens and repeated patterns exist across screens.
-- M15 UI/UX polish must not add visual code on top of bloated files.
+- Direct APK install
+- Downloader code distribution
+- Free early access preview
+- Android TV / Fire TV first
 
-## Current Cleanup Scope
+Not current target:
 
-Allowed:
-
-- Align root/docs source-of-truth files.
-- Standardize repo structure documentation.
-- Extract large UI files into smaller component files.
-- Remove duplicate or stale code after extraction.
-- Centralize repeated UI tokens/components when safe.
-- Keep behavior unchanged unless a bug is directly caused by the cleanup.
-
-Not allowed:
-
-- Production deploy
-- Store release
+- Google Play release
+- Store compliance polish
 - Payment enforcement
-- Provider integration expansion
-- Content hosting/channel selling
-- Backend-owned stream/channel catalog
-- DRM bypass
-- Unauthorized scraping
-- Heavy playback rewrite
-- Protected system rewrite
-- New feature flood
+- Production backend release
 
-## Recommended Next Milestone Candidate
+## Immediate Required Work
 
-`M15 Internal Alpha UI/UX Polish Direction & Handoff Readiness`
+Do not open M15 yet.
 
-M15 should open only after cleanup does not leave obvious documentation conflict or bloated screen structure behind.
+First complete the freeze smoke test:
 
-## Immediate Work Order
+1. Git pull latest main.
+2. Sync Gradle.
+3. Clean Project.
+4. Rebuild Project.
+5. Run on Television emulator or Android TV / Fire TV device.
+6. Test frontend route flow.
+7. Report exact failing screen if any.
 
-1. Align client docs with M14/M15 truth.
-2. Add repo structure standard.
-3. Clean Home screen file split.
-4. Clean repeated UI helper patterns.
-5. Run/collect build evidence before calling cleanup passed.
-6. Then Director may scope M15.
+## Frontend Smoke Test Order
+
+```text
+Splash
+Language
+Activation
+Profiles
+Add User / Media Source Setup
+Home
+Movies
+Series
+Live
+Settings
+Detail
+Player
+Back navigation
+```
+
+## Allowed Work During Freeze
+
+Allowed only if required:
+
+- Build fix
+- Crash fix
+- Broken route fix
+- Broken focus fix
+- Manifest/resource fix
+- Icon/resource replacement
+- Small copy correction
+- User data/profile flow restoration
+
+## Not Allowed During Freeze
+
+- New feature work
+- Visual redesign
+- Large refactor
+- Provider expansion
+- Backend expansion
+- Payment/subscription enforcement
+- Store release work
+- Playback rewrite
+- Component splitting unless required to fix build
+
+## Current Build Policy
+
+Every patch must be small and targeted.
+
+If a file is replaced, the old file must be removed or neutralized.
+
+No duplicated component trees.
+
+No stale refactor leftovers.
+
+## Test Result Template
+
+```text
+Build: OK / FAIL
+Install: OK / FAIL
+Splash: OK / FAIL
+Language: OK / FAIL
+Activation: OK / FAIL
+Profiles: OK / FAIL
+Source Setup: OK / FAIL
+Home: OK / FAIL
+Detail: OK / FAIL
+Player: OK / FAIL
+Back: OK / FAIL
+Notes:
+```
 
 ## Current Operating Rule
 
 Do not claim PASSED until user test/build evidence exists.
 
 Do not claim LOCKED without QA and Director approval.
+
+## Next Step
+
+User should pull latest main and run the frontend smoke test.
+
+If build fails, fix only the first blocking build error.
