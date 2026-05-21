@@ -322,8 +322,25 @@ private fun connectCurrentSource(
                     setLoading(false)
                     result.onSuccess { loaded ->
                         val status = "${loaded.live.size} live • ${loaded.movies.size} movies • ${loaded.series.size} series"
+                        val account = loaded.account
                         LivePlaybackSession.setCatalog(safeName, loaded.live, loaded.movies, loaded.series)
-                        MediaProfileStore.upsert(safeName, "Provider API", server, user, pass, loaded.live, loaded.movies, loaded.series, status, context)
+                        MediaProfileStore.upsert(
+                            profileName = safeName,
+                            sourceType = "Provider API",
+                            serverAddress = server,
+                            accountName = user,
+                            accessKey = pass,
+                            live = loaded.live,
+                            movies = loaded.movies,
+                            series = loaded.series,
+                            status = status,
+                            context = context,
+                            mediaAccountExpiry = account.expiryDate,
+                            mediaAccountStatus = account.status,
+                            activeConnections = account.activeConnections,
+                            maxConnections = account.maxConnections,
+                            trialStatus = account.trialStatus
+                        )
                         setMessage(status)
                         navController.navigate(AppDestinations.Home.route) { launchSingleTop = true }
                     }.onFailure { error ->
