@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -260,21 +262,28 @@ private fun SeriesEpisodePanel(navController: NavController, series: LiveChannel
             }
         }
 
-        visibleEpisodes.take(80).forEach { episode ->
-            Button(
-                onClick = {
-                    LivePlaybackSession.select(episode)
-                    navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
-                },
-                modifier = Modifier.fillMaxWidth().height(48.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.07f), contentColor = Color.White)
-            ) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Text(episode.episodeName.ifBlank { episode.name }, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.width(520.dp))
-                    Text(AppLanguageStore.ui("PLAY"), color = NexoraGreen, fontSize = 11.sp, fontWeight = FontWeight.Black)
-                }
+        LazyColumn(modifier = Modifier.fillMaxWidth().height(260.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(visibleEpisodes, key = { it.streamUrl.ifBlank { it.mediaId + it.name } }) { episode ->
+                EpisodeButton(navController = navController, episode = episode)
             }
+        }
+    }
+}
+
+@Composable
+private fun EpisodeButton(navController: NavController, episode: LiveChannel) {
+    Button(
+        onClick = {
+            LivePlaybackSession.select(episode)
+            navController.navigate(AppDestinations.Player.route) { launchSingleTop = true }
+        },
+        modifier = Modifier.fillMaxWidth().height(48.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.07f), contentColor = Color.White)
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Text(episode.episodeName.ifBlank { episode.name }, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.width(520.dp))
+            Text(AppLanguageStore.ui("PLAY"), color = NexoraGreen, fontSize = 11.sp, fontWeight = FontWeight.Black)
         }
     }
 }
